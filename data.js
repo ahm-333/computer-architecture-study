@@ -8473,6 +8473,723 @@ Status:(Runs) (First)  (Waited)  (Waited)  (Finished!)
                               "explanation": "منفذ PCIe x16 بيحتوي على 16 مسار تسلسلي تفاضلي (Lanes) بتشتغل بالتوازي، وده اللي بيدي كروت الشاشة الحديثة أقصى معدل نقل بيانات متاح في اللوحة الأم!"
                     }
           ]
+        },
+
+        /* ====================================================================
+           COMPREHENSIVE EXAM: Chapter 3 (Computer Function & Interconnection)
+           ==================================================================== */
+        {
+          id: "ch3-exam",
+          code: "EXAM 3",
+          slides: "42 Questions • Full Exam",
+          title: "📝 Comprehensive Exam: Chapter 3 (Computer Function & Interconnection)",
+          hasContent: true,
+          contentHtml: `
+<!-- 0. EXAM HERO & OVERVIEW BANNER -->
+            <div class="mod-hero-box" style="border-right: 4px solid var(--accent-amber);">
+              <div class="mod-hero-meta-row">
+                <span class="mod-meta-badge">Route: /chapter-3-comprehensive-exam</span>
+                <span class="mod-meta-badge amber">Total Questions: 42 Questions • Full Exam</span>
+                <span class="mod-meta-badge emerald">Coverage: Modules 1 to 4 + Sheet 3 (All Questions)</span>
+              </div>
+              <h1 class="mod-hero-h1">📝 الامتحان التفاعلي الشامل: الفصل الثالث (Computer Function &amp; Interconnection)</h1>
+              <p class="mod-hero-lead">
+                الامتحان ده متصمم عشان تختبر نفسك <strong>بشكل تفاعلي بالكامل (42 سؤال شاملين كل تفصيلة ومسألة في Chapter 3 و Sheet 3)</strong>، ومع كل سؤال هتلاقي <strong>شرح الإجابة بالعامية المصرية</strong> عشان المعلومة تثبت في دماغك وتعرف فخاخ الامتحان:<br/>
+                • <strong>Section 1 (تفاعلي):</strong> 20 سؤال اختيار من متعدد (<span class="mono">MCQs</span>) — اضغط على الإجابة لتظهر لك النتيجة والشرح بالعامية فوراً!<br/>
+                • <strong>Section 2 (تفاعلي):</strong> 10 أسئلة صح وغلط (<span class="mono">True / False</span>) بالتعليل الهندسي والتصحيح الدقيق.<br/>
+                • <strong>Section 3 (تفاعلي):</strong> 10 أسئلة مصطلح علمي وتوصيل (<span class="mono">Matching &amp; Identification</span>) تفاعلية بالكامل.<br/>
+                • <strong>Section 4 (مسائل حسابية وتتبعية ماستر):</strong> مسألتا الشيت الشهيرتان 3.8 و 3.9 بالخطوات والتتبع والحل النموذجي مع زر إخفاء وإظهار الإجابة للتسميع!
+              </p>
+              <div class="mod-badges-row">
+                <span class="mod-pill-chip">20 MCQs</span>
+                <span class="mod-pill-chip">10 True / False</span>
+                <span class="mod-pill-chip">10 Scientific Terms</span>
+                <span class="mod-pill-chip">Sheet Q3.8 Trace Problem</span>
+                <span class="mod-pill-chip">Sheet Q3.9 Timing Problem</span>
+              </div>
+            </div>
+
+            <!-- SECTION 4: COMPUTATIONAL MASTER PROBLEMS (المسائل الحسابية والتتبعية) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">04</span>
+                <h2 class="exp-sec-title">SECTION 4: Computational Master Problems (المسائل الحسابية والتتبعية الكبرى في الامتحان)</h2>
+              </div>
+
+              <!-- Problem 1: Hypothetical Machine Program Trace -->
+              <div class="sheet-card" style="margin-bottom: 2rem;">
+                <div class="sheet-q-box" style="background: rgba(56, 189, 248, 0.08); border-left: 4px solid var(--accent-cyan);">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="mono" style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 800;">PROBLEM 1 // SHEET 3 QUESTION 3.8</span>
+                    <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px;">16-bit Trace</span>
+                  </div>
+                  <h3 style="font-family: var(--font-en); font-weight: 800; font-size: 1.15rem; margin-top: 0.5rem; color: #fff;" dir="ltr">
+                    Hypothetical Machine Program Execution Trace
+                  </h3>
+                  <div style="font-family: var(--font-en); font-size: 0.95rem; line-height: 1.8; color: var(--text-secondary); margin-top: 0.5rem;" dir="ltr">
+                    <strong>Specifications:</strong> 16-bit word size. 4-bit Opcode, 12-bit Address.<br/>
+                    • Opcodes: <strong>0011 (3H)</strong> = Load AC from Memory | <strong>0111 (7H)</strong> = Add to AC from Memory | <strong>0100 (4H)</strong> = Store AC to Memory.<br/>
+                    • Initial State: <strong>PC = 215H</strong>, <strong>AC = 0000H</strong>.<br/>
+                    • Memory Map: <strong>215: 3400</strong>, <strong>216: 7401</strong>, <strong>217: 4401</strong>, <strong>400: 0012</strong>, <strong>401: 1008</strong>.<br/>
+                    <strong>Required:</strong> Show contents of CPU registers (PC, IR, AC) and memory for 3 complete instruction cycles.
+                  </div>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin: 1rem 0;">
+                  <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Solution (الحل النموذجي المعتمد بالخطوات):</span>
+                  <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; if(box.style.display==='none'){box.style.display='block'; this.innerText='إخفاء الإجابة للتسميع';} else {box.style.display='none'; this.innerText='إظهار الإجابة';}">إخفاء الإجابة للتسميع</button>
+                </div>
+
+                <div class="sheet-ans-box" style="display: block;">
+                  <!-- Terminal Trace -->
+                  <div class="terminal-body" style="padding: 1rem; background: var(--bg-surface-2); margin-bottom: 1rem;">
+                    <pre class="ascii-diagram" style="font-size: 0.78rem;">
+=================================================================================
+CYCLE 1: Instruction at Address 215H
+=================================================================================
+• Fetch Phase:
+  - IR &lt;--- Memory[215H] = 3400H
+  - PC &lt;--- PC + 1 = 216H  (Incremented during Fetch!)
+  - Registers: PC = 216H, IR = 3400H, AC = 0000H
+• Execute Phase:
+  - Opcode 3H (Load AC): Read Memory[400H] (which contains 0012H) into AC.
+  - AC &lt;--- 0012H
+  - Registers: PC = 216H, IR = 3400H, AC = 0012H
+  - Memory: No Change (400H = 0012H, 401H = 1008H).
+
+=================================================================================
+CYCLE 2: Instruction at Address 216H
+=================================================================================
+• Fetch Phase:
+  - IR &lt;--- Memory[216H] = 7401H
+  - PC &lt;--- PC + 1 = 217H  (Incremented during Fetch!)
+  - Registers: PC = 217H, IR = 7401H, AC = 0012H
+• Execute Phase:
+  - Opcode 7H (Add to AC): AC &lt;--- AC + Memory[401H]
+  - Memory[401H] contains 1008H.
+  - Hex Addition: 0012H + 1008H = 101AH (Since 2 + 8 = 10 = A in Hex!).
+  - AC &lt;--- 101AH
+  - Registers: PC = 217H, IR = 7401H, AC = 101AH
+  - Memory: No Change (400H = 0012H, 401H = 1008H).
+
+=================================================================================
+CYCLE 3: Instruction at Address 217H
+=================================================================================
+• Fetch Phase:
+  - IR &lt;--- Memory[217H] = 4401H
+  - PC &lt;--- PC + 1 = 218H  (Incremented during Fetch!)
+  - Registers: PC = 218H, IR = 4401H, AC = 101AH
+• Execute Phase:
+  - Opcode 4H (Store AC): Write content of AC (101AH) into Memory[401H].
+  - Memory[401H] &lt;--- 101AH (Overwritten! Old value 1008H is replaced).
+  - AC retains its value (101AH) without clearing!
+  - Registers: PC = 218H, IR = 4401H, AC = 101AH
+  - Memory State: 400H = 0012H, 401H = 101AH.
+=================================================================================
+                    </pre>
+                  </div>
+
+                  <!-- Summary Table -->
+                  <div style="overflow-x: auto; margin-top: 1rem;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: center; background: var(--bg-surface-1); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                      <thead>
+                        <tr style="background: rgba(255,255,255,0.05); border-bottom: 2px solid var(--border-color);">
+                          <th style="padding: 0.75rem; color: #fff;">الخطوة (Step)</th>
+                          <th style="padding: 0.75rem; color: var(--accent-cyan); font-family: var(--font-mono);">PC</th>
+                          <th style="padding: 0.75rem; color: var(--accent-cyan); font-family: var(--font-mono);">IR</th>
+                          <th style="padding: 0.75rem; color: var(--accent-cyan); font-family: var(--font-mono);">AC</th>
+                          <th style="padding: 0.75rem; color: var(--accent-emerald); font-family: var(--font-mono);">Mem[400]</th>
+                          <th style="padding: 0.75rem; color: var(--accent-emerald); font-family: var(--font-mono);">Mem[401]</th>
+                        </tr>
+                      </thead>
+                      <tbody style="font-family: var(--font-mono);">
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                          <td style="padding: 0.75rem; font-family: var(--font-ar); color: var(--text-muted);">الحالة الابتدائية</td>
+                          <td style="padding: 0.75rem;">215</td>
+                          <td style="padding: 0.75rem; color: var(--text-muted);">----</td>
+                          <td style="padding: 0.75rem;">0000</td>
+                          <td style="padding: 0.75rem;">0012</td>
+                          <td style="padding: 0.75rem;">1008</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color); background: rgba(56, 189, 248, 0.03);">
+                          <td style="padding: 0.75rem; font-family: var(--font-ar); color: var(--accent-cyan);">نهاية الدورة 1 (Load)</td>
+                          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-cyan);">216</td>
+                          <td style="padding: 0.75rem;">3400</td>
+                          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-amber);">0012</td>
+                          <td style="padding: 0.75rem;">0012</td>
+                          <td style="padding: 0.75rem;">1008</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color); background: rgba(16, 185, 129, 0.03);">
+                          <td style="padding: 0.75rem; font-family: var(--font-ar); color: var(--accent-emerald);">نهاية الدورة 2 (Add)</td>
+                          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-cyan);">217</td>
+                          <td style="padding: 0.75rem;">7401</td>
+                          <td style="padding: 0.75rem; font-weight: 800; color: var(--accent-emerald);">101A</td>
+                          <td style="padding: 0.75rem;">0012</td>
+                          <td style="padding: 0.75rem;">1008</td>
+                        </tr>
+                        <tr style="background: rgba(236, 72, 153, 0.05);">
+                          <td style="padding: 0.75rem; font-family: var(--font-ar); color: #ec4899; font-weight: 700;">نهاية الدورة 3 (Store)</td>
+                          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-cyan);">218</td>
+                          <td style="padding: 0.75rem;">4401</td>
+                          <td style="padding: 0.75rem; font-weight: 800; color: #ec4899;">101A</td>
+                          <td style="padding: 0.75rem;">0012</td>
+                          <td style="padding: 0.75rem; font-weight: 800; color: #ec4899;">101A ⚠️</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="balady-box" style="margin-top: 1rem;">
+                    <strong>💡 خلاصة التريكات للامتحان:</strong><br/>
+                    1. الـ PC زاد 3 مرات (215 ➔ 216 ➔ 217 ➔ 218) في مرحلة الـ Fetch.<br/>
+                    2. جمع الهيكسا: 0012H + 1008H = 101AH لأن 2 + 8 = 10 بالعشري وتكتب A بالهيكسا.<br/>
+                    3. أمر الـ Store لا يصفر الـ AC أبداً؛ بيفضل AC محتفظ بالناتج 101A.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Problem 2: Multiple Interrupt Timing Analysis -->
+              <div class="sheet-card">
+                <div class="sheet-q-box" style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid var(--accent-amber);">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="mono" style="font-size: 0.8rem; color: var(--accent-amber); font-weight: 800;">PROBLEM 2 // SHEET 3 QUESTION 3.9</span>
+                    <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px;">Gantt Chart Timing</span>
+                  </div>
+                  <h3 style="font-family: var(--font-en); font-weight: 800; font-size: 1.15rem; margin-top: 0.5rem; color: #fff;" dir="ltr">
+                    Multiple Interrupt Timing Analysis (Gantt Chart Trace)
+                  </h3>
+                  <div style="font-family: var(--font-en); font-size: 0.95rem; line-height: 1.8; color: var(--text-secondary); margin-top: 0.5rem;" dir="ltr">
+                    <strong>Specifications:</strong><br/>
+                    • User program requires <strong>20 time units</strong>, starts at <strong>t = 0</strong>.<br/>
+                    • <strong>Printer:</strong> Priority = <strong>1</strong> (lowest), interrupt occurs at <strong>t = 6</strong>, ISR = 10 units.<br/>
+                    • <strong>Communications (Comm):</strong> Priority = <strong>6</strong> (highest), interrupt occurs at <strong>t = 9</strong>, ISR = 10 units.<br/>
+                    • <strong>Disk:</strong> Priority = <strong>3</strong> (medium), interrupt occurs at <strong>t = 18</strong>, ISR = 10 units.<br/>
+                    <strong>Required:</strong> Calculate start, preemption, resume, and end time for each ISR and total user program time for:<br/>
+                    1. Priority-Based (Nested) Processing.<br/>
+                    2. Equal Priority (Sequential) Processing.
+                  </div>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin: 1rem 0;">
+                  <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Solution (الحل النموذجي المعتمد بالخط الزمن):</span>
+                  <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; if(box.style.display==='none'){box.style.display='block'; this.innerText='إخفاء الإجابة للتسميع';} else {box.style.display='none'; this.innerText='إظهار الإجابة';}">إخفاء الإجابة للتسميع</button>
+                </div>
+
+                <div class="sheet-ans-box" style="display: block;">
+                  <!-- Part 1: Nested Priority -->
+                  <h4 style="color: var(--accent-cyan); font-weight: 800; margin-bottom: 0.5rem;">[Part 1: Priority-Based / Nested Processing]</h4>
+                  <div class="terminal-body" style="padding: 0.75rem; background: var(--bg-surface-2); margin-bottom: 0.75rem;">
+                    <pre class="ascii-diagram" style="font-size: 0.78rem;">
+Time:  0      6   9        19        29       36             50
+       +------+---+--------+---------+--------+--------------+
+Task:  | User | P |  Comm  |  Disk   | P(rem) | User Program |
+       +------+---+--------+---------+--------+--------------+
+Status:(Runs) (P) (Preempt)(Highest) (Resume) (Finished!)
+                    </pre>
+                  </div>
+                  <ul style="padding-right: 1.2rem; font-size: 0.92rem; line-height: 1.8;">
+                    <li><strong>t = 0..6:</strong> برنامج المستخدم ينفذ 6 وحدات (متبقي 14).</li>
+                    <li><strong>t = 6..9:</strong> تبدأ الطابعة وتنفذ 3 وحدات (متبقي 7).</li>
+                    <li><strong>t = 9:</strong> تصل مقاطعة Comm (أولوية 6 &gt; 1) فتقطع الطابعة فوراً!</li>
+                    <li><strong>t = 9..19:</strong> تعمل Comm لمدة 10 وحدات وتنتهي عند <strong>t = 19</strong> (القرص وصل عند 18 وانتظر).</li>
+                    <li><strong>t = 19..29:</strong> ينتهي Comm؛ المعلق Disk (3) وباقي الطابعة (1). لأن 3 &gt; 1 يبدأ Disk ويعمل 10 وحدات وينتهي عند <strong>t = 29</strong>.</li>
+                    <li><strong>t = 29..36:</strong> يستأنف المعالج الـ 7 وحدات المتبقية للطابعة وتكتمل عند <strong>t = 36</strong>.</li>
+                    <li><strong>t = 36..50:</strong> يستأنف المعالج الـ 14 وحدة لبرنامج المستخدم ويكتمل عند <strong>t = 50</strong>.</li>
+                  </ul>
+
+                  <!-- Part 2: Equal Priorities -->
+                  <h4 style="color: var(--accent-emerald); font-weight: 800; margin: 1rem 0 0.5rem 0;">[Part 2: Equal Priorities / Sequential Processing]</h4>
+                  <div class="terminal-body" style="padding: 0.75rem; background: var(--bg-surface-2); margin-bottom: 0.75rem;">
+                    <pre class="ascii-diagram" style="font-size: 0.78rem;">
+Time:  0      6        16        26        36             50
+       +------+--------+---------+---------+--------------+
+Task:  | User | Printer|  Comm   |  Disk   | User Program |
+       +------+--------+---------+---------+--------------+
+Status:(Runs) (First)  (Waited)  (Waited)  (Finished!)
+                    </pre>
+                  </div>
+                  <ul style="padding-right: 1.2rem; font-size: 0.92rem; line-height: 1.8;">
+                    <li><strong>t = 0..6:</strong> برنامج المستخدم ينفذ 6 وحدات.</li>
+                    <li><strong>t = 6..16:</strong> تبدأ الطابعة أولاً وتعمل 10 وحدات كاملة حتى <strong>t = 16</strong> (Comm تنتظر).</li>
+                    <li><strong>t = 16..26:</strong> تبدأ Comm وتعمل 10 وحدات كاملة حتى <strong>t = 26</strong> (Disk ينتظر).</li>
+                    <li><strong>t = 26..36:</strong> يبدأ Disk ويعمل 10 وحدات كاملة حتى <strong>t = 36</strong>.</li>
+                    <li><strong>t = 36..50:</strong> يعود المعالج لإنهاء الـ 14 وحدة للمستخدم ويكتمل البرنامج عند <strong>t = 50</strong>.</li>
+                  </ul>
+
+                  <div class="balady-box" style="margin-top: 1rem;">
+                    <strong>🏁 تريكة الفاينل الكبرى:</strong><br/>
+                    الزمن الكلي لانتهاء برنامج المستخدم هو <strong>50 وحدة زمنية في الحالتين بالتمام والكمال</strong>! لأن كمية الشغل الحسابي الإجمالي ثابتة (20 + 10 + 10 + 10 = 50).
+                  </div>
+                </div>
+              </div>
+            </section>
+
+          `,
+          quiz: [
+                    {
+                              "id": "ex3_q1",
+                              "question": "Q1. What is the fundamental disadvantage of a 'Hardwired Program' (programming in hardware)?",
+                              "options": [
+                                        "It consumes more electrical power than software-driven computers",
+                                        "Any alteration in the computation requires physically rewiring and redesigning the hardware",
+                                        "It cannot perform arithmetic operations like addition or subtraction",
+                                        "It cannot be built using silicon semiconductors"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "البرمجة بالعتاد الصلب (Hardwired) سريعة لكن عيبها القاتل انعدام المرونة؛ أي تغيير في المعادلة أو الخوارزمية يتطلب فك اللحام والأسلاك وإعادة تصميم العتاد فيزيائياً من الصفر.",
+                              "sectionTitle": "01 // SECTION 1: Multiple Choice Questions (20 MCQs — أسئلة الاختيار من متعدد)"
+                    },
+                    {
+                              "id": "ex3_q2",
+                              "question": "Q2. Which of the following is NOT one of the three key concepts of the von Neumann architecture?",
+                              "options": [
+                                        "Data and instructions are stored in a single read-write memory",
+                                        "Memory contents are addressable by location, regardless of the data type",
+                                        "Separate physical memories are strictly required to isolate instructions from data",
+                                        "Execution occurs sequentially unless explicitly altered by a branch/jump instruction"
+                              ],
+                              "correctIndex": 2,
+                              "explanation": "معمارية فون نيومان قائمة على مبدأ وجود ذاكرة واحدة مشتركة تحوي البيانات والتعليمات معاً (Single Read-Write Memory)، وليس ذاكرتين منفصلتين."
+                    },
+                    {
+                              "id": "ex3_q3",
+                              "question": "Q3. In the processor's top-level architecture, which register is directly connected to the system Address Bus to specify the target memory location for a read/write operation?",
+                              "options": [
+                                        "Memory Buffer Register (MBR)",
+                                        "Memory Address Register (MAR)",
+                                        "Program Counter (PC)",
+                                        "Instruction Register (IR)"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "الـ MAR متصل مباشرة بناقل العناوين (Address Bus) وهو المسؤول عن تحديد عنوان الخانة المطلوب زيارتها في الرام. الـ MBR متصل بناقل البيانات."
+                    },
+                    {
+                              "id": "ex3_q4",
+                              "question": "Q4. Which register holds the binary machine instruction currently being decoded and executed by the control unit?",
+                              "options": [
+                                        "Program Counter (PC)",
+                                        "Instruction Register (IR)",
+                                        "Accumulator (AC)",
+                                        "I/O Buffer Register (I/O BR)"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "الـ IR (Instruction Register) هو السجل الذي يحفظ كود التعليمة الحالية لتفك وحدة التحكم شفرتها. الـ PC يحفظ عنوان التعليمة التالية."
+                    },
+                    {
+                              "id": "ex3_q5",
+                              "question": "Q5. During the basic instruction cycle, at what exact moment is the Program Counter (PC) incremented?",
+                              "options": [
+                                        "At the beginning of the Execute cycle",
+                                        "During the Fetch cycle (immediately after the instruction is fetched)",
+                                        "After the ALU completes the Data Operation (do)",
+                                        "Only when a Jump instruction is executed"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "تريكة امتحان شهيرة: عداد البرنامج (PC) يزيد تلقائياً بواحد (PC = PC + 1) أثناء مرحلة الجلب (FETCH) وقبل أن يبدأ التنفيذ (Execute)."
+                    },
+                    {
+                              "id": "ex3_q6",
+                              "question": "Q6. Which state in the Instruction Cycle State Diagram is responsible for computing the real effective address of an operand located in memory?",
+                              "options": [
+                                        "Instruction Address Calculation (iac)",
+                                        "Operand Address Calculation (oac)",
+                                        "Instruction Operation Decoding (iod)",
+                                        "Operand Fetch (of)"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "حالة oac هي المسؤولة عن حساب العنوان الفيزيائي الفعلي للمعامل (Operand) المطلوب جلبه من الذاكرة أو كتابته فيها."
+                    },
+                    {
+                              "id": "ex3_q7",
+                              "question": "Q7. In the hypothetical 16-bit machine (Figure 3.4), if the instruction word is 7401 in Hexadecimal, what action will the CPU perform?",
+                              "options": [
+                                        "Load AC from memory address 401",
+                                        "Store AC into memory address 401",
+                                        "Add the contents of memory address 401 to the AC register",
+                                        "Branch to instruction address 740"
+                              ],
+                              "correctIndex": 2,
+                              "explanation": "أول خانة على الشمال هي الـ Opcode وهي 7، والـ 7 في جدول العمليات تعني 'Add to AC from Memory'. والخانات الثلاث الباقية 401 هي العنوان."
+                    },
+                    {
+                              "id": "ex3_q8",
+                              "question": "Q8. What happens to the content of the Accumulator (AC) register after executing a Store instruction (4401H)?",
+                              "options": [
+                                        "It is cleared to 0000H",
+                                        "It is inverted (1's complement)",
+                                        "It remains completely unchanged (retains its current value)",
+                                        "It is incremented by 1"
+                              ],
+                              "correctIndex": 2,
+                              "explanation": "أمر التخزين (Store) ينسخ محتوى الـ AC إلى خانة الذاكرة فقط، ولا يصفر المسجل AC إطلاقاً بل يظل محتفظاً بنفس قيمته."
+                    },
+                    {
+                              "id": "ex3_q9",
+                              "question": "Q9. The primary architectural objective of incorporating Interrupts into computers is to:",
+                              "options": [
+                                        "Increase the clock frequency of the processor",
+                                        "Improve processor utilization by avoiding idle waiting for slow I/O devices",
+                                        "Expand the physical addressing capacity of main memory",
+                                        "Eliminate the need for an operating system"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "الهدف الأساسي للمقاطعات هو (Improve Processor Utilization) لمنع المعالج فائق السرعة من إهدار وقته في انتظار الأجهزة الطرفية البطيئة."
+                    },
+                    {
+                              "id": "ex3_q10",
+                              "question": "Q10. An interrupt generated by an arithmetic overflow or a division-by-zero error is classified as a:",
+                              "options": [
+                                        "Hardware Failure Interrupt",
+                                        "Timer Interrupt",
+                                        "Program Interrupt",
+                                        "I/O Interrupt"
+                              ],
+                              "correctIndex": 2,
+                              "explanation": "الأخطاء الحسابية والمنطقية الناتجة عن تنفيذ سطور الكود تسمى Program Interrupts."
+                    },
+                    {
+                              "id": "ex3_q11",
+                              "question": "Q11. Which class of interrupts is primarily used by the operating system to perform process time-slicing and enable multitasking?",
+                              "options": [
+                                        "Timer Interrupt",
+                                        "Program Interrupt",
+                                        "Hardware Failure Interrupt",
+                                        "I/O Interrupt"
+                              ],
+                              "correctIndex": 0,
+                              "explanation": "المؤقت العتادي الداخلي (Timer) يدق بانتظام ويولد Timer Interrupt ليجبر المعالج على التبديل بين البرامج في أنظمة الـ Multitasking."
+                    },
+                    {
+                              "id": "ex3_q12",
+                              "question": "Q12. At what point in the instruction execution flow does the processor check for pending interrupt signals?",
+                              "options": [
+                                        "At the beginning of the instruction fetch (if)",
+                                        "Immediately after the opcode decoding (iod)",
+                                        "At the end of every execute cycle",
+                                        "Only when the computer boots up"
+                              ],
+                              "correctIndex": 2,
+                              "explanation": "المعالج لا يقاطع نفسه في منتصف التعليمة؛ يفحص خط المقاطعة دائماً في نهاية دورة التنفيذ (At the end of the execute cycle)."
+                    },
+                    {
+                              "id": "ex3_q13",
+                              "question": "Q13. When an interrupt is accepted by the processor, what is the FIRST action taken by hardware to ensure the interrupted program can resume later?",
+                              "options": [
+                                        "Clear all registers to zero",
+                                        "Save context by pushing the current Program Counter (PC) onto the stack",
+                                        "Shut down external I/O devices",
+                                        "Execute an unconditional HALT instruction"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "المعالج يحفظ سياق التنفيذ (Context) بحفظ قيمة الـ PC الحالية في الـ Stack في الذاكرة ليعرف نقطة العودة بعد انتهاء روتين المقاطعة."
+                    },
+                    {
+                              "id": "ex3_q14",
+                              "question": "Q14. In a 'Sequential / Disabled' interrupt processing system, what happens if an interrupt arrives while an ISR is already running?",
+                              "options": [
+                                        "The processor crashes immediately",
+                                        "The new interrupt preempts the running ISR",
+                                        "The new interrupt is ignored and held pending until the current ISR finishes",
+                                        "The processor restarts the entire operating system"
+                              ],
+                              "correctIndex": 2,
+                              "explanation": "في النظام التتابعي، يتم تعطيل المقاطعات مؤقتاً (Disabled)، وأي مقاطعة جديدة تقف في طابور الانتظار (Pending) حتى ينتهي الـ ISR الحالي."
+                    },
+                    {
+                              "id": "ex3_q15",
+                              "question": "Q15. In a 'Nested / Priority-Based' interrupt system, what condition allows an incoming interrupt to suspend the currently running ISR?",
+                              "options": [
+                                        "The incoming interrupt must have an equal priority",
+                                        "The incoming interrupt must have a strictly HIGHER priority",
+                                        "The incoming interrupt must be an I/O interrupt",
+                                        "The incoming interrupt must arrive after t = 50"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "في النظام المتداخل، لا تقطع المقاطعة روتين مقاطعة آخر إلا إذا كانت ذات أولوية أعلى حصراً (Strictly Higher Priority)."
+                    },
+                    {
+                              "id": "ex3_q16",
+                              "question": "Q16. Which system bus component is responsible for determining the maximum physical memory capacity that the CPU can address?",
+                              "options": [
+                                        "Data Bus",
+                                        "Control Bus",
+                                        "Address Bus",
+                                        "Power Bus"
+                              ],
+                              "correctIndex": 2,
+                              "explanation": "عرض ناقل العناوين (Address Bus Width) هو الذي يحدد أقصى حجم ذاكرة متاح (2^N)."
+                    },
+                    {
+                              "id": "ex3_q17",
+                              "question": "Q17. A system with a 32-bit Address Bus can directly address a maximum physical memory of:",
+                              "options": [
+                                        "64 KB",
+                                        "16 MB",
+                                        "4 GB",
+                                        "64 GB"
+                              ],
+                              "correctIndex": 2,
+                              "explanation": "2^32 بايت = 4,294,967,296 بايت = 4 جيجابايت (4 GB)."
+                    },
+                    {
+                              "id": "ex3_q18",
+                              "question": "Q18. Which control line is asserted by a system device (such as a DMA controller) to request mastery and exclusive control over the system bus?",
+                              "options": [
+                                        "Bus Grant",
+                                        "Bus Request",
+                                        "Transfer ACK",
+                                        "Memory Read"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "خط Bus Request يرسله الجهاز لطلب حجز الناقل، ومتحكم الناقل يرد بخط Bus Grant عند الموافقة."
+                    },
+                    {
+                              "id": "ex3_q19",
+                              "question": "Q19. What physical limitation caused modern multicore processors to abandon shared parallel buses in favor of Point-to-Point interconnects (like PCIe and QPI)?",
+                              "options": [
+                                        "Inability to manufacture copper wires",
+                                        "Propagation delay, signal distortion, and bus contention bottlenecks at high clock frequencies",
+                                        "Software operating systems became incompatible with buses",
+                                        "Memory chips became too large physically"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "عند الترددات العالية، عانت النواقل المشتركة من تأخير الإشارة والانعكاسات الكهربية والتنافس، مما جعل التوصيل المباشر Point-to-Point الحل الأسرع والأكثر كفاءة."
+                    },
+                    {
+                              "id": "ex3_q20",
+                              "question": "Q20. Intel QuickPath Interconnect (QPI) and PCI Express (PCIe) are architectural examples of:",
+                              "options": [
+                                        "Point-to-Point packetized interconnect networks",
+                                        "Traditional shared multi-drop buses",
+                                        "Hardwired vacuum-tube logic links",
+                                        "Optical-only serial motherboards"
+                              ],
+                              "correctIndex": 0,
+                              "explanation": "كلاهما يمثل تقنية التوصيل المباشر النقطي (Point-to-Point) المعتمد على حزم البيانات المتسلسلة فائقة السرعة."
+                    },
+                    {
+                              "id": "ex3_tf1",
+                              "question": "Q1 [T/F]: In a hardwired computer, you can run a completely different computational algorithm without physically touching or rewiring the hardware.",
+                              "options": [
+                                        "TRUE (✔) — صواب",
+                                        "FALSE (✖) — خطأ"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "خطأ (FALSE) ❌؛ البرمجة بالعتاد تتطلب فك اللحام وإعادة التوصيل فيزيائياً؛ تشغيل خوارزميات جديدة بدون لمس العتاد هو ميزة حواسيب السوفتوير (Stored-Program).",
+                              "sectionTitle": "02 // SECTION 2: True or False Questions (10 أسئلة صح وغلط بالتعليل)"
+                    },
+                    {
+                              "id": "ex3_tf2",
+                              "question": "Q2 [T/F]: The von Neumann architecture is characterized by storing data and instructions in a single, shared read-write memory.",
+                              "options": [
+                                        "TRUE (✔) — صواب",
+                                        "FALSE (✖) — خطأ"
+                              ],
+                              "correctIndex": 0,
+                              "explanation": "صواب (TRUE) ✅؛ هذا هو المبدأ الأول والأساسي لمعمارية فون نيومان."
+                    },
+                    {
+                              "id": "ex3_tf3",
+                              "question": "Q3 [T/F]: The Memory Address Register (MAR) is connected directly to the system Data Bus.",
+                              "options": [
+                                        "TRUE (✔) — صواب",
+                                        "FALSE (✖) — خطأ"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "خطأ (FALSE) ❌؛ الـ MAR متصل بناقل العناوين (Address Bus)؛ السجل المتصل بناقل البيانات هو الـ MBR."
+                    },
+                    {
+                              "id": "ex3_tf4",
+                              "question": "Q4 [T/F]: The Program Counter (PC) holds the machine instruction currently being executed by the ALU.",
+                              "options": [
+                                        "TRUE (✔) — صواب",
+                                        "FALSE (✖) — خطأ"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "خطأ (FALSE) ❌؛ الـ PC يحمل عنوان التعليمة التالية (Next Instruction Address)؛ السجل الذي يحمل التعليمة الحالية هو الـ IR."
+                    },
+                    {
+                              "id": "ex3_tf5",
+                              "question": "Q5 [T/F]: In the Instruction Cycle State Diagram, an instruction may loop between Data Operation (do) and Operand Fetch (of) to fetch multiple operands.",
+                              "options": [
+                                        "TRUE (✔) — صواب",
+                                        "FALSE (✖) — خطأ"
+                              ],
+                              "correctIndex": 0,
+                              "explanation": "صواب (TRUE) ✅؛ العمليات التي تتطلب أكثر من معامل تدور في مسار راجع لجلب المعاملات بالتوالي."
+                    },
+                    {
+                              "id": "ex3_tf6",
+                              "question": "Q6 [T/F]: The processor checks for active interrupt signals continuously during the execution of ALU arithmetic operations.",
+                              "options": [
+                                        "TRUE (✔) — صواب",
+                                        "FALSE (✖) — خطأ"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "خطأ (FALSE) ❌؛ المعالج يفحص خط المقاطعات فقط في نهاية دورة التنفيذ (At the end of Execute cycle)، وليس أثناء عمل الـ ALU."
+                    },
+                    {
+                              "id": "ex3_tf7",
+                              "question": "Q7 [T/F]: In multiple interrupt processing, assigning priorities guarantees that higher-priority interrupts can preempt lower-priority ISRs.",
+                              "options": [
+                                        "TRUE (✔) — صواب",
+                                        "FALSE (✖) — خطأ"
+                              ],
+                              "correctIndex": 0,
+                              "explanation": "صواب (TRUE) ✅؛ هذا هو جوهر المعالجة المتداخلة (Nested / Priority-Based Interrupts)."
+                    },
+                    {
+                              "id": "ex3_tf8",
+                              "question": "Q8 [T/F]: In the timing problem (Question 3.9), assuming equal priorities changes the total time taken by the user program from 50 to 60 units.",
+                              "options": [
+                                        "TRUE (✔) — صواب",
+                                        "FALSE (✖) — خطأ"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "خطأ (FALSE) ❌؛ الزمن الكلي يظل 50 وحدة زمنية في الحالتين؛ ما يتغير هو فقط ترتيب وأزمنة استجابة وإنهاء كل جهاز."
+                    },
+                    {
+                              "id": "ex3_tf9",
+                              "question": "Q9 [T/F]: Increasing the width of the system Data Bus increases the maximum memory address space of the computer.",
+                              "options": [
+                                        "TRUE (✔) — صواب",
+                                        "FALSE (✖) — خطأ"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "خطأ (FALSE) ❌؛ زيادة عرض ناقل البيانات تزيد سرعة نقل البيانات (Throughput)، بينما ناقل العناوين (Address Bus) هو الذي يحدد مساحة الذاكرة."
+                    },
+                    {
+                              "id": "ex3_tf10",
+                              "question": "Q10 [T/F]: The Transfer ACK control line is used to acknowledge the receipt or transmission of data on the bus.",
+                              "options": [
+                                        "TRUE (✔) — صواب",
+                                        "FALSE (✖) — خطأ"
+                              ],
+                              "correctIndex": 0,
+                              "explanation": "صواب (TRUE) ✅؛ إشارة Transfer ACK هي إشعار استلام وتأكيد وضع البيانات على الناقل بين الوحدات."
+                    },
+                    {
+                              "id": "ex3_match1",
+                              "question": "1. A register that holds the memory address of the next instruction to be fetched from RAM:",
+                              "options": [
+                                        "Program Counter (PC)",
+                                        "Instruction Register (IR)",
+                                        "Memory Address Register (MAR)",
+                                        "Accumulator (AC)"
+                              ],
+                              "correctIndex": 0,
+                              "explanation": "الـ Program Counter (PC) هو عداد البرنامج الذي يشير دائماً لعنوان التعليمة التالية المطلوب جلبها.",
+                              "sectionTitle": "03 // SECTION 3: Matching & Identification (10 أسئلة مصطلح علمي وتوصيل)"
+                    },
+                    {
+                              "id": "ex3_match2",
+                              "question": "2. A register that holds the binary opcode currently being decoded and executed by the control unit:",
+                              "options": [
+                                        "Program Counter (PC)",
+                                        "Instruction Register (IR)",
+                                        "Memory Buffer Register (MBR)",
+                                        "I/O Buffer Register (I/O BR)"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "الـ Instruction Register (IR) هو مسجل التعليمة الذي يحفظ كود الأمر الحالي أثناء فك شفرته وتنفيذه."
+                    },
+                    {
+                              "id": "ex3_match3",
+                              "question": "3. A register connected directly to the address bus that specifies the physical memory address for R/W:",
+                              "options": [
+                                        "Memory Buffer Register (MBR)",
+                                        "Memory Address Register (MAR)",
+                                        "Program Counter (PC)",
+                                        "Instruction Register (IR)"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "الـ Memory Address Register (MAR) هو السجل المتصل مباشرة بناقل العناوين ليحدد موقع الخانة المطلوبة في الرام."
+                    },
+                    {
+                              "id": "ex3_match4",
+                              "question": "4. A register connected directly to the data bus that buffers data entering or leaving main memory:",
+                              "options": [
+                                        "Memory Address Register (MAR)",
+                                        "Memory Buffer Register (MBR)",
+                                        "Program Counter (PC)",
+                                        "Accumulator (AC)"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "الـ Memory Buffer Register (MBR) هو السجل المتصل مباشرة بناقل البيانات ليعمل كحاجز مؤقت للكلمة المقروءة أو المكتوبة."
+                    },
+                    {
+                              "id": "ex3_match5",
+                              "question": "5. The state in the instruction cycle state diagram where the CPU analyzes the opcode:",
+                              "options": [
+                                        "Instruction Fetch (if)",
+                                        "Instruction Operation Decoding (iod)",
+                                        "Operand Fetch (of)",
+                                        "Data Operation (do)"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "حالة Instruction Operation Decoding (iod) هي التي تقوم فيها وحدة التحكم بتحليل وفك شفرة الـ Opcode."
+                    },
+                    {
+                              "id": "ex3_match6",
+                              "question": "6. An interrupt class generated by internal CPU faults like division by zero or arithmetic overflow:",
+                              "options": [
+                                        "Program Interrupt",
+                                        "Timer Interrupt",
+                                        "I/O Interrupt",
+                                        "Hardware Failure Interrupt"
+                              ],
+                              "correctIndex": 0,
+                              "explanation": "الـ Program Interrupt ينتج عن أخطاء برمجية وحسابية أثناء تنفيذ الأوامر مثل القسمة على صفر أو فيضان السعة."
+                    },
+                    {
+                              "id": "ex3_match7",
+                              "question": "7. An interrupt class generated periodically by hardware to switch between OS processes:",
+                              "options": [
+                                        "Hardware Failure Interrupt",
+                                        "Timer Interrupt",
+                                        "I/O Interrupt",
+                                        "Program Interrupt"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "الـ Timer Interrupt هو النبض العتادي الدوري الذي يعتمد عليه نظام التشغيل لتقسيم الوقت والتنقل بين العمليات."
+                    },
+                    {
+                              "id": "ex3_match8",
+                              "question": "8. The interrupt handling approach where incoming interrupts wait in queue without preemption:",
+                              "options": [
+                                        "Nested Processing",
+                                        "Sequential (Disabled) Processing",
+                                        "Round-Robin Interrupts",
+                                        "Direct Memory Access (DMA)"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "المعالجة التتابعية (Sequential / Disabled) تعطل المقاطعات الجديدة حتى ينتهي الروتين الحالي دون أي مقاطعة."
+                    },
+                    {
+                              "id": "ex3_match9",
+                              "question": "9. The control line asserted by a peripheral to signal that an urgent event requires CPU attention:",
+                              "options": [
+                                        "Bus Request Line",
+                                        "Interrupt Request Line",
+                                        "Transfer ACK Line",
+                                        "Memory Read Line"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "خط Interrupt Request هو السلك الذي يرسل عبره الجهاز الطرفي إشارة تنبيه للمعالج بوجود طلب خدمة عاجل."
+                    },
+                    {
+                              "id": "ex3_match10",
+                              "question": "10. A modern point-to-point, packetized interconnect link developed by Intel to replace shared buses:",
+                              "options": [
+                                        "ISA Bus",
+                                        "QuickPath Interconnect (QPI)",
+                                        "VESA Local Bus",
+                                        "PCI Parallel Bus"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "تقنية Intel QPI (QuickPath Interconnect) هي معمارية التوصيل النقطي المباشر التي حلت محل النواقل المشتركة القديمة."
+                    }
+          ]
         }
       ]
     }
