@@ -2372,3 +2372,45 @@ body.reading-focus-active .reader-sidebar {
   border-color: var(--accent-cyan);
   color: var(--accent-cyan);
 }
+
+/* Official Generations Summary Table */
+.gen-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-card);
+  margin: 0.85rem 0 1.25rem;
+}
+
+.gen-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+  text-align: right;
+}
+
+.gen-table th {
+  background: var(--bg-surface);
+  color: var(--accent-amber);
+  font-family: var(--font-display-ar);
+  font-weight: 800;
+  padding: 0.85rem 1rem;
+  border-bottom: 2px solid var(--border-strong);
+  white-space: nowrap;
+}
+
+.gen-table td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.gen-table tr:last-child td {
+  border-bottom: none;
+}
+
+.gen-table tr:hover td {
+  background: var(--bg-elevated);
+}
+

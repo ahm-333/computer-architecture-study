@@ -16,7 +16,7 @@ window.COURSE_DATA = {
       code: "CHAPTER 01",
       titleAr: "الفصل الأول: المفاهيم الأساسية وتطور الحاسوب",
       titleEn: "Chapter 1: Basic Concepts and Computer Evolution",
-      summary: "يشمل: الفرق بين Architecture و Organization، الهيكل والوظيفة (Structure & Function)، المعالجات متعددة الأنوية (Multicore) والكاش (Cache) واللوحة الأم (Motherboard)، ومعمارية فون نيومان وحاسوب IAS (Von Neumann & IAS Computer).",
+      summary: "يشمل: الفرق بين Architecture و Organization، الهيكل والوظيفة (Structure & Function)، المعالجات متعددة الأنوية والكاش واللوحة الأم، معمارية فون نيومان وحاسوب IAS، وأجيال الحواسيب والدوائر المتكاملة وقانون مور (Moore's Law).",
       isReady: true,
       parts: [
         /* ====================================================================
@@ -2462,9 +2462,596 @@ window.COURSE_DATA = {
               explanation: "الله ينور! سجلات الـ AC (Accumulator) والـ MQ (Multiplier Quotient) هي السجلات الـ 40 بت الملحقة بالـ ALU لحفظ الأرقام ونواتج العمليات الحسابية."
             }
           ]
+        },
+
+        /* ====================================================================
+           PART 5: Computer Generations, Integrated Circuits & Moore's Law (Slides 22 to 41)
+           ==================================================================== */
+        {
+          id: "ch1-p5",
+          code: "PART 5",
+          slides: "Slides 22 to 41",
+          title: "Computer Generations, Integrated Circuits & Moore's Law",
+          hasContent: true,
+          contentHtml: `
+            <!-- 1. COMPUTER GENERATIONS SUMMARY (جدول أجيال الحواسيب الرسمي للامتحان) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">01</span>
+                <h2 class="exp-sec-title">COMPUTER GENERATIONS SUMMARY (جدول أجيال الحواسيب الرسمي للامتحان)</h2>
+              </div>
+
+              <p style="margin-bottom: 0.5rem;">
+                جدول مقارنة الأجيال الخمسة للحواسيب والتقنية الأساسية (<span class="mono">Principal Technology</span>) لكل جيل كما يرد في الامتحانات:
+              </p>
+
+              <div class="gen-table-wrap">
+                <table class="gen-table">
+                  <thead>
+                    <tr>
+                      <th>الجيل والسنوات (Generation &amp; Years)</th>
+                      <th>التقنية الأساسية (Principal Technology)</th>
+                      <th>أمثلة وخصائص (Examples &amp; Characteristics)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong class="mono" style="color:var(--accent-rose);">1st Gen (1946 – 1957)</strong></td>
+                      <td><strong>Vacuum Tubes</strong> (الصمامات المفرغة الزجاجية)</td>
+                      <td><span class="mono">ENIAC, IAS</span> (ضخم جداً، حرارة عالية، سرعة بطيئة)</td>
+                    </tr>
+                    <tr>
+                      <td><strong class="mono" style="color:var(--accent-amber);">2nd Gen (1958 – 1964)</strong></td>
+                      <td><strong>Transistors</strong> (الترانزستور السيليكون)</td>
+                      <td><span class="mono">IBM 7094</span> (أصغر، أسرع، أرخص، حرارة أقل)</td>
+                    </tr>
+                    <tr>
+                      <td><strong class="mono" style="color:var(--accent-cyan);">3rd Gen (1965 – 1971)</strong></td>
+                      <td><strong>Integrated Circuits — ICs</strong> (دوائر متكاملة SSI/MSI)</td>
+                      <td><span class="mono">IBM System/360</span> (بوابات وخلايا ذاكرة على شريحة واحدة)</td>
+                    </tr>
+                    <tr>
+                      <td><strong class="mono" style="color:var(--accent-emerald);">4th Gen (1972 – 1977)</strong></td>
+                      <td><strong>LSI</strong> (Large Scale Integration)</td>
+                      <td>أشباه الموصلات (<span class="mono">Semiconductor Memory</span>) وبداية الميكروبروسيسور</td>
+                    </tr>
+                    <tr>
+                      <td><strong class="mono" style="color:var(--accent-purple);">5th Gen (1978 – Present)</strong></td>
+                      <td><strong>VLSI &amp; ULSI</strong> (ملايين ومليارات الترانزستورات)</td>
+                      <td>المعالجات الحديثة (<span class="mono">Microprocessors, Multicore, x86</span>)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- 2. THE TRANSISTOR REVOLUTION (ثورة الترانزستور - سلايد 22) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">02</span>
+                <h2 class="exp-sec-title">THE TRANSISTOR REVOLUTION (ثورة الترانزستور - سلايد 22)</h2>
+              </div>
+
+              <div class="balady-box">
+                <div class="balady-label">💡 اختراع الترانزستور في معامل Bell Labs سنة 1947</div>
+                <p>
+                  اخترع الترانزستور في معامل <strong>Bell Labs</strong> سنة <strong>1947</strong> من مادة السيليكون (<strong class="mono" style="color: var(--accent-cyan);">Solid-State Device</strong>)، وأحدث انقلاباً أنهى عصر الصمامات المفرغة الزجاجية.
+                </p>
+              </div>
+
+              <h3 style="font-size: 1.05rem; font-weight: 800; margin: 1.1rem 0 0.65rem; color: var(--accent-amber);">
+                📌 مميزات الترانزستور الأربعة مقارنة بالصمامات المفرغة (سؤال امتحان شهير):
+              </h3>
+
+              <div class="attr-grid">
+                <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
+                  <span class="attr-term">1. Smaller</span>
+                  <p class="attr-desc">أصغر في الحجم الفيزيائي بآلاف المرات من لمبات الصمامات المفرغة.</p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
+                  <span class="attr-term" style="color: var(--accent-emerald);">2. Cheaper</span>
+                  <p class="attr-desc">أرخص بكتير في تكلفة الإنتاج والتصنيع.</p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
+                  <span class="attr-term" style="color: var(--accent-amber);">3. Dissipates Less Heat</span>
+                  <p class="attr-desc">بيطلع حرارة أقل بكتير جداً ويستهلك كهرباء أقل.</p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-purple);">
+                  <span class="attr-term" style="color: var(--accent-purple);">4. Higher Reliability</span>
+                  <p class="attr-desc">قطعة صلبة (<span class="mono">Solid-State</span>) عمرها الافتراضي طويل ومش بتنكسر أو تتحرق زي لمبات الزجاج.</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3. INTEGRATED CIRCUITS - ICs & 4. MOORE'S LAW (مع محاكي الـ IC وقانون مور التفاعلي) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">03</span>
+                <h2 class="exp-sec-title">INTEGRATED CIRCUITS (ICs) &amp; MOORE'S LAW (الدوائر المتكاملة وقانون مور - سلايد 26 إلى 31)</h2>
+              </div>
+
+              <div class="en-def-box">
+                <span class="en-def-label">Official Concept — Integrated Circuit (IC)</span>
+                <p class="en-def-text">
+                  "A <strong>single, thin piece of silicon (chip)</strong> upon which an entire electronic circuit, consisting of thousands or millions of <strong>transistors, gates, and connections</strong>, is fabricated."
+                </p>
+              </div>
+
+              <div class="balady-box">
+                <div class="balady-label">📖 الشرح والتوضيح</div>
+                <p>
+                  بدل ما نصنع كل ترانزستور لوحده ونوصلهم بأسلاك نحاس تلحمها وتفك منك (<span class="mono">Discrete Components</span>)، حفرنا كل الترانزستورات والمقاومات والأسلاك في نفس اللحظة على <strong>شريحة سيليكون واحدة رقيقة (<span class="mono">Silicon Chip / Die</span>)</strong>!
+                </p>
+              </div>
+
+              <div class="two-layers-split" style="margin-bottom: 1.25rem;">
+                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-cyan);">
+                  <div class="mono" style="color: var(--accent-cyan); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.35rem;">
+                    IC COMPONENT 01 // LOGIC GATES
+                  </div>
+                  <p><strong>• البوابات المنطقية (<span class="mono">Logic Gates</span>)</strong> ──► وظيفتها: <strong>معالجة البيانات (<span class="mono">Data Processing</span>)</strong>.</p>
+                </div>
+
+                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-emerald);">
+                  <div class="mono" style="color: var(--accent-emerald); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.35rem;">
+                    IC COMPONENT 02 // MEMORY CELLS
+                  </div>
+                  <p><strong>• خلايا الذاكرة (<span class="mono">Memory Cells</span>)</strong> ──► وظيفتها: <strong>تخزين البيانات (<span class="mono">Data Storage</span>)</strong>.</p>
+                </div>
+              </div>
+
+              <!-- INTERACTIVE SIMULATOR 9: Integrated Circuit & Moore's Law Scaling -->
+              <div class="sim-card" data-sim="sim-ic-moore">
+                <div class="sim-top-bar">
+                  <div class="sim-title-group">
+                    <span class="sim-live-dot"></span>
+                    <span class="sim-badge-title">FIG 1.9 // INTEGRATED CIRCUIT (IC) &amp; MOORE'S LAW SIMULATOR</span>
+                  </div>
+                  <div class="sim-controls">
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. تشريح شريحة الـ IC (Gates + Cells)</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">2. قانون مور (2× Transistors)</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">3. قصر المسارات وزيادة السرعة</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل تلقائي</button>
+                  </div>
+                </div>
+
+                <div class="sim-svg-stage">
+                  <svg viewBox="0 0 740 345" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Left Side: Single Silicon IC Die Anatomy -->
+                    <g class="svg-hw-group cyan-node active-node" data-node-step="0,2" data-click-step="0">
+                      <rect class="svg-hw-box" x="35" y="20" width="320" height="295" rx="12" />
+                      <text class="svg-label-mono" x="195" y="45">① INTEGRATED CIRCUIT (SINGLE SILICON DIE)</text>
+
+                      <!-- Logic Gates Block inside IC -->
+                      <rect x="60" y="65" width="270" height="82" rx="8" fill="var(--bg-elevated)" stroke="var(--accent-cyan)" stroke-width="2" />
+                      <text class="svg-label-en" x="195" y="92">Logic Gates (AND / OR / NOT)</text>
+                      <text class="svg-label-ar" x="195" y="114">البوابات المنطقية ➔ معالجة البيانات</text>
+                      <text class="svg-label-mono" x="195" y="134" style="fill:var(--accent-cyan);">FUNCTION: DATA PROCESSING</text>
+
+                      <!-- Internal On-Chip Metallization Paths -->
+                      <path class="wire-base" d="M 145 147 L 145 195" />
+                      <path class="wire-base" d="M 245 147 L 245 195" />
+                      <path class="wire-flow amber active-flow" data-wire-step="0,2" d="M 145 147 L 145 195" />
+                      <path class="wire-flow emerald active-flow" data-wire-step="0,2" d="M 245 195 L 245 147" />
+
+                      <circle class="data-packet-dot moving" data-packet-step="0,2" r="5" fill="#f59e0b">
+                        <animateMotion dur="0.65s" repeatCount="indefinite" path="M 145 147 L 145 195" />
+                      </circle>
+                      <circle class="data-packet-dot moving" data-packet-step="0,2" r="5" fill="#10b981">
+                        <animateMotion dur="0.65s" repeatCount="indefinite" path="M 245 195 L 245 147" />
+                      </circle>
+
+                      <!-- Memory Cells Block inside IC -->
+                      <rect x="60" y="195" width="270" height="82" rx="8" fill="var(--bg-elevated)" stroke="var(--accent-emerald)" stroke-width="2" />
+                      <text class="svg-label-en" x="195" y="222">Memory Cells (Flip-Flops)</text>
+                      <text class="svg-label-ar" x="195" y="244">خلايا الذاكرة ➔ تخزين البيانات</text>
+                      <text class="svg-label-mono" x="195" y="264" style="fill:var(--accent-emerald);">FUNCTION: DATA STORAGE</text>
+
+                      <text class="svg-label-mono" x="195" y="298" style="fill:var(--text-muted);">FABRICATED ON ONE THIN WAFER CHIP</text>
+                    </g>
+
+                    <!-- Callout Badge 1/3 on Internal IC Paths -->
+                    <g class="svg-wire-callout active-pill" data-pill-step="0,2" data-click-step="2">
+                      <rect class="svg-wire-pill" x="90" y="160" width="210" height="22" />
+                      <text class="svg-wire-text" x="195" y="175">③ مسارات قصيرة جداً = سرعة أعلى ⚡</text>
+                    </g>
+
+                    <!-- Right Side: Moore's Law Doubling Visualization -->
+                    <g class="svg-hw-group amber-node" data-node-step="1,2" data-click-step="1">
+                      <rect class="svg-hw-box" x="385" y="20" width="320" height="295" rx="12" />
+                      <text class="svg-label-mono" x="545" y="45" style="fill:var(--accent-amber);">② MOORE'S LAW (EMPIRICAL OBSERVATION)</text>
+
+                      <!-- Year N Die vs Year N+2 Die (Same Chip Area, 2x Density) -->
+                      <rect x="410" y="65" width="120" height="105" rx="8" fill="var(--bg-elevated)" stroke="var(--border-strong)" stroke-width="2" />
+                      <text class="svg-label-mono" x="470" y="85">CHIP DIE (GEN A)</text>
+                      <!-- 4 Transistor blocks -->
+                      <rect x="428" y="96" width="34" height="26" rx="4" fill="var(--accent-cyan-soft)" stroke="var(--accent-cyan)" />
+                      <rect x="476" y="96" width="34" height="26" rx="4" fill="var(--accent-cyan-soft)" stroke="var(--accent-cyan)" />
+                      <rect x="428" y="130" width="34" height="26" rx="4" fill="var(--accent-cyan-soft)" stroke="var(--accent-cyan)" />
+                      <rect x="476" y="130" width="34" height="26" rx="4" fill="var(--accent-cyan-soft)" stroke="var(--accent-cyan)" />
+
+                      <text class="svg-label-mono" x="545" y="122" style="fill:var(--accent-amber); font-size:14px;">──►</text>
+
+                      <!-- Same size Die with 2x Transistors & Shorter Paths -->
+                      <rect x="560" y="65" width="120" height="105" rx="8" fill="var(--bg-elevated)" stroke="var(--accent-amber)" stroke-width="2" />
+                      <text class="svg-label-mono" x="620" y="85" style="fill:var(--accent-amber);">SAME DIE (2×)</text>
+                      <!-- 8 Smaller Transistor blocks packed closer -->
+                      <rect x="574" y="95" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
+                      <rect x="598" y="95" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
+                      <rect x="622" y="95" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
+                      <rect x="646" y="95" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
+                      <rect x="574" y="117" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
+                      <rect x="598" y="117" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
+                      <rect x="622" y="117" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
+                      <rect x="646" y="117" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
+                      <text class="svg-label-mono" x="620" y="154" style="fill:var(--accent-emerald); font-size:9.5px;">2× TRANSISTORS!</text>
+
+                      <!-- 5 Consequences Summary Box -->
+                      <rect x="410" y="185" width="270" height="112" rx="8" fill="var(--bg-surface)" stroke="var(--accent-emerald)" stroke-width="1.5" />
+                      <text class="svg-label-en" x="545" y="207" style="font-size:11.5px; fill:var(--accent-emerald);">5 Consequences of Moore's Law:</text>
+                      <text class="svg-label-ar" x="545" y="228" style="font-size:11.5px;">1. ثبات سعر الشريحة وهبوط تكلفة الحواسيب</text>
+                      <text class="svg-label-ar" x="545" y="247" style="font-size:11.5px;">2. مسارات أقصر (Shorter Paths) = سرعة أعلى</text>
+                      <text class="svg-label-ar" x="545" y="266" style="font-size:11.5px;">3. حجم أصغر + 4. طاقة وتبريد أقل</text>
+                      <text class="svg-label-ar" x="545" y="285" style="font-size:11.5px;">5. لحامات خارجية أقل = اعتمادية أعلى</text>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- 4. GORDON MOORE & MOORE'S LAW DETAILS -->
+              <div class="en-def-box" style="border-left-color: var(--accent-amber); margin-top: 1.25rem;">
+                <span class="en-def-label" style="color: var(--accent-amber);">Gordon Moore (Co-founder of Intel, 1965) — Moore's Law Definition</span>
+                <p class="en-def-text">
+                  "The <strong>number of transistors</strong> that could be put on a <strong>single chip</strong> was <strong>doubling every year</strong> (later revised to <strong>every 18 months to 2 years</strong>)."
+                </p>
+              </div>
+
+              <div class="balady-box">
+                <div class="balady-label">📖 الشرح والتوضيح</div>
+                <p>
+                  <strong>جوردون مور</strong> (المؤسس المشارك لشركة Intel) لاحظ سنة 1965 إن كل سنة لسنتين، المهندسين بيعرفوا يصغروا الترانزستور للنص، فبنقدر نحشر <strong>ضعف عدد الترانزستورات</strong> على نفس مساحة شريحة السيليكون!
+                </p>
+              </div>
+
+              <h3 style="font-size: 1.05rem; font-weight: 800; margin: 1.15rem 0 0.65rem; color: var(--accent-emerald);">
+                📌 النتائج الخمس المترتبة على قانون مور (The 5 Consequences / Benefits of Moore's Law):
+              </h3>
+
+              <div class="attr-grid">
+                <div class="attr-card">
+                  <span class="attr-term" style="color: var(--accent-emerald);">1. Cost Dropped Dramatically</span>
+                  <p class="attr-desc ltr-block" style="margin-bottom:0.3rem;">The cost of a chip has remained nearly unchanged while its logic capacity multiplied.</p>
+                  <p class="attr-desc">تكلفة الدوائر المنطقية والذاكرة والحواسيب نزلت للأرض.</p>
+                </div>
+
+                <div class="attr-card">
+                  <span class="attr-term" style="color: var(--accent-amber);">2. Shorter Electrical Paths ➔ Higher Speed</span>
+                  <p class="attr-desc ltr-block" style="margin-bottom:0.3rem;">Shorter electrical paths between components led to MUCH higher clock speeds.</p>
+                  <p class="attr-desc">المسافة صغرت فالإلكترونات بتجري في زمن أقل، فالتردد والسرعة زادوا جداً.</p>
+                </div>
+
+                <div class="attr-card">
+                  <span class="attr-term">3. Smaller Physical Size</span>
+                  <p class="attr-desc ltr-block" style="margin-bottom:0.3rem;">The computer becomes smaller in size, making it convenient to place in various environments.</p>
+                  <p class="attr-desc">الأجهزة صغرت من حجم أوضة كاملة لحجم تليفون أو ساعة يد.</p>
+                </div>
+
+                <div class="attr-card">
+                  <span class="attr-term" style="color: var(--accent-cyan);">4. Reduced Power &amp; Cooling</span>
+                  <p class="attr-desc ltr-block" style="margin-bottom:0.3rem;">Reduction in electrical power and cooling requirements.</p>
+                  <p class="attr-desc">استهلاك الكهرباء ومتطلبات التبريد قلت لكل بوابة منطقية.</p>
+                </div>
+
+                <div class="attr-card" style="grid-column: 1 / -1;">
+                  <span class="attr-term" style="color: var(--accent-purple);">5. Fewer Interconnections ➔ Much Higher Reliability</span>
+                  <p class="attr-desc ltr-block" style="margin-bottom:0.3rem;">Fewer interconnections between separate chips, yielding much higher reliability.</p>
+                  <p class="attr-desc">التوصيلات واللحامات الخارجية بين الشرائح قلت لأن كله بقى محفور جوه نفس الشريحة، فاحتمالية الأعطال انعدمت تقريباً.</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 5. EVOLUTION OF SEMICONDUCTOR MEMORY & MICROPROCESSORS (سلايد 36 إلى 41) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">04</span>
+                <h2 class="exp-sec-title">EVOLUTION OF SEMICONDUCTOR MEMORY &amp; MICROPROCESSORS (تطور ذاكرة أشباه الموصلات والمعالجات - سلايد 36 إلى 41)</h2>
+              </div>
+
+              <!-- INTERACTIVE SIMULATOR 10: Microprocessor & Generations Evolution Timeline -->
+              <div class="sim-card" data-sim="sim-cpu-evolution">
+                <div class="sim-top-bar">
+                  <div class="sim-title-group">
+                    <span class="sim-live-dot"></span>
+                    <span class="sim-badge-title">FIG 1.10 // GENERATIONS &amp; INTEL MICROPROCESSOR EVOLUTION SIMULATOR</span>
+                  </div>
+                  <div class="sim-controls">
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. Vacuum Tubes ➔ Transistor</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">2. 1970 RAM &amp; 1971 Intel 4004</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">3. عائلة x86 (8080 ➔ Pentium)</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل التطور</button>
+                  </div>
+                </div>
+
+                <div class="sim-svg-stage">
+                  <svg viewBox="0 0 740 330" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Stage 1: Gen 1 & Gen 2 -->
+                    <g class="svg-hw-group amber-node active-node" data-node-step="0" data-click-step="0">
+                      <rect class="svg-hw-box" x="30" y="25" width="680" height="82" rx="10" />
+                      <text class="svg-label-mono" x="370" y="47" style="fill:var(--accent-amber);">① 1ST GEN (1946: VACUUM TUBES) ──► 2ND GEN (1958: SILICON TRANSISTOR)</text>
+                      <text class="svg-label-en" x="370" y="70">ENIAC / IAS (Glass Vacuum Tubes)  ──►  Bell Labs 1947 Transistor / IBM 7094</text>
+                      <text class="svg-label-ar" x="370" y="92">الترانزستور: أصغر (Smaller) • أرخص (Cheaper) • حرارة أقل (Less Heat) • اعتمادية أعلى (Reliable)</text>
+                    </g>
+
+                    <path class="wire-base" d="M 370 107 L 370 130" />
+                    <path class="wire-flow cyan active-flow" data-wire-step="0,1" d="M 370 107 L 370 130" />
+
+                    <!-- Stage 2: 1970 Semiconductor Memory & 1971 Intel 4004 -->
+                    <g class="svg-hw-group cyan-node" data-node-step="1" data-click-step="1">
+                      <rect class="svg-hw-box" x="30" y="130" width="680" height="82" rx="10" />
+                      <text class="svg-label-mono" x="370" y="152">② 3RD GEN ICs (1965) ──► FAIRCHILD RAM (1970) ──► INTEL 4004 (1971)</text>
+                      <text class="svg-label-en" x="370" y="175">1970: First 256-bit Semiconductor RAM  |  1971: Intel 4004 (First 4-Bit Microprocessor)</text>
+                      <text class="svg-label-ar" x="370" y="197">Intel 4004: أول ميكروبروسيسور عام جمع كل الـ CPU (ALU + CU + Registers) على شريحة واحدة!</text>
+                    </g>
+
+                    <path class="wire-base" d="M 370 212 L 370 235" />
+                    <path class="wire-flow emerald" data-wire-step="1,2" d="M 370 212 L 370 235" />
+
+                    <!-- Stage 3: Intel x86 Architecture Progression -->
+                    <g class="svg-hw-group emerald-node" data-node-step="2" data-click-step="2">
+                      <rect class="svg-hw-box" x="30" y="235" width="680" height="82" rx="10" />
+                      <text class="svg-label-mono" x="370" y="257" style="fill:var(--accent-emerald);">③ INTEL x86 MICROPROCESSOR EVOLUTION (1974 TO 1993+)</text>
+                      <text class="svg-label-en" x="370" y="280">8080 (8-bit) ──► 8086 (16-bit x86) ──► 80386 (32-bit + Virtual Mem) ──► Pentium (Superscalar)</text>
+                      <text class="svg-label-ar" x="370" y="302">Pentium (1993): تقنية Superscalar لتنفيذ أكثر من تعليمة بالتوازي في نفس نبضة الساعة!</text>
+                    </g>
+
+                    <circle class="data-packet-dot moving" data-packet-step="0,1,2" r="6" fill="#06b6d4">
+                      <animateMotion dur="1.6s" repeatCount="indefinite" path="M 370 40 L 370 300" />
+                    </circle>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="attr-grid">
+                <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
+                  <span class="attr-term">• 1970 — Fairchild Semiconductor Memory</span>
+                  <p class="attr-desc">أول شريحة رامات سيليكون تجارية في التاريخ، وكانت سعتها <strong>256 بت بس</strong> (في حجم حرف واحد)!</p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
+                  <span class="attr-term" style="color: var(--accent-amber);">• 1971 — Intel 4004 (نقطة التحول الكبرى)</span>
+                  <p class="attr-desc">
+                    <strong>أول ميكروبروسيسور عام في التاريخ (<span class="mono">First general-purpose microprocessor</span>)</strong>: جمع كل عناصر الـ <span class="mono">CPU (ALU, CU, Registers)</span> على شريحة سيليكون واحدة، وكان بعرض <strong>4-bit</strong>.
+                  </p>
+                </div>
+
+                <div class="attr-card">
+                  <span class="attr-term">• 1974 — Intel 8080</span>
+                  <p class="attr-desc">أول معالج دقيق عام بعرض <strong>8-bit</strong> (<span class="mono">First general-purpose 8-bit microprocessor</span>).</p>
+                </div>
+
+                <div class="attr-card">
+                  <span class="attr-term">• 1978 — Intel 8086 / 8088</span>
+                  <p class="attr-desc">أول معالج <strong>16-bit</strong> ومعه ولدت معمارية <strong class="mono">x86</strong> الشهيرة المستمرة حتى اليوم.</p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
+                  <span class="attr-term" style="color: var(--accent-emerald);">• 1985 — Intel 80386</span>
+                  <p class="attr-desc">قفزة لمعمارية <strong>32-bit</strong> ودعم تعدد المهام والذاكرة الافتراضية (<span class="mono">Virtual Memory</span>).</p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-purple);">
+                  <span class="attr-term" style="color: var(--accent-purple);">• 1993 — Intel Pentium</span>
+                  <p class="attr-desc">استخدام تقنية <strong class="mono">Superscalar</strong> (تنفيذ أكتر من تعليمة بالتوازي في نفس نبضة الساعة).</p>
+                </div>
+              </div>
+
+              <div class="exam-trap-box">
+                <div class="exam-trap-title">⚠️ أخطر تريكات الامتحان الخاصة بأجيال الحواسب وقانون مور (4 Traps)</div>
+                <div class="exam-trap-list">
+                  <p>
+                    <strong>⚠️ Trap 1 (طبيعة قانون مور):</strong><br/>
+                    قانون مور مش قانون فيزياء طبيعي زي قانون الجاذبية! هو <strong>"ملاحظة وتنبؤ تجريبي" (<span class="mono">Empirical Observation</span>)</strong>.
+                  </p>
+                  <p>
+                    <strong>⚠️ Trap 2 (تضاعف الترانزستورات بيحصل كل قد إيه؟):</strong><br/>
+                    • في النص الأصلي لمور (1965): <strong class="mono">Doubling every year</strong> (كل سنة).<br/>
+                    • في التعديل المعتمد الشائع لاحقاً (سلايد 31): <strong class="mono">Doubling every 18 months to 2 years</strong> (كل 18 شهر لسنتين).
+                  </p>
+                  <p>
+                    <strong>⚠️ Trap 3 (لما عدد الترانزستورات يزيد على نفس الشريحة، السرعة بتزيد ليه؟):</strong><br/>
+                    السبب الفيزيائي المباشر: <strong class="mono">Shorter electrical paths</strong> (المسارات الكهربائية بين الترانزستورات بقت أقصر بكتير).
+                  </p>
+                  <p>
+                    <strong>⚠️ Trap 4 (أول ميكروبروسيسور في التاريخ):</strong><br/>
+                    هو <strong class="mono">Intel 4004</strong> سنة <strong>1971</strong> (بعرض 4-bit).
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 6. POPULAR EXAM TRUE / FALSE DRILLS -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">05</span>
+                <h2 class="exp-sec-title">POPULAR EXAM TRUE / FALSE DRILLS (أسئلة صح وغلط المشهورة)</h2>
+              </div>
+
+              <div class="tf-drills-grid">
+                <div class="tf-card">
+                  <p class="tf-question">[Q1] "Moore's law states that the physical size of a chip doubles every year."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block">(The <strong>NUMBER OF TRANSISTORS</strong> doubles; chip size remains about the same).</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">[Q2] "The second generation of computers was characterized by the use of vacuum tubes."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block">(Second generation used <strong>TRANSISTORS</strong>; First generation used vacuum tubes).</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">[Q3] "An integrated circuit combines gates and memory cells on a single silicon die."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge true">Answer: TRUE (✔)</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">[Q4] "Shorter electrical paths on chips result in increased operating speeds."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge true">Answer: TRUE (✔)</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 7. SHEET 1: OFFICIAL EXAM QUESTION & MODEL ANSWER (Question 1.10) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">06</span>
+                <h2 class="exp-sec-title">SHEET 1: OFFICIAL EXAM QUESTION &amp; MODEL ANSWER (سؤال الشيت 1.10)</h2>
+              </div>
+
+              <div class="sheet-card">
+                <div class="sheet-q-box">
+                  <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 1.10 // SHEET 1</span>
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.05rem; margin-top: 0.35rem;">
+                    "Explain Moore’s law."
+                  </p>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                  <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (الإجابة النموذجية المعتمدة):</span>
+                  <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
+                    إخفاء / إظهار الإجابة للتسميع
+                  </button>
+                </div>
+
+                <div class="sheet-a-box">
+                  <p style="font-family: var(--font-en); margin-bottom: 0.65rem;">
+                    <strong>Moore’s Law</strong> was proposed in 1965 by <strong>Gordon Moore</strong>, co-founder of Intel. It observes that the <strong>number of transistors that could be put on a single chip was doubling every year</strong> (later revised to approximately <strong>every 18 months to two years</strong>).
+                  </p>
+                  <p style="font-family: var(--font-en); font-weight: 700; margin-bottom: 0.4rem;">
+                    The consequences of Moore's Law include:
+                  </p>
+                  <ol>
+                    <li>The <strong>cost</strong> of computer logic and memory chips has dropped dramatically.</li>
+                    <li><strong>Electrical paths</strong> on chips are shortened, resulting in <strong>higher clock speeds</strong> and performance.</li>
+                    <li>Computers have become significantly <strong>smaller in physical size</strong>.</li>
+                    <li><strong>Power consumption and cooling</strong> requirements have been greatly reduced.</li>
+                    <li><strong>Interconnections between chips</strong> are reduced, leading to substantially <strong>higher reliability</strong>.</li>
+                  </ol>
+                </div>
+              </div>
+            </section>
+          `,
+          quiz: [
+            {
+              id: "p5_q1",
+              question: "Q1. Match the computer generation carefully: Which technology characterized the 1st, 2nd, and 3rd computer generations respectively?",
+              options: [
+                "1st: Transistors, 2nd: Vacuum Tubes, 3rd: VLSI",
+                "1st: Vacuum Tubes, 2nd: Transistors, 3rd: Integrated Circuits (ICs)",
+                "1st: Integrated Circuits, 2nd: LSI, 3rd: Vacuum Tubes",
+                "1st: Microprocessors, 2nd: Transistors, 3rd: Vacuum Tubes"
+              ],
+              correctIndex: 1,
+              explanation: "صح جداً! الجيل الأول Vacuum Tubes (ENIAC/IAS)، الجيل الثاني Transistors (IBM 7094)، والجيل الثالث Integrated Circuits - ICs (IBM System/360)."
+            },
+            {
+              id: "p5_q2",
+              question: "Q2. Compared to vacuum tubes, which of the following is a major advantage of the Silicon Transistor (invented at Bell Labs in 1947)?",
+              options: [
+                "It is much larger and dissipates more heat",
+                "It is smaller, cheaper, dissipates less heat, and has higher reliability",
+                "It is made of fragile glass tubes",
+                "It requires manual rewiring for every program"
+              ],
+              correctIndex: 1,
+              explanation: "الله ينور! مميزات الترانزستور الأربعة في الامتحان: Smaller, Cheaper, Dissipates less heat, Higher reliability (Solid-state device)."
+            },
+            {
+              id: "p5_q3",
+              question: "Q3. Inside an Integrated Circuit (IC), what are the two fundamental components used for Data Processing and Data Storage?",
+              options: [
+                "Logic Gates (for Data Processing) and Memory Cells (for Data Storage)",
+                "Vacuum Tubes and Magnetic Drums",
+                "Mechanical Relays and Punched Cards",
+                "Power Supplies and Cooling Fans"
+              ],
+              correctIndex: 0,
+              explanation: "برافو! جوه شريحة الـ IC: البوابات المنطقية (Logic Gates) بتعمل Data Processing، وخلايا الذاكرة (Memory Cells) بتعمل Data Storage."
+            },
+            {
+              id: "p5_q4",
+              question: "Q4. [EXAM TRAP]: What does Gordon Moore's Law state?",
+              options: [
+                "The physical size of a silicon chip doubles every year",
+                "The number of transistors that can be placed on a single chip doubles every 18 to 24 months (originally every year)",
+                "The cost of a single chip doubles every two years",
+                "The electrical path length between transistors doubles every year"
+              ],
+              correctIndex: 1,
+              explanation: "مظبوط! قانون مور بينص على إن عدد الترانزستورات (Number of transistors) على الشريحة الواحدة بيتضاعف، بينما مساحة الشريحة وتكلفتها ثابتة تقريباً."
+            },
+            {
+              id: "p5_q5",
+              question: "Q5. Why does packing transistors closer together on a single chip (as predicted by Moore's Law) increase the operating speed of the processor?",
+              options: [
+                "Because it makes the electrical paths longer",
+                "Because shorter electrical paths reduce the time signals take to travel",
+                "Because it increases the number of external solder joints between separate chips",
+                "Because it replaces silicon with glass vacuum tubes"
+              ],
+              correctIndex: 1,
+              explanation: "صح! السبب الفيزيائي المباشر لزيادة السرعة في قانون مور هو قصر المسارات الكهربائية (Shorter electrical paths) بين المكونات على الشريحة."
+            },
+            {
+              id: "p5_q6",
+              question: "Q6. Which chip, released in 1971, was the world's FIRST general-purpose microprocessor (placing all CPU components on a single chip)?",
+              options: [
+                "IBM System/360",
+                "Intel 4004 (4-bit)",
+                "Intel 80386 (32-bit)",
+                "ENIAC"
+              ],
+              correctIndex: 1,
+              explanation: "إجابة صحيحة! معالج Intel 4004 سنة 1971 (بعرض 4-bit) هو أول ميكروبروسيسور عام جمع كل مكونات الـ CPU على شريحة واحدة."
+            },
+            {
+              id: "p5_q7",
+              question: "Q7. [True / False]: Moore's law states that the size of a chip doubles every year.",
+              options: [
+                "True",
+                "False"
+              ],
+              correctIndex: 1,
+              explanation: "الإجابة False (✖)! اللي بيتضاعف هو عدد الترانزستورات (Number of transistors on a single chip)، مش حجم الشريحة."
+            },
+            {
+              id: "p5_q8",
+              question: "Q8. In the evolution of Intel microprocessors, which feature was introduced with the Intel Pentium (1993)?",
+              options: [
+                "4-bit calculator processing",
+                "Superscalar technique (allowing multiple instructions to execute in parallel)",
+                "Replacing transistors with vacuum tubes",
+                "256-bit total RAM limit"
+              ],
+              correctIndex: 1,
+              explanation: "الله ينور! معالج Intel Pentium (1993) قدم تقنية الـ Superscalar اللي بتسمح بتنفيذ أكتر من تعليمة بالتوازي في نفس نبضة الساعة."
+            }
+          ]
         }
       ]
     }
   ]
 };
+
 
