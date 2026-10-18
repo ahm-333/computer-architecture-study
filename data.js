@@ -5244,7 +5244,7 @@ window.COURSE_DATA = {
           id: "ch3-p2",
           code: "MODULE 2",
           slides: "Slides 8 to 17",
-          title: "Instruction Cycle, State Flow Diagram & Program Execution Trace",
+          title: "نبض المعالج: كيف ينفذ الحاسوب مليار عملية في الثانية؟ (Instruction Cycle, State Flow Diagram & Program Execution Trace)",
           hasContent: true,
           contentHtml: `
 <!-- 0. HERO SECTION -->
@@ -5254,831 +5254,1135 @@ window.COURSE_DATA = {
                 <span class="mod-meta-badge amber">Topic Range: William Stallings 10th Ed — Chapter 3 (Slides 8 to 17)</span>
                 <span class="mod-meta-badge emerald">Sheet Questions Covered: 3.4, 3.5, 3.8</span>
               </div>
-              <h1 class="mod-hero-title">دورة التعليمة، مخطط الحالات وتتبع تنفيذ البرامج (The Instruction Cycle &amp; Execution Trace)</h1>
-              <p class="mod-hero-subtitle">
-                "إزاي المعالج بياخد سطر الكود من الرام وينفذه في ثوانٍ؟ في هذا الموديول هنعيش رحلة التعليمة من مرحلة الجلب (Fetch) للتنفيذ (Execute)، وهنتعلم إزاي نحل مسألة تتبع البرامج (Program Execution Trace) خطوة بخطوة بالآلة الافتراضية."
+              <h1 class="mod-hero-h1">نبض المعالج: كيف ينفذ الحاسوب مليار عملية في الثانية؟</h1>
+              <p class="mod-hero-lead">
+                "من اللحظة التي تضغط فيها على زر تشغيل الحاسوب حتى إيقافه، يدخل المعالج في حلقة أبدية لا تتوقف: يجلب التعليمة من الذاكرة، يفك شفرتها، وينفذها، ثم يعيد الكرة. في هذا الموديول سنشرح دورة التعليمات البسيطة، مخطط الحالات الكامل (State Diagram)، وسنخوض في تفاصيل مسألة التتبع الحسابية الشهيرة بنظام الهيكسا (Hexadecimal)."
               </p>
-              <div class="mod-obj-pills">
-                <span class="mod-obj-pill">Fetch &amp; Execute Cycles</span>
-                <span class="mod-obj-pill">State Flow Diagram (Fig 3.6)</span>
-                <span class="mod-obj-pill">Hypothetical Machine (Fig 3.4)</span>
-                <span class="mod-obj-pill">6-Step Program Trace (Fig 3.5)</span>
-                <span class="mod-obj-pill">Sheet Questions 3.4, 3.5, 3.8</span>
+              <div class="mod-badges-row">
+                <span class="mod-pill-chip">Basic Fetch-Execute Cycle</span>
+                <span class="mod-pill-chip">7-State Cycle Diagram</span>
+                <span class="mod-pill-chip">16-Bit Instruction Format</span>
+                <span class="mod-pill-chip">Hexadecimal Trace Simulator</span>
+                <span class="mod-pill-chip">Sheet Questions 3.4, 3.5 &amp; 3.8</span>
               </div>
             </div>
 
-            <!-- 01. الفكرة الأساسية من الصفر -->
+            <!-- 01. الفكرة الأساسية من الصفر (هو المعالج بيفكر إزاي؟ تشبيه طباخ المطعم) -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">01</span>
-                <h2 class="exp-sec-title">الفكرة الأساسية من الصفر (هو المعالج بيفكر إزاي؟ دورة حياة التعليمة من الألف للياء)</h2>
+                <h2 class="exp-sec-title">الفكرة الأساسية من الصفر: هو المعالج بيفكر إزاي؟ (تشبيه طباخ المطعم)</h2>
               </div>
 
               <div class="balady-box">
-                <div class="balady-label">💡 القصة بدأت إزاي؟ (تشبيه طباخ المطعم والطلبات)</div>
-                <p>
-                  المعالج في الكمبيوتر زي <strong>طباخ ماهر في مطعم راقي</strong>.. مستحيل يطبخ أكلات المنيو كلها في ثانية واحدة من غير نظام! عشان يخلص طلب زبون بيمشي في دورة عمل متكررة ودقيقة جداً بتلف في حلقة مستمرة (Instruction Cycle):
-                </p>
-                <p style="margin-top: 0.6rem;">
-                  1. <strong>يمد إيده يجيب ورقة الطلب</strong> من الرف في الذاكرة (Fetch).<br/>
-                  2. <strong>يقرأ الورقة ويفك الشفرة</strong> عشان يعرف الزبون طالب جمع ولا طرح ولا نقل داتا (Decode).<br/>
-                  3. <strong>ينفذ المطلوب</strong> في المطبخ باستخدام أدوات الحساب ويطلع النتيجة (Execute).<br/>
-                  4. <strong>يزود عداد الطلبات بواحد</strong> عشان يروح فوراً للطلب اللي بعده!
-                </p>
-                <p style="margin-top: 0.6rem;">
-                  الدورة دي بتنقسم لمرحلتين أساسيتين مبيخرجش عنهم أي معالج على كوكب الأرض:
-                </p>
-              </div>
-
-              <div class="two-layers-split">
-                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-amber);">
-                  <div class="mono" style="color: var(--accent-amber); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.35rem;">
-                    PHASE 01 // FETCH CYCLE (دورة الجلب)
-                  </div>
-                  <p><strong>1. مد الإيد للذاكرة:</strong> المعالج يقرأ التعليمة من العنوان المحدد في عداد البرنامج (<span class="mono">PC</span>) ويحطها في مسودة التعليمة (<span class="mono">IR</span>)، ويزود العداد تلقائياً بواحد (<span class="mono">PC = PC + 1</span>).</p>
+                <div class="balady-header">
+                  <span class="balady-badge">💡 قصة دورة التعليمة ببساطة ومن الصفر</span>
+                  <span class="mono" style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700;">THE MASTER ANALOGY</span>
                 </div>
-
-                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-cyan);">
-                  <div class="mono" style="color: var(--accent-cyan); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.35rem;">
-                    PHASE 02 // EXECUTE CYCLE (دورة التنفيذ)
+                <p>
+                  عشان تفهم دورة التعليمة (Instruction Cycle) وتثبت في دماغك ليوم الامتحان، تخيل المعالج كأنه <strong>طباخ محترف في مطعم سريع (Chef)</strong> واقف قدامه لوحة متعلق عليها فواتير طلبات الزباين (دي الذاكرة RAM):
+                </p>
+                <div class="two-layers-split" style="margin-top: 1rem;">
+                  <div class="layer-pill-card">
+                    <span class="layer-tag" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3);">PHASE 01 // FETCH CYCLE</span>
+                    <h3 style="font-size: 1.15rem; margin-top: 0.5rem; color: var(--accent-cyan);">مرحلة الجلب (يمد إيده يجيب الفاتورة)</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); margin-top: 0.5rem;">
+                      الشيف بيبص في ورقة صغيرة معاه مكتوب فيها رقم الفاتورة التالية (ده الـ <strong>PC</strong>). بيمد إيده على لوحة الطلبات عند نفس الرقم، ياخد الفاتورة يمسكها في إيده (ده الـ <strong>IR</strong>)، وقبل ما يعمل أي حاجة تانية يزود الرقم اللي في ورقته بواحد عشان يجهز للفاتورة اللي بعدها!
+                    </p>
                   </div>
-                  <p><strong>2. فك الشفرة والتنفيذ:</strong> وحدة التحكم تفك شفرة كود العملية (<span class="mono">Opcode</span>) وتشغل مسارات الداتا ودوائر الحساب (<span class="mono">ALU</span>) وتنفذ المطلوب على أرض الواقع.</p>
+
+                  <div class="layer-pill-card">
+                    <span class="layer-tag" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.3);">PHASE 02 // EXECUTE CYCLE</span>
+                    <h3 style="font-size: 1.15rem; margin-top: 0.5rem; color: var(--accent-amber);">مرحلة التنفيذ (يطبخ وينفذ الطلب)</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); margin-top: 0.5rem;">
+                      الشيف يقرأ نوع الوجبة المكتوب على الفاتورة (الـ <strong>Opcode</strong>): لو مكتوب "برجر" يروح للقلاية، لو "سلطة" يروح للسكين (دي الـ <strong>ALU</strong>)، ويجيب المكونات من الثلاجة (الـ <strong>Operands</strong>)، يجهز الوجبة ويحطها على صينية التسليم (الـ <strong>Store</strong>)!
+                    </p>
+                  </div>
+                </div>
+                <div style="margin-top: 1rem; padding: 0.85rem; border-radius: 8px; background: rgba(0,0,0,0.25); border-left: 3px solid var(--accent-emerald);">
+                  <strong style="color: var(--accent-emerald);">📌 الخلاصة المعمارية:</strong>
+                  المعالج في الحقيقة مبيفهمش كل حاجة مرة واحدة؛ هو مكنة بتعمل خطوتين اتنين بالتكرار: <strong>Fetch ➔ Execute ➔ Fetch ➔ Execute</strong> لحد ما البرنامج يخلص أو يجيله أمر إيقاف (HALT)!
                 </div>
               </div>
             </section>
 
-            <!-- 02. CORE DEFINITIONS & BASIC TWO-STEP INSTRUCTION CYCLE -->
+            <!-- 02. COMPONENT 1: بطاقة الدورة البسيطة التفاعلية (Figure 3.3) -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">02</span>
-                <h2 class="exp-sec-title">CORE DEFINITIONS &amp; BASIC TWO-STEP INSTRUCTION CYCLE (دورة التعليمة الأساسية ومخطط سلايد 8 و 9 - Figure 3.3)</h2>
+                <h2 class="exp-sec-title">COMPONENT 1: بطاقة الدورة البسيطة التفاعلية (Two-Step Cycle Card — Figure 3.3)</h2>
               </div>
 
-              <!-- Definitions Grid -->
-              <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); margin-bottom: 1.5rem;">
-                <!-- 1. Instruction Cycle -->
-                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
-                  <span class="attr-term" style="color: var(--accent-amber);">1 // INSTRUCTION CYCLE (دورة التعليمة)</span>
-                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin: 0.5rem 0;">
-                    <div class="en-def-label">Official Definition</div>
-                    <p class="en-def-text" style="font-size: 0.88rem; margin: 0;">
-                      The total sequence of steps required for the processor to <strong>fetch, decode, and execute</strong> a single machine instruction from memory.
-                    </p>
+              <!-- Interactive ASCII Diagram -->
+              <div class="terminal-card">
+                <div class="terminal-bar">
+                  <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
                   </div>
-                  <div class="balady-box" style="margin: 0; padding: 0.75rem 0.9rem;">
-                    <div class="balady-label">💡 التوضيح بالعامية</div>
-                    <p style="margin: 0; font-size: 0.9rem;">
-                      اللفة الكاملة من أول ما المعالج يمد إيده في الرام يجيب أمر لحد ما يخلصه ويرجع يكرر للي بعده.
-                    </p>
-                  </div>
+                  <span class="terminal-title">FIGURE 3.3 // BASIC INSTRUCTION CYCLE ARCHITECTURE</span>
+                  <span class="mono" style="font-size: 0.72rem; color: var(--accent-cyan);">STALLINGS 10th ED</span>
                 </div>
-
-                <!-- 2. Fetch Cycle -->
-                <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
-                  <span class="attr-term" style="color: var(--accent-cyan);">2 // FETCH CYCLE (دورة الجلب)</span>
-                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin: 0.5rem 0;">
-                    <div class="en-def-label">Official Definition</div>
-                    <p class="en-def-text" style="font-size: 0.88rem; margin: 0;">
-                      The phase in which the processor reads an instruction from the memory address held in the <strong>Program Counter (PC)</strong> into the <strong>Instruction Register (IR)</strong>.
-                    </p>
-                  </div>
-                  <div class="balady-box" style="margin: 0; padding: 0.75rem 0.9rem;">
-                    <div class="balady-label">💡 التوضيح بالعامية</div>
-                    <p style="margin: 0; font-size: 0.9rem;">
-                      المعالج بيبص في الـ <span class="mono">PC</span>، يسحب الكود من الرام يحطه في الـ <span class="mono">IR</span>، ويزود الـ <span class="mono">PC</span> بواحد.
-                    </p>
-                  </div>
-                </div>
-
-                <!-- 3. Execute Cycle -->
-                <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
-                  <span class="attr-term" style="color: var(--accent-emerald);">3 // EXECUTE CYCLE (دورة التنفيذ)</span>
-                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin: 0.5rem 0;">
-                    <div class="en-def-label">Official Definition</div>
-                    <p class="en-def-text" style="font-size: 0.88rem; margin: 0;">
-                      The phase in which the control unit <strong>decodes the opcode in the IR</strong> and activates internal data paths and logic to perform the operation.
-                    </p>
-                  </div>
-                  <div class="balady-box" style="margin: 0; padding: 0.75rem 0.9rem;">
-                    <div class="balady-label">💡 التوضيح بالعامية</div>
-                    <p style="margin: 0; font-size: 0.9rem;">
-                      وحدة التحكم تفك شفرة كود العملية وتصدر إشارات التحكم للـ <span class="mono">ALU</span> والذاكرة لتنفيذ المطلوب.
-                    </p>
-                  </div>
-                </div>
-
-                <!-- 4. Opcode -->
-                <div class="attr-card" style="border-top: 3px solid #a855f7;">
-                  <span class="attr-term" style="color: #a855f7;">4 // OPCODE - OPERATION CODE (كود العملية)</span>
-                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin: 0.5rem 0;">
-                    <div class="en-def-label">Official Definition</div>
-                    <p class="en-def-text" style="font-size: 0.88rem; margin: 0;">
-                      A specific <strong>bit pattern</strong> in an instruction that defines the basic machine operation to be executed (e.g., <span class="mono">ADD, LOAD, STORE</span>).
-                    </p>
-                  </div>
-                  <div class="balady-box" style="margin: 0; padding: 0.75rem 0.9rem;">
-                    <div class="balady-label">💡 التوضيح بالعامية</div>
-                    <p style="margin: 0; font-size: 0.9rem;">
-                      رقم العملية الثنائي المحفور في أول التعليمة، اللي بسببه المعالج بيفهم هي العملية جمع ولا نقل ولا طرح.
-                    </p>
-                  </div>
+                <div class="terminal-body">
+                  <pre class="ascii-diagram">
+          +-------------------------------------------------------------+
+          |                 BASIC INSTRUCTION CYCLE                     |
+          |                                                             |
+          |     +-------------------+         +-------------------+     |
+     +--------->|    FETCH CYCLE    |-------->|   EXECUTE CYCLE   |---------+
+     |          | (جلب التعليمة)    |         | (تنفيذ العملية)   |         |
+     |          +-------------------+         +-------------------+         |
+     |                                                                      |
+     +--------------------------- HALT / REPEAT ----------------------------+
+                  </pre>
                 </div>
               </div>
 
-              <!-- Interactive Simulator: Basic Instruction Cycle (Figure 3.3) -->
-              <div class="sim-card" data-sim="sim-ch3-basic-cycle">
-                <div class="sim-top-bar">
+              <!-- Interactive Simulator: sim-ch3-basic-cycle -->
+              <div class="sim-wrapper-box" data-sim-target="sim-ch3-basic-cycle">
+                <div class="sim-header-row">
                   <div class="sim-title-group">
-                    <span class="sim-live-dot"></span>
-                    <span class="sim-badge-title">FIG 3.3 // BASIC TWO-STEP INSTRUCTION CYCLE (SLIDE 8 &amp; 9)</span>
+                    <span class="mono sim-badge">SIMULATOR // FIGURE 3.3</span>
+                    <h3 class="sim-title">محاكي دورة التعليمة الثنائية التفاعلي (Basic 2-Step Cycle)</h3>
                   </div>
-                  <div class="sim-controls">
-                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. مرحلة الجلب (Fetch Cycle)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="1">2. مرحلة التنفيذ (Execute Cycle)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="2">3. التكرار أو التوقف (Halt / Repeat)</button>
-                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل الخطوات بالتتابع</button>
+                  <div class="sim-controls-toolbar">
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. Fetch Cycle</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">2. Execute Cycle</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">3. Halt / Repeat</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>تشغيل تلقائي ⏵</button>
                   </div>
                 </div>
 
-                <div class="sim-svg-stage">
-                  <svg class="sim-svg" viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg" dir="ltr">
-                    <rect x="16" y="10" width="828" height="280" rx="14" fill="var(--bg-surface)" fill-opacity="0.45" stroke="var(--border-strong)" stroke-dasharray="6 4" stroke-width="1.5" />
-                    <path class="wire-base" d="M 120 150 L 170 150" />
-                    <path class="wire-base" d="M 370 150 L 440 150" />
-                    <path class="wire-base" d="M 640 150 L 710 150" />
-                    <path class="wire-base" d="M 540 200 L 540 250 L 270 250 L 270 200" />
-
-                    <path class="wire-flow amber active-flow" data-wire-step="0" d="M 120 150 L 170 150" />
-                    <path class="wire-flow cyan" data-wire-step="1" d="M 370 150 L 440 150" />
-                    <path class="wire-flow emerald" data-wire-step="2" d="M 540 200 L 540 250 L 270 250 L 270 200" />
-                    <path class="wire-flow amber" data-wire-step="2" d="M 640 150 L 710 150" />
-
-                    <circle class="data-packet-dot moving" data-packet-step="0" r="6" fill="#f59e0b">
-                      <animateMotion dur="0.9s" repeatCount="indefinite" path="M 120 150 L 270 150" />
-                    </circle>
-                    <circle class="data-packet-dot" data-packet-step="1" r="6" fill="#06b6d4">
-                      <animateMotion dur="0.9s" repeatCount="indefinite" path="M 370 150 L 540 150" />
-                    </circle>
-                    <circle class="data-packet-dot" data-packet-step="2" r="6" fill="#10b981">
-                      <animateMotion dur="1.4s" repeatCount="indefinite" path="M 540 200 L 540 250 L 270 250 L 270 200" />
-                    </circle>
-
-                    <g class="svg-hw-group amber-node active-node" data-node-step="0" data-click-step="0">
-                      <rect class="svg-hw-box" x="30" y="120" width="90" height="60" rx="30" />
-                      <text class="svg-label-en" x="75" y="155" style="fill: var(--accent-amber); font-size: 14px;">START</text>
-                    </g>
-
-                    <g class="svg-hw-group amber-node active-node" data-node-step="0" data-click-step="0">
-                      <rect class="svg-hw-box" x="170" y="100" width="200" height="100" rx="12" />
-                      <text class="svg-label-en" x="270" y="132" style="fill: var(--accent-amber); font-size: 15px;">FETCH CYCLE</text>
-                      <text class="svg-label-mono" x="270" y="156" style="fill: var(--text-primary);">IR ◄── Memory[PC]</text>
-                      <text class="svg-label-mono" x="270" y="178" style="fill: var(--accent-amber);">PC = PC + 1</text>
-                    </g>
-
-                    <g class="svg-hw-group cyan-node" data-node-step="1" data-click-step="1">
-                      <rect class="svg-hw-box" x="440" y="100" width="200" height="100" rx="12" />
-                      <text class="svg-label-en" x="540" y="132" style="fill: var(--accent-cyan); font-size: 15px;">EXECUTE CYCLE</text>
-                      <text class="svg-label-ar" x="540" y="156">فك شفرة الـ Opcode</text>
-                      <text class="svg-label-mono" x="540" y="178" style="fill: var(--accent-cyan);">ALU / Memory / I/O</text>
-                    </g>
-
-                    <g class="svg-hw-group amber-node" data-node-step="2" data-click-step="2">
-                      <rect class="svg-hw-box" x="710" y="120" width="90" height="60" rx="30" />
-                      <text class="svg-label-en" x="755" y="155" style="fill: var(--accent-rose); font-size: 14px;">HALT</text>
-                    </g>
-
-                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
-                      <rect class="svg-wire-pill" x="160" y="52" width="220" height="26" />
-                      <text class="svg-wire-text" x="270" y="69">1. سحب التعليمة وتزويد الـ PC</text>
-                    </g>
-                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
-                      <rect class="svg-wire-pill" x="430" y="52" width="220" height="26" />
-                      <text class="svg-wire-text" x="540" y="69">2. فك الشفرة وتنفيذ العملية</text>
-                    </g>
-                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
-                      <rect class="svg-wire-pill" x="300" y="260" width="260" height="26" />
-                      <text class="svg-wire-text" x="430" y="277">3. استمرار التكرار أو التوقف عند HALT</text>
-                    </g>
-                  </svg>
-                </div>
-
-                <div class="sim-status-ticker"></div>
-              </div>
-
-              <!-- 4 Action Categories in Execute Cycle (سؤال الشيت 3.4) -->
-              <h3 style="font-size: 1.15rem; font-weight: 800; margin: 1.75rem 0 0.85rem; color: var(--accent-cyan);">
-                📌 تصنيفات عمليات التنفيذ الأربعة (The 4 Action Categories — سؤال الشيت 3.4)
-              </h3>
-
-              <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-                <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
-                  <span class="attr-term" style="color: var(--accent-cyan);">1. Processor - Memory</span>
-                  <p class="attr-desc">نقل البيانات في اتجاهين بين المعالج والذاكرة الرئيسية (مثل أوامر <span class="mono">LOAD</span> لقراءة خانة من الرام أو <span class="mono">STORE</span> لكتابة ناتج في الرام).</p>
-                </div>
-                <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
-                  <span class="attr-term" style="color: var(--accent-emerald);">2. Processor - I/O</span>
-                  <p class="attr-desc">نقل البيانات بين المعالج ووحدة الإدخال/الإخراج (<span class="mono">I/O Module</span>) للتخاطب مع الكيبورد، الشاشة، أو أقراص التخزين.</p>
-                </div>
-                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
-                  <span class="attr-term" style="color: var(--accent-amber);">3. Data Processing</span>
-                  <p class="attr-desc">إجراء العمليات الحسابية والمنطقية على البيانات داخل وحدة الحساب والمنطق (<span class="mono">ALU</span>) مثل الجمع والطرح وعمليات <span class="mono">AND, OR</span>.</p>
-                </div>
-                <div class="attr-card" style="border-top: 3px solid #a855f7;">
-                  <span class="attr-term" style="color: #a855f7;">4. Control (التحكم والتفرع)</span>
-                  <p class="attr-desc">تغيير تسلسل تنفيذ التعليمات؛ بدل ما نمشي ورا الـ <span class="mono">PC</span> بالترتيب، التعليمة تأمر المعالج بالقفز لعنوان جديد (<span class="mono">Branch / Jump</span>).</p>
+                <div class="sim-display-screen">
+                  <div class="sim-step-details-card">
+                    <div class="sim-step-header">
+                      <span class="sim-active-num mono">01</span>
+                      <h4 class="sim-active-title">المرحلة 1: دورة الجلب (Fetch Cycle — جلب التعليمة من الذاكرة)</h4>
+                    </div>
+                    <div class="sim-active-route mono">START ──► FETCH CYCLE: [IR ◄── Memory[PC]] &amp; [PC = PC + 1]</div>
+                    <div class="sim-active-payload">📥 مرحلة الجلب (Fetch): المعالج يقرأ التعليمة من العنوان المسجل في PC ويضعها في IR ويزود PC بواحد</div>
+                    <p class="sim-active-desc">يبص المعالج في عداد البرنامج (PC) ليعرف عنوان التعليمة المطلوبة، ثم يقرأ كود التعليمة من الذاكرة الرئيسية ويحفظه في سجل التعليمة (IR)، ويزود عداد البرنامج تلقائياً بواحد (PC = PC + 1) ليشير للتعليمة التالية.</p>
+                  </div>
                 </div>
               </div>
 
-              <div class="exam-trap-box" style="margin-top: 1.5rem;">
-                <div class="exam-trap-title">⚠️ تريكة الامتحان: متى يزيد عداد البرنامج PC؟</div>
-                <p>
-                  في الامتحان بيسأل: <em>"هل الـ PC بيزيد بعد ما نخلص تنفيذ التعليمة كلها؟"</em><br/>
-                  <strong>الإجابة: خطأ قاتل!</strong> الـ <span class="mono">PC</span> بيزيد <strong>أثناء مرحلة الجلب (Fetch Cycle) فور قراءة التعليمة</strong> عشان يجهز نفسه للخطوة الجاية، ومبيستناش مرحلة التنفيذ تخلص إلا لو التعليمة كانت أمر تفرع (<span class="mono">Branch/Jump</span>) بيغير قيمة الـ <span class="mono">PC</span> بقيمة جديدة!
-                </p>
+              <!-- Data Breakdown — تفكيك المرحلتين -->
+              <div class="two-layers-split" style="margin-top: 1.5rem;">
+                <!-- 1. Fetch Cycle -->
+                <div class="layer-pill-card">
+                  <span class="layer-tag" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3);">1. FETCH CYCLE (مرحلة الجلب)</span>
+                  <div class="en-def-box" style="margin-top: 0.75rem;">
+                    <div class="en-def-title">Official English Role (William Stallings):</div>
+                    <p class="en-def-text">
+                      "The processor reads an instruction from memory at the address specified by the Program Counter (PC), loads it into the Instruction Register (IR), and increments the PC."
+                    </p>
+                  </div>
+                  <div class="balady-box" style="margin-top: 0.75rem;">
+                    <div class="balady-header">
+                      <span class="balady-badge">📖 الشرح بالعامية المصرية (الخطوات بالملي)</span>
+                    </div>
+                    <p>المعالج بيمد إيده في الذاكرة يجيب التعليمة. الخطوات بالملي:</p>
+                    <ol style="margin-top: 0.5rem; padding-right: 1.2rem; font-size: 0.95rem; line-height: 1.8;">
+                      <li>يبص في الـ <strong>PC</strong> يلاقي العنوان المطلوب.</li>
+                      <li>يروح للرام عند العنوان ده وينسخ كود التعليمة يحطه في الـ <strong>IR</strong>.</li>
+                      <li>يزود الـ <strong>PC</strong> بواحد تلقائياً (<span class="mono">PC = PC + 1</span>) عشان يجهز للأمر اللي بعده قبل ما ينفذ الحالي!</li>
+                    </ol>
+                  </div>
+                </div>
+
+                <!-- 2. Execute Cycle -->
+                <div class="layer-pill-card">
+                  <span class="layer-tag" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.3);">2. EXECUTE CYCLE (مرحلة التنفيذ)</span>
+                  <div class="en-def-box" style="margin-top: 0.75rem;">
+                    <div class="en-def-title">Official English Role (William Stallings):</div>
+                    <p class="en-def-text">
+                      "The control unit decodes the binary opcode in the IR and triggers hardware paths to execute the operation."
+                    </p>
+                  </div>
+                  <div class="balady-box" style="margin-top: 0.75rem;">
+                    <div class="balady-header">
+                      <span class="balady-badge">📖 الشرح بالعامية المصرية</span>
+                    </div>
+                    <p>
+                      وحدة التحكم تحلل كود العملية (Opcode) في مسجل الـ IR، وتعرف المطلوب بالظبط، وتطلق إشارات التحكم اللازمة لكل دوائر المعالج لتنفيذ العملية على الفور.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- The 4 Operation Categories (سلايد 10 - فئات العمليات الأربعة) -->
+              <div style="margin-top: 1.5rem;">
+                <h3 style="font-size: 1.15rem; color: var(--accent-emerald); font-weight: 800; margin-bottom: 0.75rem;">
+                  ⚡ The 4 Operation Categories (سلايد 10 - فئات العمليات الأربعة أثناء مرحلة التنفيذ):
+                </h3>
+                <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+                  <div class="attr-card">
+                    <span class="attr-type mono" style="color: var(--accent-cyan);">CATEGORY 01</span>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">Processor - Memory</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                      نقل بيانات بين المعالج والذاكرة: قراءة بيانات من الرام للمعالج (<span class="mono">Read / Load</span>) أو كتابة وتخزين ناتج في الرام (<span class="mono">Write / Store</span>).
+                    </p>
+                  </div>
+
+                  <div class="attr-card">
+                    <span class="attr-type mono" style="color: var(--accent-emerald);">CATEGORY 02</span>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">Processor - I/O</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                      نقل بيانات بين المعالج وجهاز خارجي أو وحدة إدخال/إخراج (لوحة مفاتيح، شاشة، طابعة، قرص صلب).
+                    </p>
+                  </div>
+
+                  <div class="attr-card">
+                    <span class="attr-type mono" style="color: var(--accent-amber);">CATEGORY 03</span>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">Data Processing</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                      إجراء عملية حسابية (<span class="mono">ADD, SUB</span>) أو منطقية (<span class="mono">AND, OR, NOT</span>) على البيانات داخل وحدة الحساب والمنطق الـ ALU.
+                    </p>
+                  </div>
+
+                  <div class="attr-card">
+                    <span class="attr-type mono" style="color: #ec4899;">CATEGORY 04</span>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">Control</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                      تغيير مسار تنفيذ البرنامج بالقفز أو التفرع لعنوان جديد (<span class="mono">Jump / Branch</span>) مثل جمل <span class="mono">if / while</span>، حيث يتم تعديل قيمة الـ PC مباشرة!
+                    </p>
+                  </div>
+                </div>
               </div>
             </section>
 
-            <!-- 03. INSTRUCTION CYCLE STATE DIAGRAM -->
+            <!-- 03. COMPONENT 2: المخطط المعماري الكامل للحالات (Figure 3.6) -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">03</span>
-                <h2 class="exp-sec-title">INSTRUCTION CYCLE STATE DIAGRAM (مخطط تدفق الحالات المعماري - سلايد 11 و 12 - Figure 3.6)</h2>
+                <h2 class="exp-sec-title">COMPONENT 2: المخطط المعماري الكامل للحالات (7-State Diagram Card — Figure 3.6)</h2>
               </div>
 
-              <!-- Interactive Simulator: Figure 3.6 -->
-              <div class="sim-card" data-sim="sim-ch3-state-diagram">
-                <div class="sim-top-bar">
+              <!-- Interactive ASCII Architecture -->
+              <div class="terminal-card">
+                <div class="terminal-bar">
+                  <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                  </div>
+                  <span class="terminal-title">FIGURE 3.6 // INSTRUCTION CYCLE STATE DIAGRAM ARCHITECTURE</span>
+                  <span class="mono" style="font-size: 0.72rem; color: var(--accent-amber);">FULL 7 STATES FLOW</span>
+                </div>
+                <div class="terminal-body">
+                  <pre class="ascii-diagram">
+               +----------------------------------------------------+
+               |        INSTRUCTION ADDRESS CALCULATION (iac)       |
+               |              [حساب عنوان التعليمة التالية]         |
+               +-------------------------+--------------------------+
+                                         |
+                                         v
+               +----------------------------------------------------+
+               |              INSTRUCTION FETCH (if)                |
+               |             [جلب كود التعليمة إلى سجل IR]          |
+               +-------------------------+--------------------------+
+                                         |
+                                         v
+               +----------------------------------------------------+
+               |        INSTRUCTION OPERATION DECODING (iod)        |
+               |              [فك شفرة كود العملية Opcode]          |
+               +-------------------------+--------------------------+
+                                         |
+                     +-------------------+
+                     |
+                     v
+   +-----> +----------------------------------------------------+ &lt;-----+
+   |       |          OPERAND ADDRESS CALCULATION (oac)         |       |
+   |       |             [حساب العنوان الفعلي للمعامل]          |       |
+   |       +-------------------------+--------------------------+       |
+   |                                 |                                  |
+   |                                 v                                  | (تكرار لو فيه
+   |       +----------------------------------------------------+       |  أكتر من معامل)
+   |       |                 OPERAND FETCH (of)                 |       |  For multiple
+   |       |             [جلب قيمة المعامل من الذاكرة أو I/O]   |       |   operands
+   |       +-------------------------+--------------------------+       |
+   |                                 |                                  |
+   |                                 v                                  |
+   |       +----------------------------------------------------+       |
+   |       |                 DATA OPERATION (do)                |-------+
+   |       |            [تنفيذ العملية الحسابية أو المنطقية]    |
+   |       +-------------------------+--------------------------+
+   |                                 |
+   |                                 v
+   +------ +----------------------------------------------------+
+           |          OPERAND ADDRESS CALCULATION (oac)         |
+           |            [حساب عنوان مكان تخزين النتيجة]         |
+           +-------------------------+--------------------------+
+                                     |
+                                     v
+           +----------------------------------------------------+
+           |                 OPERAND STORE (os)                 |
+           |            [تخزين النتيجة في الذاكرة أو جهاز I/O]  |
+           +-------------------------+--------------------------+
+                                     |
+                                     v
+                 (Return to iac for next instruction / إتمام الدورة)
+                  </pre>
+                </div>
+              </div>
+
+              <!-- Interactive Simulator: sim-ch3-state-diagram -->
+              <div class="sim-wrapper-box" data-sim-target="sim-ch3-state-diagram">
+                <div class="sim-header-row">
                   <div class="sim-title-group">
-                    <span class="sim-live-dot"></span>
-                    <span class="sim-badge-title">FIG 3.6 // INSTRUCTION CYCLE STATE DIAGRAM (SLIDES 11 &amp; 12)</span>
+                    <span class="mono sim-badge">SIMULATOR // FIGURE 3.6</span>
+                    <h3 class="sim-title">محاكي مخطط الحالات المعماري التفاعلي (State Diagram Engine)</h3>
                   </div>
-                  <div class="sim-controls">
-                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. حساب العنوان والجلب (iac ➔ if)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="1">2. فك الشفرة (iod)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="2">3. جلب المعاملات (oac ➔ of)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="3">4. إجراء العملية والتخزين (do ➔ os)</button>
-                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل الخطوات بالتتابع</button>
+                  <div class="sim-controls-toolbar">
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. iac ➔ if</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">2. iod</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">3. oac ➔ of</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="3">4. do ➔ os</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>تشغيل تلقائي ⏵</button>
                   </div>
                 </div>
 
-                <div class="sim-svg-stage">
-                  <svg class="sim-svg" viewBox="0 0 940 380" xmlns="http://www.w3.org/2000/svg" dir="ltr">
-                    <rect x="16" y="10" width="908" height="360" rx="14" fill="var(--bg-surface)" fill-opacity="0.45" stroke="var(--border-strong)" stroke-dasharray="6 4" stroke-width="1.5" />
-                    <path class="wire-base" d="M 170 120 L 220 120" />
-                    <path class="wire-base" d="M 330 120 L 380 120" />
-                    <path class="wire-base" d="M 490 120 L 540 120" />
-                    <path class="wire-base" d="M 650 120 L 700 120" />
-                    <path class="wire-base" d="M 755 160 L 755 240" />
-                    <path class="wire-base" d="M 700 270 L 650 270" />
-                    <path class="wire-base" d="M 540 270 L 115 270 L 115 160" />
-
-                    <path class="wire-flow amber active-flow" data-wire-step="0" d="M 170 120 L 220 120" />
-                    <path class="wire-flow amber" data-wire-step="1" d="M 330 120 L 380 120" />
-                    <path class="wire-flow cyan" data-wire-step="2" d="M 490 120 L 540 120 L 650 120 L 700 120" />
-                    <path class="wire-flow emerald" data-wire-step="3" d="M 755 160 L 755 240 L 700 270 L 650 270 L 540 270 L 115 270 L 115 160" />
-
-                    <circle class="data-packet-dot moving" data-packet-step="0" r="6" fill="#f59e0b">
-                      <animateMotion dur="0.9s" repeatCount="indefinite" path="M 60 120 L 330 120" />
-                    </circle>
-                    <circle class="data-packet-dot" data-packet-step="1" r="6" fill="#f59e0b">
-                      <animateMotion dur="0.8s" repeatCount="indefinite" path="M 330 120 L 490 120" />
-                    </circle>
-                    <circle class="data-packet-dot" data-packet-step="2" r="6" fill="#06b6d4">
-                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 490 120 L 755 120" />
-                    </circle>
-                    <circle class="data-packet-dot" data-packet-step="3" r="6" fill="#10b981">
-                      <animateMotion dur="1.5s" repeatCount="indefinite" path="M 755 160 L 755 270 L 540 270 L 115 270 L 115 160" />
-                    </circle>
-
-                    <g class="svg-hw-group amber-node active-node" data-node-step="0" data-click-step="0">
-                      <rect class="svg-hw-box" x="60" y="80" width="110" height="80" rx="10" />
-                      <text class="svg-label-en" x="115" y="112" style="fill: var(--accent-amber); font-size: 15px;">iac</text>
-                      <text class="svg-label-mono" x="115" y="132" style="font-size: 11px;">Instr Addr Calc</text>
-                      <text class="svg-label-ar" x="115" y="150" style="font-size: 11px;">حساب العنوان</text>
-                    </g>
-
-                    <g class="svg-hw-group amber-node active-node" data-node-step="0" data-click-step="0">
-                      <rect class="svg-hw-box" x="220" y="80" width="110" height="80" rx="10" />
-                      <text class="svg-label-en" x="275" y="112" style="fill: var(--accent-amber); font-size: 15px;">if</text>
-                      <text class="svg-label-mono" x="275" y="132" style="font-size: 11px;">Instr Fetch</text>
-                      <text class="svg-label-ar" x="275" y="150" style="font-size: 11px;">جلب التعليمة</text>
-                    </g>
-
-                    <g class="svg-hw-group amber-node" data-node-step="1" data-click-step="1">
-                      <rect class="svg-hw-box" x="380" y="80" width="110" height="80" rx="10" />
-                      <text class="svg-label-en" x="435" y="112" style="fill: var(--accent-amber); font-size: 15px;">iod</text>
-                      <text class="svg-label-mono" x="435" y="132" style="font-size: 11px;">Opcode Decode</text>
-                      <text class="svg-label-ar" x="435" y="150" style="font-size: 11px;">فك الشفرة</text>
-                    </g>
-
-                    <g class="svg-hw-group cyan-node" data-node-step="2" data-click-step="2">
-                      <rect class="svg-hw-box" x="540" y="80" width="110" height="80" rx="10" />
-                      <text class="svg-label-en" x="595" y="112" style="fill: var(--accent-cyan); font-size: 15px;">oac</text>
-                      <text class="svg-label-mono" x="595" y="132" style="font-size: 11px;">Operand Addr</text>
-                      <text class="svg-label-ar" x="595" y="150" style="font-size: 11px;">عنوان المعامل</text>
-                    </g>
-
-                    <g class="svg-hw-group cyan-node" data-node-step="2" data-click-step="2">
-                      <rect class="svg-hw-box" x="700" y="80" width="110" height="80" rx="10" />
-                      <text class="svg-label-en" x="755" y="112" style="fill: var(--accent-cyan); font-size: 15px;">of</text>
-                      <text class="svg-label-mono" x="755" y="132" style="font-size: 11px;">Operand Fetch</text>
-                      <text class="svg-label-ar" x="755" y="150" style="font-size: 11px;">جلب المعامل</text>
-                    </g>
-
-                    <g class="svg-hw-group emerald-node" data-node-step="3" data-click-step="3">
-                      <rect class="svg-hw-box" x="700" y="230" width="110" height="80" rx="10" />
-                      <text class="svg-label-en" x="755" y="262" style="fill: var(--accent-emerald); font-size: 15px;">do</text>
-                      <text class="svg-label-mono" x="755" y="282" style="font-size: 11px;">Data Operation</text>
-                      <text class="svg-label-ar" x="755" y="300" style="font-size: 11px;">إجراء العملية</text>
-                    </g>
-
-                    <g class="svg-hw-group emerald-node" data-node-step="3" data-click-step="3">
-                      <rect class="svg-hw-box" x="540" y="230" width="110" height="80" rx="10" />
-                      <text class="svg-label-en" x="595" y="262" style="fill: var(--accent-emerald); font-size: 15px;">os</text>
-                      <text class="svg-label-mono" x="595" y="282" style="font-size: 11px;">Operand Store</text>
-                      <text class="svg-label-ar" x="595" y="300" style="font-size: 11px;">تخزين الناتج</text>
-                    </g>
-
-                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
-                      <rect class="svg-wire-pill" x="90" y="30" width="220" height="26" />
-                      <text class="svg-wire-text" x="200" y="47">1. مسار جلب التعليمة (iac ➔ if)</text>
-                    </g>
-                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
-                      <rect class="svg-wire-pill" x="350" y="30" width="180" height="26" />
-                      <text class="svg-wire-text" x="440" y="47">2. فك شفرة الـ Opcode (iod)</text>
-                    </g>
-                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
-                      <rect class="svg-wire-pill" x="580" y="30" width="200" height="26" />
-                      <text class="svg-wire-text" x="680" y="47">3. جلب المعاملات (oac ➔ of)</text>
-                    </g>
-                    <g class="svg-wire-callout" data-pill-step="3" data-click-step="3">
-                      <rect class="svg-wire-pill" x="560" y="330" width="240" height="26" />
-                      <text class="svg-wire-text" x="680" y="347">4. حساب وتخزين الناتج (do ➔ os)</text>
-                    </g>
-                  </svg>
-                </div>
-
-                <div class="sim-status-ticker"></div>
-              </div>
-
-              <!-- 7 States Breakdown Cards -->
-              <h3 style="font-size: 1.15rem; font-weight: 800; margin: 1.75rem 0 0.85rem; color: var(--accent-amber);">
-                📌 الحالات السبع التفصيلية لدورة التعليمة (Figure 3.6 States Breakdown)
-              </h3>
-
-              <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
-                  <span class="attr-term" style="color: var(--accent-amber);">1. iac (Instruction Address Calculation)</span>
-                  <p class="attr-desc">تحديد عنوان التعليمة التالية في الذاكرة (عادةً بإضافة 1 لعداد البرنامج <span class="mono">PC</span> أو تحميل عنوان قفز جديد).</p>
-                </div>
-                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
-                  <span class="attr-term" style="color: var(--accent-amber);">2. if (Instruction Fetch)</span>
-                  <p class="attr-desc">قراءة التعليمة من موقعها في الذاكرة ونقلها إلى سجل التعليمة (<span class="mono">IR</span>).</p>
-                </div>
-                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
-                  <span class="attr-term" style="color: var(--accent-amber);">3. iod (Instruction Operation Decoding)</span>
-                  <p class="attr-desc">تحليل شفرة الـ <span class="mono">Opcode</span> لتحديد نوع العملية المراد تنفيذها ونوع المعاملات المطلوبة.</p>
-                </div>
-                <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
-                  <span class="attr-term" style="color: var(--accent-cyan);">4. oac (Operand Address Calculation)</span>
-                  <p class="attr-desc">حساب العنوان الفعلي للمعامل (<span class="mono">Operand</span>) في الذاكرة أو تحديد منفذ الـ I/O.</p>
-                </div>
-                <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
-                  <span class="attr-term" style="color: var(--accent-cyan);">5. of (Operand Fetch)</span>
-                  <p class="attr-desc">جلب المعامل من الذاكرة أو قراءته من منفذ الإدخال/الإخراج.</p>
-                </div>
-                <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
-                  <span class="attr-term" style="color: var(--accent-emerald);">6. do (Data Operation)</span>
-                  <p class="attr-desc">تنفيذ العملية الحسابية أو المنطقية المحددة في التعليمة على المعاملات.</p>
-                </div>
-                <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
-                  <span class="attr-term" style="color: var(--accent-emerald);">7. os (Operand Store)</span>
-                  <p class="attr-desc">كتابة النتيجة النهائية في الذاكرة أو إرسالها إلى جهاز الإخراج.</p>
+                <div class="sim-display-screen">
+                  <div class="sim-step-details-card">
+                    <div class="sim-step-header">
+                      <span class="sim-active-num mono">01</span>
+                      <h4 class="sim-active-title">المرحلة 1: حساب عنوان التعليمة وجلبها (iac ──► if)</h4>
+                    </div>
+                    <div class="sim-active-route mono">1. iac (Instruction Address Calc) ──► 2. if (Instruction Fetch into IR)</div>
+                    <div class="sim-active-payload">📥 حساب العنوان والجلب: حساب عنوان الأمر التالي (iac) ثم قراءته من الذاكرة إلى سجل IR (if)</div>
+                    <p class="sim-active-desc">تبدأ الدورة في حالة (iac) بتحديد وحساب عنوان التعليمة التالية في الذاكرة (مثل زيادة PC)، ثم الانتقال إلى حالة (if) لقراءة بايتات التعليمة من الذاكرة إلى مسجل التعليمة IR.</p>
+                  </div>
                 </div>
               </div>
 
-              <div class="balady-box" style="margin-top: 1.25rem;">
-                <div class="balady-label">💡 سر الأسهم واللفات المتكررة في المخطط (سؤال الشيت 3.5)</div>
-                <p style="margin: 0;">
-                  ليه في المخطط بتلاقي سهم بيلف بين <span class="mono">oac</span> و <span class="mono">of</span>؟<br/>
-                  • <strong>تعدد المعاملات (Multiple Operands):</strong> لو التعليمة بتجمع رقمين (<span class="mono">A + B</span>)، المعالج لازم يجيب الرقم الأول (<span class="mono">of</span>) وبعدين يرجع يجيب الرقم التاني (<span class="mono">of</span> تانية).<br/>
-                  • <strong>تخزين أكثر من ناتج (Multiple Results):</strong> لو العملية بتطلع ناتج وباقي قسمة أو بتتعامل مع مصفوفة نصوص (<span class="mono">Vector/String</span>)، المعالج بيكرر الـ <span class="mono">os</span> لكل عنصر.
-                </p>
+              <!-- States Reference Grid: 7 States Breakdown -->
+              <div style="margin-top: 1.5rem;">
+                <h3 style="font-size: 1.15rem; color: var(--accent-cyan); font-weight: 800; margin-bottom: 0.75rem;">
+                  📚 States Reference Object — الداتا البرمجية والأكاديمية للحالات السبعة:
+                </h3>
+                <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                  <!-- iac -->
+                  <div class="attr-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <span class="attr-type mono" style="color: var(--accent-cyan); font-size: 0.85rem;">iac</span>
+                      <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">STATE 1</span>
+                    </div>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">Instruction Address Calculation</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>Academic Role:</strong> Determines the memory address of the next instruction to be executed.
+                    </p>
+                    <p style="font-size: 0.85rem; color: var(--accent-cyan); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>بالعامية:</strong> المعالج بيحسب مكان الأمر الجاي في الرام (زي إضافة 1 لقيمة الـ PC).
+                    </p>
+                  </div>
+
+                  <!-- if -->
+                  <div class="attr-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <span class="attr-type mono" style="color: var(--accent-cyan); font-size: 0.85rem;">if</span>
+                      <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">STATE 2</span>
+                    </div>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">Instruction Fetch</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>Academic Role:</strong> Reads the instruction word from memory into the processor (IR register).
+                    </p>
+                    <p style="font-size: 0.85rem; color: var(--accent-cyan); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>بالعامية:</strong> قراءة كود التعليمة المشفر من عنوانها في الرام ووضعها في سجل الـ IR.
+                    </p>
+                  </div>
+
+                  <!-- iod -->
+                  <div class="attr-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <span class="attr-type mono" style="color: var(--accent-amber); font-size: 0.85rem;">iod</span>
+                      <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">STATE 3</span>
+                    </div>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">Instruction Operation Decoding</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>Academic Role:</strong> Analyzes the opcode to determine the required operation and operand addressing modes.
+                    </p>
+                    <p style="font-size: 0.85rem; color: var(--accent-amber); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>بالعامية:</strong> وحدة التحكم تفك شفرة الـ Opcode وتعرف نوع الشغلانة ومكان الأرقام اللي هتشتغل عليها.
+                    </p>
+                  </div>
+
+                  <!-- oac -->
+                  <div class="attr-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <span class="attr-type mono" style="color: var(--accent-amber); font-size: 0.85rem;">oac</span>
+                      <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">STATE 4 &amp; 6</span>
+                    </div>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">Operand Address Calculation</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>Academic Role:</strong> Calculates the effective memory or I/O address of the operand required for execution.
+                    </p>
+                    <p style="font-size: 0.85rem; color: var(--accent-amber); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>بالعامية:</strong> حساب العنوان الحقيقي للمعامل في الرامات لو العملية محتاجة داتا من برة.
+                    </p>
+                  </div>
+
+                  <!-- of -->
+                  <div class="attr-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <span class="attr-type mono" style="color: var(--accent-emerald); font-size: 0.85rem;">of</span>
+                      <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">STATE 5</span>
+                    </div>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">Operand Fetch</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>Academic Role:</strong> Fetches the operand value from memory or reads it from an I/O peripheral into the CPU.
+                    </p>
+                    <p style="font-size: 0.85rem; color: var(--accent-emerald); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>بالعامية:</strong> المعالج يمد إيده ويسحب الرقم المطلوب من الذاكرة أو المنفذ ويدخله جواه.
+                    </p>
+                  </div>
+
+                  <!-- do -->
+                  <div class="attr-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <span class="attr-type mono" style="color: var(--accent-emerald); font-size: 0.85rem;">do</span>
+                      <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">STATE 6</span>
+                    </div>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">Data Operation</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>Academic Role:</strong> Performs the specified arithmetic, logical, or data manipulation operation inside the ALU.
+                    </p>
+                    <p style="font-size: 0.85rem; color: var(--accent-emerald); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>بالعامية:</strong> وحدة الحساب والمنطق ALU تنفذ الجمع أو الطرح أو المقارنة فعلياً.
+                    </p>
+                  </div>
+
+                  <!-- os -->
+                  <div class="attr-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <span class="attr-type mono" style="color: #ec4899; font-size: 0.85rem;">os</span>
+                      <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">STATE 7</span>
+                    </div>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">Operand Store</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>Academic Role:</strong> Writes the computed result to memory or sends it out to an I/O device.
+                    </p>
+                    <p style="font-size: 0.85rem; color: #ec4899; margin-top: 0.35rem; line-height: 1.5;">
+                      <strong>بالعامية:</strong> تخزين الناتج النهائي في مكانه المحدد بالذاكرة أو إخراجه لشاشة أو قرص تخزين.
+                    </p>
+                  </div>
+                </div>
               </div>
             </section>
 
-            <!-- 04. HYPOTHETICAL MACHINE ARCHITECTURE -->
+            <!-- 04. COMPONENT 3: مواصفات الآلة الافتراضية (Figure 3.4) -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">04</span>
-                <h2 class="exp-sec-title">HYPOTHETICAL MACHINE ARCHITECTURE (مواصفات الآلة الافتراضية - سلايد 13 - Figure 3.4)</h2>
+                <h2 class="exp-sec-title">COMPONENT 3: مواصفات الآلة الافتراضية (Hypothetical Machine Formats Card — Figure 3.4)</h2>
               </div>
 
-              <div class="balady-box" style="margin-bottom: 1.25rem;">
-                <div class="balady-label">💡 ما هي الآلة الافتراضية وليه الكتاب اخترعها؟</div>
-                <p style="margin: 0;">
-                  بدل ما يجيب لك معالج Core i9 معقد فيه آلاف الأوامر ويشتتك في الامتحان، دكتور ويليام ستالينجز اخترع <strong>آلة افتراضية مبسطة جداً (Hypothetical Machine)</strong> حجم كلمتها 16 بت، عشان يعلمك إزاي التتبع البرمجي بيحصل في الحقيقة.
+              <div class="balady-box">
+                <div class="balady-header">
+                  <span class="balady-badge">💡 مقدمة الآلة الافتراضية لسلايد 13</span>
+                </div>
+                <p>
+                  كتاب ستالينجز وضع مواصفات لمعالج افتراضي مبسط جداً من <strong>16-bit</strong> عشان يشرح عليه إزاي المعالج بينفذ برنامج كامل خطوة بخطوة. الكلمة فيه حجمها 16 بت (أي 2 بايت = 4 خانات بنظام الهيكسا).
                 </p>
               </div>
 
-              <!-- Format Breakdown Grid -->
-              <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
-                  <span class="attr-term" style="color: var(--accent-amber);">1. حجم الكلمة (16-bit Word)</span>
-                  <p class="attr-desc">كل تعليمة أو رقم في الذاكرة بيتخزن في خانة حجمها 16 بت (تعادل 4 أرقام هكساديسيمال Hexadecimal Digits).</p>
+              <!-- Bit-Field Breakdowns -->
+              <div class="two-layers-split" style="margin-top: 1rem;">
+                <!-- (A) Instruction Format -->
+                <div class="layer-pill-card">
+                  <span class="layer-tag" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3);">(A) INSTRUCTION FORMAT (16-BIT)</span>
+                  <div class="terminal-body" style="padding: 0.75rem; margin-top: 0.75rem; background: var(--bg-surface-2);">
+                    <pre class="ascii-diagram" style="font-size: 0.75rem;">
+ 0                 3  4                                                    15
++-------------------+--------------------------------------------------------+
+|   Opcode (4-bit)  |              Memory Address (12-bit)                   |
++-------------------+--------------------------------------------------------+
+ [خانة هيكسا واحدة]   [ثلاث خانات هيكسا لتمثيل العنوان من 000 إلى FFF]
+                    </pre>
+                  </div>
+                  <div style="font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); margin-top: 0.75rem;">
+                    <ul style="padding-right: 1.2rem;">
+                      <li><strong>البتات من 0 إلى 3 (4 بت = خانة هيكسا واحدة):</strong> تمثل <strong>كود العملية (Opcode)</strong>. بعدد أوامر أقصى يصل إلى 2<sup>4</sup> = 16 أمراً مختلفاً.</li>
+                      <li><strong>البتات من 4 إلى 15 (12 بت = 3 خانات هيكسا):</strong> تمثل <strong>عنوان الذاكرة (Memory Address)</strong> الذي يمكنه عنونة حتى 2<sup>12</sup> = 4096 موقع ذاكرة (4 KB).</li>
+                    </ul>
+                  </div>
                 </div>
-                <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
-                  <span class="attr-term" style="color: var(--accent-cyan);">2. كود العملية (4-bit Opcode)</span>
-                  <p class="attr-desc">أول 4 بت مخصصة لنوع العملية؛ يعني يدعم حتى 16 تعليمة مختلفة ($2^4 = 16$).</p>
-                </div>
-                <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
-                  <span class="attr-term" style="color: var(--accent-emerald);">3. عنوان الذاكرة (12-bit Address)</span>
-                  <p class="attr-desc">الـ 12 بت المتبقية تشيل عنوان الذاكرة؛ يعني يقدر يعنون حتى 4096 خانة ذاكرة ($2^{12} = 4096\text{ words} = 4\text{ KWords}$).</p>
+
+                <!-- (B) Integer Format -->
+                <div class="layer-pill-card">
+                  <span class="layer-tag" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.3);">(B) INTEGER FORMAT (16-BIT)</span>
+                  <div class="terminal-body" style="padding: 0.75rem; margin-top: 0.75rem; background: var(--bg-surface-2);">
+                    <pre class="ascii-diagram" style="font-size: 0.75rem;">
+ 0  1                                                                      15
++--+-------------------------------------------------------------------------+
+| S|                         Magnitude (15-bit)                              |
++--+-------------------------------------------------------------------------+
+ [بت الإشارة: 0 موجب، 1 سالب]             [قيمة الرقم العددي]
+                    </pre>
+                  </div>
+                  <div style="font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); margin-top: 0.75rem;">
+                    <ul style="padding-right: 1.2rem;">
+                      <li><strong>البت 0:</strong> بت الإشارة (Sign Bit: 0 تعني رقم موجب، 1 تعني رقم سالب).</li>
+                      <li><strong>البتات من 1 إلى 15 (15 بت):</strong> تمثل مقدار الرقم (Magnitude).</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
 
-              <!-- Core 3 Opcodes Table -->
-              <h3 style="font-size: 1.15rem; font-weight: 800; margin: 1.75rem 0 0.85rem; color: var(--accent-amber);">
-                📌 جدول شفرات العمليات الثلاث الأساسية (The 3 Core Opcodes)
-              </h3>
-
-              <div class="gen-table-wrap">
-                <table class="gen-table">
-                  <thead>
-                    <tr>
-                      <th>Opcode (ثنائي)</th>
-                      <th>Opcode (هكسا)</th>
-                      <th>Operation Name</th>
-                      <th>Meaning &amp; Execution Action (الشرح بالبلدي للامتحان)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="mono" style="color: var(--accent-cyan); font-weight: 800;">0001</td>
-                      <td class="mono" style="color: var(--accent-cyan); font-weight: 800;">1</td>
-                      <td class="mono">Load AC from Memory</td>
-                      <td><strong>حمّل في المجمع:</strong> قراءة القيمة الموجودة في عنوان الذاكرة ووضعها في سجل المجمع (<span class="mono">AC ◄── Memory[Address]</span>).</td>
-                    </tr>
-                    <tr>
-                      <td class="mono" style="color: var(--accent-amber); font-weight: 800;">0010</td>
-                      <td class="mono" style="color: var(--accent-amber); font-weight: 800;">2</td>
-                      <td class="mono">Store AC to Memory</td>
-                      <td><strong>خزّن من المجمع:</strong> أخذ القيمة الموجودة في سجل المجمع وكتابتها داخل عنوان الذاكرة (<span class="mono">Memory[Address] ◄── AC</span>).</td>
-                    </tr>
-                    <tr>
-                      <td class="mono" style="color: var(--accent-emerald); font-weight: 800;">0011</td>
-                      <td class="mono" style="color: var(--accent-emerald); font-weight: 800;">5</td>
-                      <td class="mono">Add to AC from Memory</td>
-                      <td><strong>اجمع على المجمع:</strong> جمع القيمة الموجودة في الذاكرة على القيمة الحالية في المجمع وتخزين الناتج في المجمع (<span class="mono">AC ◄── AC + Memory[Address]</span>).</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <!-- (C) Opcodes Table -->
+              <div style="margin-top: 1.5rem;">
+                <h3 style="font-size: 1.15rem; color: var(--accent-amber); font-weight: 800; margin-bottom: 0.75rem;">
+                  📋 (C) Opcodes Table (جدول شفرات العمليات الأساسية في الآلة الافتراضية):
+                </h3>
+                <div style="overflow-x: auto;">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: right; background: var(--bg-surface-1); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                    <thead>
+                      <tr style="background: rgba(255,255,255,0.05); border-bottom: 2px solid var(--border-color);">
+                        <th style="padding: 0.85rem; color: var(--accent-cyan); font-family: var(--font-mono);">Binary Opcode</th>
+                        <th style="padding: 0.85rem; color: var(--accent-cyan); font-family: var(--font-mono);">Hex</th>
+                        <th style="padding: 0.85rem; color: #fff;">Official Operation</th>
+                        <th style="padding: 0.85rem; color: var(--accent-emerald);">الشرح بالعامية المصرية</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.85rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-cyan);">0011</td>
+                        <td style="padding: 0.85rem; font-family: var(--font-mono); font-weight: 800; color: var(--accent-amber); font-size: 1.1rem;">3</td>
+                        <td style="padding: 0.85rem; font-weight: 700;">Load AC from Memory</td>
+                        <td style="padding: 0.85rem; color: var(--text-secondary);">اذهب للعنوان المعطى بالذاكرة وانسخ الرقم وضعه داخل مسجل AC</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.85rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-cyan);">0100</td>
+                        <td style="padding: 0.85rem; font-family: var(--font-mono); font-weight: 800; color: var(--accent-amber); font-size: 1.1rem;">4</td>
+                        <td style="padding: 0.85rem; font-weight: 700;">Store AC to Memory</td>
+                        <td style="padding: 0.85rem; color: var(--text-secondary);">انسخ القيمة الموجودة داخل مسجل AC وخزنها في عنوان الذاكرة المعطى</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 0.85rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-cyan);">0111</td>
+                        <td style="padding: 0.85rem; font-family: var(--font-mono); font-weight: 800; color: var(--accent-amber); font-size: 1.1rem;">7</td>
+                        <td style="padding: 0.85rem; font-weight: 700;">Add to AC from Memory</td>
+                        <td style="padding: 0.85rem; color: var(--text-secondary);">اذهب للعنوان واجمع قيمته على القيمة الحالية في AC وخزن الناتج في AC</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </section>
 
-            <!-- 05. MASTER GUIDE: HOW TO SOLVE THE TRACE PROBLEM STEP-BY-STEP -->
+            <!-- 05. COMPONENT 4: محاكي مسألة التتبع التفاعلي (Trace Simulator - سؤال الشيت 3.8) -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">05</span>
-                <h2 class="exp-sec-title">MASTER GUIDE: HOW TO SOLVE THE TRACE PROBLEM STEP-BY-STEP (كتالوج حل مسألة التتبع - سلايد 14 إلى 16 &amp; سؤال الشيت 3.8)</h2>
+                <h2 class="exp-sec-title">COMPONENT 4: محاكي مسألة التتبع التفاعلي (Interactive Trace Simulator - سؤال الشيت 3.8 &amp; Figure 3.5)</h2>
               </div>
 
-              <div class="balady-box" style="margin-bottom: 1.5rem;">
-                <div class="balady-label">💡 المسألة الشهيرة للامتحان: جمع رقمين من الذاكرة</div>
-                <p style="margin: 0;">
-                  البرنامج بيبدأ عند العنوان <span class="mono">300</span> في الذاكرة، والمطلوب جمع الرقم الموجود في الخانة <span class="mono">940</span> (قيمته <span class="mono">0003</span>) مع الرقم الموجود في الخانة <span class="mono">941</span> (قيمته <span class="mono">0002</span>)، وتخزين الناتج النهائي (<span class="mono">0005</span>) في الخانة <span class="mono">941</span>.<br/>
-                  البرنامج بيتنفذ في <strong>6 خطوات بالتمام والكمال</strong> (3 دورات Fetch و 3 دورات Execute):
-                </p>
-              </div>
-
-              <!-- 6 Steps Visual Cards Grid -->
-              <div class="trace-steps-grid">
-                <!-- Step 1 -->
-                <div class="trace-step-card fetch">
-                  <div class="trace-step-header">
-                    <span class="trace-badge fetch">STEP 1 // FETCH</span>
-                    <span class="mono" style="font-size: 0.8rem; color: var(--accent-amber);">PC = 300</span>
-                  </div>
-                  <div class="trace-step-body">
-                    <p class="trace-action-desc">
-                      <strong>جلب التعليمة الأولى:</strong> المعالج يقرأ محتوى الذاكرة عند العنوان <span class="mono">300</span> (وهو <span class="mono">1940</span>) ويضعه في سجل الـ <span class="mono">IR</span>، ويزود الـ <span class="mono">PC</span> بواحد ليصبح <span class="mono">301</span>.
-                    </p>
-                    <div class="trace-regs-snapshot">
-                      <div class="trace-reg-row"><span>PC:</span> <strong class="mono" style="color:var(--accent-amber);">301</strong> (زاد بواحد)</div>
-                      <div class="trace-reg-row"><span>IR:</span> <strong class="mono" style="color:var(--accent-cyan);">1940</strong></div>
-                      <div class="trace-reg-row"><span>AC:</span> <strong class="mono">0000</strong></div>
-                    </div>
-                  </div>
+              <!-- Problem Given Parameters -->
+              <div class="balady-box">
+                <div class="balady-header">
+                  <span class="balady-badge">📌 معطيات مسألة التتبع الرسمية في الامتحان</span>
+                  <span class="mono" style="font-size: 0.8rem; color: var(--accent-amber); font-weight: 700;">SHEET 3 Q3.8 // SLIDES 14-16</span>
                 </div>
+                <div class="two-layers-split" style="margin-top: 0.75rem;">
+                  <div style="background: rgba(0,0,0,0.25); padding: 0.85rem; border-radius: 8px;">
+                    <span style="font-weight: 800; color: var(--accent-cyan);">1. الحالة الابتدائية للمسجلات (Initial Registers):</span>
+                    <ul style="margin-top: 0.5rem; padding-right: 1.2rem; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.8;">
+                      <li>PC = 215<sub>16</sub> (يشير لأول تعليمة)</li>
+                      <li>AC = 0000<sub>16</sub> (مصفّر في البداية)</li>
+                      <li>IR = ---- (فارغ لم يجلب شيئاً بعد)</li>
+                    </ul>
+                  </div>
 
-                <!-- Step 2 -->
-                <div class="trace-step-card execute">
-                  <div class="trace-step-header">
-                    <span class="trace-badge execute">STEP 2 // EXECUTE</span>
-                    <span class="mono" style="font-size: 0.8rem; color: var(--accent-cyan);">Opcode: 1 (Load)</span>
-                  </div>
-                  <div class="trace-step-body">
-                    <p class="trace-action-desc">
-                      <strong>تنفيذ Load AC:</strong> الكود <span class="mono">1</span> يعني حمّل في الـ AC. المعالج يروح للعنوان <span class="mono">940</span>، يلاقي جواه القيمة <span class="mono">0003</span>، فيسحبها ويحطها في سجل الـ <span class="mono">AC</span>.
-                    </p>
-                    <div class="trace-regs-snapshot">
-                      <div class="trace-reg-row"><span>PC:</span> <strong class="mono">301</strong></div>
-                      <div class="trace-reg-row"><span>IR:</span> <strong class="mono">1940</strong></div>
-                      <div class="trace-reg-row"><span>AC:</span> <strong class="mono" style="color:var(--accent-emerald);">0003</strong> (تم التحميل)</div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="trace-step-card fetch">
-                  <div class="trace-step-header">
-                    <span class="trace-badge fetch">STEP 3 // FETCH</span>
-                    <span class="mono" style="font-size: 0.8rem; color: var(--accent-amber);">PC = 301</span>
-                  </div>
-                  <div class="trace-step-body">
-                    <p class="trace-action-desc">
-                      <strong>جلب التعليمة الثانية:</strong> المعالج يقرأ محتوى الذاكرة عند العنوان <span class="mono">301</span> (وهو <span class="mono">5941</span>) ويضعه في الـ <span class="mono">IR</span>، ويزود الـ <span class="mono">PC</span> ليصبح <span class="mono">302</span>.
-                    </p>
-                    <div class="trace-regs-snapshot">
-                      <div class="trace-reg-row"><span>PC:</span> <strong class="mono" style="color:var(--accent-amber);">302</strong> (زاد بواحد)</div>
-                      <div class="trace-reg-row"><span>IR:</span> <strong class="mono" style="color:var(--accent-cyan);">5941</strong></div>
-                      <div class="trace-reg-row"><span>AC:</span> <strong class="mono">0003</strong></div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Step 4 -->
-                <div class="trace-step-card execute">
-                  <div class="trace-step-header">
-                    <span class="trace-badge execute">STEP 4 // EXECUTE</span>
-                    <span class="mono" style="font-size: 0.8rem; color: var(--accent-cyan);">Opcode: 5 (Add)</span>
-                  </div>
-                  <div class="trace-step-body">
-                    <p class="trace-action-desc">
-                      <strong>تنفيذ Add to AC:</strong> الكود <span class="mono">5</span> يعني اجمع على الـ AC. المعالج يروح للعنوان <span class="mono">941</span>، يلاقي جواه <span class="mono">0002</span>، يجمعها على الـ <span class="mono">0003</span> الموجودة في الـ AC، فيصبح الـ AC يساوي <span class="mono">0005</span>.
-                    </p>
-                    <div class="trace-regs-snapshot">
-                      <div class="trace-reg-row"><span>PC:</span> <strong class="mono">302</strong></div>
-                      <div class="trace-reg-row"><span>IR:</span> <strong class="mono">5941</strong></div>
-                      <div class="trace-reg-row"><span>AC:</span> <strong class="mono" style="color:var(--accent-emerald);">0005</strong> (3 + 2 = 5)</div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Step 5 -->
-                <div class="trace-step-card fetch">
-                  <div class="trace-step-header">
-                    <span class="trace-badge fetch">STEP 5 // FETCH</span>
-                    <span class="mono" style="font-size: 0.8rem; color: var(--accent-amber);">PC = 302</span>
-                  </div>
-                  <div class="trace-step-body">
-                    <p class="trace-action-desc">
-                      <strong>جلب التعليمة الثالثة:</strong> المعالج يقرأ محتوى الذاكرة عند العنوان <span class="mono">302</span> (وهو <span class="mono">2941</span>) ويضعه في الـ <span class="mono">IR</span>، ويزود الـ <span class="mono">PC</span> ليصبح <span class="mono">303</span>.
-                    </p>
-                    <div class="trace-regs-snapshot">
-                      <div class="trace-reg-row"><span>PC:</span> <strong class="mono" style="color:var(--accent-amber);">303</strong> (زاد بواحد)</div>
-                      <div class="trace-reg-row"><span>IR:</span> <strong class="mono" style="color:var(--accent-cyan);">2941</strong></div>
-                      <div class="trace-reg-row"><span>AC:</span> <strong class="mono">0005</strong></div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Step 6 -->
-                <div class="trace-step-card execute">
-                  <div class="trace-step-header">
-                    <span class="trace-badge execute">STEP 6 // EXECUTE</span>
-                    <span class="mono" style="font-size: 0.8rem; color: var(--accent-cyan);">Opcode: 2 (Store)</span>
-                  </div>
-                  <div class="trace-step-body">
-                    <p class="trace-action-desc">
-                      <strong>تنفيذ Store AC:</strong> الكود <span class="mono">2</span> يعني خزّن محتوى الـ AC في الذاكرة. المعالج يأخذ القيمة <span class="mono">0005</span> من الـ AC ويكتبها في عنوان الذاكرة <span class="mono">941</span> (مستبدلاً القيمة القديمة 0002).
-                    </p>
-                    <div class="trace-regs-snapshot">
-                      <div class="trace-reg-row"><span>PC:</span> <strong class="mono">303</strong></div>
-                      <div class="trace-reg-row"><span>IR:</span> <strong class="mono">2941</strong></div>
-                      <div class="trace-reg-row"><span>Memory[941]:</span> <strong class="mono" style="color:var(--accent-emerald);">0005</strong> (تم التخزين بنجاح)</div>
-                    </div>
+                  <div style="background: rgba(0,0,0,0.25); padding: 0.85rem; border-radius: 8px;">
+                    <span style="font-weight: 800; color: var(--accent-emerald);">2. خريطة الذاكرة الابتدائية (Memory Map in Hex):</span>
+                    <ul style="margin-top: 0.5rem; padding-right: 1.2rem; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.8;">
+                      <li>Mem[215] = <strong>3400</strong> (أمر: Load AC from 400)</li>
+                      <li>Mem[216] = <strong>7401</strong> (أمر: Add to AC from 401)</li>
+                      <li>Mem[217] = <strong>4401</strong> (أمر: Store AC to 401)</li>
+                      <li>Mem[400] = <strong>0012</strong> (بيانات: الرقم 12 بالهيكسا)</li>
+                      <li>Mem[401] = <strong>1008</strong> (بيانات: الرقم 1008 بالهيكسا)</li>
+                    </ul>
                   </div>
                 </div>
               </div>
 
-              <!-- Golden Rules for Tracing -->
-              <div class="exam-trap-box" style="margin-top: 1.5rem;">
-                <div class="exam-trap-title">🎯 القواعد الذهبية الثلاث لحل أي مسألة تتبع (Trace) في الامتحان بدون غلطة</div>
-                <ul class="exam-trap-list">
-                  <li><strong>القاعدة 1 (الـ PC يزيد في الـ Fetch):</strong> أول ما تنقل كود التعليمة من عنوان الرام إلى الـ IR، زوّد الـ PC بواحد فوراً قبل ما تبدأ تفكر في التنفيذ.</li>
-                  <li><strong>القاعدة 2 (فك الكود هكسا):</strong> الرقم الأول على الشمال هو كود العملية (1 = Load, 2 = Store, 5 = Add)، والثلاثة أرقام الباقية هي عنوان خانة الرام المستهدفة.</li>
-                  <li><strong>القاعدة 3 (حسابات الـ AC):</strong> الـ AC هو الصندوق الوحيد اللي بيتغير فيه الحسابات الرياضية أثناء التنفيذ.</li>
-                </ul>
+              <!-- Interactive Simulator: sim-ch3-trace-exec -->
+              <div class="sim-wrapper-box" data-sim-target="sim-ch3-trace-exec" style="margin-top: 1.5rem;">
+                <div class="sim-header-row">
+                  <div class="sim-title-group">
+                    <span class="mono sim-badge">SIMULATOR // FIGURE 3.5 &amp; SHEET 3.8</span>
+                    <h3 class="sim-title">مشغل تتبع البرنامج التفاعلي خطوة بخطوة (Step-by-Step Player)</h3>
+                  </div>
+                  <div class="sim-controls-toolbar">
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">Step 1: Fetch 215</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">Step 2: Load 400</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">Step 3: Fetch 216</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="3">Step 4: Add 401</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="4">Step 5: Fetch 217</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="5">Step 6: Store 401</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>تشغيل تلقائي ⏵</button>
+                  </div>
+                </div>
+
+                <div class="sim-display-screen">
+                  <div class="sim-step-details-card">
+                    <div class="sim-step-header">
+                      <span class="sim-active-num mono">01</span>
+                      <h4 class="sim-active-title">الخطوة 1 (Cycle 1 - Fetch): جلب التعليمة الأولى من العنوان 215</h4>
+                    </div>
+                    <div class="sim-active-route mono">Mem[215] = 3400H ──► IR = 3400H | PC = 215 + 1 = 216H | AC = 0000H</div>
+                    <div class="sim-active-payload">📥 Step 1 (Fetch 1): قراءة 3400 من العنوان 215 إلى IR، وزيادة PC فوراً ليصبح 216</div>
+                    <p class="sim-active-desc">البداية كانت PC = 215. يذهب المعالج للعنوان 215 فيقرأ الكود 3400 ويضعه في IR، ويزيد الـ PC بواحد فوراً في مرحلة الـ Fetch ليصبح PC = 216، بينما يظل AC = 0000.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- The Detailed 6 Steps Breakdown in ASCII & Cards -->
+              <div style="margin-top: 1.5rem;">
+                <h3 style="font-size: 1.15rem; color: #fff; font-weight: 800; margin-bottom: 0.75rem;">
+                  📖 الخطوات الستة للمحاكي بالتفصيل المعماري الكامل (سلايد 14 إلى 16):
+                </h3>
+
+                <!-- STEP 1 -->
+                <div class="trace-step-card" style="margin-bottom: 1rem; border: 1px solid rgba(56, 189, 248, 0.3);">
+                  <div class="trace-step-header" style="background: rgba(56, 189, 248, 0.1);">
+                    <span class="mono" style="font-weight: 800; color: var(--accent-cyan);">STEP 1: Fetch Cycle for Address 215 (دورة الجلب الأولى)</span>
+                    <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">CYCLE 1 // FETCH</span>
+                  </div>
+                  <div style="padding: 1rem;">
+                    <p><strong>• Action:</strong></p>
+                    <ol style="margin-top: 0.35rem; padding-right: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                      <li>المعالج ينظر للمسجل PC فيجد العنوان <strong>215H</strong>.</li>
+                      <li>يتم جلب الكود <strong>3400H</strong> من الخانة 215H وتخزينه في مسجل التعليمة IR.</li>
+                      <li>يتم زيادة عداد البرنامج تلقائياً: <span class="mono">PC = 215H + 1 = 216H</span>.</li>
+                    </ol>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.75rem; font-family: var(--font-mono); font-size: 0.9rem;">
+                      <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); padding: 0.35rem 0.65rem; border-radius: 4px;">PC: 216H (تم تحديثه)</span>
+                      <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); padding: 0.35rem 0.65rem; border-radius: 4px;">IR: 3400H (تم تحميله)</span>
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">AC: 0000H (بدون تغيير)</span>
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">Memory State: لا تغيير</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="trace-step-card" style="margin-bottom: 1rem; border: 1px solid rgba(245, 158, 11, 0.3);">
+                  <div class="trace-step-header" style="background: rgba(245, 158, 11, 0.1);">
+                    <span class="mono" style="font-weight: 800; color: var(--accent-amber);">STEP 2: Execute Cycle (Load AC from Address 400)</span>
+                    <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">CYCLE 1 // EXECUTE</span>
+                  </div>
+                  <div style="padding: 1rem;">
+                    <p><strong>• Action:</strong></p>
+                    <ol style="margin-top: 0.35rem; padding-right: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                      <li>فك شفرة التعليمة في IR (3400H):
+                        <ul>
+                          <li><span class="mono">Opcode = 3H</span> ===&gt; <strong>Load AC from Memory</strong>.</li>
+                          <li><span class="mono">Address = 400H</span> ===&gt; العنوان المستهدف.</li>
+                        </ul>
+                      </li>
+                      <li>يذهب المعالج للخانة 400H فيجد القيمة <strong>0012H</strong>.</li>
+                      <li>يتم تحميل القيمة 0012H داخل مسجل التراكم AC.</li>
+                    </ol>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.75rem; font-family: var(--font-mono); font-size: 0.9rem;">
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">PC: 216H</span>
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">IR: 3400H</span>
+                      <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); padding: 0.35rem 0.65rem; border-radius: 4px;">AC: 0012H (تم تحميل البيانات بنجاح)</span>
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">Memory: (400H = 0012H, 401H = 1008H)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="trace-step-card" style="margin-bottom: 1rem; border: 1px solid rgba(56, 189, 248, 0.3);">
+                  <div class="trace-step-header" style="background: rgba(56, 189, 248, 0.1);">
+                    <span class="mono" style="font-weight: 800; color: var(--accent-cyan);">STEP 3: Fetch Cycle for Address 216 (دورة الجلب الثانية)</span>
+                    <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">CYCLE 2 // FETCH</span>
+                  </div>
+                  <div style="padding: 1rem;">
+                    <p><strong>• Action:</strong></p>
+                    <ol style="margin-top: 0.35rem; padding-right: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                      <li>المعالج ينظر للمسجل PC فيجد العنوان <strong>216H</strong>.</li>
+                      <li>يتم جلب الكود <strong>7401H</strong> من الخانة 216H ووضعه في مسجل IR.</li>
+                      <li>يتم زيادة عداد البرنامج تلقائياً: <span class="mono">PC = 216H + 1 = 217H</span>.</li>
+                    </ol>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.75rem; font-family: var(--font-mono); font-size: 0.9rem;">
+                      <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); padding: 0.35rem 0.65rem; border-radius: 4px;">PC: 217H (تم تحديثه)</span>
+                      <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); padding: 0.35rem 0.65rem; border-radius: 4px;">IR: 7401H (تم تحميله)</span>
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">AC: 0012H (محتفظ بقيمته السابقة)</span>
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">Memory State: لا تغيير</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- STEP 4 -->
+                <div class="trace-step-card" style="margin-bottom: 1rem; border: 1px solid rgba(16, 185, 129, 0.3);">
+                  <div class="trace-step-header" style="background: rgba(16, 185, 129, 0.1);">
+                    <span class="mono" style="font-weight: 800; color: var(--accent-emerald);">STEP 4: Execute Cycle (Add Address 401 to AC)</span>
+                    <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">CYCLE 2 // EXECUTE</span>
+                  </div>
+                  <div style="padding: 1rem;">
+                    <p><strong>• Action:</strong></p>
+                    <ol style="margin-top: 0.35rem; padding-right: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                      <li>فك شفرة التعليمة في IR (7401H):
+                        <ul>
+                          <li><span class="mono">Opcode = 7H</span> ===&gt; <strong>Add to AC from Memory</strong>.</li>
+                          <li><span class="mono">Address = 401H</span> ===&gt; العنوان المستهدف.</li>
+                        </ul>
+                      </li>
+                      <li>يذهب المعالج للخانة 401H فيجد القيمة <strong>1008H</strong>.</li>
+                      <li>تجري وحدة الـ ALU عملية جمع بنظام الهيكسا:
+                        <div style="font-family: var(--font-mono); background: rgba(0,0,0,0.3); padding: 0.5rem 1rem; border-radius: 6px; width: fit-content; margin: 0.5rem 0;">
+                          &nbsp;&nbsp;0012H<br>
+                          + 1008H<br>
+                          -------<br>
+                          &nbsp;&nbsp;<strong>101AH</strong> &nbsp;&nbsp;(2 + 8 = 10 بالعشري، وتكتب A بنظام الهيكسا!)
+                        </div>
+                      </li>
+                      <li>يتم تخزين الناتج <strong>101AH</strong> داخل مسجل AC.</li>
+                    </ol>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.75rem; font-family: var(--font-mono); font-size: 0.9rem;">
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">PC: 217H</span>
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">IR: 7401H</span>
+                      <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); padding: 0.35rem 0.65rem; border-radius: 4px;">AC: 101AH (القيمة المجمعة الجديدة)</span>
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">Memory State: لا تغيير</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- STEP 5 -->
+                <div class="trace-step-card" style="margin-bottom: 1rem; border: 1px solid rgba(56, 189, 248, 0.3);">
+                  <div class="trace-step-header" style="background: rgba(56, 189, 248, 0.1);">
+                    <span class="mono" style="font-weight: 800; color: var(--accent-cyan);">STEP 5: Fetch Cycle for Address 217 (دورة الجلب الثالثة)</span>
+                    <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">CYCLE 3 // FETCH</span>
+                  </div>
+                  <div style="padding: 1rem;">
+                    <p><strong>• Action:</strong></p>
+                    <ol style="margin-top: 0.35rem; padding-right: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                      <li>المعالج ينظر للمسجل PC فيجد العنوان <strong>217H</strong>.</li>
+                      <li>يتم جلب الكود <strong>4401H</strong> من الخانة 217H ووضعه في مسجل IR.</li>
+                      <li>يتم زيادة عداد البرنامج تلقائياً: <span class="mono">PC = 217H + 1 = 218H</span>.</li>
+                    </ol>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.75rem; font-family: var(--font-mono); font-size: 0.9rem;">
+                      <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); padding: 0.35rem 0.65rem; border-radius: 4px;">PC: 218H (تم تحديثه)</span>
+                      <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); padding: 0.35rem 0.65rem; border-radius: 4px;">IR: 4401H (تم تحميله)</span>
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">AC: 101AH (بدون تغيير)</span>
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">Memory State: لا تغيير</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- STEP 6 -->
+                <div class="trace-step-card" style="margin-bottom: 1rem; border: 1px solid rgba(236, 72, 153, 0.3);">
+                  <div class="trace-step-header" style="background: rgba(236, 72, 153, 0.1);">
+                    <span class="mono" style="font-weight: 800; color: #ec4899;">STEP 6: Execute Cycle (Store AC to Address 401)</span>
+                    <span class="mono" style="font-size: 0.75rem; color: var(--text-muted);">CYCLE 3 // EXECUTE</span>
+                  </div>
+                  <div style="padding: 1rem;">
+                    <p><strong>• Action:</strong></p>
+                    <ol style="margin-top: 0.35rem; padding-right: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
+                      <li>فك شفرة التعليمة في IR (4401H):
+                        <ul>
+                          <li><span class="mono">Opcode = 4H</span> ===&gt; <strong>Store AC to Memory</strong>.</li>
+                          <li><span class="mono">Address = 401H</span> ===&gt; العنوان المستهدف للكتابة.</li>
+                        </ul>
+                      </li>
+                      <li>يأخذ المعالج القيمة الحالية في AC (وهي <strong>101AH</strong>) ويكتبها في خانة الذاكرة 401H.</li>
+                      <li>يتم استبدال ومسح القيمة القديمة (1008H) وتصبح القيمة الجديدة (101AH).</li>
+                      <li><strong>مسجل AC يظل محتفظاً بقيمته 101AH دون أي مسح أو تصفير!</strong></li>
+                    </ol>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.75rem; font-family: var(--font-mono); font-size: 0.9rem;">
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">PC: 218H</span>
+                      <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 0.35rem 0.65rem; border-radius: 4px;">IR: 4401H</span>
+                      <span class="badge" style="background: rgba(236, 72, 153, 0.15); color: #ec4899; padding: 0.35rem 0.65rem; border-radius: 4px;">AC: 101AH (ثابت دون تصفير)</span>
+                      <span class="badge" style="background: rgba(236, 72, 153, 0.15); color: #ec4899; padding: 0.35rem 0.65rem; border-radius: 4px;">Mem[401]: 101AH (OVERWRITTEN!)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Summary Register Snapshot Table -->
+              <div style="margin-top: 1.5rem;">
+                <h3 style="font-size: 1.15rem; color: var(--accent-cyan); font-weight: 800; margin-bottom: 0.75rem;">
+                  📊 جدول ملخص لقطات المسجلات عبر الخطوات الست (Register Snapshots Master Table):
+                </h3>
+                <div style="overflow-x: auto;">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: center; background: var(--bg-surface-1); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                    <thead>
+                      <tr style="background: rgba(255,255,255,0.05); border-bottom: 2px solid var(--border-color);">
+                        <th style="padding: 0.75rem; color: #fff;">الخطوة (Step)</th>
+                        <th style="padding: 0.75rem; color: var(--accent-cyan);">نوع المرحلة</th>
+                        <th style="padding: 0.75rem; color: var(--accent-cyan); font-family: var(--font-mono);">PC</th>
+                        <th style="padding: 0.75rem; color: var(--accent-cyan); font-family: var(--font-mono);">IR</th>
+                        <th style="padding: 0.75rem; color: var(--accent-cyan); font-family: var(--font-mono);">AC</th>
+                        <th style="padding: 0.75rem; color: var(--accent-emerald); font-family: var(--font-mono);">Mem[400]</th>
+                        <th style="padding: 0.75rem; color: var(--accent-emerald); font-family: var(--font-mono);">Mem[401]</th>
+                      </tr>
+                    </thead>
+                    <tbody style="font-family: var(--font-mono);">
+                      <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.75rem; font-weight: 700;">Initial</td>
+                        <td style="padding: 0.75rem; color: var(--text-muted); font-family: var(--font-ar);">البداية</td>
+                        <td style="padding: 0.75rem;">215</td>
+                        <td style="padding: 0.75rem; color: var(--text-muted);">----</td>
+                        <td style="padding: 0.75rem;">0000</td>
+                        <td style="padding: 0.75rem;">0012</td>
+                        <td style="padding: 0.75rem;">1008</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--border-color); background: rgba(56, 189, 248, 0.03);">
+                        <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-cyan);">Step 1</td>
+                        <td style="padding: 0.75rem; color: var(--accent-cyan); font-family: var(--font-ar);">Fetch 215</td>
+                        <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-cyan);">216</td>
+                        <td style="padding: 0.75rem; font-weight: 700;">3400</td>
+                        <td style="padding: 0.75rem;">0000</td>
+                        <td style="padding: 0.75rem;">0012</td>
+                        <td style="padding: 0.75rem;">1008</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--border-color); background: rgba(245, 158, 11, 0.03);">
+                        <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-amber);">Step 2</td>
+                        <td style="padding: 0.75rem; color: var(--accent-amber); font-family: var(--font-ar);">Execute Load 400</td>
+                        <td style="padding: 0.75rem;">216</td>
+                        <td style="padding: 0.75rem;">3400</td>
+                        <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-amber);">0012</td>
+                        <td style="padding: 0.75rem;">0012</td>
+                        <td style="padding: 0.75rem;">1008</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--border-color); background: rgba(56, 189, 248, 0.03);">
+                        <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-cyan);">Step 3</td>
+                        <td style="padding: 0.75rem; color: var(--accent-cyan); font-family: var(--font-ar);">Fetch 216</td>
+                        <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-cyan);">217</td>
+                        <td style="padding: 0.75rem; font-weight: 700;">7401</td>
+                        <td style="padding: 0.75rem;">0012</td>
+                        <td style="padding: 0.75rem;">0012</td>
+                        <td style="padding: 0.75rem;">1008</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--border-color); background: rgba(16, 185, 129, 0.03);">
+                        <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-emerald);">Step 4</td>
+                        <td style="padding: 0.75rem; color: var(--accent-emerald); font-family: var(--font-ar);">Execute Add 401</td>
+                        <td style="padding: 0.75rem;">217</td>
+                        <td style="padding: 0.75rem;">7401</td>
+                        <td style="padding: 0.75rem; font-weight: 800; color: var(--accent-emerald);">101A</td>
+                        <td style="padding: 0.75rem;">0012</td>
+                        <td style="padding: 0.75rem;">1008</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--border-color); background: rgba(56, 189, 248, 0.03);">
+                        <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-cyan);">Step 5</td>
+                        <td style="padding: 0.75rem; color: var(--accent-cyan); font-family: var(--font-ar);">Fetch 217</td>
+                        <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-cyan);">218</td>
+                        <td style="padding: 0.75rem; font-weight: 700;">4401</td>
+                        <td style="padding: 0.75rem;">101A</td>
+                        <td style="padding: 0.75rem;">0012</td>
+                        <td style="padding: 0.75rem;">1008</td>
+                      </tr>
+                      <tr style="background: rgba(236, 72, 153, 0.05);">
+                        <td style="padding: 0.75rem; font-weight: 700; color: #ec4899;">Step 6</td>
+                        <td style="padding: 0.75rem; color: #ec4899; font-family: var(--font-ar);">Execute Store 401</td>
+                        <td style="padding: 0.75rem;">218</td>
+                        <td style="padding: 0.75rem;">4401</td>
+                        <td style="padding: 0.75rem; font-weight: 800; color: #ec4899;">101A</td>
+                        <td style="padding: 0.75rem;">0012</td>
+                        <td style="padding: 0.75rem; font-weight: 800; color: #ec4899;">101A ⚠️</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </section>
 
-            <!-- 06. INSTANT EXAM BUZZWORDS (كلمات السر لحل أسئلة الـ MCQs في ثانية) -->
+            <!-- 06. COMPONENT 5: كروت مصائد الامتحانات (Exam Traps Callouts) -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">06</span>
-                <h2 class="exp-sec-title">INSTANT EXAM BUZZWORDS (كلمات السر لحل أسئلة الـ MCQs في ثانية)</h2>
+                <h2 class="exp-sec-title">COMPONENT 5: كروت مصائد الامتحانات (Exam Traps Callouts)</h2>
               </div>
 
-              <!-- Matrix 1: Fetch vs Execute States -->
-              <div class="buzzwords-matrix" style="margin-bottom: 1.5rem;">
-                <div class="buzz-col org-col">
-                  <div class="buzz-target" style="color: var(--accent-amber);">
-                    <span>لو شفت في السؤال 👇</span>
-                    <span>===&gt; FETCH PHASE &amp; STATES</span>
+              <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <!-- Trap 1 -->
+                <div class="exam-trap-box" style="margin-top: 0;">
+                  <div class="exam-trap-header">
+                    <span class="exam-trap-badge">⚠️ تريكة 1 // توقيت زيادة عداد البرنامج</span>
                   </div>
-                  <div class="buzz-tags">
-                    <span class="buzz-tag">iac (Instruction Address Calc)</span>
-                    <span class="buzz-tag">if (Instruction Fetch)</span>
-                    <span class="buzz-tag">iod (Instruction Operation Decode)</span>
-                    <span class="buzz-tag">Reads PC into IR</span>
-                    <span class="buzz-tag">PC = PC + 1 increment</span>
-                    <span class="buzz-tag">Loads instruction word</span>
-                  </div>
+                  <h4 style="font-size: 1rem; color: #fff; margin-top: 0.5rem;">PC Increment Timing</h4>
+                  <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.35rem;">
+                    <strong>السؤال الشائع:</strong> <em>"In which phase is the Program Counter incremented?"</em><br>
+                    <strong>الإجابة القاطعة:</strong> يتم زيادة الـ PC في نهاية مرحلة <strong>الجلب (FETCH CYCLE)</strong> وليس أثناء مرحلة التنفيذ (Execute). المعالج يجهز عنوان التعليمة التالية فور جلب الحالية وقبل تنفيذها!
+                  </p>
                 </div>
 
-                <div class="buzz-col arch-col">
-                  <div class="buzz-target" style="color: var(--accent-cyan);">
-                    <span>لو شفت في السؤال 👇</span>
-                    <span>===&gt; EXECUTE PHASE &amp; STATES</span>
+                <!-- Trap 2 -->
+                <div class="exam-trap-box" style="margin-top: 0;">
+                  <div class="exam-trap-header">
+                    <span class="exam-trap-badge">⚠️ تريكة 2 // مصيدة جمع الهيكسا</span>
                   </div>
-                  <div class="buzz-tags">
-                    <span class="buzz-tag">oac (Operand Address Calc)</span>
-                    <span class="buzz-tag">of (Operand Fetch)</span>
-                    <span class="buzz-tag">do (Data Operation in ALU)</span>
-                    <span class="buzz-tag">os (Operand Store)</span>
-                    <span class="buzz-tag">AC Accumulator manipulation</span>
-                    <span class="buzz-tag">Multiple operands loop</span>
+                  <h4 style="font-size: 1rem; color: #fff; margin-top: 0.5rem;">Hexadecimal Addition Trap</h4>
+                  <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.35rem;">
+                    <strong>الخطأ القاتل:</strong> في الخطوة الرابعة عند جمع <span class="mono">0012<sub>16</sub> + 1008<sub>16</sub></span>.<br>
+                    الطلاب بيكتبوها 1020 أو 1010! افتكر دايماً إن <span class="mono">2 + 8 = 10</span> بالعشري، وفي الهيكسا الرقم 10 يُكتب <strong>'A'</strong>، فالناتج الصحيح هو <strong>101A</strong>!
+                  </p>
+                </div>
+
+                <!-- Trap 3 -->
+                <div class="exam-trap-box" style="margin-top: 0;">
+                  <div class="exam-trap-header">
+                    <span class="exam-trap-badge">⚠️ تريكة 3 // سلوك أمر التخزين</span>
                   </div>
+                  <h4 style="font-size: 1rem; color: #fff; margin-top: 0.5rem;">Store Instruction Behavior</h4>
+                  <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.35rem;">
+                    <strong>السؤال الشائع:</strong> هل أمر الـ <span class="mono">STORE (Opcode 4)</span> بيمسح أو يصفر الـ AC؟<br>
+                    <strong>الإجابة القاطعة:</strong> أمر التخزين ينسخ القيمة فقط من AC إلى الرام، و<strong>لا يصفر المسجل AC إطلاقاً</strong>؛ بل يظل AC محتفظاً بنفس قيمته (101A) كما هي دون أي تغيير!
+                  </p>
+                </div>
+
+                <!-- Trap 4 -->
+                <div class="exam-trap-box" style="margin-top: 0;">
+                  <div class="exam-trap-header">
+                    <span class="exam-trap-badge">⚠️ تريكة 4 // تعدد المعاملات</span>
+                  </div>
+                  <h4 style="font-size: 1rem; color: #fff; margin-top: 0.5rem;">Multiple Operands Loop</h4>
+                  <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.35rem;">
+                    <strong>السؤال الشائع:</strong> هل يمكن لتعليمة واحدة جلب أكثر من معامل من الذاكرة؟<br>
+                    <strong>الإجابة القاطعة:</strong> نعم؛ بدليل وجود مسار راجع في مخطط الحالات من <span class="mono">Data Operation (do)</span> عائداً إلى <span class="mono">Operand Address Calculation (oac)</span> لتكرار جلب المعامل الثاني والثالث!
+                  </p>
                 </div>
               </div>
+            </section>
 
-              <!-- Matrix 2: Opcode vs Address Bits -->
+            <!-- 07. INSTANT EXAM BUZZWORDS -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">07</span>
+                <h2 class="exp-sec-title">⚡ INSTANT EXAM BUZZWORDS (كلمات السر لحل أسئلة الـ MCQs في ثانية)</h2>
+              </div>
+
               <div class="buzzwords-matrix">
-                <div class="buzz-col org-col">
-                  <div class="buzz-target" style="color: var(--accent-amber);">
-                    <span>لو شفت في السؤال 👇</span>
-                    <span>===&gt; 4-BIT OPCODE FIELD</span>
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Processor reads instruction from memory at PC and increments PC"</p>
                   </div>
-                  <div class="buzz-tags">
-                    <span class="buzz-tag">4 bits length</span>
-                    <span class="buzz-tag">16 maximum operations (2^4)</span>
-                    <span class="buzz-tag">Machine operation type</span>
-                    <span class="buzz-tag">Decoded by Control Unit</span>
-                    <span class="buzz-tag">0001 (Load), 0010 (Store), 0011 (Add)</span>
+                  <div class="buzz-response">
+                    <span class="buzz-tag cyan">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-cyan); font-size: 1.05rem;">FETCH CYCLE (دورة الجلب)</strong>
                   </div>
                 </div>
 
-                <div class="buzz-col arch-col">
-                  <div class="buzz-target" style="color: var(--accent-cyan);">
-                    <span>لو شفت في السؤال 👇</span>
-                    <span>===&gt; 12-BIT ADDRESS FIELD</span>
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Decodes opcode and activates execution hardware logic"</p>
                   </div>
-                  <div class="buzz-tags">
-                    <span class="buzz-tag">12 bits length</span>
-                    <span class="buzz-tag">4096 words addressable (2^12)</span>
-                    <span class="buzz-tag">4K memory locations</span>
-                    <span class="buzz-tag">Holds operand location</span>
-                    <span class="buzz-tag">Copied to MAR / PC</span>
+                  <div class="buzz-response">
+                    <span class="buzz-tag cyan">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-cyan); font-size: 1.05rem;">EXECUTE CYCLE (دورة التنفيذ)</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"State that determines the memory address of the next instruction"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag amber">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-amber); font-size: 1.05rem;">iac (Instruction Address Calculation)</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"State that analyzes the opcode to determine required operation"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag amber">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-amber); font-size: 1.05rem;">iod (Instruction Operation Decoding)</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Hypothetical machine 16-bit instruction: opcode width and memory address width"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag emerald">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-emerald); font-size: 1.05rem;">4-bit Opcode (16 operations) &amp; 12-bit Address (4096 words)</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"In the 3-cycle execution trace, what is the final value of AC and Mem[401]?"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag pink">الإجابة فوراً 👈</span>
+                    <strong style="color: #ec4899; font-size: 1.05rem;">AC = 101AH &amp; Mem[401] = 101AH</strong>
                   </div>
                 </div>
               </div>
             </section>
 
-            <!-- 07. POPULAR EXAM TRUE / FALSE DRILLS -->
+            <!-- 08. POPULAR EXAM TRUE / FALSE DRILLS -->
             <section class="exp-section">
               <div class="exp-section-header">
-                <span class="exp-sec-num">07</span>
+                <span class="exp-sec-num">08</span>
                 <h2 class="exp-sec-title">POPULAR EXAM TRUE / FALSE DRILLS (أسئلة صح وغلط المشهورة — تفاعلية)</h2>
               </div>
 
               <div class="tf-drills-grid">
-                <div class="tf-card">
-                  <p class="tf-question">[Q1] "In the fetch cycle, the processor reads the instruction from the memory address specified by the Instruction Register (IR)."</p>
-                  <div class="tf-answer-row">
-                    <span class="tf-badge false">Answer: FALSE (✖)</span>
-                    <span>(بالعامية: خطأ فادح! المعالج بيقرأ التعليمة من العنوان المحدد في <strong>Program Counter (PC)</strong> مش الـ IR؛ الـ IR هو اللي بنحط فيه الكود بعد ما نجيبه!).</span>
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q1:</strong> The Program Counter (PC) is incremented during the Execute Cycle after the operation completes.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge false">FALSE ❌</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> غلط تماماً! الـ PC بيزيد بواحد فوراً أثناء مرحلة الـ <strong>Fetch</strong> عشان يجهز للأمر اللي بعده قبل ما نبدأ ننفذ أصلاً.
+                    </span>
                   </div>
                 </div>
 
-                <div class="tf-card">
-                  <p class="tf-question">[Q2] "The Program Counter (PC) is incremented immediately during the fetch cycle, before the instruction is executed."</p>
-                  <div class="tf-answer-row">
-                    <span class="tf-badge true">Answer: TRUE (✔)</span>
-                    <span>(بالعامية: صح جداً! الـ PC بيزيد فور قراءة التعليمة أثناء الـ Fetch cycle ليجهز للأمر التالي، ولا ينتظر انتهاء التنفيذ).</span>
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q2:</strong> A single instruction execution cycle may involve fetching more than one operand from memory.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge true">TRUE ✅</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> صح 100%! بدليل وجود مسار راجع في مخطط الحالات من (do) عائداً إلى (oac) لجلب معاملات إضافية لو التعليمة محتاجة أكتر من رقم.
+                    </span>
                   </div>
                 </div>
 
-                <div class="tf-card">
-                  <p class="tf-question">[Q3] "A 4-bit opcode field allows a processor architecture to support at most 16 distinct machine instructions."</p>
-                  <div class="tf-answer-row">
-                    <span class="tf-badge true">Answer: TRUE (✔)</span>
-                    <span>(بالعامية: صح تماماً! بالقاعدة الرياضية: $2^4 = 16$ تعليمة مختلفة كحد أقصى).</span>
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q3:</strong> Executing a STORE instruction (e.g., Opcode 0100) automatically resets the Accumulator (AC) to 0000.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge false">FALSE ❌</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> غلط! أمر التخزين بينسخ محتوى الـ AC للرام، والـ AC يفضل محتفظ بقيمته زي ما هي من غير تصفير.
+                    </span>
                   </div>
                 </div>
 
-                <div class="tf-card">
-                  <p class="tf-question">[Q4] "In the instruction cycle state diagram (Figure 3.6), 'do' represents Device Output."</p>
-                  <div class="tf-answer-row">
-                    <span class="tf-badge false">Answer: FALSE (✖)</span>
-                    <span>(بالعامية: خطأ! الـ <span class="mono">do</span> اختصار لـ <strong>Data Operation</strong> يعني إجراء العملية الحسابية أو المنطقية، مش جهاز إخراج!).</span>
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q4:</strong> In the hypothetical machine of Chapter 3, an instruction format with 4-bit opcode allows up to 16 different operations.
                   </div>
-                </div>
-
-                <div class="tf-card">
-                  <p class="tf-question">[Q5] "The Accumulator (AC) is a processor register used to hold temporary results during arithmetic and logic execution."</p>
-                  <div class="tf-answer-row">
-                    <span class="tf-badge true">Answer: TRUE (✔)</span>
-                    <span>(بالعامية: صح جداً! الـ Accumulator هو مسودة المعالج الرئيسية اللي بيجمع ويحسب ويخزن فيها النواتج المؤقتة).</span>
-                  </div>
-                </div>
-
-                <div class="tf-card">
-                  <p class="tf-question">[Q6] "Every single machine instruction requires at least one memory reference during its execute cycle."</p>
-                  <div class="tf-answer-row">
-                    <span class="tf-badge false">Answer: FALSE (✖)</span>
-                    <span>(بالعامية: خطأ! في تعليمات زي <span class="mono">HALT</span> أو العمليات اللي بتتم بين السجلات الداخلية فقط مبتحتاجش أي زيارة للذاكرة في مرحلة التنفيذ).</span>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge true">TRUE ✅</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> صح لأن 2<sup>4</sup> = 16 أمراً مختلفاً.
+                    </span>
                   </div>
                 </div>
               </div>
             </section>
 
-            <!-- 08. SHEET 3: OFFICIAL MODEL ANSWERS -->
+            <!-- 09. COMPONENT 6: مركز إجابات الشيت الرسمي (Sheet 3 Official Solutions Hub) -->
             <section class="exp-section">
               <div class="exp-section-header">
-                <span class="exp-sec-num">08</span>
-                <h2 class="exp-sec-title">SHEET 3: OFFICIAL MODEL ANSWERS (أسئلة الشيت 3.4، 3.5، 3.8)</h2>
+                <span class="exp-sec-num">09</span>
+                <h2 class="exp-sec-title">COMPONENT 6: مركز إجابات الشيت الرسمي (Sheet 3 Official Solutions Hub — أسئلة 3.4، 3.5، 3.8)</h2>
               </div>
 
-              <div class="sheet-hub-wrap">
-                <!-- Q 3.4 -->
-                <div class="sheet-card" style="margin-bottom: 1.25rem;">
-                  <div class="sheet-q-box">
-                    <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.4 // SHEET 3</span>
-                    <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.02rem; margin-top: 0.35rem;" dir="ltr">
-                      "What general categories of actions may be specified by an instruction during its execution cycle?"
-                    </p>
-                  </div>
-                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
-                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (إجابة نموذجية للامتحان):</span>
-                    <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
-                      إخفاء / إظهار الإجابة للتسميع
-                    </button>
-                  </div>
-                  <div class="sheet-a-box" dir="ltr" style="text-align: left;">
-                    <ol style="font-family: var(--font-en); line-height: 1.85; padding-left: 1.25rem; margin: 0;">
-                      <li><strong>Processor - Memory:</strong> Data may be transferred from processor to memory or from memory to processor.</li>
-                      <li><strong>Processor - I/O:</strong> Data may be transferred to or from an external device by transferring between processor and an I/O module.</li>
-                      <li><strong>Data Processing:</strong> The processor may perform some arithmetic or logic operation on data.</li>
-                      <li><strong>Control:</strong> An instruction may specify that the sequence of execution be altered (e.g., jump, branch).</li>
-                    </ol>
-                  </div>
+              <!-- Accordion Item 1: Question 3.4 -->
+              <div class="sheet-card" style="margin-bottom: 1.25rem;">
+                <div class="sheet-q-box">
+                  <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.4 // SHEET 3</span>
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.05rem; margin-top: 0.35rem;">
+                    "Briefly describe the basic instruction cycle."
+                  </p>
                 </div>
 
-                <!-- Q 3.5 -->
-                <div class="sheet-card" style="margin-bottom: 1.25rem;">
-                  <div class="sheet-q-box">
-                    <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.5 // SHEET 3</span>
-                    <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.02rem; margin-top: 0.35rem;" dir="ltr">
-                      "In Figure 3.6, why can an instruction cycle have multiple operand fetch (of) and operand store (os) states?"
-                    </p>
-                  </div>
-                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
-                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (إجابة نموذجية للامتحان):</span>
-                    <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
-                      إخفاء / إظهار الإجابة للتسميع
-                    </button>
-                  </div>
-                  <div class="sheet-a-box" dir="ltr" style="text-align: left;">
-                    <p style="font-family: var(--font-en); line-height: 1.85; margin: 0;">
-                      An instruction may specify more than one operand (e.g., adding two memory operands <span class="mono">A + B</span>), which requires multiple <strong>operand fetch (of)</strong> operations. Similarly, an instruction may produce more than one result or operate on a sequence of data elements (such as vector or string operations), requiring multiple <strong>operand store (os)</strong> operations.
-                    </p>
-                  </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                  <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (الإجابة النموذجية):</span>
+                  <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; if(box.style.display==='none'){box.style.display='block'; this.innerText='إخفاء الإجابة للتسميع';} else {box.style.display='none'; this.innerText='إظهار الإجابة';}">إخفاء الإجابة للتسميع</button>
                 </div>
 
-                <!-- Q 3.8 -->
-                <div class="sheet-card">
-                  <div class="sheet-q-box">
-                    <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.8 // SHEET 3</span>
-                    <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.02rem; margin-top: 0.35rem;" dir="ltr">
-                      "Consider the hypothetical machine of Figure 3.4. Describe the sequence of execution for adding the contents of memory location 940 to memory location 941 and storing the result in 941."
+                <div class="sheet-ans-box" style="display: block;">
+                  <div class="en-def-box" style="margin-bottom: 0.75rem;">
+                    <p class="en-def-text">
+                      The basic instruction cycle consists of two repetitive primary phases:
                     </p>
-                  </div>
-                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
-                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (إجابة نموذجية للامتحان):</span>
-                    <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
-                      إخفاء / إظهار الإجابة للتسميع
-                    </button>
-                  </div>
-                  <div class="sheet-a-box" dir="ltr" style="text-align: left;">
-                    <ol style="font-family: var(--font-en); line-height: 1.85; padding-left: 1.25rem; margin: 0;">
-                      <li><strong>Step 1 (Fetch):</strong> Fetch instruction <span class="mono">1940</span> from memory location <span class="mono">300</span> into <span class="mono">IR</span>; increment <span class="mono">PC</span> to <span class="mono">301</span>.</li>
-                      <li><strong>Step 2 (Execute):</strong> Load the contents of memory location <span class="mono">940</span> (<span class="mono">0003</span>) into accumulator (<span class="mono">AC</span>).</li>
-                      <li><strong>Step 3 (Fetch):</strong> Fetch instruction <span class="mono">5941</span> from memory location <span class="mono">301</span> into <span class="mono">IR</span>; increment <span class="mono">PC</span> to <span class="mono">302</span>.</li>
-                      <li><strong>Step 4 (Execute):</strong> Add the contents of memory location <span class="mono">941</span> (<span class="mono">0002</span>) to <span class="mono">AC</span>; result in <span class="mono">AC</span> is <span class="mono">0005</span>.</li>
-                      <li><strong>Step 5 (Fetch):</strong> Fetch instruction <span class="mono">2941</span> from memory location <span class="mono">302</span> into <span class="mono">IR</span>; increment <span class="mono">PC</span> to <span class="mono">303</span>.</li>
-                      <li><strong>Step 6 (Execute):</strong> Store the contents of <span class="mono">AC</span> (<span class="mono">0005</span>) into memory location <span class="mono">941</span>.</li>
+                    <ol style="margin-top: 0.5rem; padding-left: 1.2rem; font-family: var(--font-en); line-height: 1.7;">
+                      <li><strong>Fetch Cycle:</strong> The processor reads the instruction from the memory location indicated by the Program Counter (PC) and loads it into the Instruction Register (IR). The PC is automatically incremented to point to the next sequential instruction.</li>
+                      <li><strong>Execute Cycle:</strong> The control unit decodes the binary opcode in the IR and executes the required operation (such as processor-memory transfer, processor-I/O transfer, data processing in the ALU, or control branching).</li>
                     </ol>
+                  </div>
+                  <div class="balady-box">
+                    <strong>الترجمة والشرح بالعامية للتسميع:</strong>
+                    دورة التعليمة البسيطة بتتكون من مرحلتين رئيسيتين بيتكرروا:
+                    1. <strong>دورة الجلب (Fetch):</strong> المعالج يقرأ التعليمة من عنوان الرام الموجود في الـ PC ويحطها في الـ IR، ويزود الـ PC بواحد تلقائياً.
+                    2. <strong>دورة التنفيذ (Execute):</strong> وحدة التحكم تفك شفرة الـ Opcode في الـ IR وتنفذ العملية (نقل داتا للرام، تواصل مع I/O، حساب ومنطق في ALU، أو قفز Branch).
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion Item 2: Question 3.5 -->
+              <div class="sheet-card" style="margin-bottom: 1.25rem;">
+                <div class="sheet-q-box">
+                  <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.5 // SHEET 3</span>
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.05rem; margin-top: 0.35rem;">
+                    "Briefly describe what happens at each state of the Instruction Cycle State Diagram."
+                  </p>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                  <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (الإجابة النموذجية):</span>
+                  <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; if(box.style.display==='none'){box.style.display='block'; this.innerText='إخفاء الإجابة للتسميع';} else {box.style.display='none'; this.innerText='إظهار الإجابة';}">إخفاء الإجابة للتسميع</button>
+                </div>
+
+                <div class="sheet-ans-box" style="display: block;">
+                  <div class="en-def-box" style="margin-bottom: 0.75rem;">
+                    <ul style="padding-left: 1.2rem; font-family: var(--font-en); line-height: 1.8;">
+                      <li><strong>Instruction Address Calculation (iac):</strong> Determines the memory address of the next instruction to be executed.</li>
+                      <li><strong>Instruction Fetch (if):</strong> Reads the instruction from its memory location into the Instruction Register (IR).</li>
+                      <li><strong>Instruction Operation Decoding (iod):</strong> Decodes the opcode to determine the required operation and operand types.</li>
+                      <li><strong>Operand Address Calculation (oac):</strong> Calculates the effective memory or I/O address of the required operand.</li>
+                      <li><strong>Operand Fetch (of):</strong> Fetches the operand from memory or reads it from an I/O device into the CPU.</li>
+                      <li><strong>Data Operation (do):</strong> Performs the indicated arithmetic or logical operation within the ALU.</li>
+                      <li><strong>Operand Store (os):</strong> Writes the resulting computed operand into memory or sends it to an I/O peripheral.</li>
+                    </ul>
+                  </div>
+                  <div class="balady-box">
+                    <strong>ملخص الحالات بالعامية:</strong>
+                    حساب عنوان التعليمة (iac) ➔ جلب التعليمة للـ IR (if) ➔ فك الشفرة وتحديد العملية (iod) ➔ حساب عنوان المعامل (oac) ➔ جلب المعامل من الرام (of) ➔ إجراء العملية في الـ ALU (do) ➔ تخزين الناتج في الذاكرة (os).
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion Item 3: Question 3.8 -->
+              <div class="sheet-card" style="margin-bottom: 1.25rem;">
+                <div class="sheet-q-box">
+                  <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.8 // SHEET 3</span>
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.05rem; margin-top: 0.35rem;">
+                    "Consider a hypothetical machine with the following specifications:
+                    The instruction format is 16 bits (4 bits opcode, 12 bits address).
+                    CPU registers: PC, IR, AC.
+                    Opcodes: 0011 (3H) = Load AC; 0100 (4H) = Store AC; 0111 (7H) = Add to AC.
+                    Memory: 215: 3400, 216: 7401, 217: 4401, 400: 0012, 401: 1008.
+                    Initial: PC = 215H, AC = 0000H.
+                    Show contents of memory and CPU registers for 3 instruction cycles."
+                  </p>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                  <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (الإجابة النموذجية):</span>
+                  <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; if(box.style.display==='none'){box.style.display='block'; this.innerText='إخفاء الإجابة للتسميع';} else {box.style.display='none'; this.innerText='إظهار الإجابة';}">إخفاء الإجابة للتسميع</button>
+                </div>
+
+                <div class="sheet-ans-box" style="display: block;">
+                  <div class="balady-box" style="margin-bottom: 0.75rem;">
+                    <strong>خطوات الحل النموذجية المعتمدة في الامتحان:</strong>
+                    تم توثيق الخطوات الست الكاملة بالتفصيل في <strong>Component 4 (محاكي مسألة التتبع)</strong> وجدول لقطات المسجلات بالأعلى. الملخص النهائي لقيم المسجلات والذاكرة بنهاية الدورات الثلاث:
+                    <ul style="margin-top: 0.5rem; padding-right: 1.2rem; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.8;">
+                      <li>Final PC = <strong>218H</strong> (تمت زيادته 3 مرات في دورات الـ Fetch الثلاثة).</li>
+                      <li>Final IR = <strong>4401H</strong> (آخر تعليمة تم جلبها وفك شفرتها).</li>
+                      <li>Final AC = <strong>101AH</strong> (القيمة الناتجة من جمع 0012H + 1008H).</li>
+                      <li>Final Mem[400] = <strong>0012H</strong> (لم تتغير).</li>
+                      <li>Final Mem[401] = <strong>101AH</strong> (تم تعديلها وتخزين ناتج الـ AC بداخلها في الخطوة 6).</li>
+                    </ul>
                   </div>
                 </div>
               </div>
