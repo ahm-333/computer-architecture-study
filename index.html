@@ -38,7 +38,7 @@
           type="search"
           id="courseSearchInput"
           class="search-input"
-          placeholder="ابحث في الشرح (مثلاً: ISA, Transparent, IBM 370)..."
+          placeholder="ابحث في الشرح (مثلاً: ISA, ALU, Structure, Transparent)..."
           autocomplete="off"
         />
         <kbd class="search-kbd">/</kbd>
@@ -47,14 +47,14 @@
       <!-- 3-Mode Switcher (Dark | Light | Reading) & Progress -->
       <div class="top-actions">
         <div class="mode-switcher" role="group" aria-label="وضع العرض">
+          <button type="button" class="mode-btn" data-theme-mode="reading" title="وضع القراءة الورقي المريح للعين">
+            <span>📖 قراءة</span>
+          </button>
           <button type="button" class="mode-btn active" data-theme-mode="dark" title="الوضع الليلي الهندسي">
             <span>🌙 داكن</span>
           </button>
           <button type="button" class="mode-btn" data-theme-mode="light" title="الوضع النهاري الفاتح">
             <span>☀️ فاتح</span>
-          </button>
-          <button type="button" class="mode-btn" data-theme-mode="reading" title="مود القراءة الورقي المريح للعين">
-            <span>📖 قراءة</span>
           </button>
         </div>
 
@@ -69,6 +69,43 @@
   </header>
 
   <!-- ========================================================================
+       CHAPTER ENTRY MODE SELECTION MODAL (يظهر عند دخول الفصل لاختيار الوضع)
+       ======================================================================== -->
+  <div class="mode-modal-backdrop" id="modePromptModal" role="dialog" aria-modal="true" aria-labelledby="modeModalTitle">
+    <div class="mode-modal-card">
+      <span class="mode-modal-badge">STUDY ENVIRONMENT // إعداد جو المذاكرة</span>
+      <h2 class="mode-modal-title" id="modeModalTitle">اختار وضع المذاكرة المريح لعينك</h2>
+      <p class="mode-modal-subtitle">
+        تم تفعيل <strong>وضع القراءة الورقي</strong> تلقائياً لراحة العين، وتقدر تغيره في أي لحظة:
+      </p>
+
+      <div class="mode-choices-grid">
+        <button type="button" class="mode-choice-card selected" data-modal-mode="reading">
+          <span class="mode-choice-icon">📖</span>
+          <span class="mode-choice-name">وضع القراءة</span>
+          <span class="mode-choice-desc">الافتراضي • مريح للعين</span>
+        </button>
+
+        <button type="button" class="mode-choice-card" data-modal-mode="dark">
+          <span class="mode-choice-icon">🌙</span>
+          <span class="mode-choice-name">الوضع الداكن</span>
+          <span class="mode-choice-desc">ليلي هندسي هادئ</span>
+        </button>
+
+        <button type="button" class="mode-choice-card" data-modal-mode="light">
+          <span class="mode-choice-icon">☀️</span>
+          <span class="mode-choice-name">الوضع الفاتح</span>
+          <span class="mode-choice-desc">نهاري ساطع وواضح</span>
+        </button>
+      </div>
+
+      <button type="button" class="mode-modal-confirm" id="confirmModeModalBtn">
+        ابدأ قراءة الشرح الآن ←
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================
        VIEW 1: LANDING PAGE (HERO + CHAPTERS & PARTS MATRIX)
        ======================================================================== -->
   <main id="landingView" class="landing-view">
@@ -78,7 +115,7 @@
         <div class="hero-copy">
           <div class="sys-status-bar">
             <span class="status-dot"></span>
-            <span class="sys-status-text">CHAPTER 1 // PART 1 LIVE NOW + INTERACTIVE QUIZ</span>
+            <span class="sys-status-text">CHAPTER 1 // PART 1 &amp; PART 2 LIVE NOW + ENGLISH QUIZZES</span>
           </div>
 
           <h1 class="hero-title">
@@ -87,12 +124,16 @@
           </h1>
 
           <p class="hero-desc">
-            منصة مذاكرة مركزة بدون أي حشو: الشرح بالبلدي من الصفر + التعريفات الإنجليزية الرسمية + تريكات الامتحانات + حل أسئلة الشيت + كويز تفاعلي على كل جزء.
+            منصة مذاكرة مركزة بدون أي تشتيت: شرح مبسط وعميق من الصفر + التعريفات الإنجليزية الرسمية + تريكات الامتحانات + حل أسئلة الشيت + كويز تفاعلي بالإنجليزي على كل جزء.
           </p>
 
           <div class="hero-cta-row">
             <button type="button" class="primary-cta-btn" id="startPart1Btn">
-              <span>🔥 ابدأ مذاكرة Chapter 1 — Part 1 الآن</span>
+              <span>🔥 ابدأ Part 1: Arch vs. Org</span>
+              <span class="mono">←</span>
+            </button>
+            <button type="button" class="primary-cta-btn" id="startPart2Btn" style="background: var(--accent-amber);">
+              <span>⚡ ابدأ Part 2: Structure &amp; Function</span>
               <span class="mono">←</span>
             </button>
           </div>
@@ -108,7 +149,7 @@
               <div class="telemetry-label">الأجزاء الفرعية</div>
             </div>
             <div class="telemetry-box">
-              <div class="telemetry-val" id="statReadyCount">1 / 8</div>
+              <div class="telemetry-val" id="statReadyCount">2 / 8</div>
               <div class="telemetry-label">الأجزاء المشروحة حالياً</div>
             </div>
           </div>
@@ -117,47 +158,47 @@
         <!-- Left Column: Hardware Architecture Blueprint Schematic -->
         <aside class="schematic-panel" aria-label="مخطط معمارية الحاسب">
           <div class="schematic-header">
-            <span>FIG 1.1 // ARCHITECTURE VS. ORGANIZATION LAYERS</span>
-            <span>SYSTEM VIEW</span>
+            <span>FIG 1.1 // COMPUTER &amp; PROCESSOR STRUCTURE</span>
+            <span>HIERARCHICAL SYSTEM</span>
           </div>
 
           <div class="schematic-diagram">
             <div class="hw-row">
-              <!-- Architecture Block -->
+              <!-- CPU Block -->
               <div class="hw-block">
                 <div class="hw-block-title">
-                  <span>ARCHITECTURE (ISA)</span>
-                  <span>VISIBLE</span>
+                  <span>PROCESSOR (CPU)</span>
+                  <span>INTERNAL</span>
                 </div>
                 <div class="hw-sub-grid">
-                  <div class="hw-chip">Instruction Set</div>
-                  <div class="hw-chip">Data Bit-Width</div>
-                  <div class="hw-chip">Addressing Modes</div>
-                  <div class="hw-chip">I/O Mechanisms</div>
+                  <div class="hw-chip">Control Unit (CU)</div>
+                  <div class="hw-chip">ALU (Processing)</div>
+                  <div class="hw-chip">Registers</div>
+                  <div class="hw-chip">Internal CPU Bus</div>
                 </div>
               </div>
 
-              <!-- Organization Block -->
+              <!-- Computer Block -->
               <div class="hw-block">
                 <div class="hw-block-title" style="color: var(--accent-amber);">
-                  <span>ORGANIZATION (HW)</span>
-                  <span>TRANSPARENT</span>
+                  <span>COMPUTER SYSTEM</span>
+                  <span>TOP-LEVEL</span>
                 </div>
                 <div class="hw-sub-grid">
-                  <div class="hw-chip">Clock Speed (GHz)</div>
-                  <div class="hw-chip">Control Signals</div>
-                  <div class="hw-chip">Bus Widths</div>
-                  <div class="hw-chip">DRAM / SRAM Tech</div>
+                  <div class="hw-chip">Main Memory</div>
+                  <div class="hw-chip">I/O Modules</div>
+                  <div class="hw-chip">System Bus</div>
+                  <div class="hw-chip">4 Basic Functions</div>
                 </div>
               </div>
             </div>
 
             <!-- System Bus Connection -->
             <div class="system-bus-bar">
-              <span>⇄ IBM SYSTEM/370 PRINCIPLE</span>
+              <span>⇄ HIERARCHICAL ARCHITECTURE</span>
               <div class="bus-lines">
-                <span>SAME ARCHITECTURE</span>
-                <span>DIFFERENT ORGANIZATION</span>
+                <span>STRUCTURE</span>
+                <span>FUNCTION</span>
               </div>
             </div>
           </div>
@@ -213,7 +254,8 @@
           <div class="reader-controls-bar">
             <div class="reader-tools-group">
               <button type="button" class="tool-pill-btn" id="backToIndexTopBtn">→ كل الفصول</button>
-              <button type="button" class="tool-pill-btn" id="toggleFocusSidebarBtn">📖 توسيع مساحة القراءة</button>
+              <button type="button" class="tool-pill-btn" id="toggleFocusSidebarBtn">📑 إظهار قائمة الأجزاء</button>
+              <button type="button" class="tool-pill-btn" id="reopenModeModalBtn">🎨 تغيير وضع القراءة</button>
             </div>
 
             <div class="reader-tools-group">
@@ -255,8 +297,8 @@
        ======================================================================== -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <span>منصة شرح مادة <strong>Computer Architecture</strong> — الشرح بالبلدي + التعريفات الرسمية + تريكات الامتحان + كويز تفاعلي.</span>
-      <span class="mono">DARK • LIGHT • READING MODE // PRESS [/] TO SEARCH</span>
+      <span>منصة شرح مادة <strong>Computer Architecture</strong> — الشرح المبسط + التعريفات الرسمية + تريكات الامتحان + كويز تفاعلي.</span>
+      <span class="mono">READING • DARK • LIGHT MODE // PRESS [/] TO SEARCH</span>
     </div>
   </footer>
 

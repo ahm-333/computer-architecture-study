@@ -2,7 +2,11 @@
  * ==========================================================================
  * COMPUTER ARCHITECTURE — INTERACTIVE APPLICATION ENGINE
  * ==========================================================================
- * يدعم: Dark / Light / Reading Mode + تكبير/تصغير الخط + الكويز التفاعلي لكل جزء
+ * يدعم:
+ * - تفعيل وضع القراءة افتراضياً عند دخول أي فصل + نافذة اختيار الوضع المفضل
+ * - Dark / Light / Reading Mode
+ * - تكبير وتصغير الخط A+ / A-
+ * - الكويز التفاعلي باللغة الإنجليزية مع الشرح والتفسير المبسط
  */
 
 (function () {
@@ -18,6 +22,7 @@
     completedParts: loadCompletedParts(),
     fontScale: parseFloat(localStorage.getItem(STORAGE_KEY_FONT) || "1"),
     focusSidebarHidden: false,
+    hasShownEntryModalForChapter: false,
     quizAnswers: {} // { [partId_qId]: selectedIndex }
   };
 
@@ -37,7 +42,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     THEME & READING MODE MANAGEMENT (dark | light | reading)
+     THEME & READING MODE MANAGEMENT (reading | dark | light)
      -------------------------------------------------------------------------- */
   function initTheme() {
     const saved = localStorage.getItem(STORAGE_KEY_THEME) || "dark";
@@ -49,20 +54,31 @@
     document.documentElement.setAttribute("data-theme", mode);
     localStorage.setItem(STORAGE_KEY_THEME, mode);
 
+    // Sync top bar buttons
     document.querySelectorAll("[data-theme-mode]").forEach((btn) => {
       const btnMode = btn.getAttribute("data-theme-mode");
       btn.classList.toggle("active", btnMode === mode);
     });
 
-    // If user switches to "reading" mode, automatically offer comfortable reading experience
-    if (mode === "reading") {
-      document.body.classList.add("reading-focus-active");
-      state.focusSidebarHidden = true;
-    } else {
-      document.body.classList.remove("reading-focus-active");
-      state.focusSidebarHidden = false;
-    }
+    // Sync modal cards
+    document.querySelectorAll("[data-modal-mode]").forEach((card) => {
+      const cardMode = card.getAttribute("data-modal-mode");
+      card.classList.toggle("selected", cardMode === mode);
+    });
+
     updateFocusBtnLabel();
+  }
+
+  function openModeSelectionModal() {
+    const modal = document.getElementById("modePromptModal");
+    if (!modal) return;
+    modal.classList.add("open");
+  }
+
+  function closeModeSelectionModal() {
+    const modal = document.getElementById("modePromptModal");
+    if (!modal) return;
+    modal.classList.remove("open");
   }
 
   function applyFontScale() {
@@ -206,7 +222,7 @@
 
             <div class="chapter-card-footer">
               <button class="open-chapter-btn" data-open-ch="${ch.id}">
-                <span>${ch.isReady ? "فتح شرح الفصل الأول الآن" : "معاينة مكان الفصل"}</span>
+                <span>${ch.isReady ? "فتح شرح الفصل الآن" : "معاينة مكان الفصل"}</span>
                 <span class="mono">←</span>
               </button>
             </div>
@@ -217,7 +233,7 @@
 
     grid.querySelectorAll(".part-item").forEach((item) => {
       item.addEventListener("click", () => {
-        openReader(item.getAttribute("data-ch"), item.getAttribute("data-part"));
+        openReader(item.getAttribute("data-ch"), item.getAttribute("data-part"), true);
       });
     });
 
@@ -226,13 +242,13 @@
         const chId = btn.getAttribute("data-open-ch");
         const ch = chapters.find((c) => c.id === chId);
         const firstPartId = ch && ch.parts && ch.parts[0] ? ch.parts[0].id : null;
-        openReader(chId, firstPartId);
+        openReader(chId, firstPartId, true);
       });
     });
   }
 
   /* --------------------------------------------------------------------------
-     INTERACTIVE QUIZ RENDERER (كويز تفاعلي لكل جزء)
+     INTERACTIVE QUIZ RENDERER (الأسئلة بالإنجليزي + الشرح والتفسير بالعربي)
      -------------------------------------------------------------------------- */
   function renderQuizForPart(part) {
     const quizContainer = document.getElementById("partQuizContainer");
@@ -314,13 +330,13 @@
       <div class="quiz-wrapper">
         <div class="quiz-header">
           <div>
-            <span class="mono" style="font-size: 0.75rem; color: var(--accent-amber); font-weight: 700;">INTERACTIVE EXAM DRILL // اختبر فهمك للجزء ده</span>
+            <span class="mono" style="font-size: 0.75rem; color: var(--accent-amber); font-weight: 700;">INTERACTIVE EXAM QUIZ // أسئلة امتحانات تفاعلية</span>
             <h2 style="font-family: var(--font-display-ar); font-size: 1.4rem; font-weight: 900;">
               🎯 كويز تفاعلي على ${part.title}
             </h2>
           </div>
           <div class="quiz-score-pill">
-            النتيجة: ${correctCount} / ${quizList.length} (${answeredCount} مُجاب)
+            Score: ${correctCount} / ${quizList.length} (${answeredCount} Answered)
           </div>
         </div>
 
@@ -357,9 +373,9 @@
   }
 
   /* --------------------------------------------------------------------------
-     READER VIEW
+     READER VIEW (التحويل التلقائي لوضع القراءة + إظهار اختيار الوضع عند الدخول)
      -------------------------------------------------------------------------- */
-  function openReader(chapterId, partId) {
+  function openReader(chapterId, partId, fromLandingEntry) {
     const chapters = window.COURSE_DATA.chapters || [];
     const ch = chapters.find((c) => c.id === chapterId);
     if (!ch) return;
@@ -372,6 +388,12 @@
     document.getElementById("landingView").classList.add("hidden");
     document.getElementById("readerView").classList.add("active");
 
+    // عند دخول الفصل: الوضع الافتراضي يكون وضع القراءة (reading) ويظهر للطالب اختيار الوضع
+    if (fromLandingEntry) {
+      setTheme("reading");
+      openModeSelectionModal();
+    }
+
     renderReaderContent();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -379,6 +401,7 @@
   function closeReader() {
     state.activeChapterId = null;
     state.activePartId = null;
+    closeModeSelectionModal();
     document.getElementById("readerView").classList.remove("active");
     document.getElementById("landingView").classList.remove("hidden");
     renderChaptersGrid();
@@ -440,13 +463,13 @@
             <div class="empty-slot-icon">${activePart.code}</div>
             <h3 class="empty-slot-title">مكان الشرح جاهز ومفرغ لهذا الجزء (${activePart.code})</h3>
             <p class="empty-slot-desc">
-              بمجرد إرسال محتوى هذا الجزء، سيتم إضافته هنا فوراً مع تريكات الامتحان والكويز التفاعلي الخاص به.
+              بمجرد إرسال محتوى هذا الجزء، سيتم إضافته هنا فوراً مع المخططات وتريكات الامتحان والكويز التفاعلي الخاص به.
             </p>
             <div class="ready-blocks-preview">
-              <span class="ready-block-tag">الشرح بالبلدي</span>
+              <span class="ready-block-tag">الشرح المبسط والعميق</span>
               <span class="ready-block-tag">Official Definitions</span>
               <span class="ready-block-tag">تريكات الامتحانات</span>
-              <span class="ready-block-tag">كويز تفاعلي</span>
+              <span class="ready-block-tag">English Exam Quiz</span>
             </div>
           </div>
         `;
@@ -486,18 +509,50 @@
     updateTelemetry();
     renderChaptersGrid();
 
-    // 3-Mode Switcher Buttons (dark | light | reading)
+    // Top bar 3-Mode Switcher Buttons (reading | dark | light)
     document.querySelectorAll("[data-theme-mode]").forEach((btn) => {
       btn.addEventListener("click", () => {
         setTheme(btn.getAttribute("data-theme-mode"));
       });
     });
 
-    // Quick Start Part 1 Button in Hero
+    // Modal Mode Choice Cards
+    document.querySelectorAll("[data-modal-mode]").forEach((card) => {
+      card.addEventListener("click", () => {
+        const chosen = card.getAttribute("data-modal-mode");
+        setTheme(chosen);
+      });
+    });
+
+    const confirmModalBtn = document.getElementById("confirmModeModalBtn");
+    if (confirmModalBtn) {
+      confirmModalBtn.addEventListener("click", closeModeSelectionModal);
+    }
+
+    const reopenModalBtn = document.getElementById("reopenModeModalBtn");
+    if (reopenModalBtn) {
+      reopenModalBtn.addEventListener("click", openModeSelectionModal);
+    }
+
+    const modalBackdrop = document.getElementById("modePromptModal");
+    if (modalBackdrop) {
+      modalBackdrop.addEventListener("click", (e) => {
+        if (e.target === modalBackdrop) closeModeSelectionModal();
+      });
+    }
+
+    // Quick Start Part 1 & Part 2 Buttons in Hero
     const startPart1Btn = document.getElementById("startPart1Btn");
     if (startPart1Btn) {
       startPart1Btn.addEventListener("click", () => {
-        openReader("ch-1", "ch1-p1");
+        openReader("ch-1", "ch1-p1", true);
+      });
+    }
+
+    const startPart2Btn = document.getElementById("startPart2Btn");
+    if (startPart2Btn) {
+      startPart2Btn.addEventListener("click", () => {
+        openReader("ch-1", "ch1-p2", true);
       });
     }
 
@@ -576,8 +631,13 @@
       if (e.key === "/" && document.activeElement !== searchInput) {
         e.preventDefault();
         if (searchInput) searchInput.focus();
-      } else if (e.key === "Escape" && state.activeChapterId) {
-        closeReader();
+      } else if (e.key === "Escape") {
+        const modal = document.getElementById("modePromptModal");
+        if (modal && modal.classList.contains("open")) {
+          closeModeSelectionModal();
+        } else if (state.activeChapterId) {
+          closeReader();
+        }
       }
     });
   }
