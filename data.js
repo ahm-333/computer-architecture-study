@@ -4209,73 +4209,113 @@ window.COURSE_DATA = {
           id: "ch3-p1",
           code: "MODULE 1",
           slides: "Slides 1 to 7",
-          title: "Hardware vs. Software, von Neumann Model & Core Registers",
+          title: "The Foundation — هندسة المكونات وعقل السوفتوير (Hardware vs Software, von Neumann & Core Registers)",
           hasContent: true,
           contentHtml: `
-            <!-- 1. HARDWIRED vs. SOFTWARE ARCHITECTURE -->
+<!-- 0. HERO SECTION -->
+            <div class="mod-hero-box">
+              <div class="mod-hero-meta-row">
+                <span class="mod-meta-badge">Route: /module-1-foundation</span>
+                <span class="mod-meta-badge amber">Topic Range: William Stallings 10th Ed — Chapter 3 (Slides 1 to 7)</span>
+                <span class="mod-meta-badge emerald">Sheet Questions Covered: 3.1, 3.2, 3.3</span>
+              </div>
+              <h1 class="mod-hero-title">كيف تحول الحديد والنحاس إلى عقل يفكر؟ (من كاوية اللحام إلى معمارية فون نيومان)</h1>
+              <p class="mod-hero-subtitle">
+                "قبل ما نكتب سطور كود بلغة C أو Python، الكمبيوتر كان عبارة عن أسلاك ولحامات ثابتة. في هذا الموديول هنكتشف إزاي جون فون نيومان حل أكبر كابوس في تاريخ الإلكترونيات واخترع فكرة السوفتوير، وإيه هي السجلات الستة (Registers) اللي بتمثل الدراعات الحقيقية للمعالج."
+              </p>
+              <div class="mod-obj-pills">
+                <span class="mod-obj-pill">Hardwired vs Software</span>
+                <span class="mod-obj-pill">The 3 von Neumann Concepts</span>
+                <span class="mod-obj-pill">6 Core Registers</span>
+                <span class="mod-obj-pill">Top-Level Bus Scheme</span>
+                <span class="mod-obj-pill">Exam Traps &amp; Solutions</span>
+              </div>
+            </div>
+
+            <!-- 1. COMPONENT 1: COMPARISON MATRIX CARD -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">01</span>
-                <h2 class="exp-sec-title">HARDWIRED vs. SOFTWARE ARCHITECTURE (سلايد 3 إلى 5 &amp; سؤال الشيت 3.2)</h2>
+                <h2 class="exp-sec-title">بطاقة المقارنة التفاعلية: البرمجة بالعتاد الصلب مقابل حل البرمجيات المرنة (Hardwired vs. Software)</h2>
               </div>
 
-              <div class="two-layers-split">
-                <!-- Hardwired Program -->
-                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-amber);">
-                  <span class="layer-pill-tag" style="color: var(--accent-amber);">1 // HARDWIRED PROGRAM (البرمجة بالعتاد الصلب — سلايد 3)</span>
-                  <div style="font-weight: 800; font-size: 1.08rem; margin-bottom: 0.65rem; color: var(--text-primary);">
-                    Hardwired Program (البرمجة بلحام الأسلاك والبوابات)
+              <div class="comp-matrix-grid">
+                <!-- Column 1: Hardwired Programming -->
+                <div class="comp-card hardwired">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                    <span class="layer-pill-tag" style="color: var(--accent-amber); font-weight:800;">1 // HARDWIRED PROGRAMMING</span>
+                    <span class="mod-meta-badge amber" style="font-size:0.72rem;">سؤال الشيت 3.2</span>
                   </div>
-                  <div class="en-def-box" style="padding: 0.9rem 1.1rem; margin-bottom: 0.75rem;">
-                    <div class="en-def-label">Official English Definition &amp; Limitation</div>
-                    <p class="en-def-text" style="font-size: 0.94rem;">
-                      • <strong>Official Definition:</strong> The process of connecting logic components in a <strong>permanent physical configuration</strong> to solve a specific computational problem.<br/>
-                      • <strong>Limitation:</strong> <strong>Inflexible</strong>. Any change in the algorithm requires physically re-wiring, re-soldering, and redesigning the hardware circuitry.
+                  <div style="font-weight: 800; font-size: 1.12rem; margin-bottom: 0.85rem; color: var(--text-primary);">
+                    البرمجة بالعتاد الصلب (Hardwired Program)
+                  </div>
+
+                  <div class="balady-box" style="margin-bottom: 1rem; border-right-color: var(--accent-amber);">
+                    <div class="balady-label">💡 The Concept Hook (بالعامية المصرية)</div>
+                    <p style="margin: 0; line-height: 1.75; font-size: 0.94rem;">
+                      "تخيل إنك اشتريت غسالة، بس الدائرة اللي جواها متوصلة بأسلاك نحاس ثابتة عشان تلف يمين بس! لو جيت تاني يوم قولت لها معلش عاوزك تلفي شمال، مفيش حل غير إنك تجيب كاوية لحام وتفك الأسلاك وتلحم دايرة جديدة خالص! ده بالظبط اللي كان بيحصل في أوائل الأربعينيات في حواسيب زي ENIAC قبل تطويرها. كان المهندسون يوصلون بوابات منطقية (AND, OR, NOT) ومفاتيح بأسلاك فيزيائية عشان يحلوا مسألة واحدة (زي حساب مسار قذيفة مدفعية). لو المسألة اتغيرت، الدايرة بتترمي ونقعد نلحم من أول وجديد!"
                     </p>
                   </div>
-                  <div class="balady-box" style="margin: 0; padding: 0.95rem 1.15rem;">
-                    <div class="balady-label">💡 الشرح بالعامية المصرية</div>
-                    <p style="margin: 0;">
-                      زمان عشان نحل مسألة (زي حساب مسار قذيفة)، كان المهندس يجيب كاوية لحام ويلحم بوابات منطقية وأسلاك نحاس على مقاس المسألة دي بالظبط.<br/>
-                      <strong>عيبها القاتل:</strong> لو عاوز تغير المسألة وتطرح بدل ما تجمع، الدايرة القديمة بكل أسلاكها بتترمي في الزبالة ونقعد نلحم دايرة جديدة من الصفر!
+
+                  <div class="en-def-box" style="margin-bottom: 1rem;">
+                    <div class="en-def-label">Official English Definition (للامتحان)</div>
+                    <p class="en-def-text" style="font-size: 0.92rem; line-height: 1.65; margin: 0;">
+                      <strong>Hardwired Program (Programming in Hardware):</strong> The process of physically connecting and configuring a specific set of logic components, flip-flops, and wiring to perform a specific computational sequence. Any alteration in the computation requires physical rewiring and redesigning of the hardware circuits.
                     </p>
+                  </div>
+
+                  <div class="exam-trap-box" style="margin: 0; padding: 0.85rem 1rem; border-color: rgba(244,63,94,0.3);">
+                    <div style="font-weight: 800; color: var(--accent-rose); font-size: 0.88rem; margin-bottom: 0.4rem;">❌ Key Drawbacks (العيوب):</div>
+                    <ul style="margin: 0; padding-right: 1.25rem; font-size: 0.88rem; line-height: 1.65; color: var(--text-secondary);">
+                      <li><strong>Zero Flexibility (انعدام المرونة):</strong> العتاد مقيد بوظيفة واحدة فقط.</li>
+                      <li><strong>High Cost &amp; Time:</strong> وقت مهول وضياع أموال في إعادة اللحام والتوصيل كلما تغيرت المسألة.</li>
+                    </ul>
                   </div>
                 </div>
 
-                <!-- Software Approach -->
-                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-cyan);">
-                  <span class="layer-pill-tag" style="color: var(--accent-cyan);">2 // SOFTWARE APPROACH (حل البرمجيات المرنة — سلايد 4 &amp; 5)</span>
-                  <div style="font-weight: 800; font-size: 1.08rem; margin-bottom: 0.65rem; color: var(--text-primary);">
-                    Software Approach (عتاد عام ثابت + أوامر برمجية)
+                <!-- Column 2: The Software Approach -->
+                <div class="comp-card software">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                    <span class="layer-pill-tag" style="color: var(--accent-cyan); font-weight:800;">2 // THE SOFTWARE APPROACH</span>
+                    <span class="mod-meta-badge" style="font-size:0.72rem;">حل البرمجيات المرنة</span>
                   </div>
-                  <div class="en-def-box" style="padding: 0.9rem 1.1rem; margin-bottom: 0.75rem;">
-                    <div class="en-def-label">Official English Definition &amp; Key Components</div>
-                    <p class="en-def-text" style="font-size: 0.94rem;">
-                      • <strong>Official Definition:</strong> A <strong>general-purpose hardware configuration</strong> that is controlled by providing a sequence of <strong>coded instructions (software)</strong> instead of altering hardware wires.<br/>
-                      • <strong>Key Components:</strong><br/>
-                      &nbsp;&nbsp;1. <strong>Instruction Interpreter (Control Unit):</strong> Decodes instructions and issues control signals.<br/>
-                      &nbsp;&nbsp;2. <strong>General-Purpose ALU:</strong> Executes arithmetic and logic operations upon signal receipt.
+                  <div style="font-weight: 800; font-size: 1.12rem; margin-bottom: 0.85rem; color: var(--text-primary);">
+                    حل البرمجيات المرنة (The Software Approach)
+                  </div>
+
+                  <div class="balady-box" style="margin-bottom: 1rem; border-right-color: var(--accent-cyan);">
+                    <div class="balady-label">💡 The Concept Hook (بالعامية المصرية)</div>
+                    <p style="margin: 0; line-height: 1.75; font-size: 0.94rem;">
+                      "جون فون نيومان قال: ليه الغباء ده؟ إحنا نصنع عتاد عام وثابت للأبد (<strong>General-Purpose Hardware</strong>)، ومحدش يلمس أسلاكه تاني! العتاد ده بيفهم لغة موحدة من إشارات مشفرة اسمها <strong>التعليمات (Instructions)</strong>، ونحط مترجم أوامر جوه المعالج اسمه <strong>(Instruction Interpreter / Control Unit)</strong>. كل ما التعليمة تدخل له يفك شفرتها ويشغل العتاد. عاوز تغير البرنامج؟ متلمسش سلك! غير بس الأكواد والأرقام المكتوبة في الرام."
                     </p>
                   </div>
-                  <div class="balady-box" style="margin: 0; padding: 0.95rem 1.15rem;">
-                    <div class="balady-label">💡 الشرح بالعامية المصرية</div>
-                    <p style="margin: 0;">
-                      <strong>الحل العبقري:</strong> نعمل عتاد إلكتروني عام وثابت ومحدش يلمس أسلاكه تاني أبداً. العتاد ده بيفهم مجموعة أوامر موحدة اسمها <strong>"تعليمات" (Instructions)</strong>.<br/>
-                      البرنامج هو رصة الأوامر دي ورا بعض، وعشان نشغله محتاجين <strong>مفسر أوامر (وحدة التحكم Control Unit)</strong> يفك الشفرة ويشغل وحدة الـ <strong>ALU</strong>. عاوز تغير البرنامج؟ متلمسش سلك! مجرد غير الأكواد المكتوبة في الذاكرة.
+
+                  <div class="en-def-box" style="margin-bottom: 1rem;">
+                    <div class="en-def-label">Official English Definition (للامتحان)</div>
+                    <p class="en-def-text" style="font-size: 0.92rem; line-height: 1.65; margin: 0;">
+                      <strong>Software Approach:</strong> A computing paradigm where a general-purpose, fixed hardware configuration executes various tasks by accepting a sequence of coded instructions (software). It eliminates the need for physical modifications to run different programs.
                     </p>
+                  </div>
+
+                  <div class="exam-trap-box" style="margin: 0; padding: 0.85rem 1rem; border-color: rgba(6,182,212,0.3); background: rgba(6,182,212,0.05);">
+                    <div style="font-weight: 800; color: var(--accent-cyan); font-size: 0.88rem; margin-bottom: 0.4rem;">⚙️ Core Structural Requirements (المتطلبات الأساسية):</div>
+                    <ol style="margin: 0; padding-right: 1.25rem; font-size: 0.88rem; line-height: 1.65; color: var(--text-secondary);">
+                      <li><strong>Instruction Interpreter (Control Unit):</strong> يفك شفرة الأوامر ويولد إشارات التحكم.</li>
+                      <li><strong>General-Purpose ALU:</strong> ينفذ العمليات الحسابية والمنطقية عند استقبال إشارات التحكم.</li>
+                    </ol>
                   </div>
                 </div>
               </div>
             </section>
 
-            <!-- 2. DETAILED SCHEMATIC OF SOFTWARE EXECUTION (Figure 3.1b) -->
+            <!-- 2. COMPONENT 2: INTERACTIVE FLOW DIAGRAM (SLIDE 4 - FIGURE 3.1b) -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">02</span>
-                <h2 class="exp-sec-title">DETAILED SCHEMATIC OF SOFTWARE EXECUTION (مخطط سلايد 4 - Figure 3.1b)</h2>
+                <h2 class="exp-sec-title">المخطط المعماري لسلايد 4: مسار التنفيذ المقاد بالبرمجيات (Interactive Flow Diagram - Figure 3.1b)</h2>
               </div>
 
-              <!-- INTERACTIVE SIMULATOR 1: Figure 3.1b Software Execution -->
+              <!-- Interactive Simulator 1 -->
               <div class="sim-card" data-sim="sim-ch3-software-exec">
                 <div class="sim-top-bar">
                   <div class="sim-title-group">
@@ -4292,26 +4332,17 @@ window.COURSE_DATA = {
 
                 <div class="sim-svg-stage">
                   <svg class="sim-svg" viewBox="0 0 880 375" xmlns="http://www.w3.org/2000/svg" dir="ltr">
-                    <!-- Outer Schematic Frame -->
                     <rect x="16" y="10" width="848" height="355" rx="14" fill="var(--bg-surface)" fill-opacity="0.45" stroke="var(--border-strong)" stroke-dasharray="6 4" stroke-width="1.5" />
-
-                    <!-- Base Wires -->
-                    <!-- Wire 0: Instruction Codes -> Instruction Interpreter -->
                     <path class="wire-base" d="M 440 76 L 440 116" />
-                    <!-- Wire 1: Control Signals (CU -> ALU) -->
                     <path class="wire-base" d="M 440 198 L 440 250" />
-                    <!-- Wire 2a: Data In -> ALU -->
                     <path class="wire-base" d="M 162 292 L 200 292" />
-                    <!-- Wire 2b: ALU -> Data Out -->
                     <path class="wire-base" d="M 680 292 L 718 292" />
 
-                    <!-- Active Animated Wires -->
                     <path class="wire-flow amber active-flow" data-wire-step="0" d="M 440 76 L 440 116" />
                     <path class="wire-flow amber" data-wire-step="1" d="M 440 198 L 440 250" />
                     <path class="wire-flow emerald" data-wire-step="2" d="M 162 292 L 200 292" />
                     <path class="wire-flow cyan" data-wire-step="2" d="M 680 292 L 718 292" />
 
-                    <!-- Moving Data Packet Dots -->
                     <circle class="data-packet-dot moving" data-packet-step="0" r="6" fill="#f59e0b">
                       <animateMotion dur="0.85s" repeatCount="indefinite" path="M 440 76 L 440 116" />
                     </circle>
@@ -4322,14 +4353,12 @@ window.COURSE_DATA = {
                       <animateMotion dur="1.4s" repeatCount="indefinite" path="M 162 292 L 718 292" />
                     </circle>
 
-                    <!-- Top Box: Instruction Codes -->
                     <g class="svg-hw-group amber-node active-node" data-node-step="0" data-click-step="0">
                       <rect class="svg-hw-box" x="240" y="20" width="400" height="56" rx="10" />
                       <text class="svg-label-en" x="440" y="44" style="fill: var(--accent-amber);">[ INSTRUCTION CODES ]</text>
                       <text class="svg-label-ar" x="440" y="65">(أكواد التعليمات البرمجية داخلة من الذاكرة)</text>
                     </g>
 
-                    <!-- Middle Box 1: Instruction Interpreter (Control Unit) -->
                     <g class="svg-hw-group amber-node active-node" data-node-step="0,1" data-click-step="1">
                       <rect class="svg-hw-box" x="200" y="116" width="480" height="82" rx="12" />
                       <text class="svg-label-en" x="440" y="143" style="fill: var(--accent-amber); font-size: 15px;">INSTRUCTION INTERPRETER (Control Unit)</text>
@@ -4337,7 +4366,6 @@ window.COURSE_DATA = {
                       <text class="svg-label-mono" x="440" y="186" style="fill: var(--accent-cyan);">1. Instruction Path (مسار الأوامر فوق)</text>
                     </g>
 
-                    <!-- Bottom Box 2: General-Purpose ALU -->
                     <g class="svg-hw-group cyan-node" data-node-step="1,2" data-click-step="2">
                       <rect class="svg-hw-box" x="200" y="250" width="480" height="84" rx="12" />
                       <text class="svg-label-en" x="440" y="276" style="fill: var(--accent-cyan); font-size: 14.5px;">GENERAL-PURPOSE ARITHMETIC &amp; LOGIC UNIT (ALU)</text>
@@ -4345,21 +4373,18 @@ window.COURSE_DATA = {
                       <text class="svg-label-mono" x="440" y="321" style="fill: var(--accent-emerald);">2. Data Path (مسار البيانات تحت)</text>
                     </g>
 
-                    <!-- Left Box: Data In -->
                     <g class="svg-hw-group emerald-node" data-node-step="2" data-click-step="2">
                       <rect class="svg-hw-box" x="28" y="256" width="134" height="72" rx="10" />
                       <text class="svg-label-en" x="95" y="285" style="fill: var(--accent-emerald);">DATA IN ──►</text>
                       <text class="svg-label-ar" x="95" y="309">البيانات الداخلة</text>
                     </g>
 
-                    <!-- Right Box: Data Out -->
                     <g class="svg-hw-group cyan-node" data-node-step="2" data-click-step="2">
                       <rect class="svg-hw-box" x="718" y="256" width="134" height="72" rx="10" />
                       <text class="svg-label-en" x="785" y="285" style="fill: var(--accent-cyan);">──► DATA OUT</text>
                       <text class="svg-label-ar" x="785" y="309">الناتج النهائي</text>
                     </g>
 
-                    <!-- Wire Callout Pills -->
                     <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
                       <rect class="svg-wire-pill" x="456" y="79" width="220" height="28" />
                       <text class="svg-wire-text" x="566" y="97">1. دخول كود الأمر للـ Interpreter</text>
@@ -4378,85 +4403,136 @@ window.COURSE_DATA = {
                 <div class="sim-status-ticker"></div>
               </div>
 
-              <div class="balady-box" style="margin-top: 1rem;">
-                <div class="balady-label">💡 شرح المخطط بالعامية (Figure 3.1b)</div>
-                <p style="margin: 0;">
-                  المخطط بيوضح <strong>مسارين منفصلين</strong>:<br/>
-                  1. <strong>مسار الأوامر (فوق):</strong> كود التعليمة (<span class="mono">Instruction Codes</span>) يدخل لمفسر الأوامر (<span class="mono">Control Unit</span>)، فيفهم هو مطلوب منه إيه، ويطلع إشارات تحكم (<span class="mono">Control Signals</span>) توجه وتأمر المكونات اللي تحته.<br/>
-                  2. <strong>مسار البيانات (تحت):</strong> البيانات (<span class="mono">Data In</span>) تدخل للـ <span class="mono">ALU</span>، وبناءً على إشارة التحكم (اجمع أو اطرح) الـ <span class="mono">ALU</span> ينفذ العملية ويطلع الناتج النهائي في الـ <span class="mono">Data Out</span>.
-                </p>
+              <!-- Schematic ASCII Display -->
+              <div class="blueprint-ascii-card">
+                <div class="blueprint-ascii-header">
+                  <span>[Figure 3.1b: Software-Driven Execution Flow - سلايد 4]</span>
+                  <span>FLOW SCHEMATIC</span>
+                </div>
+                <pre class="blueprint-ascii-pre" dir="ltr">
+      [Instruction Codes from Memory] (أكواد الأوامر المشفرة من الرامات)
+                     |
+                     v
+     +-------------------------------------------------------------+
+     |                 INSTRUCTION INTERPRETER                     |
+     |                      (Control Unit)                         | &lt;--- وحدة فك الشفرة والتحكم
+     +------------------------------+------------------------------+
+                                    |
+                                    | Control Signals (إشارات تحكم كهربية)
+                                    v
+     +-------------------------------------------------------------+
+     |                  GENERAL-PURPOSE ARITHMETIC                 |
+     |                     AND LOGIC UNIT (ALU)                    | &lt;--- وحدة حساب ومنطق عامة
+     +---------------+-----------------------------+---------------+
+                     ^                             |
+      Data In        |                             | Data Out
+   ------------------+                             +------------------&gt;
+   (البيانات الداخلة من الرام)                   (الناتج بعد العملية)</pre>
+              </div>
+
+              <!-- Tooltips / Step Cards Grid -->
+              <div class="step-tooltips-grid">
+                <div class="step-tooltip-card">
+                  <div class="step-tooltip-num">STEP 01 // CODES IN</div>
+                  <div class="step-tooltip-title">1. Instruction Codes In</div>
+                  <p class="step-tooltip-desc">كود ثنائي (أصفار ووحايد) يدخل من الذاكرة ليمثل الأمر (مثل: اجمع).</p>
+                </div>
+                <div class="step-tooltip-card">
+                  <div class="step-tooltip-num">STEP 02 // INTERPRETER</div>
+                  <div class="step-tooltip-title">2. Instruction Interpreter (CU)</div>
+                  <p class="step-tooltip-desc">يحلل الـ Opcode ويطلق نبضات كهربية دقيقة اسمها إشارات التحكم (Control Signals).</p>
+                </div>
+                <div class="step-tooltip-card">
+                  <div class="step-tooltip-num">STEP 03 // DATA PATH</div>
+                  <div class="step-tooltip-title">3. Data In</div>
+                  <p class="step-tooltip-desc">الأرقام المراد جمعها تدخل بالتوازي إلى وحدة الـ ALU.</p>
+                </div>
+                <div class="step-tooltip-card">
+                  <div class="step-tooltip-num">STEP 04 // ALU CALC</div>
+                  <div class="step-tooltip-title">4. General-Purpose ALU</div>
+                  <p class="step-tooltip-desc">بوابات الـ ALU تفتح بناءً على إشارة التحكم وتجري الحساب وتخرج النتيجة في مسار Data Out.</p>
+                </div>
               </div>
             </section>
 
-            <!-- 3. THE THREE VON NEUMANN CONCEPTS -->
+            <!-- 3. COMPONENT 3: THE 3 GOLDEN PILLARS (سؤال الشيت 3.1) -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">03</span>
-                <h2 class="exp-sec-title">THE THREE VON NEUMANN CONCEPTS (سلايد 6 &amp; سؤال الشيت 3.1)</h2>
+                <h2 class="exp-sec-title">كروت المبادئ الثلاثة لفون نيومان (The 3 Golden Pillars - سؤال الشيت 3.1)</h2>
               </div>
 
               <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));">
-                <!-- Concept 1 -->
+                <!-- Card 1 -->
                 <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
-                  <span class="attr-term" style="color: var(--accent-cyan);">1. Single Read-Write Memory (ذاكرة واحدة مشتركة)</span>
-                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin: 0.5rem 0;">
-                    <div class="en-def-label">Official Concept 1</div>
-                    <p class="en-def-text" style="font-size: 0.9rem;">
-                      Data and instructions are stored in a <strong>single, shared read-write memory</strong>.
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+                    <span class="attr-term" style="color: var(--accent-cyan);">CARD 1 // الذاكرة المشتركة الموحدة</span>
+                    <span class="mod-meta-badge" style="font-size:0.7rem;">Single Read-Write Memory</span>
+                  </div>
+                  <div class="en-def-box" style="padding: 0.8rem 1rem; margin: 0.5rem 0;">
+                    <div class="en-def-label">Official English Concept</div>
+                    <p class="en-def-text" style="font-size: 0.92rem; margin: 0;">
+                      Data and instructions are stored in a <strong>single read-write memory</strong>.
                     </p>
                   </div>
-                  <div class="balady-box" style="margin: 0; padding: 0.75rem 0.95rem;">
-                    <div class="balady-label">💬 بالعامية</div>
-                    <p style="font-size: 0.92rem; margin: 0;">
-                      زمان كانوا يحطوا الأوامر في كروت مثقوبة والأرقام في بكرات حديد. فون نيومان قال: الاتنين أصفار ووحايد، يتحطوا مع بعض في <strong>نفس الرامات (RAM)</strong> القابلة للقراءة والكتابة.
+                  <div class="balady-box" style="margin: 0; padding: 0.85rem 1rem;">
+                    <div class="balady-label">💡 الشرح بالعامية المصرية</div>
+                    <p style="font-size: 0.92rem; margin: 0; line-height: 1.7;">
+                      "زمان كان في أفكار تفصل مكان تخزين الأوامر عن مكان الأرقام عتادياً. فون نيومان قال: لأ، الاتنين في النهاية أصفار ووحايد (Bits)! نخزن سطور الكود والأرقام مع بعض في نفس الذاكرة العشوائية (RAM) اللي بنقدر نقرأ منها ونكتب فيها."
                     </p>
                   </div>
                 </div>
 
-                <!-- Concept 2 -->
+                <!-- Card 2 -->
                 <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
-                  <span class="attr-term" style="color: var(--accent-amber);">2. Location-Based Addressing (العنونة بالموقع)</span>
-                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin: 0.5rem 0;">
-                    <div class="en-def-label">Official Concept 2</div>
-                    <p class="en-def-text" style="font-size: 0.9rem;">
-                      The contents of this memory are <strong>addressable by location (numerical address)</strong>, without regard to the type of data stored at that location.
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+                    <span class="attr-term" style="color: var(--accent-amber);">CARD 2 // العنونة المكانية وليست النوعية</span>
+                    <span class="mod-meta-badge amber" style="font-size:0.7rem;">Location-Based Addressing</span>
+                  </div>
+                  <div class="en-def-box" style="padding: 0.8rem 1rem; margin: 0.5rem 0;">
+                    <div class="en-def-label">Official English Concept</div>
+                    <p class="en-def-text" style="font-size: 0.92rem; margin: 0;">
+                      The contents of this memory are <strong>addressable by location</strong>, without regard to the type of data contained at that location.
                     </p>
                   </div>
-                  <div class="balady-box" style="margin: 0; padding: 0.75rem 0.95rem;">
-                    <div class="balady-label">💬 بالعامية</div>
-                    <p style="font-size: 0.92rem; margin: 0;">
-                      الذاكرة عبارة عن <strong>دواليب مرقمة</strong> (العنوان 100، العنوان 101.. إلخ). المعالج بيروح للعنوان، ومبيفرقش معاه الخانة دي جواها كود أمر يتنفذ ولا رقم حسابي يتجمع.
+                  <div class="balady-box" style="margin: 0; padding: 0.85rem 1rem;">
+                    <div class="balady-label">💡 الشرح بالعامية المصرية</div>
+                    <p style="font-size: 0.92rem; margin: 0; line-height: 1.7;">
+                      "الذاكرة عاملة زي صندوق بوستة فيه أدراج مرقمة (العنوان 0، 1، 2، 3.. إلخ). لما المعالج يطلب يقرأ من الخانة رقم 50، هو بينفذ قراءة على 'المكان'، والذاكرة ملهاش أي دعوة ولا تعرف الخانة دي جواها كود أمر، ولا رقم عشري، ولا حرف تكست!"
                     </p>
                   </div>
                 </div>
 
-                <!-- Concept 3 -->
+                <!-- Card 3 -->
                 <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
-                  <span class="attr-term" style="color: var(--accent-emerald);">3. Sequential Execution (التنفيذ المتسلسل بالدور)</span>
-                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin: 0.5rem 0;">
-                    <div class="en-def-label">Official Concept 3</div>
-                    <p class="en-def-text" style="font-size: 0.9rem;">
-                      Execution occurs <strong>sequentially</strong> (from one instruction to the next) unless explicitly altered by a <strong>branch or jump</strong> instruction.
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+                    <span class="attr-term" style="color: var(--accent-emerald);">CARD 3 // التنفيذ التتابعي الصارم</span>
+                    <span class="mod-meta-badge emerald" style="font-size:0.7rem;">Sequential Execution</span>
+                  </div>
+                  <div class="en-def-box" style="padding: 0.8rem 1rem; margin: 0.5rem 0;">
+                    <div class="en-def-label">Official English Concept</div>
+                    <p class="en-def-text" style="font-size: 0.92rem; margin: 0;">
+                      Execution occurs in a <strong>sequential fashion</strong> (from one instruction to the next) unless an explicit modification (branch/jump) is encountered.
                     </p>
                   </div>
-                  <div class="balady-box" style="margin: 0; padding: 0.75rem 0.95rem;">
-                    <div class="balady-label">💬 بالعامية</div>
-                    <p style="font-size: 0.92rem; margin: 0;">
-                      المعالج بينفذ التعليمة رقم 100، بعدها تلقائياً يروح لـ 101، بعدها 102، إلا لو التعليمة قالت له صراحة: <strong>"اقفز لعنوان 500" (Branch/Jump)</strong>.
+                  <div class="balady-box" style="margin: 0; padding: 0.85rem 1rem;">
+                    <div class="balady-label">💡 الشرح بالعامية المصرية</div>
+                    <p style="font-size: 0.92rem; margin: 0; line-height: 1.7;">
+                      "المعالج بيمشي ورا عداد البرنامج سطر بسطر بالترتيب: يخلص التعليمة 100 يروح تلقائياً لـ 101، بعدها 102.. الحالة الوحيدة اللي تخليه ينط هي لما يلاقي أمر قفز صريح زي <code>JUMP</code> أو <code>BRANCH</code>."
                     </p>
                   </div>
                 </div>
               </div>
             </section>
 
-            <!-- 4. DETAILED TOP-LEVEL COMPUTER COMPONENTS (Figure 3.2) -->
+            <!-- 4. COMPONENT 4: TOP-LEVEL ARCHITECTURE DIAGRAM (SLIDE 7 - FIGURE 3.2) -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">04</span>
-                <h2 class="exp-sec-title">DETAILED TOP-LEVEL COMPUTER COMPONENTS (مخطط سلايد 7 - Figure 3.2)</h2>
+                <h2 class="exp-sec-title">المخطط المعماري الضخم لمكونات الحاسوب (سلايد 7 - Figure 3.2)</h2>
               </div>
 
-              <!-- INTERACTIVE SIMULATOR 2: Figure 3.2 Top-Level Components & 6 Registers -->
+              <!-- Interactive Simulator 2 -->
               <div class="sim-card" data-sim="sim-ch3-toplevel-regs">
                 <div class="sim-top-bar">
                   <div class="sim-title-group">
@@ -4473,21 +4549,16 @@ window.COURSE_DATA = {
 
                 <div class="sim-svg-stage">
                   <svg class="sim-svg" viewBox="0 0 920 560" xmlns="http://www.w3.org/2000/svg" dir="ltr">
-                    <!-- TOP CONTAINER: CENTRAL PROCESSING UNIT (CPU) -->
                     <rect x="20" y="12" width="880" height="252" rx="14" fill="var(--bg-surface)" fill-opacity="0.55" stroke="var(--accent-cyan)" stroke-width="2" />
                     <text class="svg-label-en" x="460" y="36" style="fill: var(--accent-cyan); font-size: 14px;">CENTRAL PROCESSING UNIT (CPU) — وحدة المعالجة المركزية والسجلات الستة</text>
 
-                    <!-- Base Wires inside CPU & System Bus -->
-                    <!-- Step 0: PC -> MAR -> System Bus -> Main Memory / I/O Module -->
                     <path class="wire-base" d="M 167 104 L 167 120" />
                     <path class="wire-base" d="M 167 248 L 167 292" />
                     <path class="wire-base" d="M 167 344 L 167 380" />
-                    <!-- Step 1: Main Memory -> System Bus -> MBR -> IR & I/O BR -->
                     <path class="wire-base" d="M 320 380 L 320 344" />
                     <path class="wire-base" d="M 753 292 L 753 248" />
                     <path class="wire-base" d="M 753 120 L 753 104" />
                     <path class="wire-base" d="M 753 344 L 753 380" />
-                    <!-- Step 2: IR -> Control Unit -> ALU -> System Bus -> I/O Module -> Peripherals -->
                     <path class="wire-base" d="M 628 77 L 590 77" />
                     <path class="wire-base" d="M 460 144 L 460 160" />
                     <path class="wire-base" d="M 628 150 L 590 190" />
@@ -4495,16 +4566,13 @@ window.COURSE_DATA = {
                     <path class="wire-base" d="M 580 344 L 580 380" />
                     <path class="wire-base" d="M 690 484 L 690 502" />
 
-                    <!-- Active Animated Wires -->
                     <path class="wire-flow amber active-flow" data-wire-step="0" d="M 167 104 L 167 120" />
                     <path class="wire-flow amber active-flow" data-wire-step="0" d="M 167 248 L 167 292" />
                     <path class="wire-flow amber active-flow" data-wire-step="0" d="M 167 344 L 167 380" />
-
                     <path class="wire-flow cyan" data-wire-step="1" d="M 320 380 L 320 344" />
                     <path class="wire-flow cyan" data-wire-step="1" d="M 753 292 L 753 248" />
                     <path class="wire-flow cyan" data-wire-step="1" d="M 753 120 L 753 104" />
                     <path class="wire-flow emerald" data-wire-step="1,2" d="M 753 344 L 753 380" />
-
                     <path class="wire-flow amber" data-wire-step="2" d="M 628 77 L 590 77" />
                     <path class="wire-flow amber" data-wire-step="2" d="M 460 144 L 460 160" />
                     <path class="wire-flow cyan" data-wire-step="2" d="M 628 150 L 590 190" />
@@ -4512,7 +4580,6 @@ window.COURSE_DATA = {
                     <path class="wire-flow emerald" data-wire-step="2" d="M 580 344 L 580 380" />
                     <path class="wire-flow emerald" data-wire-step="2" d="M 690 484 L 690 502" />
 
-                    <!-- Animated Moving Data Packets -->
                     <circle class="data-packet-dot moving" data-packet-step="0" r="6" fill="#f59e0b">
                       <animateMotion dur="1.5s" repeatCount="indefinite" path="M 167 104 L 167 380" />
                     </circle>
@@ -4523,7 +4590,6 @@ window.COURSE_DATA = {
                       <animateMotion dur="1.6s" repeatCount="indefinite" path="M 460 144 L 460 318 L 690 318 L 690 502" />
                     </circle>
 
-                    <!-- LEFT COLUMN INSIDE CPU: ADDRESS REGISTERS (PC, MAR, I/O AR) -->
                     <g class="svg-hw-group amber-node active-node" data-node-step="0" data-click-step="0">
                       <rect class="svg-hw-box" x="42" y="48" width="250" height="56" rx="8" />
                       <text class="svg-label-en" x="167" y="72" style="fill: var(--accent-amber);">PC (Program Counter)</text>
@@ -4542,7 +4608,6 @@ window.COURSE_DATA = {
                       <text class="svg-label-ar" x="167" y="238">[شايل عنوان منفذ الـ I/O — Address Bus]</text>
                     </g>
 
-                    <!-- CENTER COLUMN INSIDE CPU: CONTROL UNIT & ALU -->
                     <g class="svg-hw-group amber-node" data-node-step="2" data-click-step="2">
                       <rect class="svg-hw-box" x="330" y="48" width="260" height="96" rx="10" />
                       <text class="svg-label-en" x="460" y="76" style="fill: var(--accent-amber);">CONTROL UNIT / TIMING</text>
@@ -4557,7 +4622,6 @@ window.COURSE_DATA = {
                       <text class="svg-label-mono" x="460" y="234" style="fill: var(--text-muted);">Executes Arithmetic &amp; Logic</text>
                     </g>
 
-                    <!-- RIGHT COLUMN INSIDE CPU: DATA & INSTRUCTION REGISTERS (IR, MBR, I/O BR) -->
                     <g class="svg-hw-group cyan-node" data-node-step="1,2" data-click-step="1">
                       <rect class="svg-hw-box" x="628" y="48" width="250" height="56" rx="8" />
                       <text class="svg-label-en" x="753" y="72" style="fill: var(--accent-cyan);">IR (Instruction Register)</text>
@@ -4576,14 +4640,12 @@ window.COURSE_DATA = {
                       <text class="svg-label-ar" x="753" y="238">[صندوق داتا الـ I/O — Data Bus]</text>
                     </g>
 
-                    <!-- SYSTEM BUS BAND -->
                     <g class="svg-hw-group amber-node active-node" data-node-step="0,1,2" data-click-step="0">
                       <rect class="svg-hw-box" x="20" y="292" width="880" height="52" rx="10" />
                       <text class="svg-label-en" x="460" y="314" style="fill: var(--accent-amber);">SYSTEM BUS (ناقل النظام العام)</text>
                       <text class="svg-label-mono" x="460" y="334" style="fill: var(--text-primary);">Address Bus (خطوط العناوين) &nbsp;|&nbsp; Data Bus (خطوط البيانات) &nbsp;|&nbsp; Control Bus (خطوط التحكم)</text>
                     </g>
 
-                    <!-- BOTTOM LEFT: MAIN MEMORY -->
                     <g class="svg-hw-group cyan-node active-node" data-node-step="0,1" data-click-step="1">
                       <rect class="svg-hw-box" x="20" y="380" width="420" height="168" rx="12" />
                       <text class="svg-label-en" x="230" y="405" style="fill: var(--accent-cyan);">MAIN MEMORY (الذاكرة الرئيسية المرقمة)</text>
@@ -4598,7 +4660,6 @@ window.COURSE_DATA = {
                       <text class="svg-label-ar" x="230" y="541" style="font-size: 11px;">(خانات مرقمة تشيل الأوامر والبيانات معاً — von Neumann)</text>
                     </g>
 
-                    <!-- BOTTOM RIGHT: I/O MODULE & EXTERNAL PERIPHERALS -->
                     <g class="svg-hw-group emerald-node" data-node-step="0,1,2" data-click-step="2">
                       <rect class="svg-hw-box" x="480" y="380" width="420" height="104" rx="12" />
                       <text class="svg-label-en" x="690" y="405" style="fill: var(--accent-emerald);">I/O MODULE (وحدة الإدخال والإخراج)</text>
@@ -4614,7 +4675,6 @@ window.COURSE_DATA = {
                       <text class="svg-label-ar" x="690" y="541" style="font-size: 11px;">(الأجهزة الطرفية الخارجية: كيبورد، شاشات، أقراص)</text>
                     </g>
 
-                    <!-- Wire Callout Pills -->
                     <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
                       <rect class="svg-wire-pill" x="30" y="260" width="275" height="26" />
                       <text class="svg-wire-text" x="167" y="277">1. Address Bus ◄── MAR &amp; I/O AR</text>
@@ -4632,133 +4692,241 @@ window.COURSE_DATA = {
 
                 <div class="sim-status-ticker"></div>
               </div>
+
+              <!-- Top-Level Architecture ASCII Blueprint Card -->
+              <div class="blueprint-ascii-card">
+                <div class="blueprint-ascii-header">
+                  <span>[Figure 3.2: Top-Level Computer Architecture - سلايد 7]</span>
+                  <span>SYSTEM ARCHITECTURE DIAGRAM</span>
+                </div>
+                <pre class="blueprint-ascii-pre" dir="ltr">
+  +--------------------------------------------------------------------------------------+
+  |                            CENTRAL PROCESSING UNIT (CPU)                             |
+  |                                                                                      |
+  |   +-----------------------+                    +-----------------------+             |
+  |   | PC (Program Counter)  |                    | IR (Instruction Reg)  |             |
+  |   | [شايل عنوان الأمر الجاي]|                  | [شايل كود الأمر الشغال]|             |
+  |   +-----------+-----------+                    +-----------+-----------+             |
+  |               |                                            |                         |
+  |   +-----------v-----------+                    +-----------v-----------+             |
+  |   | MAR (Mem Address Reg) |                    | MBR (Mem Buffer Reg)  |             |
+  |   | [شايل عنوان خانة الرام] |                  | [صندوق أمانات الداتا] |             |
+  |   +-----------+-----------+                    +-----------+-----------+             |
+  |               |                                            |                         |
+  |   +-----------v-----------+                    +-----------v-----------+             |
+  |   | I/O AR (I/O Addr Reg) |                    | I/O BR (I/O Buff Reg) |             |
+  |   | [شايل عنوان منفذ الـIO]|                   | [صندوق داتا الـ IO]   |             |
+  |   +-----------+-----------+                    +-----------+-----------+             |
+  |               |                                            |                         |
+  |               v                                            v                         |
+  |   +-----------------------+                    +-----------------------+             |
+  |   | Control Unit / Timing |                    | ALU &amp; Execution Logic |             |
+  |   | (وحدة التحكم والمؤقت) |                    | (وحدة الحساب والتنفيذ)|             |
+  |   +-----------------------+                    +-----------------------+             |
+  +---------------|--------------------------------------------|-------------------------+
+                  | Address Lines (خطوط العناوين)              | Data Lines (خطوط البيانات)
+                  |                                            |
+                  +====================+=======================+
+                                       |
+                                       v System Bus (ناقل النظام العام)
+                  +====================+=======================+
+                  | Address Lines      | Data Lines            | Control Lines
+                  |                    |                       |
+  +---------------v--------------------v---+   +---------------v-----------------------+
+  |              MAIN MEMORY               |   |              I/O MODULE               |
+  |               (الذاكرة)                |   |        (وحدة الإدخال والإخراج)        |
+  |  Address:                              |   |                                       |
+  |    0    [ Word 0                     ] |   |  +---------------------------------+  |
+  |    1    [ Word 1                     ] |   |  | Port / Device Data Buffers      |  |
+  |    2    [ Word 2                     ] |   |  | (حوافظ بيانات الأجهزة الخارجية) |  |
+  |   ...   [ ...                        ] |   |  +---------------------------------+  |
+  |   N-1   [ Word N-1                   ] |   |  | Status &amp; Control Logic          |  |
+  |         (مصفوفة خانات الذاكرة)         |   |  | (دوائر الحالة والتحكم)          |  |
+  +----------------------------------------+   |  +---------------------------------+  |
+                                               |                   |                   |
+                                               +-------------------|-------------------+
+                                                                   | External Interface
+                                                                   v
+                                                       [ Keyboards, Disks, Displays ]
+                                                       (كيبورد، شاشات، أقراص تخزين)</pre>
+              </div>
             </section>
 
-            <!-- 5. CORE REGISTERS SUMMARY TABLE & EXAM TRAPS -->
+            <!-- 5. COMPONENT 5: INTERACTIVE REGISTER DECK (سؤال الشيت 3.3) -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">05</span>
-                <h2 class="exp-sec-title">CORE REGISTERS SUMMARY TABLE (السجلات الستة - سؤال الشيت 3.3)</h2>
+                <h2 class="exp-sec-title">جدول السجلات التفاعلي والدراعات الستة للمعالج (Interactive Register Deck - سؤال الشيت 3.3)</h2>
               </div>
 
-              <div class="gen-table-wrap">
-                <table class="gen-table">
-                  <thead>
-                    <tr>
-                      <th>Register (الاختصار)</th>
-                      <th>Full Name (الاسم الكامل)</th>
-                      <th>Bus Connected (الناقل المتصل)</th>
-                      <th>الشرح بالبلدي للامتحان</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="mono" style="color: var(--accent-amber); font-weight: 800;">PC</td>
-                      <td class="mono">Program Counter</td>
-                      <td><span class="buzz-tag">Internal / MAR (Address)</span></td>
-                      <td><strong>عداد البرنامج:</strong> شايل عنوان التعليمة التالية اللي عليها الدور.</td>
-                    </tr>
-                    <tr>
-                      <td class="mono" style="color: var(--accent-cyan); font-weight: 800;">IR</td>
-                      <td class="mono">Instruction Register</td>
-                      <td><span class="buzz-tag">Data Bus / MBR</span></td>
-                      <td><strong>سجل التعليمة:</strong> شايل كود الأمر اللي شغال دلوقتي عشان يتفك.</td>
-                    </tr>
-                    <tr>
-                      <td class="mono" style="color: var(--accent-amber); font-weight: 800;">MAR</td>
-                      <td class="mono">Memory Address Register</td>
-                      <td><span class="buzz-tag">Address Bus</span></td>
-                      <td><strong>سجل عنوان الذاكرة:</strong> بيحدد مكان الخانة اللي رايحين نزورها في الرام.</td>
-                    </tr>
-                    <tr>
-                      <td class="mono" style="color: var(--accent-cyan); font-weight: 800;">MBR</td>
-                      <td class="mono">Memory Buffer Register</td>
-                      <td><span class="buzz-tag">Data Bus</span></td>
-                      <td><strong>سجل حاجز الذاكرة:</strong> صندوق البريد؛ أي داتا داخلة أو خارجة للرام بتقف فيه.</td>
-                    </tr>
-                    <tr>
-                      <td class="mono" style="color: var(--accent-emerald); font-weight: 800;">I/O AR</td>
-                      <td class="mono">I/O Address Register</td>
-                      <td><span class="buzz-tag">Address Bus</span></td>
-                      <td><strong>سجل عنوان الـ I/O:</strong> شايل رقم أو عنوان المنفذ لجهاز الـ I/O المطلوب.</td>
-                    </tr>
-                    <tr>
-                      <td class="mono" style="color: var(--accent-emerald); font-weight: 800;">I/O BR</td>
-                      <td class="mono">I/O Buffer Register</td>
-                      <td><span class="buzz-tag">Data Bus</span></td>
-                      <td><strong>سجل حاجز الـ I/O:</strong> صندوق الداتا المتبادلة بين المعالج وجهاز الـ I/O.</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div class="reg-deck-grid">
+                <!-- 1. PC -->
+                <div class="reg-deck-card">
+                  <div class="reg-deck-card-header">
+                    <span class="reg-badge-abbr">PC</span>
+                    <span class="reg-bus-tag address">Address Bus / Connected to MAR</span>
+                  </div>
+                  <div class="reg-full-name">Program Counter (عداد البرنامج)</div>
+                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin-bottom: 0.75rem;">
+                    <div class="en-def-label">Official English Role</div>
+                    <p class="en-def-text" style="font-size: 0.88rem; margin: 0;">
+                      Holds the memory address of the next instruction to be fetched from memory.
+                    </p>
+                  </div>
+                  <div class="balady-box" style="margin: 0; padding: 0.85rem 1rem;">
+                    <div class="balady-label">💡 الشرح بالعامية المصرية</div>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.65;">
+                      "البوصلة بتاعة المعالج؛ دايمًا عينه عليها عشان يعرف هو رايح فين في الخطوة الجاية. أول ما بنسحب الأمر، الـ PC بيزيد تلقائياً بواحد عشان يجهز للأمر اللي بعده."
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 2. IR -->
+                <div class="reg-deck-card">
+                  <div class="reg-deck-card-header">
+                    <span class="reg-badge-abbr cyan">IR</span>
+                    <span class="reg-bus-tag data">Data Bus / Connected to MBR</span>
+                  </div>
+                  <div class="reg-full-name">Instruction Register (سجل التعليمة)</div>
+                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin-bottom: 0.75rem;">
+                    <div class="en-def-label">Official English Role</div>
+                    <p class="en-def-text" style="font-size: 0.88rem; margin: 0;">
+                      Holds the binary instruction word currently being decoded and executed by the control unit.
+                    </p>
+                  </div>
+                  <div class="balady-box" style="margin: 0; padding: 0.85rem 1rem;">
+                    <div class="balady-label">💡 الشرح بالعامية المصرية</div>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.65;">
+                      "الصندوق اللي بنحط فيه التعليمة اللي شغالة حالياً؛ وحدة التحكم بتقف قدام الـ IR ده تفك شفرته وتعرف المعالج هيعمل إيه بالظبط."
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 3. MAR -->
+                <div class="reg-deck-card">
+                  <div class="reg-deck-card-header">
+                    <span class="reg-badge-abbr">MAR</span>
+                    <span class="reg-bus-tag address">Address Bus (ناقل العناوين)</span>
+                  </div>
+                  <div class="reg-full-name">Memory Address Register (سجل عنوان الذاكرة)</div>
+                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin-bottom: 0.75rem;">
+                    <div class="en-def-label">Official English Role</div>
+                    <p class="en-def-text" style="font-size: 0.88rem; margin: 0;">
+                      Specifies the physical memory address for an upcoming memory read or write operation.
+                    </p>
+                  </div>
+                  <div class="balady-box" style="margin: 0; padding: 0.85rem 1rem;">
+                    <div class="balady-label">💡 الشرح بالعامية المصرية</div>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.65;">
+                      "سجل العنوان؛ متوصل مباشرة بأسلاك العناوين في الرامات. المعالج بيحط فيه رقم الخانة اللي عاوز يزورها في الذاكرة عشان يقرأ أو يكتب."
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 4. MBR -->
+                <div class="reg-deck-card">
+                  <div class="reg-deck-card-header">
+                    <span class="reg-badge-abbr cyan">MBR</span>
+                    <span class="reg-bus-tag data">Data Bus (ناقل البيانات)</span>
+                  </div>
+                  <div class="reg-full-name">Memory Buffer Register (سجل حاجز الذاكرة)</div>
+                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin-bottom: 0.75rem;">
+                    <div class="en-def-label">Official English Role</div>
+                    <p class="en-def-text" style="font-size: 0.88rem; margin: 0;">
+                      Holds the data word read from memory or the data word ready to be written into memory.
+                    </p>
+                  </div>
+                  <div class="balady-box" style="margin: 0; padding: 0.85rem 1rem;">
+                    <div class="balady-label">💡 الشرح بالعامية المصرية</div>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.65;">
+                      "صندوق أمانات وبريد الذاكرة؛ متوصل بأسلاك البيانات. أي داتا أو كود تعليمة طالع من الرام أو داخل للرام لازم يقف في الـ MBR ده الأول."
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 5. I/O AR -->
+                <div class="reg-deck-card">
+                  <div class="reg-deck-card-header">
+                    <span class="reg-badge-abbr emerald">I/O AR</span>
+                    <span class="reg-bus-tag address">Address Bus (ناقل العناوين)</span>
+                  </div>
+                  <div class="reg-full-name">Input/Output Address Register (سجل عنوان منافذ الـ IO)</div>
+                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin-bottom: 0.75rem;">
+                    <div class="en-def-label">Official English Role</div>
+                    <p class="en-def-text" style="font-size: 0.88rem; margin: 0;">
+                      Specifies the unique address or port of the external I/O peripheral device being accessed.
+                    </p>
+                  </div>
+                  <div class="balady-box" style="margin: 0; padding: 0.85rem 1rem;">
+                    <div class="balady-label">💡 الشرح بالعامية المصرية</div>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.65;">
+                      "سجل عنوان أجهزة الإدخال والإخراج؛ بيحدد رقم المنفذ أو عنوان الجهاز الخارجي المطلوب التخاطب معه (زي منفذ الشاشة أو الهارد)."
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 6. I/O BR -->
+                <div class="reg-deck-card">
+                  <div class="reg-deck-card-header">
+                    <span class="reg-badge-abbr emerald">I/O BR</span>
+                    <span class="reg-bus-tag data">Data Bus (ناقل البيانات)</span>
+                  </div>
+                  <div class="reg-full-name">Input/Output Buffer Register (سجل حاجز بيانات الـ IO)</div>
+                  <div class="en-def-box" style="padding: 0.75rem 0.95rem; margin-bottom: 0.75rem;">
+                    <div class="en-def-label">Official English Role</div>
+                    <p class="en-def-text" style="font-size: 0.88rem; margin: 0;">
+                      Serves as a temporary data buffer for data exchanged between an I/O module and the processor.
+                    </p>
+                  </div>
+                  <div class="balady-box" style="margin: 0; padding: 0.85rem 1rem;">
+                    <div class="balady-label">💡 الشرح بالعامية المصرية</div>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.65;">
+                      "صندوق داتا أجهزة الإدخال والإخراج؛ بيشيل البيانات اللي بتتنقل رايحة أو جاية بين المعالج وجهاز الـ I/O."
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 6. COMPONENT 6: EXAM TRAPS & QUICK CHECK -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">06</span>
+                <h2 class="exp-sec-title">كارت مصائد الامتحانات والتريكات القاتلة (Exam Traps &amp; Quick Check)</h2>
               </div>
 
-              <!-- EXAM TRAPS -->
-              <div class="exam-trap-box" style="margin-top: 1.25rem;">
-                <div class="exam-trap-title">⚠️ أخطر تريكات الامتحان في السجلات الستة ونواقل النظام (احذر الوقوع فيها!)</div>
+              <div class="exam-trap-box">
+                <div class="exam-trap-title">⚠️ أشهر 3 مصائد في امتحانات الـ MCQs (احفظ الفروق دي صم!)</div>
                 <ul class="exam-trap-list">
                   <li>
-                    <strong>⚠️ Trap 1 (النواقل المتصلة بالسجلات — Address vs. Data Bus):</strong><br/>
-                    • <strong>خطوط العنوان (<span class="mono">Address Bus</span>):</strong> متصلة بـ <strong class="mono">MAR</strong> و <strong class="mono">I/O AR</strong> (والمصدر الداخلي <span class="mono">PC</span>).<br/>
-                    • <strong>خطوط البيانات (<span class="mono">Data Bus</span>):</strong> متصلة بـ <strong class="mono">MBR</strong> و <strong class="mono">I/O BR</strong> (ومنهما إلى <span class="mono">IR</span>).
+                    <strong>1. مين شايل عنوان ومين شايل داتا؟ (Address Bus vs. Data Bus):</strong><br/>
+                    • <strong>العناوين فقط (<span class="mono" style="color:var(--accent-amber);">Address Bus</span>):</strong> <code class="mono">PC</code>, <code class="mono">MAR</code>, <code class="mono">I/O AR</code>.<br/>
+                    • <strong>البيانات والأوامر (<span class="mono" style="color:var(--accent-cyan);">Data Bus</span>):</strong> <code class="mono">IR</code>, <code class="mono">MBR</code>, <code class="mono">I/O BR</code>.
                   </li>
                   <li>
-                    <strong>⚠️ Trap 2 (أشهر سؤال لخبطة: الفرق بين <span class="mono">PC</span> و <span class="mono">IR</span>):</strong><br/>
-                    • مين شايل <strong>عنوان الأمر القادم</strong> (<span class="mono">Next Instruction Address</span>)؟ ===&gt; <strong class="mono" style="color: var(--accent-amber);">PC (Program Counter)</strong>.<br/>
-                    • مين شايل <strong>كود الأمر الحالي</strong> اللي شغال دلوقتي (<span class="mono">Current Instruction</span>)؟ ===&gt; <strong class="mono" style="color: var(--accent-cyan);">IR (Instruction Register)</strong>.
+                    <strong>2. الفرق القاتل بين PC و IR:</strong><br/>
+                    • يقولك: <em>"Holds the address of the <strong>NEXT</strong> instruction"</em> ===&gt; تختار فوراً <strong class="mono" style="color:var(--accent-amber);">PC (Program Counter)</strong>.<br/>
+                    • يقولك: <em>"Holds the instruction <strong>CURRENTLY</strong> being executed"</em> ===&gt; تختار فوراً <strong class="mono" style="color:var(--accent-cyan);">IR (Instruction Register)</strong>.
                   </li>
                   <li>
-                    <strong>⚠️ Trap 3 (الفرق بين <span class="mono">MAR</span> و <span class="mono">MBR</span>):</strong><br/>
-                    • <strong class="mono">MAR</strong>: بيشيل <strong>عناوين فقط (Addresses)</strong>.<br/>
-                    • <strong class="mono">MBR</strong>: بيشيل <strong>بيانات وأكواد أوامر (Data &amp; Instructions)</strong> جاية من الرام أو رايحة للرام.
+                    <strong>3. الفرق بين MAR و MBR:</strong><br/>
+                    • يقولك: <em>"Specifies the <strong>address</strong> in memory"</em> ===&gt; تختار فوراً <strong class="mono" style="color:var(--accent-amber);">MAR</strong>.<br/>
+                    • يقولك: <em>"Contains <strong>data</strong> to be written into memory or read from memory"</em> ===&gt; تختار فوراً <strong class="mono" style="color:var(--accent-cyan);">MBR</strong>.
                   </li>
                 </ul>
               </div>
             </section>
 
-            <!-- 6. POPULAR EXAM TRUE / FALSE DRILLS -->
-            <section class="exp-section">
-              <div class="exp-section-header">
-                <span class="exp-sec-num">06</span>
-                <h2 class="exp-sec-title">POPULAR EXAM TRUE / FALSE DRILLS (أسئلة صح وغلط المشهورة — تفاعلية)</h2>
-              </div>
-
-              <div class="tf-drills-grid">
-                <div class="tf-card">
-                  <p class="tf-question">[Q1] "In Figure 3.1b, the instruction interpreter directly executes mathematical operations."</p>
-                  <div class="tf-answer-row">
-                    <span class="tf-badge false">Answer: FALSE (✖)</span>
-                    <span class="ltr-block">(بالعامية: خطأ! مفسر الأوامر <strong>Instruction Interpreter / CU</strong> بس بيفك الشفرة ويبعت إشارات تحكم، والـ <strong>ALU</strong> هي اللي بتنفذ الحساب).</span>
-                  </div>
-                </div>
-
-                <div class="tf-card">
-                  <p class="tf-question">[Q2] "The Memory Address Register (MAR) communicates directly over the data bus."</p>
-                  <div class="tf-answer-row">
-                    <span class="tf-badge false">Answer: FALSE (✖)</span>
-                    <span class="ltr-block">(بالعامية: خطأ! الـ <strong>MAR</strong> شايل عناوين فمتصل بناقل العناوين <strong>Address Bus</strong> مش البيانات؛ اللي متوصل بالـ Data Bus هو الـ <strong>MBR</strong>).</span>
-                  </div>
-                </div>
-
-                <div class="tf-card">
-                  <p class="tf-question">[Q3] "According to Figure 3.2, the I/O module acts as an interface between system buses and external peripherals."</p>
-                  <div class="tf-answer-row">
-                    <span class="tf-badge true">Answer: TRUE (✔)</span>
-                    <span class="ltr-block">(بالعامية: صح جداً! وحدة الـ <strong>I/O Module</strong> هي الوسيط والمترجم بين نواقل الكمبيوتر الداخلية <strong>System Bus</strong> والأجهزة الخارجية زي الكيبورد والشاشة).</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <!-- 7. SHEET 3: OFFICIAL MODEL ANSWERS (3.1, 3.2, 3.3) -->
+            <!-- 7. COMPONENT 7: SHEET 3 OFFICIAL SOLUTIONS HUB -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">07</span>
-                <h2 class="exp-sec-title">SHEET 3: OFFICIAL MODEL ANSWERS (أسئلة الشيت 3.1، 3.2، 3.3 + الشرح بالعامية)</h2>
+                <h2 class="exp-sec-title">قسم حلول الشيت الرسمي (Sheet 3 Official Solutions Hub)</h2>
               </div>
 
-              <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-                <!-- Q 3.1 -->
-                <div class="sheet-card">
+              <div class="sheet-hub-wrap">
+                <!-- Accordion Item 1: Question 3.1 -->
+                <div class="sheet-card" style="margin-bottom: 1.25rem;">
                   <div class="sheet-q-box">
                     <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.1 // SHEET 3</span>
                     <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.02rem; margin-top: 0.35rem;" dir="ltr">
@@ -4766,26 +4934,22 @@ window.COURSE_DATA = {
                     </p>
                   </div>
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
-                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer + الشرح بالعامية:</span>
+                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (إجابة نموذجية للامتحان):</span>
                     <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
-                      إخفاء / إظهار الإجابة للتسميع
+                      إخفاء / إظهار الإجابة
                     </button>
                   </div>
                   <div class="sheet-a-box" dir="ltr" style="text-align: left;">
-                    <ol style="font-family: var(--font-en); line-height: 1.85; padding-left: 1.25rem;">
-                      <li><strong>Data and instructions</strong> are stored in a <strong>single read-write memory</strong>.</li>
-                      <li>The contents of this memory are <strong>addressable by location</strong>, without regard to the type of data contained at that location.</li>
-                      <li><strong>Execution occurs in a sequential fashion</strong> (from one instruction to the next) unless an explicit modification (branch/jump) is encountered.</li>
+                    <ol style="font-family: var(--font-en); line-height: 1.85; padding-left: 1.25rem; margin: 0;">
+                      <li><strong>Data and instructions are stored in a single read-write memory.</strong></li>
+                      <li><strong>The contents of this memory are addressable by location, without regard to the type of data contained at that location.</strong></li>
+                      <li><strong>Execution occurs in a sequential fashion (from one instruction to the next) unless an explicit modification (such as a branch or jump) is encountered.</strong></li>
                     </ol>
-                    <div dir="rtl" style="margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px dashed rgba(16,185,129,0.3); text-align: right; color: var(--text-primary); font-family: var(--font-ar);">
-                      <strong>💡 الشرح بالعامية عشان تثبت في دماغك:</strong><br/>
-                      مبادئ فون نيومان التلاتة: (1) البيانات والأوامر قاعدين مع بعض في <strong>ذاكرة واحدة (RAM)</strong> بيتقري ويتكتب فيها، (2) الذاكرة متقسمة خانات مرقمة بـ <strong>عناوين (Locations)</strong> بغض النظر الخانة شايلة رقم ولا أمر، (3) التنفيذ بيمشي <strong>بالدور ورا بعضه (Sequential)</strong> خطوة بخطوة إلا لو جت تعليمة قفز (Branch/Jump).
-                    </div>
                   </div>
                 </div>
 
-                <!-- Q 3.2 -->
-                <div class="sheet-card">
+                <!-- Accordion Item 2: Question 3.2 -->
+                <div class="sheet-card" style="margin-bottom: 1.25rem;">
                   <div class="sheet-q-box">
                     <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.2 // SHEET 3</span>
                     <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.02rem; margin-top: 0.35rem;" dir="ltr">
@@ -4793,23 +4957,19 @@ window.COURSE_DATA = {
                     </p>
                   </div>
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
-                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer + الشرح بالعامية:</span>
+                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (إجابة نموذجية للامتحان):</span>
                     <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
-                      إخفاء / إظهار الإجابة للتسميع
+                      إخفاء / إظهار الإجابة
                     </button>
                   </div>
                   <div class="sheet-a-box" dir="ltr" style="text-align: left;">
                     <p style="font-family: var(--font-en); line-height: 1.85; margin: 0;">
-                      A <strong>hardwired program</strong> refers to the process of <strong>physically connecting and configuring a specific set of logic components, gates, and wiring</strong> to perform a specific computational task. Any modification to the computational algorithm requires <strong>physical rewiring and redesigning</strong> of the hardware circuitry.
+                      A <strong>hardwired program</strong> refers to the process of physically connecting and configuring a specific set of logic components, gates, and wiring to perform a specific computational task. Any modification to the computational algorithm requires physical rewiring and redesigning of the hardware circuitry.
                     </p>
-                    <div dir="rtl" style="margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px dashed rgba(16,185,129,0.3); text-align: right; color: var(--text-primary); font-family: var(--font-ar);">
-                      <strong>💡 الشرح بالعامية عشان تثبت في دماغك:</strong><br/>
-                      الـ <strong>Hardwired Program</strong> يعني إن البرنامج عبارة عن بوابات منطقية وأسلاك ملحومة في بعض بشكل فيزيائي ثابت عشان تحل مسألة واحدة بس؛ ولو حبيت تعدل المسألة أو تغير البرنامج لازم تفك الأسلاك وتعيد لحام وتصميم الدائرة من الأول!
-                    </div>
                   </div>
                 </div>
 
-                <!-- Q 3.3 -->
+                <!-- Accordion Item 3: Question 3.3 -->
                 <div class="sheet-card">
                   <div class="sheet-q-box">
                     <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.3 // SHEET 3</span>
@@ -4818,31 +4978,25 @@ window.COURSE_DATA = {
                     </p>
                   </div>
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
-                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer + الشرح بالعامية:</span>
+                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (إجابة نموذجية للامتحان):</span>
                     <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
-                      إخفاء / إظهار الإجابة للتسميع
+                      إخفاء / إظهار الإجابة
                     </button>
                   </div>
                   <div class="sheet-a-box" dir="ltr" style="text-align: left;">
-                    <ol style="font-family: var(--font-en); line-height: 1.85; padding-left: 1.25rem;">
-                      <li><strong>MAR (Memory Address Register):</strong> Specifies the memory address for an upcoming read or write operation.</li>
-                      <li><strong>MBR (Memory Buffer Register):</strong> Contains the data to be written into memory or receives the data read from memory.</li>
-                      <li><strong>I/O AR (I/O Address Register):</strong> Specifies the unique address or port of a particular external I/O device.</li>
-                      <li><strong>I/O BR (I/O Buffer Register):</strong> Acts as a temporary data buffer for exchanging data between an I/O module and the processor.</li>
+                    <ul style="font-family: var(--font-en); line-height: 1.85; padding-left: 1.25rem; margin: 0; list-style: disc;">
+                      <li><strong>MAR (Memory Address Register):</strong> Specifies the memory address for an upcoming memory read or write operation.</li>
+                      <li><strong>MBR (Memory Buffer Register):</strong> Contains data to be written into memory or receives data read from memory.</li>
+                      <li><strong>I/O AR (I/O Address Register):</strong> Specifies the unique address or port of the external I/O device being accessed.</li>
+                      <li><strong>I/O BR (I/O Buffer Register):</strong> Acts as a temporary data buffer for data exchanged between an I/O module and the processor.</li>
                       <li><strong>PC (Program Counter):</strong> Holds the address of the next instruction to be fetched from memory.</li>
-                      <li><strong>IR (Instruction Register):</strong> Holds the instruction (opcode) currently being executed and decoded by the control unit.</li>
-                    </ol>
-                    <div dir="rtl" style="margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px dashed rgba(16,185,129,0.3); text-align: right; color: var(--text-primary); font-family: var(--font-ar);">
-                      <strong>💡 الشرح بالعامية عشان تثبت في دماغك:</strong><br/>
-                      قسمهم 3 أزواج عشان تحفظهم في ثانية:<br/>
-                      • <strong>ثنائي الأوامر (<span class="mono">PC</span> &amp; <span class="mono">IR</span>):</strong> الـ <strong>PC</strong> شايل عنوان الأمر الجاي، والـ <strong>IR</strong> شايل كود الأمر اللي بيتنفذ دلوقتي.<br/>
-                      • <strong>ثنائي الرامات (<span class="mono">MAR</span> &amp; <span class="mono">MBR</span>):</strong> الـ <strong>MAR</strong> شايل عنوان الخانة في الرام (على الـ Address Bus)، والـ <strong>MBR</strong> شايل الداتا نفسها اللي داخلة أو خارجة من الرام (على الـ Data Bus).<br/>
-                      • <strong>ثنائي الإدخال والإخراج (<span class="mono">I/O AR</span> &amp; <span class="mono">I/O BR</span>):</strong> الـ <strong>I/O AR</strong> بيحدد عنوان جهاز الـ I/O، والـ <strong>I/O BR</strong> بيشيل الداتا اللي رايحة أو جاية من جهاز الـ I/O!
-                    </div>
+                      <li><strong>IR (Instruction Register):</strong> Holds the instruction currently being executed and decoded by the control unit.</li>
+                    </ul>
                   </div>
                 </div>
               </div>
             </section>
+
           `,
           quiz: [
             {
