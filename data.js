@@ -6511,6 +6511,1092 @@ window.COURSE_DATA = {
               explanation: "بدأنا بـ PC = 215، وفي كل Fetch من التلات دورات الـ PC زاد بواحد (215 ➔ 216 ➔ 217 ➔ 218)، فيبقى في نهاية الدورة التالتة PC = 218H جاهز للتعليمة الرابعة!"
             }
           ]
+        },
+
+        /* ====================================================================
+           MODULE 3: Interrupts, Instruction Cycle Integration & Timeline (Slides 18 to 27)
+           ==================================================================== */
+        {
+          id: "ch3-p3",
+          code: "MODULE 3",
+          slides: "Slides 18 to 27",
+          title: "رد الفعل العصبي للحاسوب: كيف تضاعف المقاطعات كفاءة المعالج؟ (Interrupts, Classes & Timeline)",
+          hasContent: true,
+          contentHtml: `
+<!-- 0. HERO SECTION -->
+            <div class="mod-hero-box">
+              <div class="mod-hero-meta-row">
+                <span class="mod-meta-badge">Route: /module-3-interrupts</span>
+                <span class="mod-meta-badge amber">Topic Range: William Stallings 10th Ed — Chapter 3 (Slides 18 to 27)</span>
+                <span class="mod-meta-badge emerald">Sheet Questions Covered: 3.6, 3.7, 3.9, 3.10</span>
+              </div>
+              <h1 class="mod-hero-h1">رد الفعل العصبي للحاسوب: كيف تضاعف المقاطعات كفاءة المعالج؟</h1>
+              <p class="mod-hero-lead">
+                "المعالج يعمل بمليارات النبضات في الثانية، بينما الأجهزة الطرفية بطيئة وتستغرق دهوراً بالمقارنة معه. تخيل لو كان المعالج يجلس بلا حراك منتظراً كل حرف تطبعه الطابعة! هنا جاءت فكرة المقاطعات (Interrupts) لتوفر آلية رد فعل لحظية تحرر المعالج من الانتظار القاتل. في هذا الموديول سنستكشف دورة المقاطعة، فئاتها الأربعة، وسنحاكي مسألة خط الزمن الشهيرة بحالتيها."
+              </p>
+              <div class="mod-badges-row">
+                <span class="mod-pill-chip">Improving CPU Utilization</span>
+                <span class="mod-pill-chip">4 Interrupt Classes</span>
+                <span class="mod-pill-chip">Interrupt Cycle Integration</span>
+                <span class="mod-pill-chip">Sequential vs Nested Interrupts</span>
+                <span class="mod-pill-chip">Interactive Timeline Simulator (Q 3.9)</span>
+              </div>
+            </div>
+
+            <!-- 01. الفكرة الأساسية من الصفر: الفلسفة والهدف المعماري (سؤال الشيت 3.6) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">01</span>
+                <h2 class="exp-sec-title">الفكرة الأساسية من الصفر: الفلسفة والهدف المعماري للمقاطعات (سؤال الشيت 3.6)</h2>
+              </div>
+
+              <div class="balady-box">
+                <div class="balady-header">
+                  <span class="balady-badge">💡 معضلة السلحفاة والطيارة النفاثة (The Core Hook)</span>
+                  <span class="mono" style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700;">WHY INTERRUPTS EXIST</span>
+                </div>
+                <p>
+                  المعالج بيحسب عملياته بـ <strong>النانوثانية (ns)</strong> يعني مليار عملية في الثانية، بينما الطابعة أو القرص الصلب أو كابل الشبكة بيشتغل بـ <strong>المللي ثانية (ms)</strong>. يعني الفرق بين سرعة المعالج وسرعة أي جهاز خارجي زي الفرق بين <strong>سرعة طيارة نفاثة وسرعة سلحفاة عرجاء!</strong>
+                </p>
+                <div class="two-layers-split" style="margin-top: 1rem;">
+                  <div class="layer-pill-card">
+                    <span class="layer-tag" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);">WITHOUT INTERRUPTS // BUSY-WAITING</span>
+                    <h3 style="font-size: 1.15rem; margin-top: 0.5rem; color: #f87171;">بدون مقاطعات: انتظار قاتل (Busy-Wait Polling)</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); margin-top: 0.5rem;">
+                      المعالج يبعت سطر للطابعة، ويفضل واقف حاطط إيده على خده في حلقة انتظار مفرغة (Loop) مبيعملش أي حاجة ومضيع ملايين الدورات في الفراغ لحد ما الطابعة تطبع السطر عشان يبعت اللي بعده! ده إهدار مرعب لطاقة وسرعة المعالج.
+                    </p>
+                  </div>
+
+                  <div class="layer-pill-card">
+                    <span class="layer-tag" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.3);">WITH INTERRUPTS // INTERRUPT-DRIVEN</span>
+                    <h3 style="font-size: 1.15rem; margin-top: 0.5rem; color: var(--accent-emerald);">مع المقاطعات: استغلال 100% للمعالج</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); margin-top: 0.5rem;">
+                      المعالج يرمي أمر الطباعة للطابعة، ويلتفت فوراً يكمل حسابات وبرامج للمستخدم! ولما الطابعة تخلص الورقة بعد كام مللي ثانية، تبعت له نبضة كهربا على خط المقاطعة تقوله: <em>"يا معالج أنا جهزت، تعال خد السطر اللي بعده!"</em> فيخدمها في ميكروثانية ويرجع يكمل شغله!
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Official Academic Definition -->
+                <div class="en-def-box" style="margin-top: 1.25rem;">
+                  <div class="en-def-title">Official Academic Definition (Sheet Question 3.6 — William Stallings):</div>
+                  <p class="en-def-text">
+                    "The primary purpose of an interrupt is to <strong>improve processor utilization</strong>. Because external I/O devices are typically much slower than the processor, interrupts allow the CPU to execute user code concurrently while an I/O operation is in progress, rather than wasting thousands of clock cycles idling in a busy-wait loop."
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 02. COMPONENT 2: كروت الفئات الأربعة للمقاطعات (سؤال الشيت 3.7) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">02</span>
+                <h2 class="exp-sec-title">COMPONENT 2: كروت الفئات الأربعة للمقاطعات (The 4 Classes Deck — سؤال الشيت 3.7)</h2>
+              </div>
+
+              <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <!-- Class 1: Program Interrupt -->
+                <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: var(--accent-cyan);">CLASS 01</span>
+                    <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px;">Internal / CPU</span>
+                  </div>
+                  <h4 style="font-size: 1.15rem; margin-top: 0.5rem; color: #fff;">Program Interrupt</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>السبب الرسمي:</strong> Generated by some condition that occurs as a result of an instruction execution.
+                  </p>
+                  <p style="font-size: 0.88rem; color: var(--accent-cyan); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>بالعامية:</strong> أخطاء بتظهر جوه الكود نفسه والمعالج بينفذ.
+                  </p>
+                  <div style="margin-top: 0.75rem; padding: 0.65rem; background: rgba(0,0,0,0.25); border-radius: 6px; font-size: 0.82rem; line-height: 1.6;">
+                    <strong style="color: #fff;">أمثلة مشهورة:</strong>
+                    <ul style="padding-right: 1.1rem; margin-top: 0.25rem;">
+                      <li>Arithmetic overflow (فيضان السعة الحسابية)</li>
+                      <li>Division by zero (القسمة على صفر)</li>
+                      <li>Attempt to execute illegal machine instruction</li>
+                      <li>Reference outside allowable user memory space</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Class 2: Timer Interrupt -->
+                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: var(--accent-amber);">CLASS 02</span>
+                    <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px;">Hardware Timer / OS</span>
+                  </div>
+                  <h4 style="font-size: 1.15rem; margin-top: 0.5rem; color: #fff;">Timer Interrupt</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>السبب الرسمي:</strong> Generated by an internal processor hardware timer.
+                  </p>
+                  <p style="font-size: 0.88rem; color: var(--accent-amber); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>بالعامية:</strong> مؤقت عتادي بيظبط إيقاع الوقت ويدق كل فترة زمنية ثابتة.
+                  </p>
+                  <div style="margin-top: 0.75rem; padding: 0.65rem; background: rgba(0,0,0,0.25); border-radius: 6px; font-size: 0.82rem; line-height: 1.6;">
+                    <strong style="color: #fff;">أمثلة مشهورة:</strong>
+                    <ul style="padding-right: 1.1rem; margin-top: 0.25rem;">
+                      <li>Enables Operating System to perform time-slicing</li>
+                      <li>Forces CPU to switch from one running process to another</li>
+                      <li>The foundation of all Multitasking OS architectures</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Class 3: I/O Interrupt -->
+                <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: var(--accent-emerald);">CLASS 03</span>
+                    <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px;">Peripheral Driven</span>
+                  </div>
+                  <h4 style="font-size: 1.15rem; margin-top: 0.5rem; color: #fff;">I/O Interrupt</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>السبب الرسمي:</strong> Generated by an I/O controller to signal either normal completion or an error.
+                  </p>
+                  <p style="font-size: 0.88rem; color: var(--accent-emerald); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>بالعامية:</strong> إشارة من أجهزة الإدخال والإخراج لتبليغ المعالج بحالتها.
+                  </p>
+                  <div style="margin-top: 0.75rem; padding: 0.65rem; background: rgba(0,0,0,0.25); border-radius: 6px; font-size: 0.82rem; line-height: 1.6;">
+                    <strong style="color: #fff;">أمثلة مشهورة:</strong>
+                    <ul style="padding-right: 1.1rem; margin-top: 0.25rem;">
+                      <li>Printer finished printing a page buffer</li>
+                      <li>Disk controller completed reading a sector</li>
+                      <li>Network interface received an incoming data packet</li>
+                      <li>I/O device ran out of paper or encountered a read fault</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Class 4: Hardware Failure Interrupt -->
+                <div class="attr-card" style="border-top: 3px solid #ec4899;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: #ec4899;">CLASS 04</span>
+                    <span class="badge" style="background: rgba(236, 72, 153, 0.15); color: #ec4899; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px;">Emergency / Physical</span>
+                  </div>
+                  <h4 style="font-size: 1.15rem; margin-top: 0.5rem; color: #fff;">Hardware Failure Interrupt</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>السبب الرسمي:</strong> Generated by an abrupt physical hardware malfunction.
+                  </p>
+                  <p style="font-size: 0.88rem; color: #ec4899; margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>بالعامية:</strong> عطل عتادي طارئ وخارج عن إرادة البرامج.
+                  </p>
+                  <div style="margin-top: 0.75rem; padding: 0.65rem; background: rgba(0,0,0,0.25); border-radius: 6px; font-size: 0.82rem; line-height: 1.6;">
+                    <strong style="color: #fff;">أمثلة مشهورة:</strong>
+                    <ul style="padding-right: 1.1rem; margin-top: 0.25rem;">
+                      <li>Imminent power supply failure (انقطاع الكهرباء الوشيك)</li>
+                      <li>Memory parity error (خلل في شريحة الرامات)</li>
+                      <li>Bus communication error or physical line drop</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 03. COMPONENT 3: المخطط المعماري لدورة المقاطعة (Figure 3.7) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">03</span>
+                <h2 class="exp-sec-title">COMPONENT 3: المخطط المعماري لدورة المقاطعة (Interrupt Cycle Architecture — Figure 3.7)</h2>
+              </div>
+
+              <!-- Interactive ASCII Architecture -->
+              <div class="terminal-card">
+                <div class="terminal-bar">
+                  <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                  </div>
+                  <span class="terminal-title">FIGURE 3.7 // INSTRUCTION CYCLE WITH INTERRUPTS ARCHITECTURE</span>
+                  <span class="mono" style="font-size: 0.72rem; color: var(--accent-cyan);">STALLINGS 10th ED</span>
+                </div>
+                <div class="terminal-body">
+                  <pre class="ascii-diagram">
+           +-------------------------------------------------------------+
+           |                 INSTRUCTION CYCLE WITH INTERRUPTS           |
+           |                                                             |
+           |     +-------------------+         +-------------------+     |
+      +--------->|    FETCH CYCLE    |-------->|   EXECUTE CYCLE   |     |
+      |          | (جلب التعليمة)    |         | (تنفيذ العملية)   |     |
+      |          +-------------------+         +---------+---------+     |
+      |                                                  |               |
+      |                                                  v               |
+      |                                        +-------------------+     |
+      |           [No Interrupt Pending]       |  INTERRUPT CYCLE  |     |
+      +----------------------------------------+ (فحص المقاطعات)  |     |
+      |                                        +---------+---------+     |
+      |                                                  |               |
+      |          [Interrupt Signal Active]               |               |
+      +--------------------------------------------------+               |
+      |  1. Suspend execution of current user program.                   |
+      |  2. Save context: Push current Program Counter (PC) to stack.    |
+      |  3. Load PC with the starting address of the ISR.                |
+      +------------------------------------------------------------------+
+                  </pre>
+                </div>
+              </div>
+
+              <!-- Interactive Simulator: sim-ch3-interrupt-cycle -->
+              <div class="sim-wrapper-box" data-sim-target="sim-ch3-interrupt-cycle" style="margin-top: 1.5rem;">
+                <div class="sim-header-row">
+                  <div class="sim-title-group">
+                    <span class="mono sim-badge">SIMULATOR // FIGURE 3.7</span>
+                    <h3 class="sim-title">محاكي دورة المقاطعة وحفظ السياق (Interrupt Cycle &amp; Context Save)</h3>
+                  </div>
+                  <div class="sim-controls-toolbar">
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. Fetch</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">2. Execute</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">3. Check &amp; Save</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="3">4. Branch to ISR</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>تشغيل تلقائي ⏵</button>
+                  </div>
+                </div>
+
+                <div class="sim-display-screen">
+                  <div class="sim-step-details-card">
+                    <div class="sim-step-header">
+                      <span class="sim-active-num mono">01</span>
+                      <h4 class="sim-active-title">المرحلة 1: دورة الجلب (Fetch Cycle — جلب التعليمة وزيادة PC)</h4>
+                    </div>
+                    <div class="sim-active-route mono">PC ──► Memory Bus ──► IR ◄── Mem[PC] | PC = PC + 1</div>
+                    <div class="sim-active-payload">📥 Fetch Phase: قراءة كود التعليمة من عنوان PC وتخزينه في IR وزيادة العداد فوراً</div>
+                    <p class="sim-active-desc">كالمعتاد في بداية كل تعليمة، المعالج يقرأ أمر المستخدم الحالي من الرام ويحطه في مسجل IR، ويزود قيمة عداد البرنامج (PC = PC + 1).</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Detailed 4 Actions When Interrupt Occurs -->
+              <div style="margin-top: 1.5rem;">
+                <h3 style="font-size: 1.15rem; color: var(--accent-emerald); font-weight: 800; margin-bottom: 0.75rem;">
+                  ⚡ ماذا يفعل المعالج خطوة بخطوة عند استقبال المقاطعة؟ (سؤال امتحان متكرر)
+                </h3>
+                <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+                  <div class="attr-card">
+                    <span class="attr-type mono" style="color: var(--accent-cyan);">ACTION 01</span>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">1. نقطة الفحص (Check Timing)</h4>
+                    <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                      المعالج <strong>لا يقطع نفسه أبداً في منتصف التعليمة</strong>! بل يفحص خط طلب المقاطعة (Interrupt Request Line) دائماً <strong>في نهاية دورة التنفيذ (At the end of Execute Cycle)</strong>.
+                    </p>
+                  </div>
+
+                  <div class="attr-card">
+                    <span class="attr-type mono" style="color: var(--accent-amber);">ACTION 02</span>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">2. حفظ السياق (Save Context)</h4>
+                    <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                      لو لقى مقاطعة، يوقف برنامج المستخدم فوراً، ويحفظ عنوان الرجوع (قيمة <strong>PC</strong> الحالية التي تشير للأمر التالي) في الذاكرة (داخل الـ <strong>Stack</strong>) عشان يعرف يرجع منين!
+                    </p>
+                  </div>
+
+                  <div class="attr-card">
+                    <span class="attr-type mono" style="color: var(--accent-emerald);">ACTION 03</span>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">3. القفز لـ ISR (Branch to ISR)</h4>
+                    <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                      يتم تحميل عنوان بداية روتين خدمة المقاطعة (<strong>Interrupt Service Routine - ISR</strong>) الخاص بالجهاز في مسجل <strong>PC</strong> ليبدأ المعالج في تنفيذه فوراً.
+                    </p>
+                  </div>
+
+                  <div class="attr-card">
+                    <span class="attr-type mono" style="color: #ec4899;">ACTION 04</span>
+                    <h4 style="font-size: 1.05rem; margin-top: 0.35rem; color: #fff;">4. العودة بعد الخدمة (Restore)</h4>
+                    <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                      بمجرد أن ينتهي الـ ISR بتعليمة عودة، يستعيد المعالج قيمة <strong>PC</strong> القديمة من الـ Stack ويكمل برنامج المستخدم الأصلي من نفس النقطة وكأن شيئاً لم يحدث!
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 04. COMPONENT 4: المقاطعات المتعددة: التتابعي مقابل المتداخل (سؤال الشيت 3.10) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">04</span>
+                <h2 class="exp-sec-title">COMPONENT 4: المقاطعات المتعددة: التتابعي مقابل المتداخل (Sequential vs Nested — سؤال الشيت 3.10)</h2>
+              </div>
+
+              <!-- Terminal Diagrams for Sequential vs Nested -->
+              <div class="terminal-card">
+                <div class="terminal-bar">
+                  <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                  </div>
+                  <span class="terminal-title">MULTIPLE INTERRUPTS ARCHITECTURE // DISABLED vs PRIORITY-BASED</span>
+                  <span class="mono" style="font-size: 0.72rem; color: var(--accent-amber);">FIGURE 3.12 &amp; 3.13</span>
+                </div>
+                <div class="terminal-body">
+                  <pre class="ascii-diagram">
+(A) Sequential (Disabled Interrupts) Approach:
+=============================================
+     User Program
+          |
+      (t1)| Interrupt X occurs
+          +-------------------> ISR X (Incoming interrupts are DISABLED)
+                                |
+                                | Interrupt Y arrives here ---> WAITS in queue (Pending)
+                                |
+                                + (ISR X completes)
+          +---------------------+
+          |
+          +-------------------> ISR Y (Now services pending interrupt Y)
+                                |
+                                + (ISR Y completes)
+          +---------------------+
+          v (Resume User Program)
+
+---------------------------------------------------------------------------------
+(B) Nested (Priority-Based) Approach:
+=====================================
+     User Program
+          |
+      (t1)| Lower-Priority Interrupt X occurs (e.g., Printer, Priority 1)
+          +-------------------> ISR X starts running...
+                                |
+                            (t2)| Higher-Priority Interrupt Y occurs (e.g., Comm, Priority 6)
+                                +-------------------> ISR Y preempts X and runs IMMEDIATELY!
+                                                      |
+                                                      + (ISR Y finishes)
+                                +---------------------+
+                                | (Resume remaining part of ISR X)
+                                + (ISR X finishes)
+          +---------------------+
+          v (Resume User Program)
+                  </pre>
+                </div>
+              </div>
+
+              <!-- Core Comparison Table -->
+              <div style="margin-top: 1.5rem;">
+                <h3 style="font-size: 1.15rem; color: #fff; font-weight: 800; margin-bottom: 0.75rem;">
+                  📊 جدول المقارنة الجوهرية للامتحان (سؤال 3.10):
+                </h3>
+                <div style="overflow-x: auto;">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: right; background: var(--bg-surface-1); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                    <thead>
+                      <tr style="background: rgba(255,255,255,0.05); border-bottom: 2px solid var(--border-color);">
+                        <th style="padding: 0.85rem; color: #fff;">وجه المقارنة</th>
+                        <th style="padding: 0.85rem; color: var(--accent-cyan);">المعالجة التتابعية (Sequential / Disabled)</th>
+                        <th style="padding: 0.85rem; color: var(--accent-emerald);">المعالجة المتداخلة (Nested / Priority-Based)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.85rem; font-weight: 700; color: var(--accent-amber);">آلية التعامل مع المقاطعات الجديدة</td>
+                        <td style="padding: 0.85rem; color: var(--text-secondary);">تعطيل المقاطعات أثناء خدمة أي مقاطعة؛ أي مقاطعة جديدة تنتظر في الطابور (Pending) حتى ينتهي الـ ISR الحالي.</td>
+                        <td style="padding: 0.85rem; color: var(--text-secondary);">المقاطعة ذات الأولوية الأعلى تقطع فوراً الروتين الأقل أولوية وتوقفه، وبعد انتهائها يعود المعالج لاستئناف الروتين الأقل.</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.85rem; font-weight: 700; color: var(--accent-amber);">الاستجابة للأجهزة الحرجة والطوارئ</td>
+                        <td style="padding: 0.85rem; color: #f87171;">بطيئة؛ البيانات الحرجة (زي الشبكة أو عطل كهربائي) قد تضيع لو جاءت أثناء انشغال المعالج بطابعة بطيئة!</td>
+                        <td style="padding: 0.85rem; color: var(--accent-emerald); font-weight: 700;">استجابة فورية وحاسمة للأجهزة الحرجة والبيانات السريعة ذات الأولوية العليا.</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 0.85rem; font-weight: 700; color: var(--accent-amber);">التعقيد العتادي للدوائر (Hardware Complexity)</td>
+                        <td style="padding: 0.85rem; color: var(--text-secondary);">بسيط جداً؛ مجرد فليب-فلوب لقفل المقاطعات (Interrupt Enable/Disable bit).</td>
+                        <td style="padding: 0.85rem; color: var(--text-secondary);">يتطلب عتاد لمقارنة الأولويات (Priority Arbiter) وبنية Stack متعددة المستويات لحفظ سياقات متعددة.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <!-- 05. COMPONENT 5: محاكي خط الزمن التفاعلي لمسألة الشيت (سؤال 3.9) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">05</span>
+                <h2 class="exp-sec-title">COMPONENT 5: محاكي خط الزمن التفاعلي لمسألة الشيت (Interactive Timeline Simulator — سؤال الشيت 3.9)</h2>
+              </div>
+
+              <!-- Problem Given Parameters Box -->
+              <div class="balady-box">
+                <div class="balady-header">
+                  <span class="balady-badge">📌 معطيات مسألة خط الزمن الأشهر في امتحانات المعمارية</span>
+                  <span class="mono" style="font-size: 0.8rem; color: var(--accent-amber); font-weight: 700;">SHEET 3 Q3.9 // SLIDE 26</span>
+                </div>
+                <p>لديك نظام حاسوبي يحتوي على 3 أجهزة ومهمة مستخدم:</p>
+                <div class="two-layers-split" style="margin-top: 0.75rem;">
+                  <div style="background: rgba(0,0,0,0.25); padding: 0.85rem; border-radius: 8px;">
+                    <span style="font-weight: 800; color: var(--accent-cyan);">1. برنامج المستخدم (User Program):</span>
+                    <ul style="margin-top: 0.5rem; padding-right: 1.2rem; font-size: 0.95rem; line-height: 1.8;">
+                      <li>يحتاج <strong>20 وحدة زمنية</strong> ليكتمل.</li>
+                      <li>يبدأ التشغيل عند اللحظة <strong>t = 0</strong>.</li>
+                    </ul>
+                  </div>
+
+                  <div style="background: rgba(0,0,0,0.25); padding: 0.85rem; border-radius: 8px;">
+                    <span style="font-weight: 800; color: var(--accent-emerald);">2. الأجهزة الثلاثة ومقاطعاتها:</span>
+                    <ul style="margin-top: 0.5rem; padding-right: 1.2rem; font-size: 0.95rem; line-height: 1.8;">
+                      <li><strong>Printer (طابعة):</strong> أولوية = <strong>1</strong> (الأقل)، تطلب مقاطعة عند <strong>t = 6</strong>.</li>
+                      <li><strong>Communications (اتصالات):</strong> أولوية = <strong>6</strong> (الأعلى)، تطلب مقاطعة عند <strong>t = 9</strong>.</li>
+                      <li><strong>Disk (قرص صلب):</strong> أولوية = <strong>3</strong> (متوسطة)، يطلب مقاطعة عند <strong>t = 18</strong>.</li>
+                      <li><strong>زمن خدمة كل ISR:</strong> يحتاج <strong>10 وحدات زمنية</strong> متواصلة.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive Simulator: sim-ch3-timeline-nested -->
+              <div class="sim-wrapper-box" data-sim-target="sim-ch3-timeline-nested" style="margin-top: 1.5rem;">
+                <div class="sim-header-row">
+                  <div class="sim-title-group">
+                    <span class="mono sim-badge">SIMULATOR // SHEET 3.9 GANTT ENGINE</span>
+                    <h3 class="sim-title">مشغل خط الزمن التفاعلي للحالة الأولى (Priority-Based Timeline Player)</h3>
+                  </div>
+                  <div class="sim-controls-toolbar">
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">t=0..6 User</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">t=6..9 Printer</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">t=9..19 Comm</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="3">t=19..29 Disk</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="4">t=29..36 Printer</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="5">t=36..50 User</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>تشغيل تلقائي ⏵</button>
+                  </div>
+                </div>
+
+                <div class="sim-display-screen">
+                  <div class="sim-step-details-card">
+                    <div class="sim-step-header">
+                      <span class="sim-active-num mono">01</span>
+                      <h4 class="sim-active-title">الفترة 1 (t = 0 إلى 6): تشغيل برنامج المستخدم الأصلي</h4>
+                    </div>
+                    <div class="sim-active-route mono">t = 0..6: User Program Runs (6 units executed | 14 units remaining)</div>
+                    <div class="sim-active-payload">💻 User Program: المعالج ينفذ كود المستخدم بكل طاقته لمدة 6 وحدات زمنية دون أي مقاطعة</div>
+                    <p class="sim-active-desc">بدأ برنامج المستخدم عند t = 0 وظل يعمل حتى t = 6 بنجاح، فأنجز 6 وحدات من إجمالي 20 وحدة مخصصة له، ويتبقى له 14 وحدة.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab 1: Priority-Based Detailed Breakdown -->
+              <div class="sheet-card" style="margin-top: 1.5rem;">
+                <div class="sheet-q-box" style="background: rgba(56, 189, 248, 0.08); border-left: 4px solid var(--accent-cyan);">
+                  <span class="mono" style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 800;">CASE 1 // NESTED PRIORITY-BASED TRACE (الحالة الأولى: حسب الأولويات)</span>
+                  <h4 style="margin-top: 0.5rem; color: #fff;">التتبع الزمني بالتفصيل ثانية بثانية (من t = 0 إلى t = 50):</h4>
+                </div>
+
+                <div style="padding: 1rem;">
+                  <div class="terminal-body" style="padding: 0.75rem; background: var(--bg-surface-2); margin-bottom: 1rem;">
+                    <pre class="ascii-diagram" style="font-size: 0.8rem;">
+Time:  0      6   9        19        29       36             50
+       +------+---+--------+---------+--------+--------------+
+Task:  | User | P |  Comm  |  Disk   | P(rem) | User Program |
+       +------+---+--------+---------+--------+--------------+
+Status:(Runs) (P) (Preempt)(Highest) (Resume) (Finished!)
+                    </pre>
+                  </div>
+
+                  <ol style="padding-right: 1.2rem; font-size: 0.95rem; line-height: 1.8;">
+                    <li><strong>من t = 0 إلى t = 6:</strong> يعمل برنامج المستخدم (نفذ 6 وحدات، متبقي له: 20 - 6 = 14 وحدة).</li>
+                    <li><strong>عند t = 6:</strong> مقاطعة Printer (أولوية 1) تبدأ في العمل.</li>
+                    <li><strong>من t = 6 إلى t = 9:</strong> يعمل ISR الطابعة (نفذ 3 وحدات، متبقي له: 10 - 3 = 7 وحدات).</li>
+                    <li><strong>عند t = 9:</strong> مقاطعة Comm (أولوية 6) تصل. بما أن 6 &gt; 1، يتم إيقاف Printer فوراً وتعليقها ويبدأ ISR الاتصالات.</li>
+                    <li><strong>من t = 9 إلى t = 19:</strong> يعمل ISR الاتصالات حتى يكتمل تماماً (9 + 10 = 19).
+                      <br><span style="color: var(--accent-amber);">⚠️ تريكة حساسة: عند t = 18 تصل مقاطعة Disk بأولوية 3، لكنها تنتظر ولا تبدأ لأن Comm أولوية 6 أعلى منها!</span>
+                    </li>
+                    <li><strong>عند t = 19:</strong> ينتهي ISR الاتصالات. المعلق الآن: Disk (أولوية 3) وباقي Printer (أولوية 1). بما أن 3 &gt; 1، يبدأ المعالج في ISR القرص الصلب.</li>
+                    <li><strong>من t = 19 إلى t = 29:</strong> يعمل ISR القرص الصلب حتى يكتمل تماماً (19 + 10 = 29).</li>
+                    <li><strong>عند t = 29:</strong> يستأنف المعالج الـ 7 وحدات المتبقية لـ ISR الطابعة من t = 29 إلى t = 36 (29 + 7 = 36) وتكتمل الطابعة!</li>
+                    <li><strong>من t = 36 إلى t = 50:</strong> يعود المعالج لبرنامج المستخدم ليكمل الـ 14 وحدة المتبقية له فيكتمل البرنامج عند t = 50 (36 + 14 = 50).</li>
+                  </ol>
+
+                  <!-- Table for Case 1 -->
+                  <div style="margin-top: 1rem; overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: center; background: var(--bg-surface-1); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                      <thead>
+                        <tr style="background: rgba(255,255,255,0.05); border-bottom: 2px solid var(--border-color);">
+                          <th style="padding: 0.75rem; color: #fff;">المهمة / الجهاز</th>
+                          <th style="padding: 0.75rem; color: var(--accent-cyan);">الأولوية</th>
+                          <th style="padding: 0.75rem; color: var(--accent-cyan);">وقت الوصول</th>
+                          <th style="padding: 0.75rem; color: var(--accent-emerald);">وقت البدء</th>
+                          <th style="padding: 0.75rem; color: var(--accent-amber);">وقت التوقف</th>
+                          <th style="padding: 0.75rem; color: var(--accent-cyan);">وقت الاستئناف</th>
+                          <th style="padding: 0.75rem; color: #ec4899;">وقت الانتهاء</th>
+                        </tr>
+                      </thead>
+                      <tbody style="font-family: var(--font-mono);">
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                          <td style="padding: 0.75rem; font-weight: 700; color: #fff; font-family: var(--font-ar);">Printer ISR</td>
+                          <td style="padding: 0.75rem;">1</td>
+                          <td style="padding: 0.75rem;">6</td>
+                          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-emerald);">6</td>
+                          <td style="padding: 0.75rem; color: var(--accent-amber);">9</td>
+                          <td style="padding: 0.75rem; color: var(--accent-cyan);">29</td>
+                          <td style="padding: 0.75rem; font-weight: 800; color: #ec4899;">36</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                          <td style="padding: 0.75rem; font-weight: 700; color: #fff; font-family: var(--font-ar);">Comm ISR</td>
+                          <td style="padding: 0.75rem; color: var(--accent-cyan); font-weight: 800;">6</td>
+                          <td style="padding: 0.75rem;">9</td>
+                          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-emerald);">9</td>
+                          <td style="padding: 0.75rem; color: var(--text-muted);">لا يوجد</td>
+                          <td style="padding: 0.75rem; color: var(--text-muted);">لا يوجد</td>
+                          <td style="padding: 0.75rem; font-weight: 800; color: #ec4899;">19</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                          <td style="padding: 0.75rem; font-weight: 700; color: #fff; font-family: var(--font-ar);">Disk ISR</td>
+                          <td style="padding: 0.75rem;">3</td>
+                          <td style="padding: 0.75rem;">18</td>
+                          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-emerald);">19</td>
+                          <td style="padding: 0.75rem; color: var(--text-muted);">لا يوجد</td>
+                          <td style="padding: 0.75rem; color: var(--text-muted);">لا يوجد</td>
+                          <td style="padding: 0.75rem; font-weight: 800; color: #ec4899;">29</td>
+                        </tr>
+                        <tr>
+                          <td style="padding: 0.75rem; font-weight: 700; color: #fff; font-family: var(--font-ar);">User Program</td>
+                          <td style="padding: 0.75rem; color: var(--text-muted);">--</td>
+                          <td style="padding: 0.75rem;">0</td>
+                          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-emerald);">0</td>
+                          <td style="padding: 0.75rem; color: var(--accent-amber);">6</td>
+                          <td style="padding: 0.75rem; color: var(--accent-cyan);">36</td>
+                          <td style="padding: 0.75rem; font-weight: 800; color: #ec4899;">50</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div style="margin-top: 0.75rem; font-weight: 800; color: var(--accent-emerald);">
+                    🏁 Total Time Taken by User Program: <strong>50 وحدة زمنية</strong>.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab 2: Equal Priorities Detailed Breakdown -->
+              <div class="sheet-card" style="margin-top: 1.5rem;">
+                <div class="sheet-q-box" style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid var(--accent-emerald);">
+                  <span class="mono" style="font-size: 0.8rem; color: var(--accent-emerald); font-weight: 800;">CASE 2 // EQUAL PRIORITIES / SEQUENTIAL TRACE (الحالة الثانية: في حالة الأولويات المتساوية)</span>
+                  <h4 style="margin-top: 0.5rem; color: #fff;">التتبع الزمني بالتفصيل (أسبقية الحضور First-Come, First-Served):</h4>
+                </div>
+
+                <div style="padding: 1rem;">
+                  <div class="terminal-body" style="padding: 0.75rem; background: var(--bg-surface-2); margin-bottom: 1rem;">
+                    <pre class="ascii-diagram" style="font-size: 0.8rem;">
+Time:  0      6        16        26        36             50
+       +------+--------+---------+---------+--------------+
+Task:  | User | Printer|  Comm   |  Disk   | User Program |
+       +------+--------+---------+---------+--------------+
+Status:(Runs) (First)  (Waited)  (Waited)  (Finished!)
+                    </pre>
+                  </div>
+
+                  <ol style="padding-right: 1.2rem; font-size: 0.95rem; line-height: 1.8;">
+                    <li><strong>من t = 0 إلى t = 6:</strong> يعمل برنامج المستخدم (نفذ 6 وحدات، متبقي 14 وحدة).</li>
+                    <li><strong>عند t = 6:</strong> تبدأ Printer أولاً وتعمل 10 وحدات كاملة من t = 6 إلى t = 16 دون أن يقطعها أحد لأن الأولويات متساوية!
+                      <br><span style="color: var(--text-secondary);">(مقاطعة Comm تصل عند t = 9 وتنتظر في الطابور).</span>
+                    </li>
+                    <li><strong>عند t = 16:</strong> تنتهي Printer، فيبدأ روتين Comm ويعمل 10 وحدات كاملة من t = 16 إلى t = 26.
+                      <br><span style="color: var(--text-secondary);">(مقاطعة Disk تصل عند t = 18 وتنتظر في الطابور خلف Comm).</span>
+                    </li>
+                    <li><strong>عند t = 26:</strong> تنتهي Comm، فيبدأ روتين Disk ويعمل 10 وحدات كاملة من t = 26 إلى t = 36.</li>
+                    <li><strong>عند t = 36:</strong> تنتهي جميع المقاطعات، فيعود المعالج لإنهاء الـ 14 وحدة المتبقية لبرنامج المستخدم من t = 36 إلى t = 50.</li>
+                  </ol>
+
+                  <!-- Table for Case 2 -->
+                  <div style="margin-top: 1rem; overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: center; background: var(--bg-surface-1); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                      <thead>
+                        <tr style="background: rgba(255,255,255,0.05); border-bottom: 2px solid var(--border-color);">
+                          <th style="padding: 0.75rem; color: #fff;">المهمة / الجهاز</th>
+                          <th style="padding: 0.75rem; color: var(--accent-cyan);">وقت الوصول</th>
+                          <th style="padding: 0.75rem; color: var(--accent-emerald);">وقت البدء</th>
+                          <th style="padding: 0.75rem; color: #ec4899;">وقت الانتهاء</th>
+                        </tr>
+                      </thead>
+                      <tbody style="font-family: var(--font-mono);">
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                          <td style="padding: 0.75rem; font-weight: 700; color: #fff; font-family: var(--font-ar);">Printer ISR</td>
+                          <td style="padding: 0.75rem;">6</td>
+                          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-emerald);">6</td>
+                          <td style="padding: 0.75rem; font-weight: 800; color: #ec4899;">16</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                          <td style="padding: 0.75rem; font-weight: 700; color: #fff; font-family: var(--font-ar);">Comm ISR</td>
+                          <td style="padding: 0.75rem;">9</td>
+                          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-emerald);">16</td>
+                          <td style="padding: 0.75rem; font-weight: 800; color: #ec4899;">26</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                          <td style="padding: 0.75rem; font-weight: 700; color: #fff; font-family: var(--font-ar);">Disk ISR</td>
+                          <td style="padding: 0.75rem;">18</td>
+                          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-emerald);">26</td>
+                          <td style="padding: 0.75rem; font-weight: 800; color: #ec4899;">36</td>
+                        </tr>
+                        <tr>
+                          <td style="padding: 0.75rem; font-weight: 700; color: #fff; font-family: var(--font-ar);">User Program</td>
+                          <td style="padding: 0.75rem;">0</td>
+                          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-emerald);">0 &amp; 36</td>
+                          <td style="padding: 0.75rem; font-weight: 800; color: #ec4899;">50</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div style="margin-top: 0.75rem; font-weight: 800; color: var(--accent-emerald);">
+                    🏁 Total Time Taken by User Program: <strong>50 وحدة زمنية</strong>.
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 06. COMPONENT 6: كروت مصائد وتريكات الامتحانات (Exam Traps Callouts) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">06</span>
+                <h2 class="exp-sec-title">COMPONENT 6: كروت مصائد وتريكات الامتحانات (Exam Traps Callouts)</h2>
+              </div>
+
+              <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <!-- Trap 1 -->
+                <div class="exam-trap-box" style="margin-top: 0;">
+                  <div class="exam-trap-header">
+                    <span class="exam-trap-badge">⚠️ تريكة 1 // ثبات الزمن الكلي في الحالتين</span>
+                  </div>
+                  <h4 style="font-size: 1rem; color: #fff; margin-top: 0.5rem;">Total Execution Time Trap</h4>
+                  <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.35rem;">
+                    <strong>السؤال الشائع:</strong> هل الزمن الكلي لانتهاء البرنامج بيختلف لو غيرنا الأولويات؟<br>
+                    <strong>الإجابة القاطعة:</strong> لا! الزمن الكلي هو <strong>50 وحدة زمنية في الحالتين بالتمام والكمال</strong>! لأن كمية الشغل الحسابي ثابتة: (20 للبرنامج + 10 للطابعة + 10 للاتصالات + 10 للقرص = 50). ما يتغير هو فقط ترتيب وأوقات استجابة الأجهزة!
+                  </p>
+                </div>
+
+                <!-- Trap 2 -->
+                <div class="exam-trap-box" style="margin-top: 0;">
+                  <div class="exam-trap-header">
+                    <span class="exam-trap-badge">⚠️ تريكة 2 // مصيدة وصول Disk عند t=18</span>
+                  </div>
+                  <h4 style="font-size: 1rem; color: #fff; margin-top: 0.5rem;">Disk Arrival at t = 18</h4>
+                  <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.35rem;">
+                    <strong>الخطأ الشائع:</strong> كثير من الطلاب يكتب أن Disk يبدأ عند 18!<br>
+                    <strong>الصواب:</strong> في حالة الأولويات، الـ Disk يصل عند 18 لكنه <strong>لا يبدأ عند 18</strong>، لأن Comm صاحب الأولوية الأعلى (6) لا يزال قيد التنفيذ حتى اللحظة 19، فيبدأ Disk فور انتهاء Comm عند <strong>t = 19</strong>!
+                  </p>
+                </div>
+
+                <!-- Trap 3 -->
+                <div class="exam-trap-box" style="margin-top: 0;">
+                  <div class="exam-trap-header">
+                    <span class="exam-trap-badge">⚠️ تريكة 3 // توقيت فحص المقاطعة</span>
+                  </div>
+                  <h4 style="font-size: 1rem; color: #fff; margin-top: 0.5rem;">Interrupt Check Timing</h4>
+                  <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.35rem;">
+                    <strong>السؤال الشائع:</strong> هل المعالج يقطع نفسه أثناء جلب تعليمة؟<br>
+                    <strong>الإجابة القاطعة:</strong> مستحيل! المعالج لا يقاطع نفسه أبداً في منتصف التعليمة، بل يفحص خط المقاطعة دائماً <strong>في نهاية دورة التنفيذ (At the end of Execute Cycle)</strong>!
+                  </p>
+                </div>
+
+                <!-- Trap 4 -->
+                <div class="exam-trap-box" style="margin-top: 0;">
+                  <div class="exam-trap-header">
+                    <span class="exam-trap-badge">⚠️ تريكة 4 // ما الذي يتم حفظه في الـ Stack؟</span>
+                  </div>
+                  <h4 style="font-size: 1rem; color: #fff; margin-top: 0.5rem;">Context Save Contents</h4>
+                  <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.35rem;">
+                    <strong>السؤال الشائع:</strong> ما هو الشيء الأساسي الذي يحفظه المعالج قبل القفز لـ ISR؟<br>
+                    <strong>الإجابة القاطعة:</strong> يحفظ قيمة <strong>عدّاد البرنامج (PC)</strong> وأعلام الحالة (Processor Status Word / Flags) في الـ Stack، حتى يتمكن من العودة واستئناف البرنامج من نفس السطر.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 07. INSTANT EXAM BUZZWORDS -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">07</span>
+                <h2 class="exp-sec-title">⚡ INSTANT EXAM BUZZWORDS (كلمات السر لحل أسئلة الـ MCQs في ثانية)</h2>
+              </div>
+
+              <div class="buzzwords-matrix">
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Primary architectural purpose of interrupts"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag cyan">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-cyan); font-size: 1.05rem;">To improve processor utilization</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Generated by arithmetic overflow or division by zero"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag amber">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-amber); font-size: 1.05rem;">Program Interrupt</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Used by the OS for time-slicing and multitasking"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag emerald">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-emerald); font-size: 1.05rem;">Timer Interrupt</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"When does the processor check for pending interrupt signals?"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag pink">الإجابة فوراً 👈</span>
+                    <strong style="color: #ec4899; font-size: 1.05rem;">At the end of Execute Cycle</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Handling where higher priority interrupt suspends lower priority ISR"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag cyan">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-cyan); font-size: 1.05rem;">Nested (Priority-Based) Processing</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Total time in Q3.9 with user program 20 and 3 ISRs of 10"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag emerald">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-emerald); font-size: 1.05rem;">Exactly 50 time units in both cases</strong>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 08. POPULAR EXAM TRUE / FALSE DRILLS -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">08</span>
+                <h2 class="exp-sec-title">POPULAR EXAM TRUE / FALSE DRILLS (أسئلة صح وغلط المشهورة — تفاعلية)</h2>
+              </div>
+
+              <div class="tf-drills-grid">
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q1:</strong> The primary purpose of interrupts is to increase the physical clock speed of the CPU processor.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge false">FALSE ❌</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> غلط! المقاطعة ملهاش دعوة بتردد الساعة (Clock Speed)؛ هدفها رفع استغلال وكفاءة المعالج (Improve Utilization) عشان ميضيعش وقته في الانتظار.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q2:</strong> The processor checks for pending interrupts at the end of each execute cycle, not in the middle of instruction execution.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge true">TRUE ✅</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> صح 100%! المعالج ينهي التعليمة الحالية أولاً ويفحص خط المقاطعة في نهاية الـ Execute Cycle.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q3:</strong> An arithmetic overflow or divide-by-zero generates a Hardware Failure Interrupt.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge false">FALSE ❌</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> غلط! ده بيتصنف تحت <strong>Program Interrupt</strong> لأنه ناتج عن تنفيذ تعليمة برمجية.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q4:</strong> In nested interrupt processing, a priority-6 interrupt can preempt an already running priority-1 ISR.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge true">TRUE ✅</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> صح تماماً لأن 6 أعلى من 1، فالأولوية الأعلى تقطع الأقل فوراً.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q5:</strong> In Sheet Question 3.9, changing from priority processing to equal-priority sequential processing reduces the total execution time from 50 to 40.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge false">FALSE ❌</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> غلط! إجمالي الوقت ثابت 50 وحدة زمنية في الحالتين لأن الشغل الحسابي الإجمالي هو نفسه (20 + 10 + 10 + 10 = 50).
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 09. COMPONENT 7: مركز إجابات الشيت الرسمي (Sheet 3 Official Solutions Hub) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">09</span>
+                <h2 class="exp-sec-title">COMPONENT 7: مركز إجابات الشيت الرسمي (Sheet 3 Official Solutions Hub — أسئلة 3.6، 3.7، 3.9، 3.10)</h2>
+              </div>
+
+              <!-- Accordion Item 1: Question 3.6 -->
+              <div class="sheet-card" style="margin-bottom: 1.25rem;">
+                <div class="sheet-q-box">
+                  <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.6 // SHEET 3</span>
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.05rem; margin-top: 0.35rem;">
+                    "What is the purpose of interrupt?"
+                  </p>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                  <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (الإجابة النموذجية):</span>
+                  <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; if(box.style.display==='none'){box.style.display='block'; this.innerText='إخفاء الإجابة للتسميع';} else {box.style.display='none'; this.innerText='إظهار الإجابة';}">إخفاء الإجابة للتسميع</button>
+                </div>
+
+                <div class="sheet-ans-box" style="display: block;">
+                  <div class="en-def-box" style="margin-bottom: 0.75rem;">
+                    <p class="en-def-text">
+                      The primary purpose of an interrupt is to <strong>improve processor utilization</strong>. Because most external I/O devices are significantly slower than the processor, interrupts allow the processor to execute other user instructions while an I/O operation is underway, rather than idling in a busy-wait loop.
+                    </p>
+                  </div>
+                  <div class="balady-box">
+                    <strong>الترجمة والشرح بالعامية للتسميع:</strong>
+                    الهدف الأساسي للمقاطعة هو <strong>رفع كفاءة واستغلال المعالج (Improve processor utilization)</strong>؛ لأن وحدات الإدخال والإخراج أبطأ بكثير من المعالج، فالمقاطعات بتسمح للمعالج إنه ينفذ برامج تانية أثناء ما جهاز الـ I/O شغال، بدل ما يفضل قاعد عاطل ومضيع وقته في حلقة انتظار مفرغة (Busy-wait loop).
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion Item 2: Question 3.7 -->
+              <div class="sheet-card" style="margin-bottom: 1.25rem;">
+                <div class="sheet-q-box">
+                  <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.7 // SHEET 3</span>
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.05rem; margin-top: 0.35rem;">
+                    "List and briefly explain four Classes of Interrupts."
+                  </p>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                  <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (الإجابة النموذجية):</span>
+                  <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; if(box.style.display==='none'){box.style.display='block'; this.innerText='إخفاء الإجابة للتسميع';} else {box.style.display='none'; this.innerText='إظهار الإجابة';}">إخفاء الإجابة للتسميع</button>
+                </div>
+
+                <div class="sheet-ans-box" style="display: block;">
+                  <div class="en-def-box" style="margin-bottom: 0.75rem;">
+                    <ol style="padding-left: 1.2rem; font-family: var(--font-en); line-height: 1.8;">
+                      <li><strong>Program Interrupt:</strong> Generated by conditions that occur as a result of instruction execution (e.g., arithmetic overflow, division by zero, illegal memory address reference).</li>
+                      <li><strong>Timer Interrupt:</strong> Generated by an internal processor hardware timer, enabling the operating system to perform time-slicing and multitasking.</li>
+                      <li><strong>I/O Interrupt:</strong> Generated by an I/O controller to signal either normal completion of an operation or an error condition.</li>
+                      <li><strong>Hardware Failure Interrupt:</strong> Generated by hardware malfunctions such as a power failure or memory parity error.</li>
+                    </ol>
+                  </div>
+                  <div class="balady-box">
+                    <strong>الشرح بالعامية للتسميع:</strong>
+                    1. <strong>مقاطعة برمجية (Program):</strong> بسبب أخطاء تنفيذ الكود زي القسمة على صفر أو Overflow.<br>
+                    2. <strong>مقاطعة المؤقت (Timer):</strong> من تايمر عتادي جوه المعالج عشان نظام التشغيل يقسم الوقت بين البرامج (Multitasking).<br>
+                    3. <strong>مقاطعة إدخال/إخراج (I/O):</strong> من أجهزة زي الطابعة أو الهارد عشان تبلغ المعالج إنها خلصت نقل الداتا أو حصل خطأ.<br>
+                    4. <strong>مقاطعة عطل عتادي (Hardware Failure):</strong> بسبب مصيبة فيزيائية مفاجئة زي انقطاع الكهرباء أو عطل في شريحة الرام.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion Item 3: Question 3.9 -->
+              <div class="sheet-card" style="margin-bottom: 1.25rem;">
+                <div class="sheet-q-box">
+                  <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.9 // SHEET 3</span>
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.05rem; margin-top: 0.35rem;">
+                    "Consider a system with three I/O devices: a printer, a disk, and a communications line, with increasing priorities of 1, 3, and 6, respectively. A user program begins at t = 0. At t = 6, a printer interrupt occurs; at t = 9, a communications interrupt occurs; and a disk interrupt occurs (t = 18). Each ISR needs 10 time units to complete its task. The user program needs 20 units to finish.
+                    Calculate the time at which each ISR begins and ends;
+                    Calculate the total time taken by the user program.
+                    Repeat the problem if all interrupts have equal priorities."
+                  </p>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                  <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (الإجابة النموذجية):</span>
+                  <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; if(box.style.display==='none'){box.style.display='block'; this.innerText='إخفاء الإجابة للتسميع';} else {box.style.display='none'; this.innerText='إظهار الإجابة';}">إخفاء الإجابة للتسميع</button>
+                </div>
+
+                <div class="sheet-ans-box" style="display: block;">
+                  <div class="balady-box" style="margin-bottom: 0.75rem;">
+                    <strong>ملخص الحل المعتمد في نموذج الإجابة:</strong>
+                    تم توثيق التتبع الزمني الكامل بالرسم والمخططات والجدولين في <strong>Component 5 (محاكي خط الزمن)</strong> بالأعلى.
+                    <br><br>
+                    <strong>1. الحالة الأولى (حسب الأولويات):</strong>
+                    <ul style="margin-top: 0.35rem; padding-right: 1.2rem; font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8;">
+                      <li>Printer ISR: يبدأ عند 6، يتوقف عند 9، يستأنف عند 29، وينتهي عند <strong>36</strong>.</li>
+                      <li>Comm ISR: يبدأ عند 9، وينتهي عند <strong>19</strong>.</li>
+                      <li>Disk ISR: يبدأ عند 19 (بعد انتهاء Comm)، وينتهي عند <strong>29</strong>.</li>
+                      <li>User Program: ينتهي عند <strong>50</strong> (إجمالي الوقت = 50).</li>
+                    </ul>
+                    <strong>2. الحالة الثانية (الأولويات متساوية — تتابعي):</strong>
+                    <ul style="margin-top: 0.35rem; padding-right: 1.2rem; font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8;">
+                      <li>Printer ISR: من 6 إلى <strong>16</strong>.</li>
+                      <li>Comm ISR: من 16 إلى <strong>26</strong>.</li>
+                      <li>Disk ISR: من 26 إلى <strong>36</strong>.</li>
+                      <li>User Program: ينتهي عند <strong>50</strong> (إجمالي الوقت = 50).</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion Item 4: Question 3.10 -->
+              <div class="sheet-card" style="margin-bottom: 1.25rem;">
+                <div class="sheet-q-box">
+                  <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.10 // SHEET 3</span>
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.05rem; margin-top: 0.35rem;">
+                    "What is the difference between sequential interrupt processing and nested interrupt processing?"
+                  </p>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                  <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (الإجابة النموذجية):</span>
+                  <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; if(box.style.display==='none'){box.style.display='block'; this.innerText='إخفاء الإجابة للتسميع';} else {box.style.display='none'; this.innerText='إظهار الإجابة';}">إخفاء الإجابة للتسميع</button>
+                </div>
+
+                <div class="sheet-ans-box" style="display: block;">
+                  <div class="en-def-box" style="margin-bottom: 0.75rem;">
+                    <ul style="padding-left: 1.2rem; font-family: var(--font-en); line-height: 1.8;">
+                      <li><strong>Sequential (Disabled) Interrupt Processing:</strong> Incoming interrupts are disabled while an ISR is executing. Any subsequent interrupt is held pending until the current ISR finishes. Interrupts are handled strictly in sequential arrival order regardless of priority.</li>
+                      <li><strong>Nested (Priority-Based) Interrupt Processing:</strong> Interrupts are assigned strict priority levels. A higher-priority interrupt can preempt and suspend a currently executing lower-priority ISR. Once the high-priority ISR finishes, control returns to resume the preempted lower-priority ISR.</li>
+                    </ul>
+                  </div>
+                  <div class="balady-box">
+                    <strong>الترجمة والشرح بالعامية للتسميع:</strong>
+                    - <strong>التتابعي (Sequential):</strong> المقاطعات بتتقفل أثناء خدمة أي مقاطعة؛ أي طلب جديد بيقف في الطابور مستني لحد ما الروتين الحالي يخلص تماماً، والمقاطعات بتتنفذ بترتيب وصولها الزمني بغض النظر عن أهميتها.<br>
+                    - <strong>المتداخل (Nested):</strong> بنحدد لكل جهاز أولوية (Priority). لو جهاز أولويته أعلى طلب مقاطعة يقدر يقطع فوراً الروتين الأقل أولوية الشغال حالياً، وبعد ما يخلص الروتين الكبير المعالج يرجع يكمل الروتين الصغير اللي كان واقفه!
+                  </div>
+                </div>
+              </div>
+            </section>
+
+          `,
+          quiz: [
+                    {
+                              "id": "ch3_p3_q1",
+                              "question": "Q1. What is the primary architectural purpose of introducing interrupts into computer systems? (Sheet Q3.6)",
+                              "options": [
+                                        "To simplify hardware wiring inside the processor",
+                                        "To improve processor utilization by eliminating busy-wait polling",
+                                        "To replace main memory RAM with ultra-fast cache",
+                                        "To increase the physical clock frequency of the CPU"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "بالعامية كده: الهدف الأساسي والوحيد للمقاطعات في معمارية الحاسب هو رفع كفاءة واستغلال المعالج (To improve processor utilization) عشان ميفضلش قاعد عاطل ومضيع وقته مستني الأجهزة الطرفية البطيئة تخلص شغلها!"
+                    },
+                    {
+                              "id": "ch3_p3_q2",
+                              "question": "Q2. In which phase of the instruction cycle does the CPU check for pending interrupt signals? (Figure 3.7)",
+                              "options": [
+                                        "In the middle of fetching the instruction word from memory",
+                                        "At the beginning of the instruction decode phase",
+                                        "At the end of the Execute Cycle",
+                                        "Only when the user presses a key on the keyboard"
+                              ],
+                              "correctIndex": 2,
+                              "explanation": "تريكة الامتحان الشهيرة! المعالج مبيقطعش نفسه في نص الأمر؛ هو دايماً بيشيك على خط المقاطعة في نهاية مرحلة التنفيذ (At the end of Execute Cycle)."
+                    },
+                    {
+                              "id": "ch3_p3_q3",
+                              "question": "Q3. Which of the following conditions generates a 'Program Interrupt'? (Sheet Q3.7)",
+                              "options": [
+                                        "A printer running out of paper in the middle of a print job",
+                                        "An arithmetic overflow or division by zero during instruction execution",
+                                        "A hardware timer expiring to switch running threads",
+                                        "An imminent power supply failure"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "الـ Program Interrupt بيحصل نتيجة تنفيذ تعليمة فيها مشكلة زي القسمة على صفر (Division by zero) أو فيضان السعة الحسابية (Arithmetic overflow) أو محاولة تنفيذ كود غير مسموح."
+                    },
+                    {
+                              "id": "ch3_p3_q4",
+                              "question": "Q4. What is the essential operating system purpose of 'Timer Interrupts'?",
+                              "options": [
+                                        "To cool down the processor silicon cores",
+                                        "To enable the Operating System to perform time-slicing and multitasking",
+                                        "To format the hard disk sectors periodically",
+                                        "To save BIOS settings to CMOS battery storage"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "الـ Timer Interrupt هو النبض اللي بيخلي الويندوز أو اللينكس يقسم الوقت بين البرامج (Time-slicing / Multitasking) ويحول من تطبيق للتاني كل جزء من الثانية."
+                    },
+                    {
+                              "id": "ch3_p3_q5",
+                              "question": "Q5. When an interrupt occurs, why must the CPU save the current Program Counter (PC) value onto the Stack?",
+                              "options": [
+                                        "To permanently delete the user program from RAM",
+                                        "To allow the CPU to resume the interrupted user program from the exact same point after the ISR completes",
+                                        "To clear all CPU registers to 0000",
+                                        "To transfer control directly to the BIOS ROM chip"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "ده اللي بنسميه 'حفظ السياق' (Save Context): المعالج بيسجل قيمة الـ PC في الـ Stack عشان بعد ما يخلص روتين المقاطعة (ISR) يقدر يرجع ويكمل برنامج المستخدم من نفس السطر اللي كان واقف عنده بالضبط!"
+                    },
+                    {
+                              "id": "ch3_p3_q6",
+                              "question": "Q6. In the 'Sequential (Disabled) Interrupts' approach, what happens if a new interrupt arrives while an ISR is already running? (Sheet Q3.10)",
+                              "options": [
+                                        "The new interrupt immediately preempts the current ISR",
+                                        "The CPU crashes and forces a system reboot",
+                                        "The new interrupt is disabled and held pending in a queue until the current ISR finishes",
+                                        "The new interrupt is permanently dropped and ignored"
+                              ],
+                              "correctIndex": 2,
+                              "explanation": "في المعالجة التتابعية (Sequential): المقاطعات الجديدة بتكون مقفولة (Disabled) وبتفضل واقفة في الطابور مستنية (Pending) لحد ما روتين المقاطعة الحالي يخلص تماماً، بغض النظر عن أولويتها."
+                    },
+                    {
+                              "id": "ch3_p3_q7",
+                              "question": "Q7. In the 'Nested (Priority-Based) Interrupts' approach, when can an incoming interrupt preempt a currently running ISR?",
+                              "options": [
+                                        "Only if the new interrupt has an equal priority to the current ISR",
+                                        "Only if the new interrupt has a higher priority than the currently running ISR",
+                                        "Never; preemption is impossible in von Neumann machines",
+                                        "Whenever the I/O bus is idle for 5 microseconds"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "في النظام المتداخل (Nested): الشرط الوحيد عشان مقاطعة تقطع مقاطعة تانية شغالة، هو إن المقاطعة الجديدة تكون أولويتها أعلى (Higher Priority) من اللي شغالة حالياً!"
+                    },
+                    {
+                              "id": "ch3_p3_q8",
+                              "question": "Q8. In Sheet Question 3.9 (User Program = 20, Printer = 10, Comm = 10, Disk = 10), what is the TOTAL execution time taken to complete all tasks?",
+                              "options": [
+                                        "40 time units",
+                                        "45 time units in priority mode and 55 in sequential mode",
+                                        "Exactly 50 time units in both priority and sequential cases",
+                                        "70 time units"
+                              ],
+                              "correctIndex": 2,
+                              "explanation": "أكبر مصيدة في السؤال 3.9! إجمالي الوقت هو 50 وحدة زمنية في الحالتين لأن كمية الشغل الحسابي ثابتة: (20 للبرنامج + 10 للطابعة + 10 للاتصالات + 10 للقرص = 50). اللي بيتغير بس هو ترتيب وأوقات خدمة كل جهاز!"
+                    },
+                    {
+                              "id": "ch3_p3_q9",
+                              "question": "Q9. In Sheet Question 3.9 (Priority mode: Comm=6, Disk=3, Printer=1), when the Disk interrupt arrives at t = 18, why doesn't its ISR begin immediately at t = 18?",
+                              "options": [
+                                        "Because the printer is already running",
+                                        "Because the Comm ISR (Priority 6) is still executing until t = 19 and has higher priority than Disk (Priority 3)",
+                                        "Because the disk buffer was full",
+                                        "Because user programs have priority over disks"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "الـ Disk وصل عند 18، بس المعالج كان شغال في روتين الـ Comm صاحب الأولوية القصوى (6) اللي شغال لحد 19. وبما إن 6 أعلى من 3، الـ Disk فضل مستني ثانية واحدة لحد ما الـ Comm يخلص ويبدأ Disk عند t = 19!"
+                    },
+                    {
+                              "id": "ch3_p3_q10",
+                              "question": "Q10. Which class of interrupts is triggered by an abnormal physical condition such as a power supply drop or memory parity fault?",
+                              "options": [
+                                        "Program Interrupt",
+                                        "Timer Interrupt",
+                                        "I/O Interrupt",
+                                        "Hardware Failure Interrupt"
+                              ],
+                              "correctIndex": 3,
+                              "explanation": "أي عطل عتادي مفاجئ وخارج عن البرمجة زي انقطاع الكهرباء الوشيك أو عطل في شريحة الرامات بيتصنف تحت: Hardware Failure Interrupt."
+                    }
+          ]
         }
       ]
     }

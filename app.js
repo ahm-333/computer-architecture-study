@@ -382,6 +382,80 @@
         payload: "💾 Step 6 (Execute 3): نسخ قيمة AC (101A) وتخزينها في خانة الذاكرة 401 (ومحتوى AC لا يتصفر!)",
         desc: "الرقم 4 يعني (Store AC to Memory) والعنوان هو 401. ينسخ المعالج القيمة الموجودة في AC (101A) ويكتبها في خانة الذاكرة 401 فتمسح القيمة القديمة (1008) وتصبح Mem[401] = 101A، بينما يظل AC = 101A بدون تصفير!"
       }
+    ],
+    "sim-ch3-interrupt-cycle": [
+      {
+        num: "01",
+        title: "المرحلة 1: دورة الجلب (Fetch Cycle — جلب التعليمة وزيادة PC)",
+        route: "PC ──► Memory Bus ──► IR ◄── Mem[PC]  |  PC = PC + 1",
+        payload: "📥 Fetch Phase: قراءة كود التعليمة من عنوان PC وتخزينه في IR وزيادة العداد فوراً",
+        desc: "كالمعتاد في بداية كل تعليمة، المعالج يقرأ أمر المستخدم الحالي من الرام ويحطه في مسجل IR، ويزود قيمة عداد البرنامج (PC = PC + 1)."
+      },
+      {
+        num: "02",
+        title: "المرحلة 2: دورة التنفيذ (Execute Cycle — تنفيذ العملية)",
+        route: "IR (Opcode) ──► Control Unit / ALU ──► Execute Data Transfer or Processing",
+        payload: "⚡ Execute Phase: فك شفرة التعليمة وتنفيذ العملية المطلوبة",
+        desc: "وحدة التحكم تفك شفرة الأمر وتنفذ الحسابات أو نقل البيانات المطلوب دون أي مقاطعة في منتصف التعليمة."
+      },
+      {
+        num: "03",
+        title: "المرحلة 3: فحص المقاطعة وحفظ السياق (Interrupt Check & Save Context)",
+        route: "Check Interrupt Request Line ──► Interrupt Pending? YES! ──► Push PC to Stack",
+        payload: "⚠️ فحص المقاطعة: فحص خط المقاطعة في نهاية دورة التنفيذ وحفظ PC في الذاكرة (الـ Stack)",
+        desc: "تريكة الامتحان: المعالج لا يفحص المقاطعة إلا في نهاية مرحلة التنفيذ (At the end of Execute Cycle)! لو لقى إشارة مقاطعة نشطة، بيوقف برنامج المستخدم فوراً ويحفظ عنوان الرجوع (قيمة PC الحالية) في الـ Stack."
+      },
+      {
+        num: "04",
+        title: "المرحلة 4: القفز لروتين المقاطعة ثم العودة (Branch to ISR & Restore Context)",
+        route: "PC ◄── Address of ISR ──► Run ISR ──► Return from Interrupt: Pop PC from Stack",
+        payload: "🔄 القفز والعودة: تحميل عنوان روتين ISR في PC، وبعد انتهائه استعادة PC ومتابعة المستخدم",
+        desc: "المعالج يحمل عنوان بداية روتين المقاطعة (Interrupt Service Routine - ISR) في مسجل PC لينفذ خدمة الجهاز الخارجي، ولما يخلص يستعيد قيمة PC القديمة من الـ Stack ويكمل برنامج المستخدم من نفس اللحظة!"
+      }
+    ],
+    "sim-ch3-timeline-nested": [
+      {
+        num: "01",
+        title: "الفترة 1 (t = 0 إلى 6): تشغيل برنامج المستخدم الأصلي",
+        route: "t = 0..6: User Program Runs (6 units executed | 14 units remaining)",
+        payload: "💻 User Program: المعالج ينفذ كود المستخدم بكل طاقته لمدة 6 وحدات زمنية دون أي مقاطعة",
+        desc: "بدأ برنامج المستخدم عند t = 0 وظل يعمل حتى t = 6 بنجاح، فأنجز 6 وحدات من إجمالي 20 وحدة مخصصة له، ويتبقى له 14 وحدة."
+      },
+      {
+        num: "02",
+        title: "الفترة 2 (t = 6 إلى 9): وصول وبدء مقاطعة الطابعة (Printer Priority 1)",
+        route: "t = 6..9: Printer ISR Runs (3 units executed | 7 units remaining)",
+        payload: "🖨️ Printer ISR (أولوية 1): بدأ عند t=6 ونفذ 3 وحدات، ومتبقي له 7 وحدات",
+        desc: "عند t = 6 أرسلت الطابعة إشارة مقاطعة (أولوية 1). لم يكن هناك أي مقاطعة أخرى، فبدأ المعالج في خدمة ISR الطابعة ونفذ منه 3 وحدات حتى اللحظة t = 9."
+      },
+      {
+        num: "03",
+        title: "الفترة 3 (t = 9 إلى 19): وصول الاتصالات (Comm Priority 6) وقطع الطابعة!",
+        route: "t = 9..19: Comm ISR Runs & Finishes (Priority 6 > 1 Preempts Printer!)",
+        payload: "📡 Comm ISR (أولوية 6): يقطع الطابعة فوراً ويعمل 10 وحدات كاملة وينتهي عند t=19",
+        desc: "عند t = 9 وصلت مقاطعة خط الاتصالات بأولوية عليا (6). لأن 6 > 1، أوقف المعالج الطابعة فوراً وعلقها، وبدأ تشغيل روتين Comm لمدة 10 وحدات كاملة حتى انتهى عند t = 19. (ملاحظة: عند t=18 وصل Disk بأولوية 3 فانتظر لأن Comm أولوية 6 أعلى منه!)."
+      },
+      {
+        num: "04",
+        title: "الفترة 4 (t = 19 إلى 29): تشغيل مقاطعة القرص الصلب (Disk Priority 3)",
+        route: "t = 19..29: Disk ISR Runs & Finishes (Priority 3 > 1 Printer Remaining)",
+        payload: "💾 Disk ISR (أولوية 3): يبدأ عند t=19 ويعمل 10 وحدات كاملة وينتهي عند t=29",
+        desc: "عند t = 19 انتهى روتين الاتصالات، ووجد المعالج طلبين معلقين: القرص (أولوية 3) وباقي الطابعة (أولوية 1). لأن 3 > 1، اختار المعالج تشغيل القرص أولاً لمدة 10 وحدات حتى انتهى عند t = 29."
+      },
+      {
+        num: "05",
+        title: "الفترة 5 (t = 29 إلى 36): استئناف وإنهاء ما تبقى من مقاطعة الطابعة",
+        route: "t = 29..36: Resume Printer ISR (Executes remaining 7 units & Finishes!)",
+        payload: "🖨️ استئناف الطابعة: تنفيذ الـ 7 وحدات المتبقية لـ Printer لتكتمل عند t=36",
+        desc: "عند t = 29 انتهى القرص، فلم يتبق سوى الـ 7 وحدات المعلقة لروتين الطابعة. استأنف المعالج تشغيلها من t = 29 حتى اكتملت تماماً عند t = 36."
+      },
+      {
+        num: "06",
+        title: "الفترة 6 (t = 36 إلى 50): استئناف وإنهاء برنامج المستخدم (Total = 50)",
+        route: "t = 36..50: Resume User Program (Executes remaining 14 units ➔ Finishes at t=50)",
+        payload: "🏁 اكتمال البرنامج: استئناف الـ 14 وحدة لبرنامج المستخدم ليكتمل عند t=50 تماماً",
+        desc: "عند t = 36 انتهت كل المقاطعات الثلاثة، فعاد المعالج لبرنامج المستخدم الأصلي واستأنف الـ 14 وحدة المتبقية له من النقطة التي توقف عندها، ليكتمل البرنامج عند t = 50 وحدة زمنية!"
+      }
     ]
   };
 
@@ -463,6 +537,20 @@
       { code: "Cycle 1 (215: 3400)", role: "Fetch (PC=216, IR=3400) ➔ Execute Load 400 (AC=0012)", color: "cyan", step: 1 },
       { code: "Cycle 2 (216: 7401)", role: "Fetch (PC=217, IR=7401) ➔ Execute Add 401 (AC = 0012+1008 = 101A)", color: "amber", step: 3 },
       { code: "Cycle 3 (217: 4401)", role: "Fetch (PC=218, IR=4401) ➔ Execute Store 401 (Mem[401]=101A, AC=101A)", color: "emerald", step: 5 }
+    ],
+    "sim-ch3-interrupt-cycle": [
+      { code: "Fetch Cycle", role: "جلب التعليمة من الرام وزيادة PC", color: "cyan", step: 0 },
+      { code: "Execute Cycle", role: "فك الشفرة وتنفيذ العملية داخل المعالج", color: "amber", step: 1 },
+      { code: "Interrupt Check", role: "فحص إشارة المقاطعة في نهاية التنفيذ وحفظ السياق", color: "emerald", step: 2 },
+      { code: "Branch to ISR", role: "القفز لروتين الخدمة ثم العودة للبرنامج الأصلي", color: "pink", step: 3 }
+    ],
+    "sim-ch3-timeline-nested": [
+      { code: "t=0..6 User (6u)", role: "برنامج المستخدم يعمل 6 وحدات أولى", color: "cyan", step: 0 },
+      { code: "t=6..9 Printer (3u)", role: "الطابعة (P=1) تبدأ وتعمل 3 وحدات", color: "amber", step: 1 },
+      { code: "t=9..19 Comm (10u)", role: "الاتصالات (P=6) تقطع الطابعة وتكتمل عند 19", color: "pink", step: 2 },
+      { code: "t=19..29 Disk (10u)", role: "القرص الصلب (P=3) يعمل 10 وحدات ويكتمل عند 29", color: "emerald", step: 3 },
+      { code: "t=29..36 Printer (7u)", role: "استئناف وإنهاء الـ 7 وحدات المتبقية للطابعة", color: "amber", step: 4 },
+      { code: "t=36..50 User (14u)", role: "استئناف وإنهاء الـ 14 وحدة للبرنامج عند t=50", color: "cyan", step: 5 }
     ]
   };
 
