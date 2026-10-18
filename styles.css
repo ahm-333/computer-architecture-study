@@ -2153,3 +2153,222 @@ body.reading-focus-active .reader-sidebar {
   0% { left: -40%; }
   100% { left: 110%; }
 }
+
+/* ==========================================================================
+   DETAILED STEP-BY-STEP OPERATIONS BREAKDOWN INSIDE SIMULATORS
+   ========================================================================== */
+
+.sim-live-state-banner {
+  background: linear-gradient(90deg, var(--accent-cyan-soft), var(--accent-amber-soft));
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  direction: rtl;
+}
+
+.sim-live-route {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-amber);
+  background: var(--bg-primary);
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  direction: ltr;
+}
+
+.sim-live-payload {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* Numbered Step-by-Step Operations List */
+.sim-steps-breakdown {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  direction: rtl;
+  text-align: right;
+}
+
+.sim-steps-heading {
+  font-family: var(--font-display-ar);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--accent-cyan);
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sim-op-step-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-right: 4px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.9rem;
+  align-items: start;
+}
+
+.sim-op-step-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+}
+
+.sim-op-step-card.active {
+  background: var(--bg-card);
+  border-color: var(--accent-amber);
+  border-right: 5px solid var(--accent-amber);
+  box-shadow: 0 6px 18px -6px rgba(245, 158, 11, 0.25);
+}
+
+.sim-op-num {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  margin-top: 0.1rem;
+}
+
+.sim-op-step-card.active .sim-op-num {
+  background: var(--accent-amber);
+  color: #080b11;
+  border-color: var(--accent-amber);
+}
+
+.sim-op-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.sim-op-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sim-op-title {
+  font-family: var(--font-display-ar);
+  font-weight: 800;
+  font-size: 0.98rem;
+  color: var(--text-primary);
+}
+
+.sim-op-step-card.active .sim-op-title {
+  color: var(--accent-amber);
+}
+
+.sim-op-route-badge {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-strong);
+  color: var(--accent-cyan);
+  direction: ltr;
+}
+
+.sim-op-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* SVG Wire Callout Pill */
+.svg-wire-callout {
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  opacity: 0.72;
+}
+
+.svg-wire-callout.active-pill {
+  opacity: 1;
+}
+
+.svg-wire-pill {
+  fill: var(--bg-primary);
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+  rx: 5;
+  transition: all 0.25s ease;
+}
+
+.svg-wire-pill.active-pill,
+.svg-wire-callout.active-pill .svg-wire-pill {
+  stroke: var(--accent-amber);
+  stroke-width: 2.2;
+  fill: var(--bg-surface);
+}
+
+.svg-wire-text {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  fill: var(--text-secondary);
+  text-anchor: middle;
+  pointer-events: none;
+  transition: fill 0.25s ease;
+}
+
+.svg-wire-text.active-text,
+.svg-wire-callout.active-pill .svg-wire-text {
+  fill: var(--accent-amber);
+}
+
+/* Step Navigation Footer inside Simulator */
+.sim-nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--border-subtle);
+  direction: rtl;
+}
+
+.sim-nav-btn {
+  padding: 0.45rem 0.95rem;
+  border-radius: 6px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: all 0.18s;
+}
+
+.sim-nav-btn:hover {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}

@@ -62,51 +62,65 @@ window.COURSE_DATA = {
                 </div>
 
                 <div class="sim-svg-stage">
-                  <svg viewBox="0 0 720 310" xmlns="http://www.w3.org/2000/svg">
+                  <svg viewBox="0 0 720 315" xmlns="http://www.w3.org/2000/svg">
                     <!-- Top Layer: Architecture (Visible to Programmer) -->
-                    <g class="svg-hw-group cyan-node active-node" data-node-step="0,1,2">
+                    <g class="svg-hw-group cyan-node active-node" data-node-step="0,1,2" data-click-step="0">
                       <rect class="svg-hw-box" x="140" y="15" width="440" height="82" rx="10" />
                       <text class="svg-label-mono" x="360" y="38">LAYER 1: COMPUTER ARCHITECTURE (VISIBLE TO PROGRAMMER)</text>
                       <text class="svg-label-en" x="360" y="60">ISA Code: ADD R1, R2, R3  |  Data Type: 32-Bit Int</text>
-                      <text class="svg-label-ar" x="360" y="82">كتالوج الأوامر ثابت لا يتغير أبداً مهما غيرنا سرعة الجهاز</text>
+                      <text class="svg-label-ar" x="360" y="82">① كتالوج الأوامر والكود ثابت لا يتغير أبداً</text>
                     </g>
 
                     <!-- Wires from Architecture to Organization -->
-                    <path class="wire-base" d="M 360 97 L 360 140 L 195 140 L 195 175" />
-                    <path class="wire-base" d="M 360 97 L 360 140 L 525 140 L 525 175" />
+                    <path class="wire-base" d="M 360 97 L 360 140 L 195 140 L 195 180" />
+                    <path class="wire-base" d="M 360 97 L 360 140 L 525 140 L 525 180" />
 
-                    <path class="wire-flow cyan active-flow" data-wire-step="0,1" d="M 360 97 L 360 140 L 195 140 L 195 175" />
-                    <path class="wire-flow amber" data-wire-step="0,2" d="M 360 97 L 360 140 L 525 140 L 525 175" />
+                    <path class="wire-flow cyan active-flow" data-wire-step="0,1" d="M 360 97 L 360 140 L 195 140 L 195 180" />
+                    <path class="wire-flow amber" data-wire-step="0,2" d="M 360 97 L 360 140 L 525 140 L 525 180" />
 
                     <!-- Moving Signal Dots -->
                     <circle class="data-packet-dot moving" data-packet-step="0,1" r="6" fill="#06b6d4">
-                      <animateMotion dur="1.4s" repeatCount="indefinite" path="M 360 97 L 360 140 L 195 140 L 195 175" />
+                      <animateMotion dur="1.4s" repeatCount="indefinite" path="M 360 97 L 360 140 L 195 140 L 195 180" />
                     </circle>
                     <circle class="data-packet-dot" data-packet-step="2" r="7" fill="#f59e0b">
-                      <animateMotion dur="0.65s" repeatCount="indefinite" path="M 360 97 L 360 140 L 525 140 L 525 175" />
+                      <animateMotion dur="0.65s" repeatCount="indefinite" path="M 360 97 L 360 140 L 525 140 L 525 180" />
                     </circle>
 
                     <!-- ISA Boundary Line -->
                     <line x1="40" y1="140" x2="680" y2="140" stroke="var(--border-strong)" stroke-dasharray="6 6" stroke-width="1.5" />
-                    <rect x="275" y="127" width="170" height="24" rx="4" fill="var(--bg-surface)" stroke="var(--border-strong)" />
-                    <text class="svg-label-mono" x="360" y="143" style="fill: var(--accent-emerald);">ISA INTERFACE BOUNDARY</text>
+                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
+                      <rect class="svg-wire-pill" x="265" y="126" width="190" height="24" />
+                      <text class="svg-wire-text" x="360" y="142">① ISA INTERFACE BOUNDARY</text>
+                    </g>
+
+                    <!-- Wire Callout 2 (Economy HW) -->
+                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
+                      <rect class="svg-wire-pill" x="75" y="108" width="170" height="22" />
+                      <text class="svg-wire-text" x="160" y="123">② إشارات 2GHz (16-bit) ▼</text>
+                    </g>
+
+                    <!-- Wire Callout 3 (High-Speed HW) -->
+                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
+                      <rect class="svg-wire-pill" x="475" y="108" width="170" height="22" />
+                      <text class="svg-wire-text" x="560" y="123">③ إشارات 4GHz (64-bit) ▼</text>
+                    </g>
 
                     <!-- Bottom Left: Organization Model A (Economy) -->
-                    <g class="svg-hw-group cyan-node" data-node-step="1">
-                      <rect class="svg-hw-box" x="45" y="175" width="300" height="115" rx="10" />
-                      <text class="svg-label-mono" x="195" y="200">ORGANIZATION A // ECONOMY HW</text>
-                      <text class="svg-label-en" x="195" y="224">Clock: 2.0 GHz | 16-bit Bus</text>
-                      <text class="svg-label-ar" x="195" y="248">عتاد اقتصادي • إشارات تحكم أبطأ (DRAM)</text>
-                      <text class="svg-label-mono" x="195" y="274" style="fill: var(--accent-emerald);">✓ Runs Same Program (Normal Speed)</text>
+                    <g class="svg-hw-group cyan-node" data-node-step="1" data-click-step="1">
+                      <rect class="svg-hw-box" x="45" y="180" width="300" height="115" rx="10" />
+                      <text class="svg-label-mono" x="195" y="204">ORGANIZATION A // ECONOMY HW</text>
+                      <text class="svg-label-en" x="195" y="228">Clock: 2.0 GHz | 16-bit Bus</text>
+                      <text class="svg-label-ar" x="195" y="252">عتاد اقتصادي • إشارات تحكم أبطأ (DRAM)</text>
+                      <text class="svg-label-mono" x="195" y="278" style="fill: var(--accent-emerald);">✓ Runs Same Program (Normal Speed)</text>
                     </g>
 
                     <!-- Bottom Right: Organization Model B (High-End IBM 370) -->
-                    <g class="svg-hw-group amber-node" data-node-step="2">
-                      <rect class="svg-hw-box" x="375" y="175" width="300" height="115" rx="10" />
-                      <text class="svg-label-mono" x="525" y="200" style="fill: var(--accent-amber);">ORGANIZATION B // HIGH-SPEED HW</text>
-                      <text class="svg-label-en" x="525" y="224">Clock: 4.0 GHz | 64-bit Bus</text>
-                      <text class="svg-label-ar" x="525" y="248">عتاد فائق السرعة • أسلاك أعرض (SRAM)</text>
-                      <text class="svg-label-mono" x="525" y="274" style="fill: var(--accent-amber);">🚀 Runs Same Program 2x Faster!</text>
+                    <g class="svg-hw-group amber-node" data-node-step="2" data-click-step="2">
+                      <rect class="svg-hw-box" x="375" y="180" width="300" height="115" rx="10" />
+                      <text class="svg-label-mono" x="525" y="204" style="fill: var(--accent-amber);">ORGANIZATION B // HIGH-SPEED HW</text>
+                      <text class="svg-label-en" x="525" y="228">Clock: 4.0 GHz | 64-bit Bus</text>
+                      <text class="svg-label-ar" x="525" y="252">عتاد فائق السرعة • أسلاك أعرض (SRAM)</text>
+                      <text class="svg-label-mono" x="525" y="278" style="fill: var(--accent-amber);">🚀 Runs Same Program 2x Faster!</text>
                     </g>
                   </svg>
                 </div>
@@ -555,69 +569,90 @@ window.COURSE_DATA = {
                 </div>
 
                 <div class="sim-svg-stage">
-                  <svg viewBox="0 0 740 340" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="155" y="10" width="430" height="315" rx="14" fill="none" stroke="var(--border-strong)" stroke-width="2" stroke-dasharray="6 4" />
+                  <svg viewBox="0 0 740 350" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="155" y="10" width="430" height="325" rx="14" fill="none" stroke="var(--border-strong)" stroke-width="2" stroke-dasharray="6 4" />
                     <text class="svg-label-mono" x="370" y="30" style="fill: var(--text-muted);">COMPUTER BOUNDARY</text>
 
-                    <path class="wire-base" d="M 370 105 L 370 142" />
-                    <path class="wire-flow amber active-flow" data-wire-step="0,3" d="M 370 105 L 370 142" />
+                    <path class="wire-base" d="M 370 105 L 370 150" />
+                    <path class="wire-flow amber active-flow" data-wire-step="0,3" d="M 370 105 L 370 150" />
 
-                    <path class="wire-base" d="M 500 72 L 545 72 L 545 272 L 500 272" />
-                    <path class="wire-flow amber active-flow" data-wire-step="0,2" d="M 500 72 L 545 72 L 545 272 L 500 272" />
+                    <path class="wire-base" d="M 500 72 L 548 72 L 548 282 L 500 282" />
+                    <path class="wire-flow amber active-flow" data-wire-step="0,2" d="M 500 72 L 548 72 L 548 282 L 500 282" />
 
-                    <path class="wire-base" d="M 370 205 L 370 242" />
-                    <path class="wire-flow cyan" data-wire-step="2,3" d="M 370 205 L 370 242" />
+                    <path class="wire-base" d="M 370 213 L 370 255" />
+                    <path class="wire-flow cyan" data-wire-step="2,3" d="M 370 213 L 370 255" />
 
-                    <path class="wire-base" d="M 135 272 L 240 272" />
-                    <path class="wire-flow emerald" data-wire-step="1,2" d="M 135 272 L 240 272" />
+                    <path class="wire-base" d="M 135 282 L 240 282" />
+                    <path class="wire-flow emerald" data-wire-step="1,2" d="M 135 282 L 240 282" />
 
-                    <path class="wire-base" d="M 605 272 L 500 272" />
-                    <path class="wire-flow emerald" data-wire-step="1,2" d="M 605 272 L 500 272" />
+                    <path class="wire-base" d="M 605 282 L 500 282" />
+                    <path class="wire-flow emerald" data-wire-step="1,2" d="M 605 282 L 500 282" />
 
                     <circle class="data-packet-dot moving" data-packet-step="0,3" r="6" fill="#f59e0b">
-                      <animateMotion dur="0.9s" repeatCount="indefinite" path="M 370 105 L 370 142" />
+                      <animateMotion dur="0.9s" repeatCount="indefinite" path="M 370 105 L 370 150" />
                     </circle>
                     <circle class="data-packet-dot moving" data-packet-step="0,2" r="5" fill="#f59e0b">
-                      <animateMotion dur="1.6s" repeatCount="indefinite" path="M 500 72 L 545 72 L 545 272 L 500 272" />
+                      <animateMotion dur="1.6s" repeatCount="indefinite" path="M 500 72 L 548 72 L 548 282 L 500 282" />
                     </circle>
                     <circle class="data-packet-dot" data-packet-step="1,2" r="6" fill="#10b981">
-                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 135 272 L 240 272" />
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 135 282 L 240 282" />
                     </circle>
                     <circle class="data-packet-dot" data-packet-step="1,2" r="6" fill="#10b981">
-                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 605 272 L 500 272" />
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 605 282 L 500 282" />
                     </circle>
                     <circle class="data-packet-dot" data-packet-step="3" r="6" fill="#06b6d4">
-                      <animateMotion dur="0.85s" repeatCount="indefinite" path="M 370 242 L 370 205" />
+                      <animateMotion dur="0.85s" repeatCount="indefinite" path="M 370 255 L 370 213" />
                     </circle>
+
+                    <!-- On-Wire Operation Callout Badges -->
+                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
+                      <rect class="svg-wire-pill" x="285" y="116" width="170" height="22" />
+                      <text class="svg-wire-text" x="370" y="131">① إشارات تحكم Control ▼</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
+                      <rect class="svg-wire-pill" x="136" y="242" width="102" height="22" />
+                      <text class="svg-wire-text" x="187" y="257">② نقل I/O ◄►</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
+                      <rect class="svg-wire-pill" x="502" y="242" width="102" height="22" />
+                      <text class="svg-wire-text" x="553" y="257">◄► ② نقل Net</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="2,3" data-click-step="3">
+                      <rect class="svg-wire-pill" x="275" y="222" width="190" height="22" />
+                      <text class="svg-wire-text" x="370" y="237">③ تخزين ◄► ④ سحب للحسابات</text>
+                    </g>
 
                     <g class="svg-hw-group amber-node active-node" data-node-step="0" data-click-step="0">
                       <rect class="svg-hw-box" x="240" y="42" width="260" height="63" rx="10" />
-                      <text class="svg-label-en" x="370" y="68">Control Mechanism</text>
+                      <text class="svg-label-en" x="370" y="68">1. Control Mechanism</text>
                       <text class="svg-label-ar" x="370" y="90">وحدة التحكم (توجيه الإشارات)</text>
                     </g>
 
                     <g class="svg-hw-group cyan-node" data-node-step="3" data-click-step="3">
-                      <rect class="svg-hw-box" x="240" y="142" width="260" height="63" rx="10" />
-                      <text class="svg-label-en" x="370" y="168">Data Processing Facility</text>
-                      <text class="svg-label-ar" x="370" y="190">معالجة البيانات والحسابات</text>
+                      <rect class="svg-hw-box" x="240" y="150" width="260" height="63" rx="10" />
+                      <text class="svg-label-en" x="370" y="176">4. Data Processing Facility</text>
+                      <text class="svg-label-ar" x="370" y="198">معالجة البيانات والحسابات</text>
                     </g>
 
                     <g class="svg-hw-group emerald-node" data-node-step="2" data-click-step="2">
-                      <rect class="svg-hw-box" x="240" y="242" width="260" height="63" rx="10" />
-                      <text class="svg-label-en" x="370" y="268">Data Storage Facility</text>
-                      <text class="svg-label-ar" x="370" y="290">تخزين البيانات (مؤقت أو دائم)</text>
+                      <rect class="svg-hw-box" x="240" y="255" width="260" height="63" rx="10" />
+                      <text class="svg-label-en" x="370" y="281">3. Data Storage Facility</text>
+                      <text class="svg-label-ar" x="370" y="303">تخزين البيانات (مؤقت أو دائم)</text>
                     </g>
 
                     <g class="svg-hw-group emerald-node" data-node-step="1" data-click-step="1">
-                      <rect class="svg-hw-box" x="10" y="242" width="125" height="63" rx="8" />
-                      <text class="svg-label-en" x="72" y="268" style="font-size:12px;">I/O Lines</text>
-                      <text class="svg-label-ar" x="72" y="288">(شاشة / ماوس)</text>
+                      <rect class="svg-hw-box" x="10" y="255" width="125" height="63" rx="8" />
+                      <text class="svg-label-en" x="72" y="281" style="font-size:12px;">2. I/O Lines</text>
+                      <text class="svg-label-ar" x="72" y="301">(شاشة / ماوس)</text>
                     </g>
 
                     <g class="svg-hw-group emerald-node" data-node-step="1" data-click-step="1">
-                      <rect class="svg-hw-box" x="605" y="242" width="125" height="63" rx="8" />
-                      <text class="svg-label-en" x="667" y="268" style="font-size:12px;">Communications</text>
-                      <text class="svg-label-ar" x="667" y="288">(إنترنت وشبكات)</text>
+                      <rect class="svg-hw-box" x="605" y="255" width="125" height="63" rx="8" />
+                      <text class="svg-label-en" x="667" y="281" style="font-size:12px;">2. Comms</text>
+                      <text class="svg-label-ar" x="667" y="301">(إنترنت وشبكات)</text>
                     </g>
                   </svg>
                 </div>
@@ -687,8 +722,8 @@ window.COURSE_DATA = {
                 </div>
 
                 <div class="sim-svg-stage">
-                  <svg viewBox="0 0 740 340" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="20" y="10" width="700" height="315" rx="14" fill="none" stroke="var(--border-strong)" stroke-width="2" />
+                  <svg viewBox="0 0 740 345" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="10" width="700" height="320" rx="14" fill="none" stroke="var(--border-strong)" stroke-width="2" />
                     <text class="svg-label-mono" x="370" y="30" style="fill: var(--text-muted);">COMPUTER (TOP-LEVEL STRUCTURE)</text>
 
                     <rect x="60" y="152" width="620" height="36" rx="6" fill="var(--bg-surface)" stroke="var(--accent-amber)" stroke-width="2" />
@@ -698,13 +733,13 @@ window.COURSE_DATA = {
 
                     <path class="wire-base" d="M 190 115 L 190 152" />
                     <path class="wire-base" d="M 550 115 L 550 152" />
-                    <path class="wire-base" d="M 370 188 L 370 228" />
-                    <path class="wire-base" d="M 510 265 L 635 265" />
+                    <path class="wire-base" d="M 370 188 L 370 232" />
+                    <path class="wire-base" d="M 510 268 L 595 268" />
 
                     <path class="wire-flow amber active-flow" data-wire-step="0" d="M 190 115 L 190 170 L 550 170 L 550 115" />
                     <path class="wire-flow cyan" data-wire-step="1" d="M 550 115 L 550 170 L 190 170 L 190 115" />
-                    <path class="wire-flow emerald" data-wire-step="2" d="M 190 115 L 190 170 L 370 170 L 370 228" />
-                    <path class="wire-flow emerald" data-wire-step="2" d="M 510 265 L 635 265" />
+                    <path class="wire-flow emerald" data-wire-step="2" d="M 190 115 L 190 170 L 370 170 L 370 232" />
+                    <path class="wire-flow emerald" data-wire-step="2" d="M 510 268 L 595 268" />
 
                     <circle class="data-packet-dot moving" data-packet-step="0" r="7" fill="#f59e0b">
                       <animateMotion dur="1.3s" repeatCount="indefinite" path="M 190 115 L 190 170 L 550 170 L 550 115" />
@@ -713,8 +748,24 @@ window.COURSE_DATA = {
                       <animateMotion dur="1.3s" repeatCount="indefinite" path="M 550 115 L 550 170 L 190 170 L 190 115" />
                     </circle>
                     <circle class="data-packet-dot" data-packet-step="2" r="7" fill="#10b981">
-                      <animateMotion dur="1.3s" repeatCount="indefinite" path="M 190 115 L 190 170 L 370 170 L 370 265 L 635 265" />
+                      <animateMotion dur="1.3s" repeatCount="indefinite" path="M 190 115 L 190 170 L 370 170 L 370 268 L 595 268" />
                     </circle>
+
+                    <!-- On-Wire Operation Callout Pills -->
+                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
+                      <rect class="svg-wire-pill" x="85" y="122" width="210" height="22" />
+                      <text class="svg-wire-text" x="190" y="137">① طلب عنوان الأمر (Address) ──►</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
+                      <rect class="svg-wire-pill" x="445" y="122" width="210" height="22" />
+                      <text class="svg-wire-text" x="550" y="137">◄── ② إرسال الأمر والداتا للـ CPU</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
+                      <rect class="svg-wire-pill" x="265" y="198" width="210" height="22" />
+                      <text class="svg-wire-text" x="370" y="213">③ إخراج النتيجة للـ I/O والشاشة ▼</text>
+                    </g>
 
                     <g class="svg-hw-group cyan-node active-node" data-node-step="0,1,2" data-click-step="0">
                       <rect class="svg-hw-box" x="65" y="45" width="250" height="70" rx="10" />
@@ -729,13 +780,13 @@ window.COURSE_DATA = {
                     </g>
 
                     <g class="svg-hw-group amber-node" data-node-step="2" data-click-step="2">
-                      <rect class="svg-hw-box" x="230" y="228" width="280" height="72" rx="10" />
-                      <text class="svg-label-en" x="370" y="256">Input / Output (I/O)</text>
-                      <text class="svg-label-ar" x="370" y="280">نقل الداتا بين الكمبيوتر والعالم الخارجي</text>
+                      <rect class="svg-hw-box" x="230" y="232" width="280" height="72" rx="10" />
+                      <text class="svg-label-en" x="370" y="260">Input / Output (I/O)</text>
+                      <text class="svg-label-ar" x="370" y="284">نقل الداتا بين الكمبيوتر والعالم الخارجي</text>
                     </g>
 
-                    <rect x="595" y="243" width="110" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)" stroke-dasharray="4 3" />
-                    <text class="svg-label-ar" x="650" y="270" style="font-size:11px;">[العالم الخارجي]</text>
+                    <rect x="595" y="246" width="110" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)" stroke-dasharray="4 3" />
+                    <text class="svg-label-ar" x="650" y="273" style="font-size:11px;">[العالم الخارجي]</text>
                   </svg>
                 </div>
 
@@ -801,8 +852,8 @@ window.COURSE_DATA = {
                 </div>
 
                 <div class="sim-svg-stage">
-                  <svg viewBox="0 0 740 340" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="20" y="10" width="700" height="315" rx="14" fill="none" stroke="var(--accent-cyan)" stroke-width="2" />
+                  <svg viewBox="0 0 740 345" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="10" width="700" height="320" rx="14" fill="none" stroke="var(--accent-cyan)" stroke-width="2" />
                     <text class="svg-label-mono" x="370" y="30">CPU (INTERNAL PROCESSOR STRUCTURE)</text>
 
                     <rect x="60" y="152" width="620" height="36" rx="6" fill="var(--bg-surface)" stroke="var(--accent-cyan)" stroke-width="2" />
@@ -812,21 +863,37 @@ window.COURSE_DATA = {
 
                     <path class="wire-base" d="M 190 120 L 190 152" />
                     <path class="wire-base" d="M 550 120 L 550 152" />
-                    <path class="wire-base" d="M 370 188 L 370 225" />
+                    <path class="wire-base" d="M 370 188 L 370 232" />
 
-                    <path class="wire-flow emerald active-flow" data-wire-step="0" d="M 370 225 L 370 170 L 190 170 L 190 120" />
+                    <path class="wire-flow emerald active-flow" data-wire-step="0" d="M 370 232 L 370 170 L 190 170 L 190 120" />
                     <path class="wire-flow amber" data-wire-step="1" d="M 190 120 L 190 170 L 550 170 L 550 120" />
-                    <path class="wire-flow cyan" data-wire-step="2" d="M 370 225 L 370 170 L 550 170 L 550 120" />
+                    <path class="wire-flow cyan" data-wire-step="2" d="M 370 232 L 370 170 L 550 170 L 550 120" />
 
                     <circle class="data-packet-dot moving" data-packet-step="0" r="7" fill="#10b981">
-                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 370 225 L 370 170 L 190 170 L 190 120" />
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 370 232 L 370 170 L 190 170 L 190 120" />
                     </circle>
                     <circle class="data-packet-dot" data-packet-step="1" r="7" fill="#f59e0b">
                       <animateMotion dur="1.0s" repeatCount="indefinite" path="M 190 120 L 190 170 L 550 170 L 550 120" />
                     </circle>
                     <circle class="data-packet-dot" data-packet-step="2" r="7" fill="#06b6d4">
-                      <animateMotion dur="0.9s" repeatCount="indefinite" path="M 550 120 L 550 170 L 370 170 L 370 225" />
+                      <animateMotion dur="0.9s" repeatCount="indefinite" path="M 550 120 L 550 170 L 370 170 L 370 232" />
                     </circle>
+
+                    <!-- On-Wire Operation Callout Pills -->
+                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
+                      <rect class="svg-wire-pill" x="260" y="198" width="220" height="22" />
+                      <text class="svg-wire-text" x="370" y="213">① قراءة الأمر من الـ Registers ▲</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
+                      <rect class="svg-wire-pill" x="85" y="124" width="210" height="22" />
+                      <text class="svg-wire-text" x="190" y="139">② الـ CU تفك الشفرة وتأمر الـ ALU ──►</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
+                      <rect class="svg-wire-pill" x="440" y="124" width="220" height="22" />
+                      <text class="svg-wire-text" x="550" y="139">③ الـ ALU تجمع (15+27=42) وتحفظ ▼</text>
+                    </g>
 
                     <g class="svg-hw-group amber-node" data-node-step="0,1" data-click-step="1">
                       <rect class="svg-hw-box" x="55" y="42" width="270" height="78" rx="10" />
@@ -843,10 +910,10 @@ window.COURSE_DATA = {
                     </g>
 
                     <g class="svg-hw-group emerald-node active-node" data-node-step="0,2" data-click-step="0">
-                      <rect class="svg-hw-box" x="190" y="225" width="360" height="80" rx="10" />
-                      <text class="svg-label-en" x="370" y="252">Registers (PC | IR | R1 | R2 | ACC)</text>
-                      <text class="svg-label-ar" x="370" y="275">خلايا تخزين سريعة جداً ومؤقتة جوه البروسيسور نفسه</text>
-                      <text class="svg-label-mono" x="370" y="295" style="fill: var(--accent-emerald);">ULTRA-FAST CPU TEMPORARY STORAGE</text>
+                      <rect class="svg-hw-box" x="190" y="232" width="360" height="80" rx="10" />
+                      <text class="svg-label-en" x="370" y="259">Registers (PC | IR | R1=15 | R2=27 | ACC=42)</text>
+                      <text class="svg-label-ar" x="370" y="282">خلايا تخزين سريعة جداً ومؤقتة جوه البروسيسور نفسه</text>
+                      <text class="svg-label-mono" x="370" y="302" style="fill: var(--accent-emerald);">ULTRA-FAST CPU TEMPORARY STORAGE</text>
                     </g>
                   </svg>
                 </div>
@@ -1213,73 +1280,91 @@ window.COURSE_DATA = {
                 </div>
 
                 <div class="sim-svg-stage">
-                  <svg viewBox="0 0 740 375" xmlns="http://www.w3.org/2000/svg">
+                  <svg viewBox="0 0 740 385" xmlns="http://www.w3.org/2000/svg">
                     <!-- Single Processor Silicon Chip Frame -->
                     <rect x="30" y="10" width="680" height="275" rx="14" fill="none" stroke="var(--accent-cyan)" stroke-width="2.5" />
                     <text class="svg-label-mono" x="370" y="32">PROCESSOR CHIP (SINGLE SILICON DIE // شريحة معالج واحدة)</text>
 
                     <!-- CORE 1 -->
                     <g class="svg-hw-group cyan-node active-node" data-node-step="0,1" data-click-step="0">
-                      <rect class="svg-hw-box" x="65" y="45" width="280" height="130" rx="10" />
-                      <text class="svg-label-en" x="205" y="68">CORE 1 (Independent CPU)</text>
+                      <rect class="svg-hw-box" x="55" y="45" width="280" height="130" rx="10" />
+                      <text class="svg-label-en" x="195" y="68">CORE 1 (Independent CPU)</text>
                       <!-- CU & ALU inside Core 1 -->
-                      <rect x="82" y="80" width="115" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-amber)" />
-                      <text class="svg-label-mono" x="139" y="103" style="fill:var(--accent-amber);">CU + ALU</text>
-                      <rect x="210" y="80" width="118" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-cyan)" />
-                      <text class="svg-label-mono" x="269" y="103">Registers</text>
+                      <rect x="72" y="80" width="115" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-amber)" />
+                      <text class="svg-label-mono" x="129" y="103" style="fill:var(--accent-amber);">CU + ALU</text>
+                      <rect x="200" y="80" width="118" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-cyan)" />
+                      <text class="svg-label-mono" x="259" y="103">Registers</text>
                       <!-- Private L1/L2 inside Core 1 -->
-                      <rect x="82" y="126" width="246" height="34" rx="6" fill="var(--bg-surface)" stroke="var(--accent-emerald)" />
-                      <text class="svg-label-mono" x="205" y="148" style="fill:var(--accent-emerald);">Private L1 &amp; L2 Cache (1 ns)</text>
+                      <rect x="72" y="126" width="246" height="34" rx="6" fill="var(--bg-surface)" stroke="var(--accent-emerald)" />
+                      <text class="svg-label-mono" x="195" y="148" style="fill:var(--accent-emerald);">② Private L1 &amp; L2 Cache (1 ns)</text>
                     </g>
 
                     <!-- CORE 2 -->
                     <g class="svg-hw-group cyan-node active-node" data-node-step="0,1" data-click-step="0">
-                      <rect class="svg-hw-box" x="395" y="45" width="280" height="130" rx="10" />
-                      <text class="svg-label-en" x="535" y="68">CORE 2 (Independent CPU)</text>
+                      <rect class="svg-hw-box" x="405" y="45" width="280" height="130" rx="10" />
+                      <text class="svg-label-en" x="545" y="68">CORE 2 (Independent CPU)</text>
                       <!-- CU & ALU inside Core 2 -->
-                      <rect x="412" y="80" width="115" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-amber)" />
-                      <text class="svg-label-mono" x="469" y="103" style="fill:var(--accent-amber);">CU + ALU</text>
-                      <rect x="540" y="80" width="118" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-cyan)" />
-                      <text class="svg-label-mono" x="599" y="103">Registers</text>
+                      <rect x="422" y="80" width="115" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-amber)" />
+                      <text class="svg-label-mono" x="479" y="103" style="fill:var(--accent-amber);">CU + ALU</text>
+                      <rect x="550" y="80" width="118" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-cyan)" />
+                      <text class="svg-label-mono" x="609" y="103">Registers</text>
                       <!-- Private L1/L2 inside Core 2 -->
-                      <rect x="412" y="126" width="246" height="34" rx="6" fill="var(--bg-surface)" stroke="var(--accent-emerald)" />
-                      <text class="svg-label-mono" x="535" y="148" style="fill:var(--accent-emerald);">Private L1 &amp; L2 Cache (1 ns)</text>
+                      <rect x="422" y="126" width="246" height="34" rx="6" fill="var(--bg-surface)" stroke="var(--accent-emerald)" />
+                      <text class="svg-label-mono" x="545" y="148" style="fill:var(--accent-emerald);">② Private L1 &amp; L2 Cache (1 ns)</text>
+                    </g>
+
+                    <!-- Callout 1: Parallel Execution Badge between Cores -->
+                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
+                      <rect class="svg-wire-pill" x="305" y="96" width="130" height="24" />
+                      <text class="svg-wire-text" x="370" y="112">① توازي Parallel</text>
                     </g>
 
                     <!-- Wires from Core 1 & Core 2 to Shared L3 Cache -->
-                    <path class="wire-base" d="M 205 175 L 205 202 L 370 202 L 370 215" />
-                    <path class="wire-base" d="M 535 175 L 535 202 L 370 202 L 370 215" />
+                    <path class="wire-base" d="M 195 175 L 195 202 L 370 202 L 370 218" />
+                    <path class="wire-base" d="M 545 175 L 545 202 L 370 202 L 370 218" />
 
-                    <path class="wire-flow emerald active-flow" data-wire-step="1,2" d="M 205 175 L 205 202 L 370 202 L 370 215" />
-                    <path class="wire-flow emerald active-flow" data-wire-step="1,2" d="M 535 175 L 535 202 L 370 202 L 370 215" />
+                    <path class="wire-flow emerald active-flow" data-wire-step="1,2" d="M 195 175 L 195 202 L 370 202 L 370 218" />
+                    <path class="wire-flow emerald active-flow" data-wire-step="1,2" d="M 545 175 L 545 202 L 370 202 L 370 218" />
+
+                    <!-- Callout 2: L1/L2 Fast Access -->
+                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
+                      <rect class="svg-wire-pill" x="255" y="182" width="230" height="22" />
+                      <text class="svg-wire-text" x="370" y="197">② بحث سريع في L1/L2 خلال 1ns ⚡</text>
+                    </g>
 
                     <!-- Shared L3 Cache on Chip -->
                     <g class="svg-hw-group amber-node" data-node-step="1,2" data-click-step="2">
-                      <rect class="svg-hw-box" x="150" y="215" width="440" height="55" rx="10" />
-                      <text class="svg-label-en" x="370" y="240">Shared L3 Cache (مشتركة بين كل الأنوية)</text>
-                      <text class="svg-label-mono" x="370" y="259" style="fill:var(--accent-amber);">FAST ON-CHIP STAGING MEMORY</text>
+                      <rect class="svg-hw-box" x="150" y="218" width="440" height="55" rx="10" />
+                      <text class="svg-label-en" x="370" y="242">Shared L3 Cache (مشتركة بين كل الأنوية)</text>
+                      <text class="svg-label-mono" x="370" y="261" style="fill:var(--accent-amber);">FAST ON-CHIP STAGING MEMORY</text>
                     </g>
 
                     <!-- Wire from L3 to System Bus / Main Memory -->
-                    <path class="wire-base" d="M 370 270 L 370 312" />
-                    <path class="wire-flow amber" data-wire-step="2" d="M 370 270 L 370 312" />
+                    <path class="wire-base" d="M 370 273 L 370 322" />
+                    <path class="wire-flow amber" data-wire-step="2" d="M 370 273 L 370 322" />
+
+                    <!-- Callout 3: L3 <-> Main Memory -->
+                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
+                      <rect class="svg-wire-pill" x="245" y="290" width="250" height="22" />
+                      <text class="svg-wire-text" x="370" y="305">③ نسخ من الرامات للكاش (System Bus) ▲▼</text>
+                    </g>
 
                     <!-- Moving Packets -->
                     <circle class="data-packet-dot moving" data-packet-step="0,1" r="6" fill="#06b6d4">
-                      <animateMotion dur="0.8s" repeatCount="indefinite" path="M 139 100 L 269 100 L 205 145 Z" />
+                      <animateMotion dur="0.8s" repeatCount="indefinite" path="M 129 100 L 259 100 L 195 145 Z" />
                     </circle>
                     <circle class="data-packet-dot moving" data-packet-step="0,1" r="6" fill="#06b6d4">
-                      <animateMotion dur="0.8s" repeatCount="indefinite" path="M 469 100 L 599 100 L 535 145 Z" />
+                      <animateMotion dur="0.8s" repeatCount="indefinite" path="M 479 100 L 609 100 L 545 145 Z" />
                     </circle>
                     <circle class="data-packet-dot" data-packet-step="2" r="7" fill="#f59e0b">
-                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 370 312 L 370 215 L 205 175" />
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 370 322 L 370 218 L 195 175" />
                     </circle>
 
                     <!-- Main Memory (Off-Chip via System Bus) -->
                     <g class="svg-hw-group emerald-node" data-node-step="2" data-click-step="2">
-                      <rect class="svg-hw-box" x="170" y="312" width="400" height="52" rx="8" />
-                      <text class="svg-label-en" x="370" y="335">System Bus ◄===► Main Memory (DRAM)</text>
-                      <text class="svg-label-ar" x="370" y="354">الرامات الخارجية (كبيرة الحجم بس أبطأ: 50 إلى 100 نانو ثانية)</text>
+                      <rect class="svg-hw-box" x="170" y="322" width="400" height="52" rx="8" />
+                      <text class="svg-label-en" x="370" y="345">System Bus ◄===► Main Memory (DRAM)</text>
+                      <text class="svg-label-ar" x="370" y="364">الرامات الخارجية (كبيرة الحجم بس أبطأ: 50 إلى 100 نانو ثانية)</text>
                     </g>
                   </svg>
                 </div>
@@ -1440,6 +1525,22 @@ window.COURSE_DATA = {
                     <circle class="data-packet-dot" data-packet-step="2" r="6" fill="#10b981">
                       <animateMotion dur="1.1s" repeatCount="indefinite" path="M 275 215 L 430 215" />
                     </circle>
+
+                    <!-- On-Wire Operation Callout Badges -->
+                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
+                      <rect class="svg-wire-pill" x="282" y="153" width="140" height="22" />
+                      <text class="svg-wire-text" x="352" y="168">① 2 Chips = 8 Cores</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
+                      <rect class="svg-wire-pill" x="282" y="80" width="140" height="22" />
+                      <text class="svg-wire-text" x="352" y="95">◄► ② تغذية من DRAM</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
+                      <rect class="svg-wire-pill" x="280" y="226" width="144" height="22" />
+                      <text class="svg-wire-text" x="352" y="241">③ PCB Traces (Bus)</text>
+                    </g>
 
                     <!-- CPU Socket 1 -->
                     <g class="svg-hw-group cyan-node active-node" data-node-step="0" data-click-step="0">

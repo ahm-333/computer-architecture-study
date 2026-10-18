@@ -1,7 +1,11 @@
 /**
  * ==========================================================================
- * COMPUTER ARCHITECTURE — INTERACTIVE APPLICATION & SIMULATOR ENGINE
+ * COMPUTER ARCHITECTURE — INTERACTIVE APPLICATION & STEP-BY-STEP SIMULATOR ENGINE
  * ==========================================================================
+ * يعرض كل مخطط مع:
+ * 1. شريط المسار اللحظي (منين لفين + نوع الإشارة أو الداتا)
+ * 2. حركة حية واضحة على الأسلاك والمكونات في الـ SVG
+ * 3. قائمة مرقمة ومفصلة لجميع خطوات العملية تحت المخطط مباشرة للتفاعل معها
  */
 
 (function () {
@@ -20,94 +24,158 @@
     simTimers: {}
   };
 
-  /* Simulator Step Explanations Dictionary */
-  const SIM_DESCRIPTIONS = {
+  /* ==========================================================================
+     DETAILED STEP-BY-STEP OPERATIONS FOR ALL 6 DIAGRAMS
+     ========================================================================== */
+  const SIM_OPERATIONS = {
     "sim-arch-org": [
       {
-        tag: "STEP 1 / 3",
-        text: "الطبقة الأولى (Architecture): المبرمج بيكتب الكود مرة واحدة بس بناءً على كتالوج الأوامر (ISA) وحجم البتات (32-bit) من غير ما يشغل باله بالأسلاك تحت الكبوت."
+        num: "01",
+        title: "كتابة الكود البرمجي (طبقة الـ Architecture الثابتة)",
+        route: "Programmer Code ──► ISA (ADD R1, R2 | 32-bit)",
+        payload: "📜 الكود والأوامر المرئية للمبرمج (Instruction Set & Data Types)",
+        desc: "المبرمج يكتب البرنامج بلغة الأسمبلي أو الكود (مثل أمر جمع ADD لرقمين 32-bit). هذه الطبقة هي الـ Architecture، وهي عبارة عن القواعد وكتالوج الأوامر الثابت الذي يراه المبرمج ويتعامل معه منطقياً."
       },
       {
-        tag: "STEP 2 / 3",
-        text: "تحت الكبوت — Organization A: جهاز اقتصادي تردده 2 GHz وراماته DRAM، بينفذ نفس الكود بالظبط عن طريق إشارات التحكم الداخلية."
+        num: "02",
+        title: "التنفيذ على عتاد اقتصادي (Organization A — 2.0 GHz)",
+        route: "ISA Boundary ──[Control Signals @ 2GHz]──► Economy Hardware",
+        payload: "⚙️ إشارات تحكم داخلية بتردد 2 GHz وناقل 16-bit وذاكرة DRAM",
+        desc: "ينزل نفس الأمر عبر حد الـ ISA إلى العتاد الداخلي للجهاز الاقتصادي (Organization A). هنا تقوم وحدة التحكم بإصدار إشارات كهربائية بتردد 2 GHz عبر أسلاك 16-bit، فيتنفذ البرنامج بشكل سليم تماماً ولكن بسرعة عادية."
       },
       {
-        tag: "STEP 3 / 3",
-        text: "عائلة IBM 370 — Organization B: جهاز فائق السرعة تردده 4 GHz بأسلاك أعرض، بيشغل نفس برنامجك القديم طيارة فوراً بدون تعديل سطر كود واحد (Protecting software investment)!"
+        num: "03",
+        title: "التشغيل على عتاد فائق السرعة (Organization B — عائلة IBM 370)",
+        route: "ISA Boundary ──[Fast Signals @ 4GHz]──► High-Speed Hardware",
+        payload: "🚀 نفس الكود يعمل بضعف السرعة (4 GHz + 64-bit Bus + SRAM)",
+        desc: "عند ترقية العميل لجهاز أغلى وأحدث من نفس العائلة (مثل IBM System/370)، يظل الـ Architecture ثابتاً بالملي، بينما يتغير الـ Organization تحت الكبوت (تردد 4 GHz وأسلاك 64-bit)، فتشتغل كل البرامج القديمة فوراً بسرعة مضاعفة دون تعديل سطر كود واحد (Protecting Software Investment)!"
       }
     ],
+
     "sim-4-functions": [
       {
-        tag: "FUNCTION 1 / 4",
-        text: "1. وظيفة التحكم (Control): العقل الموجه اللي بيطلع إشارات تحكم كهربائية (باللون الذهبي) عشان يدير ويوجه التلات وظائف التانيين."
+        num: "01",
+        title: "الخطوة 1: التحكم والتوجيه (Control — القائد الموجه)",
+        route: "Control Mechanism ──[Control Signals]──► All Units",
+        payload: "⚡ إشارات تحكم كهربائية لتوجيه المعالجة والتخزين والنقل",
+        desc: "تبدأ العملية من وحدة التحكم (Control Mechanism)؛ وهي لا تمر عبرها البيانات، بل ترسل إشارات تحكم كهربائية لجميع الوحدات الأخرى لتحدد: متى نستقبل داتا؟ متى نخزنها؟ ومتى نعالجها أو نخرجها؟"
       },
       {
-        tag: "FUNCTION 2 / 4",
-        text: "2. وظيفة نقل البيانات (Data Movement): حركة الداتا بين الكمبيوتر والعالم الخارجي سواء عبر أجهزة الـ I/O (شاشة/ماوس) أو عبر الشبكات والإنترنت (Communications)."
+        num: "02",
+        title: "الخطوة 2: نقل البيانات من وإلى العالم الخارجي (Data Movement)",
+        route: "I/O Lines & Communications ◄──[Data Stream]──► Computer",
+        payload: "📦 حركة البيانات عبر وحدات الإدخال/الإخراج (I/O) أو الشبكات (Communications)",
+        desc: "عندما يدخل المستخدم بيانات من الكيبورد/الماوس (I/O) أو تصل بيانات من الإنترنت (Communications)، تقوم وظيفة نقل البيانات (Data Movement) بتمرير هذه البيانات إلى داخل الحاسوب أو إخراج النتائج للشاشة."
       },
       {
-        tag: "FUNCTION 3 / 4",
-        text: "3. وظيفة تخزين البيانات (Data Storage): حفظ الداتا داخل وحدة التخزين (مؤقتاً في الرامات أو دائماً في الهارد) تحت إشراف إشارات التحكم."
+        num: "03",
+        title: "الخطوة 3: تخزين البيانات مؤقتاً أو دائماً (Data Storage)",
+        route: "Data Movement / Processing ──[Save & Load]──► Data Storage Facility",
+        payload: "💾 حفظ البيانات في الرامات (مؤقتاً) أو الهارد (دائماً) بأمر من الـ Control",
+        desc: "بناءً على إشارة من وحدة التحكم، تدخل البيانات إلى وحدة التخزين (Data Storage Facility) ليتم الاحتفاظ بها سواء بشكل مؤقت أثناء التشغيل في الـ Main Memory أو بشكل دائم على الهارد ديسك."
       },
       {
-        tag: "FUNCTION 4 / 4",
-        text: "4. وظيفة معالجة البيانات (Data Processing): سحب الداتا من وحدة التخزين إلى وحدة المعالجة لإجراء الحسابات والعمليات المنطقية عليها ثم إرجاع النتيجة."
+        num: "04",
+        title: "الخطوة 4: معالجة البيانات وإجراء الحسابات (Data Processing)",
+        route: "Data Storage ◄──[Operands & Results]──► Data Processing Facility",
+        payload: "🧮 سحب البيانات من التخزين ➔ تنفيذ الحسابات والمنطق ➔ إرجاع النتيجة",
+        desc: "تأمر وحدة التحكم بسحب البيانات من وحدة التخزين (Storage) إلى وحدة المعالجة (Data Processing Facility)، حيث تتم العمليات الحسابية والمنطقية، ثم تعود النتيجة النهائية للتخزين أو تخرج للشاشة عبر الـ I/O."
       }
     ],
+
     "sim-top-structure": [
       {
-        tag: "BUS CYCLE 1 / 3",
-        text: "خطوة 1 (طلب الأمر): البروسيسور (CPU) عاوز ينفذ أمر، فيبعت عنوان الأمر عبر ناقل النظام (System Bus) إلى الرامات (Main Memory)."
+        num: "01",
+        title: "الخطوة 1: المعالج يطلب عنوان الأمر من الرامات (Address Fetch)",
+        route: "CPU ──[System Bus: Address & Read Signal]──► Main Memory",
+        payload: "📍 إرسال عنوان التعليمة المطلوبة (مثلاً Address: 0x1040) على الـ System Bus",
+        desc: "البروسيسور (CPU) يريد تنفيذ تعليمة جديدة، فيقوم بوضع عنوان هذه التعليمة على ناقل النظام (System Bus — System Interconnection) ويرسله إلى الذاكرة الرئيسية (Main Memory - RAM)."
       },
       {
-        tag: "BUS CYCLE 2 / 3",
-        text: "خطوة 2 (جلب الأمر والداتا): الرامات (Main Memory) تطلع الأمر والداتا المطلوبة وتبعتهم عبر الـ System Bus إلى الـ CPU عشان يعالجهم."
+        num: "02",
+        title: "الخطوة 2: الرامات ترسل التعليمة والبيانات للمعالج (Instruction & Data Read)",
+        route: "Main Memory ──[System Bus: Instruction & Data]──► CPU",
+        payload: "📥 الرامات ترد بالكود والبيانات عبر الـ System Bus إلى داخل الـ CPU",
+        desc: "تقرأ الذاكرة الرئيسية (Main Memory) العنوان المطلوب، وتستخرج التعليمة والبيانات الشغالة حالياً، ثم تدفعها عبر أسلاك الـ System Bus لتدخل إلى المعالج (CPU) ليقوم بمعالجتها."
       },
       {
-        tag: "BUS CYCLE 3 / 3",
-        text: "خطوة 3 (إخراج النتيجة): بعد ما الـ CPU يخلص معالجة، يبعت النتيجة على الـ System Bus لوحدة الإدخال والإخراج (I/O) عشان تتعرض على الشاشة في العالم الخارجي."
+        num: "03",
+        title: "الخطوة 3: إخراج النتيجة النهائية للعالم الخارجي عبر الـ I/O",
+        route: "CPU ──[System Bus]──► I/O Module ──► External Environment",
+        payload: "🖥️ إرسال نتيجة المعالجة من الـ CPU عبر الـ Bus إلى كارت الشاشة أو الطابعة",
+        desc: "بعد أن ينتهي الـ CPU من معالجة البيانات، يرمي النتيجة النهائية على الـ System Bus لتذهب إلى وحدة الإدخال والإخراج (I/O)، والتي بدورها تنقلها إلى العالم الخارجي (الشاشة أو الطابعة)."
       }
     ],
+
     "sim-cpu-internal": [
       {
-        tag: "CPU NANO-STEP 1 / 3",
-        text: "خطوة 1 (التخزين اللحظي وفك الشفرة): الأمر والأرقام بيدخلوا يقعدوا في سجل فائق السرعة (Register) جوه المعالج، ووحدة التحكم (CU) تقرأ الأمر عبر الـ Internal CPU Bus."
+        num: "01",
+        title: "الخطوة 1: استقرار التعليمة والأرقام داخل السجلات (Registers Load)",
+        route: "Registers [IR: ADD R1, R2 | R1 = 15, R2 = 27] ──► Internal CPU Bus",
+        payload: "⚡ تخزين مؤقت فائق السرعة داخل الـ Registers ثم قراءة الأمر",
+        desc: "بمجرد دخول التعليمة والأرقام إلى المعالج، تقعد فوراً في خلايا تخزين داخلية فائقة السرعة تسمى السجلات (Registers). بعد ذلك، تنتقل التعليمة عبر الناقل الداخلي (Internal CPU Bus) إلى وحدة التحكم (CU)."
       },
       {
-        tag: "CPU NANO-STEP 2 / 3",
-        text: "خطوة 2 (إصدار أمر التشغيل): وحدة التحكم (CU) تفك شفرة الأمر وتبعت إشارة تحكم عبر الناقل الداخلي للـ ALU تقولها: 'يا ALU اجمعي الرقمين دول!'"
+        num: "02",
+        title: "الخطوة 2: وحدة التحكم (CU) تفك الشفرة وتصدر أمر التشغيل للـ ALU",
+        route: "Control Unit (CU) ──[Internal CPU Bus: Control Order]──► ALU",
+        payload: "🧠 الـ CU تفهم التعليمة وتصدر إشارة: 'يا ALU اجمعي الرقمين دول!'",
+        desc: "تقوم وحدة التحكم (Control Unit - CU) بقراءة التعليمة وفك شفرتها (Decode)، فتفهم أن المطلوب هو عملية جمع، فترسل فوراً إشارة تحكم عبر الـ Internal CPU Bus إلى مصنع الحسابات (ALU)."
       },
       {
-        tag: "CPU NANO-STEP 3 / 3",
-        text: "خطوة 3 (التنفيذ في نانو ثانية): مصنع الحسابات (ALU) يسحب الرقمين من الـ Registers عبر الناقل الداخلي، يجمعهم، ويرجع النتيجة فوراً في Register تاني!"
+        num: "03",
+        title: "الخطوة 3: الـ ALU تسحب الرقمين وتجمعهم وتكتب النتيجة في Register",
+        route: "Registers (15, 27) ──► ALU (15 + 27 = 42) ──► Registers (Result = 42)",
+        payload: "🔥 حساب 15 + 27 = 42 في نانو ثانية وحفظ النتيجة في سجل داخل الـ CPU",
+        desc: "تسحب وحدة الحساب والمنطق (ALU) الرقمين من الـ Registers عبر الـ Internal CPU Bus، وتنفذ عملية الجمع واللوجيك في أجزاء من النانو ثانية، ثم ترجع النتيجة النهائية لتتخزن في Register آخر داخل المعالج!"
       }
     ],
+
     "sim-multicore-cache": [
       {
-        tag: "MULTICORE 1 / 3",
-        text: "1. تشغيل الأنوية بالتوازي (Parallel Cores): كل Core جواها CU و ALU و Registers خاصة بيها، وشغالين مع بعض في نفس الوقت على شريحة سيليكون واحدة (Single Chip)!"
+        num: "01",
+        title: "الخطوة 1: عمل الأنوية بالتوازي على شريحة واحدة (Parallel Cores Execution)",
+        route: "Single Processor Chip ──► [Core 1 (CU+ALU+Reg)] || [Core 2 (CU+ALU+Reg)]",
+        payload: "⚙️ نواتان مستقلتان تعملان بالتوازي على نفس قطعة السيليكون بدون غليان!",
+        desc: "بدل رفع تردد نواة واحدة حتى تحترق (Power & Thermal Wall)، تعمل Core 1 و Core 2 في نفس اللحظة بالتوازي على شريحة معالج واحدة (Single Chip). كل نواة بداخلها CU و ALU و Registers مستقلة تماماً."
       },
       {
-        tag: "CACHE L1/L2 2 / 3",
-        text: "2. كاش L1 و L2 الخاصة بكل نواة: أسرع وأقرب ذاكرة للنواة (1 نانو ثانية)، بتخلي البروسيسور يلاقي الأوامر المتكررة فوراً بدون انتظار الرامات البطيئة."
+        num: "02",
+        title: "الخطوة 2: البحث الصاروخي في كاش L1 و L2 داخل النواة (1 Nanosecond)",
+        route: "Core (CU/ALU) ◄──[1 ns Ultra-Fast Access]──► Private L1 & L2 Cache",
+        payload: "⚡ النواة تطلب الأمر فتجده في كاش L1/L2 في 1 نانو ثانية فقط!",
+        desc: "عندما تطلب النواة تعليمة أو داتا متكررة، تبحث أولاً في كاش L1 (الموجودة جوه النواة نفسها ومقسمة لـ L1-Instruction و L1-Data) ثم L2؛ فتجد الداتا في 1 نانو ثانية دون أن تنام وتنتظر الرامات البطيئة (No Stall)."
       },
       {
-        tag: "SHARED L3 & RAM 3 / 3",
-        text: "3. كاش L3 المشتركة والرامات: الـ L3 Cache مشتركة (Shared) بين كل الأنوية على الشريحة، وبتنسخ الداتا من الرامات الخارجية (DRAM) عبر الـ System Bus."
+        num: "03",
+        title: "الخطوة 3: كاش L3 المشتركة والتواصل مع الرامات (Shared L3 & Main Memory)",
+        route: "Cores ◄──► Shared L3 Cache ◄──[System Bus]──► Main Memory (DRAM 100ns)",
+        payload: "🔄 كاش L3 تخدم كل الأنوية معاً وتنسخ البيانات من الـ Main Memory البطيئة",
+        desc: "إذا لم تكن البيانات في L1 أو L2، تبحث النواة في ذاكرة L3 Cache الكبيرة والمشتركة (Shared) بين كل الأنوية على الشريحة. وإذا طلبت بيانات لأول مرة من الرامات (DRAM - 100ns)، يتم جلبها عبر الـ System Bus ونسخها في الكاش للمرات القادمة."
       }
     ],
+
     "sim-motherboard": [
       {
-        tag: "MOTHERBOARD 1 / 3",
-        text: "1. Processor Sockets: في السيرفرات (زي Intel Quad-Core Xeon سلايد 13) اللوحة الأم بيكون فيها 2 سوكت لبروسيسورين، كل واحد 4 أنوية = 8 أنوية حقيقية شغالة مع بعض!"
+        num: "01",
+        title: "الخطوة 1: تشغيل شرائح المعالجات في المقابس (Processor Sockets)",
+        route: "Motherboard Socket 1 & Socket 2 ──► Quad-Core Xeon / IBM EC12 Chips",
+        payload: "🔲 شرائح المعالج تركب في الـ Sockets (حتى 2 بروسيسور × 4 أنوية = 8 Cores في السيرفرات)",
+        desc: "على اللوحة الأم (Motherboard PCB) يوجد مقبس المعالج (Socket). في السيرفرات مثل Intel Quad-Core Xeon (سلايد 13) يوجد مقبسان لشريحتي معالج، كل شريحة بها 4 أنوية لتعطي 8 أنوية تعمل معاً."
       },
       {
-        tag: "DIMM SLOTS 2 / 3",
-        text: "2. Main Memory Chips (DIMM Slots): الفتحات اللي بتركب فيها مساطر الرامات (DRAM) اللي بتشيل نظام التشغيل والبرامج الشغالة حالياً."
+        num: "02",
+        title: "الخطوة 2: تغذية المعالج بالبرامج من فتحات الرامات (DIMM Memory Slots)",
+        route: "DRAM Chips (DIMM Slots) ◄──[PCB Copper Traces]──► Processor Sockets",
+        payload: "🟩 مساطر الرامات (DRAM) تمد المعالج بالبرامج والبيانات الشغالة حالياً",
+        desc: "تركب شرائح الذاكرة الرئيسية (Main Memory DRAM Chips) في فتحات DIMM Slots على البوردة، وتتصل مباشرة بالمعالج لتزويده بنظام التشغيل والبرامج المفتوحة حالياً."
       },
       {
-        tag: "PCB TRACES 3 / 3",
-        text: "3. PCB Copper Traces & I/O Chipset: خطوط النحاس المطبوعة في قلب اللوحة الخضرا هي الأسلاك الحقيقية للـ System Bus اللي بتربط المعالج بالرامات وشيبات الـ I/O."
+        num: "03",
+        title: "الخطوة 3: نقل الإشارات عبر خطوط النحاس (PCB Traces) وشيبات الـ I/O",
+        route: "Processor & RAM ◄──[PCB Traces = System Bus]──► I/O Controller Chipset",
+        payload: "🛣️ خطوط النحاس المطبوعة في البوردة هي التجسيد الفيزيائي للـ System Bus",
+        desc: "خطوط النحاس المرسومة في قلب اللوحة الأم (PCB Traces) هي الأسلاك الحقيقية للـ System Bus، وهي التي تربط المعالج والرامات مع شيبات التحكم (I/O Controller Chipset) المسؤولة عن كروت الـ PCIe والهاردات والـ USB."
       }
     ]
   };
@@ -128,7 +196,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     INTERACTIVE SVG HARDWARE SIMULATORS ENGINE
+     INTERACTIVE SVG HARDWARE SIMULATORS ENGINE (WITH STEP-BY-STEP CARDS)
      -------------------------------------------------------------------------- */
   function clearAllSimTimers() {
     Object.keys(state.simTimers).forEach((k) => {
@@ -137,35 +205,116 @@
     });
   }
 
+  function buildSimBreakdownUI(simCard, simId) {
+    const ops = SIM_OPERATIONS[simId];
+    if (!ops || ops.length === 0) return;
+
+    // 1. Insert Live Route & Payload Banner right above the SVG stage if not present
+    const svgStage = simCard.querySelector(".sim-svg-stage");
+    if (svgStage && !simCard.querySelector(".sim-live-state-banner")) {
+      const banner = document.createElement("div");
+      banner.className = "sim-live-state-banner";
+      banner.innerHTML = `
+        <div class="sim-live-payload" data-sim-payload></div>
+        <div class="sim-live-route" data-sim-route></div>
+      `;
+      svgStage.parentNode.insertBefore(banner, svgStage);
+    }
+
+    // 2. Replace old single-line ticker with complete Step-by-Step Operations Breakdown + Prev/Next Bar
+    const oldTicker = simCard.querySelector(".sim-status-ticker");
+    if (oldTicker) {
+      oldTicker.remove();
+    }
+
+    if (!simCard.querySelector(".sim-steps-breakdown")) {
+      const breakdown = document.createElement("div");
+      breakdown.className = "sim-steps-breakdown";
+
+      const cardsHtml = ops
+        .map(
+          (op, idx) => `
+          <div class="sim-op-step-card ${idx === 0 ? "active" : ""}" data-op-card="${idx}">
+            <div class="sim-op-num">${op.num}</div>
+            <div class="sim-op-content">
+              <div class="sim-op-top-row">
+                <span class="sim-op-title">${op.title}</span>
+                <span class="sim-op-route-badge">${op.route}</span>
+              </div>
+              <p class="sim-op-desc">${op.desc}</p>
+            </div>
+          </div>
+        `
+        )
+        .join("");
+
+      breakdown.innerHTML = `
+        <div class="sim-steps-heading">
+          <span>📋 شرح خطوات العملية بالتفصيل على المخطط (اضغط على أي خطوة لتشغيلها):</span>
+          <span class="mono" style="font-size:0.75rem; color:var(--accent-amber);" data-sim-tag>STEP 1 / ${ops.length}</span>
+        </div>
+        ${cardsHtml}
+        <div class="sim-nav-bar">
+          <button type="button" class="sim-nav-btn" data-sim-prev>→ الخطوة السابقة</button>
+          <span style="font-size:0.8rem; color:var(--text-muted);">تقدر تضغط على المكونات جوه الرسمة أو الكروت فوق</span>
+          <button type="button" class="sim-nav-btn" data-sim-next>الخطوة التالية ←</button>
+        </div>
+      `;
+
+      simCard.appendChild(breakdown);
+    }
+  }
+
   function setSimStep(simCard, stepIndex) {
     const simId = simCard.getAttribute("data-sim");
-    const stepStr = String(stepIndex);
+    const ops = SIM_OPERATIONS[simId] || [];
+    const total = ops.length || 1;
+    const safeIdx = ((stepIndex % total) + total) % total;
+    const stepStr = String(safeIdx);
 
+    // Top bar step buttons
     simCard.querySelectorAll("[data-sim-step]").forEach((btn) => {
       btn.classList.toggle("active", btn.getAttribute("data-sim-step") === stepStr);
     });
 
+    // Detailed step breakdown cards
+    simCard.querySelectorAll("[data-op-card]").forEach((card) => {
+      card.classList.toggle("active", card.getAttribute("data-op-card") === stepStr);
+    });
+
+    // SVG Hardware Nodes
     simCard.querySelectorAll("[data-node-step]").forEach((node) => {
       const steps = node.getAttribute("data-node-step").split(",");
       node.classList.toggle("active-node", steps.includes(stepStr));
     });
 
+    // SVG Wire Callout Pills
+    simCard.querySelectorAll("[data-pill-step]").forEach((pill) => {
+      const steps = pill.getAttribute("data-pill-step").split(",");
+      pill.classList.toggle("active-pill", steps.includes(stepStr));
+    });
+
+    // Animated Wires
     simCard.querySelectorAll("[data-wire-step]").forEach((wire) => {
       const steps = wire.getAttribute("data-wire-step").split(",");
       wire.classList.toggle("active-flow", steps.includes(stepStr));
     });
 
+    // Moving Data Packet Dots
     simCard.querySelectorAll("[data-packet-step]").forEach((dot) => {
       const steps = dot.getAttribute("data-packet-step").split(",");
       dot.classList.toggle("moving", steps.includes(stepStr));
     });
 
-    const descList = SIM_DESCRIPTIONS[simId];
-    if (descList && descList[stepIndex]) {
-      const statusEl = simCard.querySelector("[data-sim-status]");
+    // Update Live Banner & Step Counter
+    if (ops[safeIdx]) {
+      const payloadEl = simCard.querySelector("[data-sim-payload]");
+      const routeEl = simCard.querySelector("[data-sim-route]");
       const tagEl = simCard.querySelector("[data-sim-tag]");
-      if (statusEl) statusEl.textContent = descList[stepIndex].text;
-      if (tagEl) tagEl.textContent = descList[stepIndex].tag;
+
+      if (payloadEl) payloadEl.textContent = ops[safeIdx].payload;
+      if (routeEl) routeEl.textContent = ops[safeIdx].route;
+      if (tagEl) tagEl.textContent = `STEP ${safeIdx + 1} / ${ops.length}`;
     }
 
     simCard.setAttribute("data-current-step", stepStr);
@@ -176,13 +325,16 @@
 
     document.querySelectorAll(".sim-card[data-sim]").forEach((simCard) => {
       const simId = simCard.getAttribute("data-sim");
-      const stepBtns = simCard.querySelectorAll("[data-sim-step]");
-      const totalSteps = stepBtns.length;
+      buildSimBreakdownUI(simCard, simId);
+
+      const ops = SIM_OPERATIONS[simId] || [];
+      const totalSteps = ops.length;
       if (totalSteps === 0) return;
 
       setSimStep(simCard, 0);
 
-      stepBtns.forEach((btn) => {
+      // Top step buttons
+      simCard.querySelectorAll("[data-sim-step]").forEach((btn) => {
         btn.addEventListener("click", () => {
           stopAutoplay(simCard, simId);
           const idx = parseInt(btn.getAttribute("data-sim-step"), 10);
@@ -190,6 +342,34 @@
         });
       });
 
+      // Detailed step cards click
+      simCard.querySelectorAll("[data-op-card]").forEach((card) => {
+        card.addEventListener("click", () => {
+          stopAutoplay(simCard, simId);
+          const idx = parseInt(card.getAttribute("data-op-card"), 10);
+          setSimStep(simCard, idx);
+        });
+      });
+
+      // Prev / Next step buttons
+      const prevStepBtn = simCard.querySelector("[data-sim-prev]");
+      const nextStepBtn = simCard.querySelector("[data-sim-next]");
+      if (prevStepBtn) {
+        prevStepBtn.addEventListener("click", () => {
+          stopAutoplay(simCard, simId);
+          const cur = parseInt(simCard.getAttribute("data-current-step") || "0", 10);
+          setSimStep(simCard, cur - 1);
+        });
+      }
+      if (nextStepBtn) {
+        nextStepBtn.addEventListener("click", () => {
+          stopAutoplay(simCard, simId);
+          const cur = parseInt(simCard.getAttribute("data-current-step") || "0", 10);
+          setSimStep(simCard, cur + 1);
+        });
+      }
+
+      // Clicking SVG hardware boxes
       simCard.querySelectorAll("[data-click-step]").forEach((box) => {
         box.addEventListener("click", () => {
           stopAutoplay(simCard, simId);
@@ -198,6 +378,7 @@
         });
       });
 
+      // Auto-play button
       const autoBtn = simCard.querySelector("[data-sim-autoplay]");
       if (autoBtn) {
         autoBtn.addEventListener("click", () => {
@@ -214,7 +395,7 @@
               let next = parseInt(simCard.getAttribute("data-current-step") || "0", 10);
               next = (next + 1) % totalSteps;
               setSimStep(simCard, next);
-            }, 2800);
+            }, 3200);
           }
         });
       }
@@ -229,7 +410,7 @@
     const autoBtn = simCard.querySelector("[data-sim-autoplay]");
     if (autoBtn) {
       autoBtn.classList.remove("playing");
-      autoBtn.textContent = "▶ تشغيل تلقائي";
+      autoBtn.textContent = "▶ تشغيل الخطوات بالتتابع";
     }
   }
 
