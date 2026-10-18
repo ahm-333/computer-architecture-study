@@ -242,6 +242,59 @@
     ]
   };
 
+  /* ==========================================================================
+     QUICK COMPONENT GLOSSARY FOR EACH OF THE 8 OFFICIAL DIAGRAMS
+     ========================================================================== */
+  const SIM_COMPONENTS = {
+    "sim-4-functions": [
+      { code: "Control Mechanism", role: "وحدة التحكم: توجه كل الوحدات بإشارات كهربائية", color: "amber", step: 0 },
+      { code: "Data Movement (I/O & Comms)", role: "نقل البيانات: إدخال وإخراج الداتا للعالم الخارجي", color: "emerald", step: 1 },
+      { code: "Data Storage Facility", role: "تخزين البيانات: حفظ مؤقت (RAM) أو دائم (Hard Disk)", color: "emerald", step: 2 },
+      { code: "Data Processing Facility", role: "معالجة البيانات: تنفيذ العمليات الحسابية والمنطقية", color: "cyan", step: 3 }
+    ],
+    "sim-top-structure": [
+      { code: "CPU (Processor)", role: "المعالج: يتحكم في الحاسوب وينفذ معالجة البيانات", color: "cyan", step: 0 },
+      { code: "Main Memory (RAM)", role: "الذاكرة الرئيسية: تحفظ البرامج والبيانات المشغلة حالياً", color: "emerald", step: 1 },
+      { code: "System Bus", role: "ناقل النظام: مسارات الربط بين المعالج والذاكرة والـ I/O", color: "amber", step: 0 },
+      { code: "I/O Module", role: "وحدة الإدخال/الإخراج: تربط الحاسوب بالأجهزة الخارجية", color: "amber", step: 2 }
+    ],
+    "sim-cpu-internal": [
+      { code: "Registers", role: "السجلات: أسرع ذاكرة مؤقتة داخل المعالج لحفظ الأوامر والأرقام", color: "emerald", step: 0 },
+      { code: "Control Unit (CU)", role: "وحدة التحكم: تفك شفرة التعليمة وتصدر أوامر التشغيل", color: "amber", step: 1 },
+      { code: "ALU", role: "وحدة الحساب والمنطق: تنفذ الجمع والطرح والعمليات المنطقية", color: "cyan", step: 2 },
+      { code: "Internal CPU Bus", role: "الناقل الداخلي: يربط الـ CU والـ ALU والـ Registers معاً", color: "cyan", step: 1 }
+    ],
+    "sim-multicore-cache": [
+      { code: "Core 1 & Core 2", role: "الأنوية: وحدات معالجة مستقلة (CU+ALU+Registers) على شريحة واحدة", color: "cyan", step: 0 },
+      { code: "L1 & L2 Cache", role: "كاش خاصة بكل نواة: فائقة السرعة (1ns) لتفادي بطء الرامات", color: "emerald", step: 1 },
+      { code: "Shared L3 Cache", role: "كاش المستوى الثالث: ذاكرة سريعة مشتركة بين جميع الأنوية", color: "amber", step: 2 },
+      { code: "Main Memory (DRAM)", role: "الرامات الخارجية: سعة كبيرة خارج الشريحة (50-100ns)", color: "emerald", step: 2 }
+    ],
+    "sim-ias-word": [
+      { code: "Shared Memory (4096 × 40b)", role: "ذاكرة IAS: 4096 موقعاً، كل كلمة طولها 40 بت للبيانات والأوامر معاً", color: "cyan", step: 0 },
+      { code: "Number Word (1 + 39 bit)", role: "كلمة البيانات: 1 بت للإشارة (Sign) + 39 بت لقيمة الرقم", color: "emerald", step: 1 },
+      { code: "Instruction Word (2 × 20b)", role: "كلمة التعليمات: تشيل تعليمتين (Left & Right) كل واحدة 20 بت", color: "amber", step: 2 },
+      { code: "Opcode (8b) + Address (12b)", role: "تركيب التعليمة: 8 بت لنوع العملية + 12 بت لعنوان الذاكرة (2^12=4096)", color: "amber", step: 2 }
+    ],
+    "sim-ias-dataflow": [
+      { code: "PC & MAR (12-bit)", role: "PC يحمل عنوان التعليمة التالية ويرسله إلى MAR لفتح موقع الذاكرة", color: "amber", step: 0 },
+      { code: "MBR (40-bit)", role: "صندوق بريد الذاكرة: يستقبل الكلمة الكاملة (40 بت) من الذاكرة", color: "cyan", step: 0 },
+      { code: "IR (8-bit) & IBR (20-bit)", role: "IR يستقبل كود التعليمة الشمال للتنفيذ، و IBR يحفظ التعليمة اليمين مؤقتاً", color: "emerald", step: 1 },
+      { code: "ALU & AC / MQ (40-bit)", role: "ALU تنفذ الحسابات بمساعدة سجلات المراكم AC و MQ", color: "cyan", step: 2 }
+    ],
+    "sim-embedded-controller": [
+      { code: "Analog Data Capture", role: "الحساسات (Sensors): تقرأ الحرارة والضغط والسرعة من البيئة المحيطة", color: "emerald", step: 0 },
+      { code: "Custom Logic / ADC", role: "تحويل الإشارة التماثلية إلى أرقام رقمية (ADC) وضبط التوقيت", color: "cyan", step: 1 },
+      { code: "Microcontroller CPU & ROM/SRAM", role: "المعالج المدمج يقارن القراءات بالكود الثابت المخزن في الـ ROM", color: "amber", step: 2 },
+      { code: "Actuators & Switches", role: "المشغلات الميكانيكية: تنفذ رد الفعل اللحظي (Real-Time) كالفرامل والمواتير", color: "amber", step: 3 }
+    ],
+    "sim-cloud-infra": [
+      { code: "Client Devices", role: "أجهزة العملاء (موبايل ARM، لابتوب x86، حساس IoT) تطلب الخدمة عند الطلب", color: "cyan", step: 0 },
+      { code: "Cloud Networking", role: "شبكات السحابة: ربط فائق السرعة والاعتمادية وبأقل زمن تأخير (Low Latency)", color: "amber", step: 1 },
+      { code: "Shared Resource Pool", role: "مجمع الموارد المشترك: سيرفرات Xeon/ARM وتخزين عملاق وقواعد بيانات تُخصص فوراً", color: "emerald", step: 2 }
+    ]
+  };
+
   function loadCompletedParts() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY_DONE);
@@ -271,19 +324,52 @@
     const ops = SIM_OPERATIONS[simId];
     if (!ops || ops.length === 0) return;
 
-    // 1. Insert Live Route & Payload Banner right above the SVG stage if not present
+    // 1. Insert Live Active Step HUD Banner right above the SVG stage if not present
     const svgStage = simCard.querySelector(".sim-svg-stage");
     if (svgStage && !simCard.querySelector(".sim-live-state-banner")) {
       const banner = document.createElement("div");
       banner.className = "sim-live-state-banner";
       banner.innerHTML = `
-        <div class="sim-live-payload" data-sim-payload></div>
-        <div class="sim-live-route" data-sim-route></div>
+        <div class="sim-live-top-row">
+          <span class="sim-live-step-badge" data-sim-step-badge>STEP 01 / 0${ops.length}</span>
+          <div class="sim-live-payload" data-sim-payload></div>
+          <div class="sim-live-route" data-sim-route></div>
+        </div>
+        <div class="sim-live-desc" data-sim-desc></div>
       `;
       svgStage.parentNode.insertBefore(banner, svgStage);
     }
 
-    // 2. Replace old single-line ticker with complete Step-by-Step Operations Breakdown + Prev/Next Bar
+    // 2. Insert Quick Component Glossary Grid right after the SVG stage if not present
+    const comps = SIM_COMPONENTS[simId] || [];
+    if (svgStage && comps.length > 0 && !simCard.querySelector(".sim-components-guide")) {
+      const guide = document.createElement("div");
+      guide.className = "sim-components-guide";
+      guide.innerHTML = `
+        <div class="sim-components-title">
+          <span>🧩 دليل مكونات المخطط (اضغط على أي مكون لمعرفة دوره في العملية):</span>
+          <span class="mono" style="font-size:0.72rem; color:var(--text-muted);">INTERACTIVE COMPONENT LEGEND</span>
+        </div>
+        <div class="sim-components-grid">
+          ${comps
+            .map(
+              (c) => `
+            <div class="sim-comp-chip" data-comp-step="${c.step}" style="cursor:pointer;">
+              <span class="sim-comp-dot ${c.color}"></span>
+              <div class="sim-comp-info">
+                <span class="sim-comp-code">${c.code}</span>
+                <span class="sim-comp-role">${c.role}</span>
+              </div>
+            </div>
+          `
+            )
+            .join("")}
+        </div>
+      `;
+      svgStage.insertAdjacentElement("afterend", guide);
+    }
+
+    // 3. Replace old single-line ticker with complete Step-by-Step Operations Breakdown + Prev/Next Bar
     const oldTicker = simCard.querySelector(".sim-status-ticker");
     if (oldTicker) {
       oldTicker.remove();
@@ -370,12 +456,16 @@
 
     // Update Live Banner & Step Counter
     if (ops[safeIdx]) {
+      const badgeEl = simCard.querySelector("[data-sim-step-badge]");
       const payloadEl = simCard.querySelector("[data-sim-payload]");
       const routeEl = simCard.querySelector("[data-sim-route]");
+      const descEl = simCard.querySelector("[data-sim-desc]");
       const tagEl = simCard.querySelector("[data-sim-tag]");
 
+      if (badgeEl) badgeEl.textContent = `الخطوة ${safeIdx + 1} من ${ops.length}`;
       if (payloadEl) payloadEl.textContent = ops[safeIdx].payload;
       if (routeEl) routeEl.textContent = ops[safeIdx].route;
+      if (descEl) descEl.textContent = ops[safeIdx].desc;
       if (tagEl) tagEl.textContent = `STEP ${safeIdx + 1} / ${ops.length}`;
     }
 
@@ -400,6 +490,15 @@
         btn.addEventListener("click", () => {
           stopAutoplay(simCard, simId);
           const idx = parseInt(btn.getAttribute("data-sim-step"), 10);
+          setSimStep(simCard, idx);
+        });
+      });
+
+      // Component glossary chips click
+      simCard.querySelectorAll("[data-comp-step]").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          stopAutoplay(simCard, simId);
+          const idx = parseInt(chip.getAttribute("data-comp-step"), 10);
           setSimStep(simCard, idx);
         });
       });

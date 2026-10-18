@@ -2885,116 +2885,119 @@ window.COURSE_DATA = {
               <div class="sim-card" data-sim="sim-embedded-controller">
                 <div class="sim-top-bar">
                   <div class="sim-title-group">
-                    <span class="sim-fig-badge">SLIDES 45–46 // HARDWARE ARCHITECTURE DIAGRAM</span>
-                    <h3 class="sim-title">المخطط المعماري للنظام المدمج (Embedded System Controller)</h3>
+                    <span class="sim-live-dot"></span>
+                    <span class="sim-badge-title">SLIDES 45–46 // EMBEDDED SYSTEM CONTROLLER ARCHITECTURE</span>
                   </div>
                   <div class="sim-controls">
-                    <button type="button" class="sim-play-btn" data-sim-play>▶ تشغيل الخطوات بالتتابع</button>
-                    <button type="button" class="sim-step-btn active" data-step="0">1. حساسات Analog In</button>
-                    <button type="button" class="sim-step-btn" data-step="1">2. تحويل الإشارة ADC</button>
-                    <button type="button" class="sim-step-btn" data-step="2">3. مقارنة بـ ROM / SRAM</button>
-                    <button type="button" class="sim-step-btn" data-step="3">4. أوامر Control Out (Real-Time)</button>
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. حساسات Analog In</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">2. تحويل الإشارة ADC</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">3. مقارنة بـ ROM / SRAM</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="3">4. أوامر Control Out (Real-Time)</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل تلقائي</button>
                   </div>
                 </div>
 
                 <div class="sim-svg-stage">
-                  <svg class="sim-svg" viewBox="0 0 820 350" role="img" aria-label="Embedded System Controller Hardware Architecture Diagram">
-                    <defs>
-                      <marker id="arr-emb" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                        <path d="M 0 1 L 10 5 L 0 9 z" fill="currentColor"></path>
-                      </marker>
-                    </defs>
+                  <svg viewBox="0 0 760 365" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Embedded System Controller Hardware Architecture Diagram">
+                    <!-- Outer Frame: EMBEDDED SYSTEM CONTROLLER -->
+                    <rect x="40" y="12" width="680" height="225" rx="14" fill="none" stroke="var(--accent-cyan)" stroke-width="2.5" />
+                    <text class="svg-label-mono" x="380" y="34">EMBEDDED SYSTEM CONTROLLER (متحكم النظام المدمج على شريحة واحدة)</text>
 
-                    <g class="svg-grid-lines">
-                      <line x1="0" y1="70" x2="820" y2="70"></line>
-                      <line x1="0" y1="140" x2="820" y2="140"></line>
-                      <line x1="0" y1="210" x2="820" y2="210"></line>
-                      <line x1="0" y1="280" x2="820" y2="280"></line>
-                      <line x1="205" y1="0" x2="205" y2="350"></line>
-                      <line x1="410" y1="0" x2="410" y2="350"></line>
-                      <line x1="615" y1="0" x2="615" y2="350"></line>
+                    <!-- Base Wires -->
+                    <!-- Internal Bus between Processor & Memory -->
+                    <path class="wire-base" d="M 320 88 L 440 88" />
+                    <!-- Processor <-> Custom Logic -->
+                    <path class="wire-base" d="M 190 124 L 190 150 L 380 150 L 380 165" />
+                    <!-- Memory <-> Custom Logic -->
+                    <path class="wire-base" d="M 570 124 L 570 150 L 380 150" />
+                    <!-- External I/O Lines: [Analog In] & [Control Out] -->
+                    <path class="wire-base" d="M 185 278 L 185 252 L 330 252 L 330 225" />
+                    <path class="wire-base" d="M 430 225 L 430 252 L 575 252 L 575 278" />
+
+                    <!-- Internal Bus Label -->
+                    <text class="svg-label-mono" x="380" y="76" style="fill: var(--accent-cyan);">◄=== INTERNAL BUS ===►</text>
+
+                    <!-- Animated Flow Wires -->
+                    <path class="wire-flow emerald active-flow" data-wire-step="0,1" d="M 185 278 L 185 252 L 330 252 L 330 225" />
+                    <path class="wire-flow cyan" data-wire-step="1" d="M 380 165 L 380 150 L 190 150 L 190 124" />
+                    <path class="wire-flow amber" data-wire-step="2" d="M 440 88 L 320 88" />
+                    <path class="wire-flow amber" data-wire-step="3" d="M 190 124 L 190 150 L 380 150 L 380 165" />
+                    <path class="wire-flow amber" data-wire-step="3" d="M 430 225 L 430 252 L 575 252 L 575 278" />
+
+                    <!-- Moving Data Packets -->
+                    <circle class="data-packet-dot moving" data-packet-step="0" r="6" fill="#10b981">
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 185 278 L 185 252 L 330 252 L 330 225" />
+                    </circle>
+                    <circle class="data-packet-dot" data-packet-step="1" r="6" fill="#06b6d4">
+                      <animateMotion dur="1.0s" repeatCount="indefinite" path="M 330 225 L 380 150 L 190 150 L 190 124" />
+                    </circle>
+                    <circle class="data-packet-dot" data-packet-step="2" r="6" fill="#f59e0b">
+                      <animateMotion dur="0.9s" repeatCount="indefinite" path="M 440 88 L 320 88" />
+                    </circle>
+                    <circle class="data-packet-dot" data-packet-step="3" r="7" fill="#f59e0b">
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 190 124 L 190 150 L 430 150 L 430 252 L 575 252 L 575 278" />
+                    </circle>
+
+                    <!-- On-Wire Callout Pills -->
+                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
+                      <rect class="svg-wire-pill" x="85" y="241" width="185" height="22" />
+                      <text class="svg-wire-text" x="177" y="256">① قراءة الحساسات [Analog In] ▲</text>
                     </g>
 
-                    <!-- Outer Frame: EMBEDDED SYSTEM CONTROLLER -->
-                    <rect x="65" y="16" width="690" height="222" rx="14" fill="rgba(14, 116, 144, 0.04)" stroke="var(--accent-cyan)" stroke-width="2.5"></rect>
-                    <text x="410" y="38" text-anchor="middle" class="svg-node-sub" style="fill: var(--accent-cyan); font-weight: 800;">EMBEDDED SYSTEM CONTROLLER</text>
+                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
+                      <rect class="svg-wire-pill" x="200" y="132" width="175" height="22" />
+                      <text class="svg-wire-text" x="287" y="147">② تحويل لأرقام ADC ──► CPU</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
+                      <rect class="svg-wire-pill" x="292" y="96" width="176" height="22" />
+                      <text class="svg-wire-text" x="380" y="111">③ فحص كود الـ ROM والـ SRAM</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="3" data-click-step="3">
+                      <rect class="svg-wire-pill" x="485" y="241" width="195" height="22" />
+                      <text class="svg-wire-text" x="582" y="256">④ إشارة فورية [Control Out] ▼</text>
+                    </g>
 
                     <!-- Processor (Microcontroller CPU) -->
-                    <g class="svg-node" data-sim-node="2,3" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 2)">
-                      <rect class="svg-node-box" x="95" y="54" width="235" height="74" rx="10"></rect>
-                      <text class="svg-node-title" x="212" y="79" text-anchor="middle">Processor</text>
-                      <text class="svg-node-sub" x="212" y="100" text-anchor="middle">(Microcontroller CPU)</text>
-                      <text class="svg-node-sub" x="212" y="117" text-anchor="middle" style="fill: var(--accent-cyan);">Dedicated Processing</text>
+                    <g class="svg-hw-group cyan-node" data-node-step="1,2,3" data-click-step="2">
+                      <rect class="svg-hw-box" x="65" y="50" width="255" height="74" rx="10" />
+                      <text class="svg-label-en" x="192" y="75">Processor (Microcontroller CPU)</text>
+                      <text class="svg-label-ar" x="192" y="97">معالج مدمج مكرس لوظيفة واحدة محددة</text>
+                      <text class="svg-label-mono" x="192" y="114">DEDICATED REAL-TIME CORE</text>
                     </g>
 
                     <!-- Memory (ROM / Flash for Code | SRAM for Scratchpad) -->
-                    <g class="svg-node" data-sim-node="2" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 2)">
-                      <rect class="svg-node-box" x="490" y="54" width="235" height="74" rx="10"></rect>
-                      <text class="svg-node-title" x="607" y="79" text-anchor="middle">Memory</text>
-                      <text class="svg-node-sub" x="607" y="99" text-anchor="middle">(ROM / Flash for Code |</text>
-                      <text class="svg-node-sub" x="607" y="116" text-anchor="middle" style="fill: var(--accent-amber);">SRAM for Scratchpad)</text>
+                    <g class="svg-hw-group amber-node" data-node-step="2" data-click-step="2">
+                      <rect class="svg-hw-box" x="440" y="50" width="255" height="74" rx="10" />
+                      <text class="svg-label-en" x="567" y="75">Memory (ROM / Flash &amp; SRAM)</text>
+                      <text class="svg-label-ar" x="567" y="97">ROM للكود الثابت | SRAM للحساب المؤقت</text>
+                      <text class="svg-label-mono" x="567" y="114" style="fill: var(--accent-amber);">FIRMWARE CODE &amp; SCRATCHPAD</text>
                     </g>
 
-                    <!-- Custom Logic/Timer -->
-                    <g class="svg-node" data-sim-node="1,3" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 1)">
-                      <rect class="svg-node-box" x="285" y="164" width="250" height="58" rx="10"></rect>
-                      <text class="svg-node-title" x="410" y="190" text-anchor="middle">Custom Logic / Timer</text>
-                      <text class="svg-node-sub" x="410" y="210" text-anchor="middle">ADC / DAC &amp; Real-Time Interface</text>
+                    <!-- Custom Logic / Timer -->
+                    <g class="svg-hw-group cyan-node" data-node-step="1,3" data-click-step="1">
+                      <rect class="svg-hw-box" x="235" y="165" width="290" height="60" rx="10" />
+                      <text class="svg-label-en" x="380" y="190">Custom Logic / Timer (ADC &amp; DAC)</text>
+                      <text class="svg-label-ar" x="380" y="212">تحويل الإشارات لأرقام وضبط التوقيت اللحظي</text>
                     </g>
 
-                    <!-- Analog Data Capture (حساسات حرارة وضغط) -->
-                    <g class="svg-node" data-sim-node="0,1" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 0)">
-                      <rect class="svg-node-box" x="65" y="268" width="255" height="68" rx="10"></rect>
-                      <text class="svg-node-title" x="192" y="294" text-anchor="middle" style="fill: var(--accent-emerald);">Analog Data Capture</text>
-                      <text class="svg-node-sub" x="192" y="315" text-anchor="middle">(حساسات حرارة وضغط وسرعة عجل)</text>
+                    <!-- Analog Data Capture (Sensors) -->
+                    <g class="svg-hw-group emerald-node active-node" data-node-step="0,1" data-click-step="0">
+                      <rect class="svg-hw-box" x="50" y="278" width="275" height="72" rx="10" />
+                      <text class="svg-label-en" x="187" y="303">Analog Data Capture (Sensors)</text>
+                      <text class="svg-label-ar" x="187" y="325">حساسات حرارة الماتور وضغط الزيت وسرعة العجل</text>
+                      <text class="svg-label-mono" x="187" y="342" style="fill: var(--accent-emerald);">[ANALOG IN]</text>
                     </g>
 
-                    <!-- Actuators & Switches (مواتير، صمامات هيدروليك) -->
-                    <g class="svg-node" data-sim-node="3" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 3)">
-                      <rect class="svg-node-box" x="500" y="268" width="255" height="68" rx="10"></rect>
-                      <text class="svg-node-title" x="627" y="294" text-anchor="middle" style="fill: var(--accent-amber);">Actuators &amp; Switches</text>
-                      <text class="svg-node-sub" x="627" y="315" text-anchor="middle">(مواتير، صمامات هيدروليك وفرامل ABS)</text>
-                    </g>
-
-                    <!-- Internal Bus Lines -->
-                    <path class="svg-wire" data-sim-wire="2" d="M 330 91 L 490 91"></path>
-                    <path class="svg-wire" data-sim-wire="1,2" d="M 212 128 L 212 146 L 410 146 L 410 164"></path>
-                    <path class="svg-wire" data-sim-wire="2" d="M 607 128 L 607 146 L 410 146"></path>
-                    <text x="410" y="82" text-anchor="middle" class="svg-node-sub" style="fill: var(--accent-cyan); font-weight: 800;">&lt;=== Internal Bus ===&gt;</text>
-
-                    <!-- External I/O Lines: [Analog In] & [Control Out] -->
-                    <path class="svg-wire" data-sim-wire="0,1" d="M 192 268 L 192 248 L 365 248 L 365 222"></path>
-                    <path class="svg-wire" data-sim-wire="3" d="M 455 222 L 455 248 L 627 248 L 627 268"></path>
-
-                    <!-- Animated SignalPulses -->
-                    <path class="svg-signal-path" data-sim-signal="0" d="M 192 268 L 192 248 L 365 248 L 365 222" style="color: var(--accent-emerald);" marker-end="url(#arr-emb)"></path>
-                    <path class="svg-signal-path" data-sim-signal="1" d="M 365 164 L 365 146 L 212 146 L 212 128" style="color: var(--accent-cyan);" marker-end="url(#arr-emb)"></path>
-                    <path class="svg-signal-path" data-sim-signal="2" d="M 490 91 L 330 91" style="color: var(--accent-amber);" marker-end="url(#arr-emb)"></path>
-                    <path class="svg-signal-path" data-sim-signal="3" d="M 212 128 L 212 146 L 455 146 L 455 248 L 627 248 L 627 268" style="color: var(--accent-amber);" marker-end="url(#arr-emb)"></path>
-
-                    <!-- On-Wire Callouts -->
-                    <g class="svg-callout" data-sim-Precision="0" transform="translate(82, 238)" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 0)">
-                      <rect class="svg-callout-box" x="0" y="0" width="165" height="22" rx="6"></rect>
-                      <text class="svg-callout-text" x="82" y="15" text-anchor="middle">① [Analog In] Sensors ▲</text>
-                    </g>
-                    <g class="svg-callout" data-sim-Precision="1" transform="translate(222, 134)" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 1)">
-                      <rect class="svg-callout-box" x="0" y="0" width="145" height="22" rx="6"></rect>
-                      <text class="svg-callout-text" x="72" y="15" text-anchor="middle">② ADC Digital In ▲</text>
-                    </g>
-                    <g class="svg-callout" data-sim-Precision="2" transform="translate(342, 97)" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 2)">
-                      <rect class="svg-callout-box" x="0" y="0" width="136" height="22" rx="6"></rect>
-                      <text class="svg-callout-text" x="68" y="15" text-anchor="middle">③ ROM Code Check</text>
-                    </g>
-                    <g class="svg-callout" data-sim-Precision="3" transform="translate(555, 238)" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 3)">
-                      <rect class="svg-callout-box" x="0" y="0" width="175" height="22" rx="6"></rect>
-                      <text class="svg-callout-text" x="87" y="15" text-anchor="middle">④ [Control Out] Actuators ▼</text>
+                    <!-- Actuators & Switches -->
+                    <g class="svg-hw-group amber-node" data-node-step="3" data-click-step="3">
+                      <rect class="svg-hw-box" x="435" y="278" width="275" height="72" rx="10" />
+                      <text class="svg-label-en" x="572" y="303">Actuators &amp; Switches</text>
+                      <text class="svg-label-ar" x="572" y="325">مواتير وصمامات هيدروليك وفرامل ABS لحظية</text>
+                      <text class="svg-label-mono" x="572" y="342" style="fill: var(--accent-amber);">[CONTROL OUT — REAL-TIME]</text>
                     </g>
                   </svg>
-                </div>
-
-                <div class="sim-status-ticker">
-                  <div class="sim-step-num" data-sim-num>01</div>
-                  <div class="sim-step-text" data-sim-text>اضغط على الخطوات لفهم دورة عمل النظام المدمج من الحساسات إلى المشغلات في الوقت الحقيقي.</div>
                 </div>
               </div>
 
@@ -3138,111 +3141,108 @@ window.COURSE_DATA = {
               <div class="sim-card" data-sim="sim-cloud-infra">
                 <div class="sim-top-bar">
                   <div class="sim-title-group">
-                    <span class="sim-fig-badge">SLIDES 54–56 // CLOUD INFRASTRUCTURE DIAGRAM</span>
-                    <h3 class="sim-title">المخطط المعماري للحوسبة السحابية (Cloud Infrastructure Diagram)</h3>
+                    <span class="sim-live-dot"></span>
+                    <span class="sim-badge-title">SLIDES 54–56 // CLOUD COMPUTING INFRASTRUCTURE DIAGRAM</span>
                   </div>
                   <div class="sim-controls">
-                    <button type="button" class="sim-play-btn" data-sim-play>▶ تشغيل الخطوات بالتتابع</button>
-                    <button type="button" class="sim-step-btn active" data-step="0">1. أجهزة العملاء (Clients)</button>
-                    <button type="button" class="sim-step-btn" data-step="1">2. شبكات السحابة (Cloud Networking)</button>
-                    <button type="button" class="sim-step-btn" data-step="2">3. مجمع الموارد المشترك (Shared Resource Pool)</button>
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. أجهزة العملاء (Clients)</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">2. شبكات السحابة (Cloud Networking)</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">3. مجمع الموارد المشترك (Resource Pool)</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل تلقائي</button>
                   </div>
                 </div>
 
                 <div class="sim-svg-stage">
-                  <svg class="sim-svg" viewBox="0 0 820 350" role="img" aria-label="Cloud Infrastructure Architecture Diagram">
-                    <defs>
-                      <marker id="arr-cld" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                        <path d="M 0 1 L 10 5 L 0 9 z" fill="currentColor"></path>
-                      </marker>
-                    </defs>
+                  <svg viewBox="0 0 760 365" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cloud Infrastructure Architecture Diagram">
+                    <!-- Base Wires -->
+                    <path class="wire-base" d="M 150 82 L 150 105 L 610 105 L 610 82" />
+                    <path class="wire-base" d="M 380 82 L 380 128" />
+                    <path class="wire-base" d="M 380 198 L 380 236" />
 
-                    <g class="svg-grid-lines">
-                      <line x1="0" y1="70" x2="820" y2="70"></line>
-                      <line x1="0" y1="140" x2="820" y2="140"></line>
-                      <line x1="0" y1="210" x2="820" y2="210"></line>
-                      <line x1="0" y1="280" x2="820" y2="280"></line>
-                      <line x1="205" y1="0" x2="205" y2="350"></line>
-                      <line x1="410" y1="0" x2="410" y2="350"></line>
-                      <line x1="615" y1="0" x2="615" y2="350"></line>
+                    <!-- Animated Flow Wires -->
+                    <path class="wire-flow cyan active-flow" data-wire-step="0" d="M 150 82 L 150 105 L 380 105 L 380 128" />
+                    <path class="wire-flow cyan active-flow" data-wire-step="0" d="M 610 82 L 610 105 L 380 105 L 380 128" />
+                    <path class="wire-flow amber" data-wire-step="1" d="M 380 105 L 380 236" />
+                    <path class="wire-flow emerald" data-wire-step="2" d="M 380 198 L 380 236" />
+
+                    <!-- Moving Data Packets -->
+                    <circle class="data-packet-dot moving" data-packet-step="0" r="6" fill="#06b6d4">
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 150 82 L 150 105 L 380 105 L 380 128" />
+                    </circle>
+                    <circle class="data-packet-dot moving" data-packet-step="0" r="6" fill="#06b6d4">
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 610 82 L 610 105 L 380 105 L 380 128" />
+                    </circle>
+                    <circle class="data-packet-dot" data-packet-step="1" r="7" fill="#f59e0b">
+                      <animateMotion dur="1.0s" repeatCount="indefinite" path="M 380 105 L 380 236" />
+                    </circle>
+                    <circle class="data-packet-dot" data-packet-step="2" r="7" fill="#10b981">
+                      <animateMotion dur="0.9s" repeatCount="indefinite" path="M 380 198 L 380 236" />
+                    </circle>
+
+                    <!-- On-Wire Callout Pills -->
+                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
+                      <rect class="svg-wire-pill" x="175" y="94" width="190" height="22" />
+                      <text class="svg-wire-text" x="270" y="109">① طلب موارد عند الطلب (On-Demand) ▼</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
+                      <rect class="svg-wire-pill" x="550" y="152" width="185" height="22" />
+                      <text class="svg-wire-text" x="642" y="167">② ربط لحظي Low-Latency ⚡</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
+                      <rect class="svg-wire-pill" x="280" y="206" width="200" height="22" />
+                      <text class="svg-wire-text" x="380" y="221">③ تخصيص فوري للموارد (Provisioning) ▼</text>
                     </g>
 
                     <!-- Top Row: 3 Clients -->
-                    <g class="svg-node" data-sim-node="0" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 0)">
-                      <rect class="svg-node-box" x="45" y="18" width="215" height="58" rx="10"></rect>
-                      <text class="svg-node-title" x="152" y="44" text-anchor="middle">Smartphone Client</text>
-                      <text class="svg-node-sub" x="152" y="64" text-anchor="middle">ARM Mobile Subscriber</text>
+                    <g class="svg-hw-group cyan-node active-node" data-node-step="0" data-click-step="0">
+                      <rect class="svg-hw-box" x="45" y="18" width="210" height="64" rx="10" />
+                      <text class="svg-label-en" x="150" y="44">Smartphone Client</text>
+                      <text class="svg-label-ar" x="150" y="66">هاتف ذكي (معالج ARM)</text>
                     </g>
 
-                    <g class="svg-node" data-sim-node="0" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 0)">
-                      <rect class="svg-node-box" x="302" y="18" width="215" height="58" rx="10"></rect>
-                      <text class="svg-node-title" x="410" y="44" text-anchor="middle">Laptop Client</text>
-                      <text class="svg-node-sub" x="410" y="64" text-anchor="middle">x86 PC Subscriber</text>
+                    <g class="svg-hw-group cyan-node active-node" data-node-step="0" data-click-step="0">
+                      <rect class="svg-hw-box" x="275" y="18" width="210" height="64" rx="10" />
+                      <text class="svg-label-en" x="380" y="44">Laptop Client</text>
+                      <text class="svg-label-ar" x="380" y="66">حاسوب محمول (معالج x86)</text>
                     </g>
 
-                    <g class="svg-node" data-sim-node="0" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 0)">
-                      <rect class="svg-node-box" x="560" y="18" width="215" height="58" rx="10"></rect>
-                      <text class="svg-node-title" x="667" y="44" text-anchor="middle">IoT Sensor Client</text>
-                      <text class="svg-node-sub" x="667" y="64" text-anchor="middle">Embedded Smart Device</text>
+                    <g class="svg-hw-group cyan-node active-node" data-node-step="0" data-click-step="0">
+                      <rect class="svg-hw-box" x="505" y="18" width="210" height="64" rx="10" />
+                      <text class="svg-label-en" x="610" y="44">IoT Sensor Client</text>
+                      <text class="svg-label-ar" x="610" y="66">جهاز ذكي مدمج (Embedded IoT)</text>
                     </g>
 
                     <!-- Middle Row: CLOUD NETWORKING -->
-                    <g class="svg-node" data-sim-node="1" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 1)">
-                      <rect class="svg-node-box" x="175" y="124" width="470" height="66" rx="12"></rect>
-                      <text class="svg-node-title" x="410" y="151" text-anchor="middle" style="fill: var(--accent-cyan);">CLOUD NETWORKING</text>
-                      <text class="svg-node-sub" x="410" y="173" text-anchor="middle">(High-Performance, Low-Latency Network)</text>
+                    <g class="svg-hw-group amber-node" data-node-step="1" data-click-step="1">
+                      <rect class="svg-hw-box" x="155" y="128" width="450" height="70" rx="12" />
+                      <text class="svg-label-en" x="380" y="155">CLOUD NETWORKING</text>
+                      <text class="svg-label-ar" x="380" y="177">شبكات سحابية فائقة السرعة والاعتمادية وبدون تأخير</text>
+                      <text class="svg-label-mono" x="380" y="192" style="fill: var(--accent-amber);">HIGH-PERFORMANCE, LOW-LATENCY INFRASTRUCTURE</text>
                     </g>
 
                     <!-- Bottom Row: SHARED CLOUD RESOURCE POOL -->
-                    <g class="svg-node" data-sim-node="2" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 2)">
-                      <rect class="svg-node-box" x="45" y="232" width="730" height="102" rx="14"></rect>
-                      <text class="svg-node-title" x="410" y="257" text-anchor="middle" style="fill: var(--accent-emerald);">SHARED CLOUD RESOURCE POOL</text>
+                    <g class="svg-hw-group emerald-node" data-node-step="2" data-click-step="2">
+                      <rect class="svg-hw-box" x="45" y="236" width="670" height="114" rx="14" />
+                      <text class="svg-label-en" x="380" y="261">SHARED CLOUD RESOURCE POOL (مجمع الموارد السحابية المشترك)</text>
 
                       <!-- Virtual Servers -->
-                      <rect x="68" y="270" width="215" height="50" rx="8" fill="rgba(14,116,144,0.08)" stroke="var(--accent-cyan)" stroke-width="1.5"></rect>
-                      <text class="svg-node-sub" x="175" y="291" text-anchor="middle" style="fill: var(--accent-cyan); font-weight: 800;">[Virtual Servers]</text>
-                      <text class="svg-node-sub" x="175" y="310" text-anchor="middle">(Xeon &amp; ARM Servers)</text>
+                      <rect x="65" y="274" width="200" height="62" rx="8" fill="var(--bg-elevated)" stroke="var(--accent-cyan)" stroke-width="1.8" />
+                      <text class="svg-label-en" x="165" y="297" style="font-size: 12px; fill: var(--accent-cyan);">Virtual Servers</text>
+                      <text class="svg-label-ar" x="165" y="318" style="font-size: 11px;">سيرفرات Xeon &amp; ARM</text>
 
                       <!-- Massive Storage -->
-                      <rect x="302" y="270" width="215" height="50" rx="8" fill="rgba(180,83,9,0.08)" stroke="var(--accent-amber)" stroke-width="1.5"></rect>
-                      <text class="svg-node-sub" x="410" y="291" text-anchor="middle" style="fill: var(--accent-amber); font-weight: 800;">[Massive Storage]</text>
-                      <text class="svg-node-sub" x="410" y="310" text-anchor="middle">(Petabytes of Disks)</text>
+                      <rect x="280" y="274" width="200" height="62" rx="8" fill="var(--bg-elevated)" stroke="var(--accent-amber)" stroke-width="1.8" />
+                      <text class="svg-label-en" x="380" y="297" style="font-size: 12px; fill: var(--accent-amber);">Massive Storage</text>
+                      <text class="svg-label-ar" x="380" y="318" style="font-size: 11px;">سعات تخزين Petabytes</text>
 
                       <!-- Database Engines -->
-                      <rect x="537" y="270" width="215" height="50" rx="8" fill="rgba(4,120,87,0.08)" stroke="var(--accent-emerald)" stroke-width="1.5"></rect>
-                      <text class="svg-node-sub" x="644" y="291" text-anchor="middle" style="fill: var(--accent-emerald); font-weight: 800;">[Database Engines]</text>
-                      <text class="svg-node-sub" x="644" y="310" text-anchor="middle">(Big Data Processing)</text>
-                    </g>
-
-                    <!-- Wires -->
-                    <path class="svg-wire" data-sim-wire="0,1" d="M 152 76 L 152 100 L 667 100 L 667 76"></path>
-                    <path class="svg-wire" data-sim-wire="0,1" d="M 410 76 L 410 124"></path>
-                    <path class="svg-wire" data-sim-wire="1,2" d="M 410 190 L 410 232"></path>
-
-                    <!-- Animated Signal Paths -->
-                    <path class="svg-signal-path" data-sim-signal="0" d="M 152 76 L 152 100 L 410 100 L 410 124" style="color: var(--accent-cyan);" marker-end="url(#arr-cld)"></path>
-                    <path class="svg-signal-path" data-sim-signal="1" d="M 410 124 L 410 190" style="color: var(--accent-amber);" marker-end="url(#arr-cld)"></path>
-                    <path class="svg-signal-path" data-sim-signal="2" d="M 410 190 L 410 232" style="color: var(--accent-emerald);" marker-end="url(#arr-cld)"></path>
-
-                    <!-- Callout Badges -->
-                    <g class="svg-callout" data-sim-Precision="0" transform="translate(185, 89)" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 0)">
-                      <rect class="svg-callout-box" x="0" y="0" width="160" height="22" rx="6"></rect>
-                      <text class="svg-callout-text" x="80" y="15" text-anchor="middle">① On-Demand Request ▼</text>
-                    </g>
-                    <g class="svg-callout" data-sim-Precision="1" transform="translate(655, 146)" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 1)">
-                      <rect class="svg-callout-box" x="0" y="0" width="145" height="22" rx="6"></rect>
-                      <text class="svg-callout-text" x="72" y="15" text-anchor="middle">② Low-Latency Link</text>
-                    </g>
-                    <g class="svg-callout" data-sim-Precision="2" transform="translate(425, 200)" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 2)">
-                      <rect class="svg-callout-box" x="0" y="0" width="185" height="22" rx="6"></rect>
-                      <text class="svg-callout-text" x="92" y="15" text-anchor="middle">③ Rapid Provisioning ▼</text>
+                      <rect x="495" y="274" width="200" height="62" rx="8" fill="var(--bg-elevated)" stroke="var(--accent-emerald)" stroke-width="1.8" />
+                      <text class="svg-label-en" x="595" y="297" style="font-size: 12px; fill: var(--accent-emerald);">Database Engines</text>
+                      <text class="svg-label-ar" x="595" y="318" style="font-size: 11px;">قواعد بيانات ومعالجة ضخمة</text>
                     </g>
                   </svg>
-                </div>
-
-                <div class="sim-status-ticker">
-                  <div class="sim-step-num" data-sim-num>01</div>
-                  <div class="sim-step-text" data-sim-text>اضغط على خطوات المخطط لتتبع اتصال أجهزة العملاء بالسحابة عبر شبكات Cloud Networking.</div>
                 </div>
               </div>
 
