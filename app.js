@@ -772,10 +772,75 @@
   }
 
   /* --------------------------------------------------------------------------
+     INTERACTIVE TRUE / FALSE DRILLS ENHANCER (PARTS 1 - 6)
+     -------------------------------------------------------------------------- */
+  function initInteractiveTFDrills() {
+    const bodyEl = document.getElementById("canvasExplanationBody");
+    if (!bodyEl) return;
+
+    const tfCards = bodyEl.querySelectorAll(".tf-card");
+    tfCards.forEach((card) => {
+      if (card.getAttribute("data-tf-ready") === "1") return;
+      card.setAttribute("data-tf-ready", "1");
+
+      const answerRow = card.querySelector(".tf-answer-row");
+      if (!answerRow) return;
+
+      const isTrueCorrect = !!answerRow.querySelector(".tf-badge.true");
+      answerRow.classList.add("tf-hidden");
+
+      const controls = document.createElement("div");
+      controls.className = "tf-interactive-controls";
+      controls.innerHTML = `
+        <button type="button" class="tf-choice-btn" data-tf-pick="true">✔ True (صح)</button>
+        <button type="button" class="tf-choice-btn" data-tf-pick="false">✖ False (غلط)</button>
+        <span class="tf-result-status"></span>
+      `;
+
+      card.insertBefore(controls, answerRow);
+
+      const btns = controls.querySelectorAll(".tf-choice-btn");
+      const statusEl = controls.querySelector(".tf-result-status");
+
+      btns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const pickedTrue = btn.getAttribute("data-tf-pick") === "true";
+          const isUserRight = pickedTrue === isTrueCorrect;
+
+          btns.forEach((b) => {
+            b.classList.remove("picked-correct", "picked-wrong");
+            const bTrue = b.getAttribute("data-tf-pick") === "true";
+            if (bTrue === isTrueCorrect) {
+              b.classList.add("picked-correct");
+            } else if (b === btn && !isUserRight) {
+              b.classList.add("picked-wrong");
+            }
+          });
+
+          statusEl.className = `tf-result-status ${isUserRight ? "ok" : "err"}`;
+          statusEl.innerHTML = isUserRight
+            ? "✅ إجابة صح! الله ينور — شوف الشرح بالعامية 👇"
+            : "❌ إجابة غلط! ولا يهمك — اعرف السبب بالعامية 👇";
+
+          answerRow.classList.remove("tf-hidden");
+          answerRow.classList.add("tf-revealed");
+        });
+      });
+    });
+  }
+
+  /* --------------------------------------------------------------------------
      INTERACTIVE QUIZ RENDERER
      -------------------------------------------------------------------------- */
   function renderQuizForPart(part) {
-    const quizContainer = document.getElementById("partQuizContainer");
+    const defaultQuizContainer = document.getElementById("partQuizContainer");
+    const inlineExamMount = document.getElementById("examInteractiveQuizMount");
+
+    if (defaultQuizContainer && inlineExamMount) {
+      defaultQuizContainer.innerHTML = "";
+    }
+
+    const quizContainer = inlineExamMount || defaultQuizContainer;
     if (!quizContainer) return;
 
     const quizList = part.quiz || [];
@@ -797,12 +862,24 @@
       }
     });
 
+    const pctScore = quizList.length > 0 ? Math.round((correctCount / quizList.length) * 100) : 0;
+
     const questionsHtml = quizList
       .map((q) => {
         const key = `${part.id}_${q.id}`;
         const userChoice = state.quizAnswers[key];
         const isAnswered = userChoice !== undefined;
         const isCorrect = isAnswered && userChoice === q.correctIndex;
+        const correctOptText = q.options[q.correctIndex] || "";
+
+        const sectionHeaderHtml = q.sectionTitle
+          ? `
+            <div class="quiz-section-divider">
+              <span class="quiz-section-badge">INTERACTIVE SECTION // قسم تفاعلي</span>
+              <h3 class="quiz-section-heading">${q.sectionTitle}</h3>
+            </div>
+          `
+          : "";
 
         const optionsHtml = q.options
           .map((optText, idx) => {
@@ -833,7 +910,8 @@
           .join("");
 
         return `
-          <div class="quiz-q-card">
+          ${sectionHeaderHtml}
+          <div class="quiz-q-card ${isAnswered ? (isCorrect ? "answered-ok" : "answered-err") : ""}" id="qcard_${q.id}">
             <p class="quiz-q-title">${q.question}</p>
             <div class="quiz-options-grid">
               ${optionsHtml}
@@ -841,7 +919,24 @@
             <div class="quiz-feedback ${isAnswered ? "show" : ""} ${isCorrect ? "ok" : "err"}">
               ${
                 isAnswered
-                  ? `${isCorrect ? "✅ إجابة صحيحة! " : "❌ إجابة غير صحيحة — "}${q.explanation}`
+                  ? `
+                    <div class="quiz-feedback-top">
+                      <span class="quiz-verdict-badge">
+                        ${
+                          isCorrect
+                            ? "✅ إجابة صحيحة! الله ينور عليك"
+                            : `❌ إجابة غير صحيحة — الإجابة الصح هي: <strong dir="ltr">${correctOptText}</strong>`
+                        }
+                      </span>
+                      <button type="button" class="quiz-retry-single-btn" data-quiz-retry="${q.id}">
+                        ↻ جرب السؤال تاني
+                      </button>
+                    </div>
+                    <div class="quiz-balady-exp">
+                      <span class="quiz-balady-tag">💡 الشرح بالعامية:</span>
+                      <span>${q.explanation}</span>
+                    </div>
+                  `
                   : ""
               }
             </div>
@@ -854,13 +949,20 @@
       <div class="quiz-wrapper">
         <div class="quiz-header">
           <div>
-            <span class="mono" style="font-size: 0.75rem; color: var(--accent-amber); font-weight: 700;">INTERACTIVE EXAM QUIZ // أسئلة امتحانات تفاعلية</span>
+            <span class="mono" style="font-size: 0.75rem; color: var(--accent-amber); font-weight: 700;">INTERACTIVE EXAM QUIZ // اختبر نفسك الآن (تصحيح فوري + شرح بالعامية)</span>
             <h2 style="font-family: var(--font-display-ar); font-size: 1.4rem; font-weight: 900;">
               🎯 كويز تفاعلي على ${part.title}
             </h2>
           </div>
-          <div class="quiz-score-pill">
-            Score: ${correctCount} / ${quizList.length} (${answeredCount} Answered)
+          <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+            <div class="quiz-score-pill">
+              النتيجة: ${correctCount} / ${quizList.length} (${pctScore}%) • المجاب: ${answeredCount}
+            </div>
+            ${
+              answeredCount > 0
+                ? `<button type="button" class="tool-pill-btn" data-reset-quiz-all="1">↻ إعادة الكويز</button>`
+                : ""
+            }
           </div>
         </div>
 
@@ -869,8 +971,8 @@
         </div>
 
         <div class="quiz-footer-actions">
-          <button type="button" class="tool-pill-btn" id="resetQuizBtn">
-            ↻ إعادة الكويز من جديد
+          <button type="button" class="tool-pill-btn" data-reset-quiz-all="1">
+            ↻ إعادة الكويز بالكامل من البداية
           </button>
         </div>
       </div>
@@ -885,15 +987,22 @@
       });
     });
 
-    const resetBtn = document.getElementById("resetQuizBtn");
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
+    quizContainer.querySelectorAll("[data-quiz-retry]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const qId = btn.getAttribute("data-quiz-retry");
+        delete state.quizAnswers[`${part.id}_${qId}`];
+        renderQuizForPart(part);
+      });
+    });
+
+    quizContainer.querySelectorAll("[data-reset-quiz-all]").forEach((btn) => {
+      btn.addEventListener("click", () => {
         quizList.forEach((q) => {
           delete state.quizAnswers[`${part.id}_${q.id}`];
         });
         renderQuizForPart(part);
       });
-    }
+    });
   }
 
   /* --------------------------------------------------------------------------
@@ -981,6 +1090,7 @@
       const bodyEl = document.getElementById("canvasExplanationBody");
       bodyEl.innerHTML = `<div class="explanation-body">${activePart.contentHtml}</div>`;
       initSimulators();
+      initInteractiveTFDrills();
       renderQuizForPart(activePart);
 
       const prevBtn = document.getElementById("prevPartBtn");
