@@ -7597,6 +7597,882 @@ Status:(Runs) (First)  (Waited)  (Waited)  (Finished!)
                               "explanation": "أي عطل عتادي مفاجئ وخارج عن البرمجة زي انقطاع الكهرباء الوشيك أو عطل في شريحة الرامات بيتصنف تحت: Hardware Failure Interrupt."
                     }
           ]
+        },
+
+        /* ====================================================================
+           MODULE 4: Interconnection Structures, System Bus, 10 Control Lines & Point-to-Point
+           ==================================================================== */
+        {
+          id: "ch3-p4",
+          code: "MODULE 4",
+          slides: "Slides 34 to 58",
+          title: "شبكة الشرايين للحاسوب: كيف تتدفق البيانات بين المعالج والذاكرة والطرفيات؟ (Interconnection & System Bus)",
+          hasContent: true,
+          contentHtml: `
+<!-- 0. HERO SECTION -->
+            <div class="mod-hero-box">
+              <div class="mod-hero-meta-row">
+                <span class="mod-meta-badge">Route: /module-4-interconnection</span>
+                <span class="mod-meta-badge amber">Topic Range: William Stallings 10th Ed — Chapter 3 (Slides 34 to 58)</span>
+                <span class="mod-meta-badge emerald">Sheet Questions Covered: 3.11</span>
+              </div>
+              <h1 class="mod-hero-h1">شبكة الشرايين للحاسوب: كيف تتدفق البيانات بين المعالج والذاكرة والطرفيات؟</h1>
+              <p class="mod-hero-lead">
+                "المعالج لا يعيش بمفرده في جزيرة معزولة؛ هو بحاجة لتبادل البيانات والأوامر والعناوين مع الذاكرة والأجهزة الطرفية بمعدل مليارات البتات في الثانية. شبكة المسارات هذه تسمى هياكل الربط (Interconnection Structures). في هذا الموديول سنشرح ناقل النظام (System Bus)، تفاصيل خطوط التحكم العشرة الشهيرة في الامتحانات، ولماذا انتقلت الحواسيب الحديثة من النواقل المشتركة القديمة إلى تقنية التوصيل المباشر Point-to-Point مثل Intel QPI و PCIe."
+              </p>
+              <div class="mod-badges-row">
+                <span class="mod-pill-chip">Interconnection Data Transfers</span>
+                <span class="mod-pill-chip">Data, Address &amp; Control Buses</span>
+                <span class="mod-pill-chip">10 Typical Control Lines (Q 3.11)</span>
+                <span class="mod-pill-chip">Bus Bottlenecks (Propagation Delay)</span>
+                <span class="mod-pill-chip">Point-to-Point Interconnect (QPI &amp; PCIe)</span>
+              </div>
+            </div>
+
+            <!-- 01. الفكرة الأساسية من الصفر: معضلة التواصل ولماذا نحتاج نواقل؟ -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">01</span>
+                <h2 class="exp-sec-title">الفكرة الأساسية من الصفر: معضلة التواصل ولماذا نحتاج نواقل مشتركة؟</h2>
+              </div>
+
+              <div class="balady-box">
+                <div class="balady-header">
+                  <span class="balady-badge">💡 قصة شبكة المواصلات داخل اللوحة الأم (The Core Hook)</span>
+                  <span class="mono" style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700;">HIGHWAY PHILOSOPHY</span>
+                </div>
+                <p>
+                  تخيل مدينة ضخمة فيها 3 منشآت حيوية: <strong>القصر الرئاسي (المعالج CPU)</strong>، و<strong>المخازن المركزية (الذاكرة RAM)</strong>، و<strong>الموانئ والمطارات (أجهزة الـ I/O)</strong>. لو حبينا نوصل سلك مباشر وخاص بين كل باب وباب، اللوحة الأم هتبقى كتلة أسلاك معقدة ومستحيلة التصنيع!
+                </p>
+                <div class="two-layers-split" style="margin-top: 1rem;">
+                  <div class="layer-pill-card">
+                    <span class="layer-tag" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3);">THE CLASSIC HIGHWAY // SHARED SYSTEM BUS</span>
+                    <h3 style="font-size: 1.15rem; margin-top: 0.5rem; color: var(--accent-cyan);">الحل الكلاسيكي: الطريق السريع المشترك (System Bus)</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); margin-top: 0.5rem;">
+                      عملنا طريق دائري سريع مشترك (Shared Bus) مكون من مئات الأسلاك النحاسية الدقيقة المحفورة على اللوحة الأم. كل الأجهزة بتركب على نفس الطريق وتشترك فيه؛ المعالج يرمي العنوان، والرام ترمي الداتا، وإشارات التحكم تظبط إشارات المرور!
+                    </p>
+                  </div>
+
+                  <div class="layer-pill-card">
+                    <span class="layer-tag" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.3);">MODERN HIGHWAYS // POINT-TO-POINT LINKS</span>
+                    <h3 style="font-size: 1.15rem; margin-top: 0.5rem; color: var(--accent-amber);">الحل الحديث: الكباري المعلقة المباشرة (Point-to-Point)</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); margin-top: 0.5rem;">
+                      لما سرعة الأجهزة بقت خرافية، الطريق المشترك اتخنق وظهر زحام وتأخير فيزيائي قاتل (Bottleneck). الحل في الحواسيب الحديثة كان إلغاء الناقل المشترك وبناء مسارات سريعة ومباشرة مخصصة بين كل قطعتين (زي PCIe و Intel QPI)!
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 02. COMPONENT 1: بطاقة أنواع تدفق البيانات (سلايد 35) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">02</span>
+                <h2 class="exp-sec-title">COMPONENT 1: بطاقة أنواع تدفق البيانات (Data Transfer Types — سلايد 35)</h2>
+              </div>
+
+              <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <!-- Type 1: Memory to Processor -->
+                <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
+                  <span class="attr-type mono" style="color: var(--accent-cyan);">TRANSFER 01</span>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">Memory to Processor</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>Academic Definition:</strong> Processor reads an instruction or a unit of data from memory.
+                  </p>
+                  <p style="font-size: 0.88rem; color: var(--accent-cyan); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>بالعامية:</strong> عملية قراءة (Read / Load)؛ المعالج يمد إيده في الرام يسحب كود تعليمة أو رقم عشان يحسب عليه.
+                  </p>
+                </div>
+
+                <!-- Type 2: Processor to Memory -->
+                <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
+                  <span class="attr-type mono" style="color: var(--accent-emerald);">TRANSFER 02</span>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">Processor to Memory</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>Academic Definition:</strong> Processor writes a unit of data to memory.
+                  </p>
+                  <p style="font-size: 0.88rem; color: var(--accent-emerald); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>بالعامية:</strong> عملية كتابة (Write / Store)؛ المعالج يرسل ناتج عملية حسابية من مسجل الـ AC لتخزينه في الرام.
+                  </p>
+                </div>
+
+                <!-- Type 3: I/O to Processor -->
+                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
+                  <span class="attr-type mono" style="color: var(--accent-amber);">TRANSFER 03</span>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">I/O to Processor</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>Academic Definition:</strong> Processor reads data from an I/O device via an I/O module.
+                  </p>
+                  <p style="font-size: 0.88rem; color: var(--accent-amber); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>بالعامية:</strong> قراءة مدخلات؛ المعالج يستقبل ضغطة زرار على الكيبورد، أو حركة ماوس، أو باكت واصلة من كابل الشبكة.
+                  </p>
+                </div>
+
+                <!-- Type 4: Processor to I/O -->
+                <div class="attr-card" style="border-top: 3px solid #ec4899;">
+                  <span class="attr-type mono" style="color: #ec4899;">TRANSFER 04</span>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">Processor to I/O</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>Academic Definition:</strong> Processor sends data to the I/O device.
+                  </p>
+                  <p style="font-size: 0.88rem; color: #ec4899; margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>بالعامية:</strong> إرسال مخرجات وأوامر؛ المعالج يرسل بيكسلات صورة لكارت الشاشة أو نص ورقة للطابعة.
+                  </p>
+                </div>
+
+                <!-- Type 5: I/O to or from Memory -->
+                <div class="attr-card" style="border-top: 3px solid #a855f7; grid-column: 1 / -1;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: #a855f7;">TRANSFER 05 // DMA ARCHITECTURE</span>
+                    <span class="badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px;">Direct Memory Access</span>
+                  </div>
+                  <h4 style="font-size: 1.15rem; margin-top: 0.4rem; color: #fff;">I/O to or from Memory (DMA)</h4>
+                  <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>Academic Definition:</strong> An I/O module is allowed to exchange data directly with memory without going through the processor, using Direct Memory Access (DMA).
+                  </p>
+                  <p style="font-size: 0.9rem; color: #c084fc; margin-top: 0.35rem; line-height: 1.6;">
+                    <strong>بالعامية:</strong> النقل الصاروخي المباشر؛ لما الهارد يقرأ ملف لعبة حجمه 20 جيجا، لو المعالج نقلهم بايت بايت هيتشل! كارت الـ DMA بياخد رخصة وينقل الداتا مباشرة من الهارد للرام دون إشغال المعالج.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 03. COMPONENT 2: المخطط المعماري لناقل النظام وتفكيك النواقل الثلاثة (سلايد 37) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">03</span>
+                <h2 class="exp-sec-title">COMPONENT 2: المخطط المعماري لناقل النظام وتفكيك النواقل الثلاثة (System Bus — سلايد 37)</h2>
+              </div>
+
+              <!-- Interactive ASCII Architecture -->
+              <div class="terminal-card">
+                <div class="terminal-bar">
+                  <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                  </div>
+                  <span class="terminal-title">FIGURE 3.16 // SYSTEM BUS INTERCONNECTION ARCHITECTURE</span>
+                  <span class="mono" style="font-size: 0.72rem; color: var(--accent-cyan);">STALLINGS 10th ED</span>
+                </div>
+                <div class="terminal-body">
+                  <pre class="ascii-diagram">
+  +---------------------------------------------------------------------------------+
+  |                                   SYSTEM BUS                                    |
+  +=================================================================================+
+  | [Control Bus]   =============================================================== |
+  | [Address Bus]   =============================================================== |
+  | [Data Bus]      =============================================================== |
+  +========^=============================^=============================^============+
+           |                             |                             |
+           v                             v                             v
+  +-----------------+           +-----------------+           +-----------------+
+  |                 |           |                 |           |                 |
+  |       CPU       |           |   MAIN MEMORY   |           |   I/O MODULE    |
+  |                 |           |                 |           |                 |
+  +-----------------+           +-----------------+           +-----------------+
+                  </pre>
+                </div>
+              </div>
+
+              <!-- Interactive Simulator: sim-ch3-bus-transfers -->
+              <div class="sim-wrapper-box" data-sim-target="sim-ch3-bus-transfers" style="margin-top: 1.5rem;">
+                <div class="sim-header-row">
+                  <div class="sim-title-group">
+                    <span class="mono sim-badge">SIMULATOR // SYSTEM BUS DATAFLOW</span>
+                    <h3 class="sim-title">محاكي تدفق البيانات عبر نواقل النظام (Bus Transfers Engine)</h3>
+                  </div>
+                  <div class="sim-controls-toolbar">
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. Mem Read</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">2. Mem Write</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">3. I/O Read</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="3">4. I/O Write</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="4">5. DMA Transfer</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>تشغيل تلقائي ⏵</button>
+                  </div>
+                </div>
+
+                <div class="sim-display-screen">
+                  <div class="sim-step-details-card">
+                    <div class="sim-step-header">
+                      <span class="sim-active-num mono">01</span>
+                      <h4 class="sim-active-title">النمط 1: قراءة من الذاكرة للمعالج (Memory ➔ Processor)</h4>
+                    </div>
+                    <div class="sim-active-route mono">CPU ──[Address Bus: Addr X]──► RAM | CPU ──[Control Bus: Memory Read]──► RAM | RAM ──[Data Bus: Word Data]──► CPU</div>
+                    <div class="sim-active-payload">📖 Memory Read: المعالج يضع عنوان الذاكرة ويفعل إشارة Memory Read فتضع الرام البيانات على ناقل البيانات</div>
+                    <p class="sim-active-desc">المعالج يحدد مكان البيانات المطلوبة بإرسال عنوانها على ناقل العناوين، ويطلق نبضة كهربائية على خط (Memory Read) التابع لناقل التحكم. ترد الذاكرة بقراءة محتوى ذلك العنوان ووضعه على ناقل البيانات، فيستلمه المعالج ويدخله في مسجل MBR أو IR.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- The 3 System Bus Types Detailed Table -->
+              <div style="margin-top: 1.5rem;">
+                <h3 style="font-size: 1.15rem; color: #fff; font-weight: 800; margin-bottom: 0.75rem;">
+                  📊 تفكيك النواقل الثلاثة للامتحان (Bus Types Comparison Table):
+                </h3>
+                <div style="overflow-x: auto;">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: right; background: var(--bg-surface-1); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                    <thead>
+                      <tr style="background: rgba(255,255,255,0.05); border-bottom: 2px solid var(--border-color);">
+                        <th style="padding: 0.85rem; color: #fff;">نوع الناقل</th>
+                        <th style="padding: 0.85rem; color: var(--accent-cyan); font-family: var(--font-mono);">Bus Name</th>
+                        <th style="padding: 0.85rem; color: var(--accent-amber);">اتجاه الحركة (Direction)</th>
+                        <th style="padding: 0.85rem; color: var(--accent-emerald);">الوظيفة الهندسية وتأثير العرض (Width Impact)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.85rem; font-weight: 700; color: #fff;">ناقل البيانات</td>
+                        <td style="padding: 0.85rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-cyan);">Data Bus</td>
+                        <td style="padding: 0.85rem; color: var(--accent-amber); font-weight: 700;">ثنائي الاتجاه (Bidirectional)</td>
+                        <td style="padding: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                          ينقل البيانات والأكواد الفعلية. <strong>عرضه (Width)</strong> يحدد كفاءة ومعدل نقل البيانات (Overall Performance)؛ ناقل بعرض 64 بت ينقل ضعف الداتا التي ينقلها ناقل بعرض 32 بت في نفس نبضة الساعة!
+                        </td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.85rem; font-weight: 700; color: #fff;">ناقل العناوين</td>
+                        <td style="padding: 0.85rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-cyan);">Address Bus</td>
+                        <td style="padding: 0.85rem; color: var(--accent-cyan); font-weight: 700;">أحادي الاتجاه (Unidirectional من CPU)</td>
+                        <td style="padding: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                          يحدد مصدر أو وجهة البيانات في الذاكرة أو منافذ الـ I/O. <strong>عرضه (Width)</strong> يحدد <strong>أقصى سعة ذاكرة قابلة للعنونة</strong> في النظام! لو عرضه N بت تكون السعة <strong>2<sup>N</sup></strong> (ناقل 32 بت يعنون 4 GB، وناقل 64 بت يعنون مساحات إكسابايت خرافية).
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 0.85rem; font-weight: 700; color: #fff;">ناقل التحكم</td>
+                        <td style="padding: 0.85rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-cyan);">Control Bus</td>
+                        <td style="padding: 0.85rem; color: var(--accent-emerald); font-weight: 700;">ثنائي / متعدد المصادر</td>
+                        <td style="padding: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                          ينقل إشارات التحكم والتوقيت والأوامر والمقاطعات وإشارات حجز الناقل (Arbitration) بين جميع وحدات النظام لمنع حدوث تصادمات كهربائية.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <!-- 04. COMPONENT 3: كروت خطوط التحكم العشرة (سؤال الشيت 3.11) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">04</span>
+                <h2 class="exp-sec-title">COMPONENT 3: كروت خطوط التحكم العشرة (The 10 Typical Control Lines — سؤال الشيت 3.11)</h2>
+              </div>
+
+              <div class="balady-box" style="margin-bottom: 1.25rem;">
+                <div class="balady-header">
+                  <span class="balady-badge">📌 سؤال الشيت الرسمي 3.11</span>
+                  <span class="mono" style="font-size: 0.8rem; color: var(--accent-amber); font-weight: 700;">SHEET 3 Q3.11 // SLIDE 40</span>
+                </div>
+                <p>
+                  ناقل التحكم بيتكون من خطوط أسلاك مخصصة، كل سلك له اسم ووظيفة كهربية محددة. أشهر 10 خطوط تحكم في الامتحان مقسمة إلى 5 فئات وظيفية:
+                </p>
+              </div>
+
+              <!-- The 10 Control Lines Grid -->
+              <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <!-- Line 1: Memory Write -->
+                <div class="attr-card" style="border-left: 4px solid var(--accent-cyan);">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: var(--accent-cyan);">LINE 01 // COMMAND</span>
+                  </div>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">Memory Write</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>Official Role:</strong> Causes data on the data bus to be written into the addressed memory location.
+                  </p>
+                  <p style="font-size: 0.88rem; color: var(--accent-cyan); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>بالعامية:</strong> إشارة تأمر الرام: <em>"خدي الداتا اللي على ناقل البيانات واحفظيها في العنوان المحدد على ناقل العناوين"</em>.
+                  </p>
+                </div>
+
+                <!-- Line 2: Memory Read -->
+                <div class="attr-card" style="border-left: 4px solid var(--accent-cyan);">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: var(--accent-cyan);">LINE 02 // COMMAND</span>
+                  </div>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">Memory Read</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>Official Role:</strong> Causes data from the addressed memory location to be placed onto the data bus.
+                  </p>
+                  <p style="font-size: 0.88rem; color: var(--accent-cyan); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>بالعامية:</strong> إشارة تأمر الرام: <em>"اقرأي القيمة الموجودة في العنوان المطلوب وارميها على ناقل البيانات للمعالج"</em>.
+                  </p>
+                </div>
+
+                <!-- Line 3: I/O Write -->
+                <div class="attr-card" style="border-left: 4px solid var(--accent-amber);">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: var(--accent-amber);">LINE 03 // COMMAND</span>
+                  </div>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">I/O Write</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>Official Role:</strong> Causes data on the data bus to be output to the addressed I/O port/peripheral.
+                  </p>
+                  <p style="font-size: 0.88rem; color: var(--accent-amber); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>بالعامية:</strong> إشارة لمنفذ الطرفيات: <em>"استلم الداتا اللي على الناقل وابعتها للجهاز الخارجي (زي الشاشة أو الطابعة)"</em>.
+                  </p>
+                </div>
+
+                <!-- Line 4: I/O Read -->
+                <div class="attr-card" style="border-left: 4px solid var(--accent-amber);">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: var(--accent-amber);">LINE 04 // COMMAND</span>
+                  </div>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">I/O Read</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>Official Role:</strong> Causes data from the addressed I/O port/peripheral to be placed onto the data bus.
+                  </p>
+                  <p style="font-size: 0.88rem; color: var(--accent-amber); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>بالعامية:</strong> إشارة لمنفذ الطرفيات: <em>"هات الداتا من الجهاز الخارجي (زي الكيبورد) وحطها على الناقل للمعالج"</em>.
+                  </p>
+                </div>
+
+                <!-- Line 5: Transfer ACK -->
+                <div class="attr-card" style="border-left: 4px solid var(--accent-emerald);">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: var(--accent-emerald);">LINE 05 // STATUS</span>
+                  </div>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">Transfer ACK (Acknowledge)</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>Official Role:</strong> Indicates that data have been accepted from or placed on the data bus successfully.
+                  </p>
+                  <p style="font-size: 0.88rem; color: var(--accent-emerald); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>بالعامية:</strong> إشعار تأكيد واستلام: <em>"تمام، استلمت الداتا بنجاح أو حطيتها على الناقل وجاهزة للقراءة"</em>.
+                  </p>
+                </div>
+
+                <!-- Line 6: Bus Request -->
+                <div class="attr-card" style="border-left: 4px solid #a855f7;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: #a855f7;">LINE 06 // ARBITRATION</span>
+                  </div>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">Bus Request</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>Official Role:</strong> Indicates that a module (e.g., secondary CPU or DMA controller) needs to gain control of the bus.
+                  </p>
+                  <p style="font-size: 0.88rem; color: #c084fc; margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>بالعامية:</strong> طلب حجز الناقل: كارت DMA بيقول للمتحكم: <em>"فضّيلي أسلاك الناقل أنا عاوز أنقل داتا لوحدي"</em>.
+                  </p>
+                </div>
+
+                <!-- Line 7: Bus Grant -->
+                <div class="attr-card" style="border-left: 4px solid #a855f7;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: #a855f7;">LINE 07 // ARBITRATION</span>
+                  </div>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">Bus Grant</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>Official Role:</strong> Indicates that the requesting module has been granted permission to control the bus.
+                  </p>
+                  <p style="font-size: 0.88rem; color: #c084fc; margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>بالعامية:</strong> موافقة على الحجز: رد المتحكم للكارت: <em>"اتفضل، الناقل ملكك دلوقتي تقدر تنقل براحتك"</em>.
+                  </p>
+                </div>
+
+                <!-- Line 8: Interrupt Request -->
+                <div class="attr-card" style="border-left: 4px solid #ec4899;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: #ec4899;">LINE 08 // INTERRUPT</span>
+                  </div>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">Interrupt Request</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>Official Role:</strong> Indicates that an interrupt is pending and requires processor attention.
+                  </p>
+                  <p style="font-size: 0.88rem; color: #ec4899; margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>بالعامية:</strong> طلب مقاطعة: سلك ينبه المعالج إن في جهاز خارجي مستني خدمة ضرورية وعاجلة.
+                  </p>
+                </div>
+
+                <!-- Line 9: Interrupt ACK -->
+                <div class="attr-card" style="border-left: 4px solid #ec4899;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: #ec4899;">LINE 09 // INTERRUPT</span>
+                  </div>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">Interrupt ACK</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>Official Role:</strong> Acknowledges that the pending interrupt has been recognized and accepted by the processor.
+                  </p>
+                  <p style="font-size: 0.88rem; color: #ec4899; margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>بالعامية:</strong> قبول المقاطعة: المعالج يبعت للجهاز: <em>"استلمت طلب المقاطعة بتاعك ورايح أشغلك الـ ISR حالا"</em>.
+                  </p>
+                </div>
+
+                <!-- Line 10: Clock -->
+                <div class="attr-card" style="border-left: 4px solid #f59e0b;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="attr-type mono" style="color: #f59e0b;">LINE 10 // TIMING</span>
+                  </div>
+                  <h4 style="font-size: 1.1rem; margin-top: 0.4rem; color: #fff;">Clock</h4>
+                  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>Official Role:</strong> Used to synchronize bus operations; one clock cycle defines the time slot for bus activities.
+                  </p>
+                  <p style="font-size: 0.88rem; color: #f59e0b; margin-top: 0.35rem; line-height: 1.5;">
+                    <strong>بالعامية:</strong> نبضات الساعة المرجعية: الخط اللي بيضبط توقيت ومزامنة كل نبضة على الناقل المتزامن (Synchronous).
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 05. COMPONENT 4: عيوب النواقل القديمة وظهور تقنية Point-to-Point (سلايدات 48 إلى 58) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">05</span>
+                <h2 class="exp-sec-title">COMPONENT 4: عيوب النواقل القديمة وظهور تقنية Point-to-Point (سلايدات 48 إلى 58)</h2>
+              </div>
+
+              <!-- The Technological Crisis Box -->
+              <div class="balady-box">
+                <div class="balady-header">
+                  <span class="balady-badge">⚠️ الأزمة التكنولوجية: لماذا مات الناقل المشترك القديم؟</span>
+                </div>
+                <p>
+                  زمان كانت كل المكونات متصلة بنفس الأسلاك المشتركة (Shared Bus). لما تردد المعالجات زاد من ميجاهرتز لـ جيجاهرتز، ظهرت مشكلتان فيزيائيتان قاتلتان:
+                </p>
+                <div class="two-layers-split" style="margin-top: 1rem;">
+                  <div class="layer-pill-card">
+                    <span class="layer-tag" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);">PROBLEM 01 // PROPAGATION DELAY</span>
+                    <h3 style="font-size: 1.1rem; margin-top: 0.5rem; color: #f87171;">تأخير الانتشار وانعكاس الإشارة (Propagation Delay)</h3>
+                    <p style="font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.5rem;">
+                      كل ما السلك يطول وتوصل عليه أجهزة أكتر، الإشارة الكهربائية بتضعف وتتعكس وتتأخر، ومتقدرش تعلي تردد الناقل عن حد معين وإلا الداتا هتتشوه تماماً!
+                    </p>
+                  </div>
+
+                  <div class="layer-pill-card">
+                    <span class="layer-tag" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);">PROBLEM 02 // BUS BOTTLENECK</span>
+                    <h3 style="font-size: 1.1rem; margin-top: 0.5rem; color: #f87171;">عنق الزجاجة التنافسي (Bus Contention Bottleneck)</h3>
+                    <p style="font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.5rem;">
+                      جهاز واحد بس هو اللي يقدر ينقل داتا في اللحظة الواحدة! لو كارت الشاشة بينقل فريمات، المعالج والرامات يقفوا مستنيين في طابور لحد ما الناقل يفضى!
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Terminal Comparison ASCII -->
+              <div class="terminal-card" style="margin-top: 1.5rem;">
+                <div class="terminal-bar">
+                  <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                  </div>
+                  <span class="terminal-title">SHARED BUS vs POINT-TO-POINT ARCHITECTURE</span>
+                  <span class="mono" style="font-size: 0.72rem; color: var(--accent-emerald);">MODERN HARDWARE EVOLUTION</span>
+                </div>
+                <div class="terminal-body">
+                  <pre class="ascii-diagram">
+[Shared Bus Architecture (OLD)]              [Point-to-Point Architecture (MODERN)]
+     +-------------------+                       +-----------+       +-----------+
+     |     CPU Core      |                       | CPU Core0 |&lt;=====&gt;| CPU Core1 |
+     +---------+---------+                       +-----+-----+  QPI  +-----+-----+
+               | Shared Bus                            ^                   ^
+   ============+=============                          | PCIe Links        |
+   |           |            |                          v                   v
++--+---+    +--+---+    +---+--+                 +-----------+       +-----------+
+| Memory|   |  GPU |    | Disk |                 | GPU (x16) |       | NVMe Disk |
++------+    +------+    +------+                 +-----------+       +-----------+
+                  </pre>
+                </div>
+              </div>
+
+              <!-- Point to Point Technologies: QPI & PCIe -->
+              <div class="two-layers-split" style="margin-top: 1.5rem;">
+                <div class="layer-pill-card">
+                  <span class="layer-tag" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3);">INTEL QPI // QUICKPATH INTERCONNECT</span>
+                  <h3 style="font-size: 1.15rem; margin-top: 0.5rem; color: var(--accent-cyan);">Intel QuickPath Interconnect (QPI)</h3>
+                  <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); margin-top: 0.5rem;">
+                    وصلات مباشرة وتسلسلية عالية السرعة تعتمد على حزم البيانات (Packetized Architecture) تربط بين أنوية المعالجات والذاكرة ومتحكمات الـ I/O بسرعة عشرات الجيجابايت في الثانية دون أي تشارك أو انتظار!
+                  </p>
+                </div>
+
+                <div class="layer-pill-card">
+                  <span class="layer-tag" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.3);">PCIE // PERIPHERAL COMPONENT INTERCONNECT EXPRESS</span>
+                  <h3 style="font-size: 1.15rem; margin-top: 0.5rem; color: var(--accent-emerald);">PCI Express (PCIe)</h3>
+                  <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); margin-top: 0.5rem;">
+                    مسارات تفاضلية ثنائية الاتجاه (Point-to-Point Lanes: x1, x4, x8, x16) تربط كروت الشاشة ووحدات الـ NVMe SSDs فائقة السرعة مباشرة بالمعالج؛ بحيث يحصل كل كارت على عرضه الترددي الكامل دون مشاركة أحد!
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 06. COMPONENT 5: كروت مصائد وتريكات الامتحانات (Exam Traps Callouts) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">06</span>
+                <h2 class="exp-sec-title">COMPONENT 5: كروت مصائد وتريكات الامتحانات (Exam Traps Callouts)</h2>
+              </div>
+
+              <div class="attr-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <!-- Trap 1 -->
+                <div class="exam-trap-box" style="margin-top: 0;">
+                  <div class="exam-trap-header">
+                    <span class="exam-trap-badge">⚠️ تريكة 1 // تأثير عرض ناقل العناوين</span>
+                  </div>
+                  <h4 style="font-size: 1rem; color: #fff; margin-top: 0.5rem;">Address Bus Width Impact</h4>
+                  <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.35rem;">
+                    <strong>السؤال الشائع:</strong> <em>"What determines the maximum addressable memory capacity of a computer system?"</em><br>
+                    <strong>الإجابة القاطعة:</strong> <strong>عرض ناقل العناوين (The width of the Address Bus)</strong>. إذا كان العرض N بت، فإن أقصى سعة ممكنة للذاكرة هي <strong>2<sup>N</sup></strong> كلمة ذاكرة!
+                  </p>
+                </div>
+
+                <!-- Trap 2 -->
+                <div class="exam-trap-box" style="margin-top: 0;">
+                  <div class="exam-trap-header">
+                    <span class="exam-trap-badge">⚠️ تريكة 2 // تأثير عرض ناقل البيانات</span>
+                  </div>
+                  <h4 style="font-size: 1rem; color: #fff; margin-top: 0.5rem;">Data Bus Width Impact</h4>
+                  <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.35rem;">
+                    <strong>السؤال الشائع:</strong> <em>"What determines overall system data transfer throughput and performance?"</em><br>
+                    <strong>الإجابة القاطعة:</strong> <strong>عرض ناقل البيانات (The width of the Data Bus)</strong>. لأنه يحدد كمية البتات التي يمكن نقلها في نبضة الساعة الواحدة (مثل 32-bit أو 64-bit).
+                  </p>
+                </div>
+
+                <!-- Trap 3 -->
+                <div class="exam-trap-box" style="margin-top: 0;">
+                  <div class="exam-trap-header">
+                    <span class="exam-trap-badge">⚠️ تريكة 3 // الفرق بين Bus Request و Interrupt Request</span>
+                  </div>
+                  <h4 style="font-size: 1rem; color: #fff; margin-top: 0.5rem;">Bus Request vs Interrupt Request</h4>
+                  <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.35rem;">
+                    - <strong>Bus Request:</strong> طلب للاستحواذ على أسلاك الناقل للقيام بنقل داتا مباشرة دون المرور بالمعالج (يستخدمه الـ DMA).<br>
+                    - <strong>Interrupt Request:</strong> طلب للمعالج بتعليق برنامجه والذهاب لتنفيذ روتين خدمة طارئ لجهاز خارجي (ISR).
+                  </p>
+                </div>
+
+                <!-- Trap 4 -->
+                <div class="exam-trap-box" style="margin-top: 0;">
+                  <div class="exam-trap-header">
+                    <span class="exam-trap-badge">⚠️ تريكة 4 // الناقل المتزامن مقابل غير المتزامن</span>
+                  </div>
+                  <h4 style="font-size: 1rem; color: #fff; margin-top: 0.5rem;">Synchronous vs Asynchronous Bus</h4>
+                  <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.35rem;">
+                    - <strong>Synchronous Bus:</strong> يعتمد على نبضات خط الساعة (Clock line)؛ كل الأحداث تتم عند حافة النبضة (سهل في التصميم لكن مقيد بأبطأ جهاز).<br>
+                    - <strong>Asynchronous Bus:</strong> يعتمد على بروتوكول المصافحة (Handshaking signals) دون ساعة مشتركة؛ مرن لكل الأجهزة المختلفة السرعة.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 07. INSTANT EXAM BUZZWORDS -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">07</span>
+                <h2 class="exp-sec-title">⚡ INSTANT EXAM BUZZWORDS (كلمات السر لحل أسئلة الـ MCQs في ثانية)</h2>
+              </div>
+
+              <div class="buzzwords-matrix">
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Determines the maximum addressable memory capacity of the computer"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag cyan">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-cyan); font-size: 1.05rem;">Width of Address Bus (2^N)</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Determines the overall system performance and data throughput"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag emerald">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-emerald); font-size: 1.05rem;">Width of Data Bus</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Control line that signals data have been accepted or placed on data bus"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag amber">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-amber); font-size: 1.05rem;">Transfer ACK (Acknowledge)</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Indicates a module needs to gain control of the bus (e.g. DMA)"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag pink">الإجابة فوراً 👈</span>
+                    <strong style="color: #ec4899; font-size: 1.05rem;">Bus Request</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Direct point-to-point packetized serial interconnect used by Intel CPUs"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag cyan">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-cyan); font-size: 1.05rem;">QPI (QuickPath Interconnect)</strong>
+                  </div>
+                </div>
+
+                <div class="buzz-card">
+                  <div class="buzz-trigger">
+                    <span class="buzz-tag">لو شفت في السؤال 👇</span>
+                    <p class="buzz-desc">"Physical limitation that caused abandonment of traditional shared buses"</p>
+                  </div>
+                  <div class="buzz-response">
+                    <span class="buzz-tag amber">الإجابة فوراً 👈</span>
+                    <strong style="color: var(--accent-amber); font-size: 1.05rem;">Propagation Delay &amp; Bottlenecks</strong>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 08. POPULAR EXAM TRUE / FALSE DRILLS -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">08</span>
+                <h2 class="exp-sec-title">POPULAR EXAM TRUE / FALSE DRILLS (أسئلة صح وغلط المشهورة — تفاعلية)</h2>
+              </div>
+
+              <div class="tf-drills-grid">
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q1:</strong> The width of the Address Bus determines the maximum memory capacity that the processor can directly address.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge true">TRUE ✅</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> صح 100%! لو ناقل العناوين عرضه 32 بت، يقدر يعنون 2<sup>32</sup> = 4 GB، ولو 64 بت يعنون مساحات ضخمة.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q2:</strong> On a shared system bus, multiple master modules can simultaneously transmit data across the data bus at the exact same clock cycle.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge false">FALSE ❌</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> غلط تماماً! في الناقل المشترك، جهاز واحد فقط يقدر يتكلم في اللحظة الواحدة، ولو اتنين اتكلموا الإشارات الكهربية تتصادم وتتشوه.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q3:</strong> Direct Memory Access (DMA) allows I/O modules to read and write directly to main memory without involving the processor in every byte.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge true">TRUE ✅</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> صح جداً! ده الهدف من الـ DMA عشان ينقل ملفات كبيرة من الهارد للرام دون إرهاق الـ CPU.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q4:</strong> The "Bus Grant" control line is sent by an I/O device to request permission to control the bus.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge false">FALSE ❌</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> غلط! الجهاز بيبعت <strong>Bus Request</strong>، بينما المتحكم المركزي هو اللي بيرد عليه بإشارة <strong>Bus Grant</strong> بالموافقة.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="tf-item-card">
+                  <div class="tf-q-text">
+                    <strong>Q5:</strong> Modern Point-to-Point architectures like PCIe replace shared broadcast buses with dedicated, packet-switched differential serial links.
+                  </div>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="tf-badge true">TRUE ✅</span>
+                    <span style="font-size: 0.88rem; color: var(--text-secondary);">
+                      <strong>السبب بالعامية:</strong> صح 100%! وده سبب وصول سرعات PCIe إلى عشرات الجيجابايت في الثانية بدون اختناق.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 09. COMPONENT 6: مركز إجابات الشيت الرسمي (Sheet 3 Official Solutions Hub) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">09</span>
+                <h2 class="exp-sec-title">COMPONENT 6: مركز إجابات الشيت الرسمي (Sheet 3 Official Solutions Hub — سؤال 3.11)</h2>
+              </div>
+
+              <!-- Accordion Item: Question 3.11 -->
+              <div class="sheet-card" style="margin-bottom: 1.25rem;">
+                <div class="sheet-q-box">
+                  <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 3.11 // SHEET 3</span>
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.05rem; margin-top: 0.35rem;">
+                    "List 10 Typical control lines and explain their functions."
+                  </p>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                  <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (الإجابة النموذجية):</span>
+                  <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; if(box.style.display==='none'){box.style.display='block'; this.innerText='إخفاء الإجابة للتسميع';} else {box.style.display='none'; this.innerText='إظهار الإجابة';}">إخفاء الإجابة للتسميع</button>
+                </div>
+
+                <div class="sheet-ans-box" style="display: block;">
+                  <div class="en-def-box" style="margin-bottom: 0.75rem;">
+                    <ol style="padding-left: 1.2rem; font-family: var(--font-en); line-height: 1.8;">
+                      <li><strong>Memory Write:</strong> Causes data on the system data bus to be written into the addressed memory location.</li>
+                      <li><strong>Memory Read:</strong> Causes data from the addressed memory location to be retrieved and placed onto the system data bus.</li>
+                      <li><strong>I/O Write:</strong> Causes data on the data bus to be sent and outputted to the addressed external I/O device or port.</li>
+                      <li><strong>I/O Read:</strong> Causes data from the addressed external I/O device or port to be placed onto the system data bus.</li>
+                      <li><strong>Transfer ACK (Acknowledge):</strong> Indicates that data have been successfully accepted from or placed onto the data bus.</li>
+                      <li><strong>Bus Request:</strong> Indicates that a system component (such as a DMA controller) requests permission to gain control of the bus.</li>
+                      <li><strong>Bus Grant:</strong> Emitted by the central bus arbiter indicating that the requesting module has been granted control of the bus.</li>
+                      <li><strong>Interrupt Request:</strong> Signals to the central processor that an external peripheral is requesting service and an interrupt is pending.</li>
+                      <li><strong>Interrupt ACK:</strong> Emitted by the processor acknowledging that the pending interrupt request has been recognized and accepted.</li>
+                      <li><strong>Clock:</strong> Provides regular square-wave timing signals used to synchronize read and write transactions across a synchronous bus.</li>
+                    </ol>
+                  </div>
+                  <div class="balady-box">
+                    <strong>الترجمة والشرح بالعامية للحفظ والتسميع:</strong>
+                    1. <strong>Memory Write:</strong> إشارة لكتابة وتخزين البيانات في عنوان الذاكرة المحدد.<br>
+                    2. <strong>Memory Read:</strong> إشارة لقراءة البيانات من عنوان الذاكرة المحدد ووضعها على الناقل.<br>
+                    3. <strong>I/O Write:</strong> إشارة لإرسال البيانات لجهاز إخراج (زي الشاشة أو الطابعة).<br>
+                    4. <strong>I/O Read:</strong> إشارة لقراءة البيانات من جهاز إدخال (زي الكيبورد).<br>
+                    5. <strong>Transfer ACK:</strong> إشعار تأكيد إن الداتا تم استلامها أو وضعها على الناقل بنجاح.<br>
+                    6. <strong>Bus Request:</strong> إشارة طلب حجز الناقل من كارت (زي الـ DMA).<br>
+                    7. <strong>Bus Grant:</strong> موافقة المتحكم على حجز الناقل وتسليمه للكارت.<br>
+                    8. <strong>Interrupt Request:</strong> سلك طلب المقاطعة من جهاز خارجي للمعالج.<br>
+                    9. <strong>Interrupt ACK:</strong> إشعار من المعالج بقبول المقاطعة والذهاب لـ ISR.<br>
+                    10. <strong>Clock:</strong> خط نبضات الساعة المرجعية لضبط توقيت ومزامنة عمليات الناقل المتزامن.
+                  </div>
+                </div>
+              </div>
+            </section>
+
+          `,
+          quiz: [
+                    {
+                              "id": "ch3_p4_q1",
+                              "question": "Q1. What primarily determines the maximum addressable memory capacity of a computer system? (Slide 38)",
+                              "options": [
+                                        "The physical clock speed of the processor",
+                                        "The width of the Address Bus (e.g., 2^N)",
+                                        "The width of the Data Bus",
+                                        "The size of the hard disk drive"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "تريكة امتحانات متكررة! عرض ناقل العناوين (Address Bus Width) هو المحدد الوحيد لأقصى حجم ذاكرة يقدر المعالج يعنونها مباشرة (2^N موقع ذاكرة)."
+                    },
+                    {
+                              "id": "ch3_p4_q2",
+                              "question": "Q2. What is the primary architectural effect of widening the Data Bus (e.g., from 32-bit to 64-bit)?",
+                              "options": [
+                                        "It doubles the maximum addressable RAM capacity",
+                                        "It increases overall system performance by transmitting more data per cycle",
+                                        "It eliminates the need for cache memory",
+                                        "It reduces processor power consumption to zero"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "عرض ناقل البيانات (Data Bus Width) بيحدد كمية البيانات اللي بتتنقل في النبضة الواحدة؛ فناقل 64 بت ينقل ضعف الداتا اللي بينقلها ناقل 32 بت، مما يرفع كفاءة وسرعة النظام (Throughput & Performance)."
+                    },
+                    {
+                              "id": "ch3_p4_q3",
+                              "question": "Q3. Which control line causes data on the data bus to be written into the addressed memory location? (Sheet Q3.11)",
+                              "options": [
+                                        "Memory Read",
+                                        "Memory Write",
+                                        "I/O Write",
+                                        "Bus Request"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "خط (Memory Write) هو اللي بيبعت إشارة كهربية للرام عشان تستلم الداتا اللي على ناقل البيانات وتخزنها في العنوان المحدد."
+                    },
+                    {
+                              "id": "ch3_p4_q4",
+                              "question": "Q4. What is the difference between 'Bus Request' and 'Interrupt Request'? (Sheet Q3.11)",
+                              "options": [
+                                        "They are identical and physically connected to the same pin",
+                                        "Bus Request asks to gain control of the bus lines (e.g. DMA), while Interrupt Request asks CPU to service a peripheral",
+                                        "Bus Request formats the RAM, while Interrupt Request restarts the computer",
+                                        "Bus Request is used only for monitors, while Interrupt Request is used only for mice"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "فرق جوهري في الامتحان: الـ Bus Request بيطلبه جهاز زي كارت DMA عشان يستحوذ على أسلاك الناقل وينقل داتا مباشرة، بينما الـ Interrupt Request بيطلبه جهاز عشان يوقف برنامج المعالج ويشغله روتين خدمة ISR!"
+                    },
+                    {
+                              "id": "ch3_p4_q5",
+                              "question": "Q5. Which control line provides regular timing signals to synchronize operations on a synchronous bus? (Sheet Q3.11)",
+                              "options": [
+                                        "Transfer ACK",
+                                        "Clock",
+                                        "Bus Grant",
+                                        "I/O Read"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "خط الساعة (Clock line) هو اللي بينقل نبضات مربعة منتظمة تضبط وتزامن كل عمليات القراءة والكتابة على الناقل المتزامن (Synchronous Bus)."
+                    },
+                    {
+                              "id": "ch3_p4_q6",
+                              "question": "Q6. What is the function of the 'Transfer ACK' (Acknowledge) control line? (Sheet Q3.11)",
+                              "options": [
+                                        "It turns off the computer power supply",
+                                        "It indicates that data have been successfully accepted from or placed onto the data bus",
+                                        "It requests bus control from the central arbiter",
+                                        "It increments the Program Counter (PC)"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "إشارة (Transfer ACK) هي إشعار استلام وتأكيد (Acknowledge) إن الداتا اتحطت على الناقل بنجاح أو تم استلامها دون أي تلف."
+                    },
+                    {
+                              "id": "ch3_p4_q7",
+                              "question": "Q7. What physical bottleneck primarily led to replacing traditional shared buses with Point-to-Point links? (Slide 49)",
+                              "options": [
+                                        "Silicon shortage in semiconductor foundries",
+                                        "Propagation delay, signal distortion at high frequencies, and bus contention bottlenecks",
+                                        "Lack of support for binary numbers",
+                                        "High manufacturing cost of copper wires"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "مع زيادة التردد بالجيجاهرتز، السلك المشترك بيعاني من تأخير الانتشار (Propagation Delay) وانعكاس وتشوه الإشارة، بالإضافة لمشكلة عنق الزجاجة (Bottleneck) لأن جهاز واحد بس اللي بيقدر يتكلم في نفس اللحظة!"
+                    },
+                    {
+                              "id": "ch3_p4_q8",
+                              "question": "Q8. How does Intel QuickPath Interconnect (QPI) transmit data between modern processors and chipsets? (Slide 50)",
+                              "options": [
+                                        "Using a single shared 8-bit ribbon cable",
+                                        "Using dedicated, direct point-to-point packetized high-speed serial links",
+                                        "Through optical lasers in open air",
+                                        "Using the analog audio bus"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "معمارية QPI من إنتل بتعتمد على وصلات نقطية مباشرة وسريعة جداً (Point-to-Point) بتقسم الداتا لحزم (Packets) وتبعتها بسرعة عشرات الجيجابايت في الثانية دون مشاركة أو انتظار."
+                    },
+                    {
+                              "id": "ch3_p4_q9",
+                              "question": "Q9. Direct Memory Access (DMA) primarily facilitates which type of data transfer? (Slide 35)",
+                              "options": [
+                                        "Processor to Processor register transfers",
+                                        "Direct data transfer between I/O modules and memory without passing through the processor",
+                                        "Transferring instructions from the IR to the ALU",
+                                        "Transferring BIOS code to the CMOS chip"
+                              ],
+                              "correctIndex": 1,
+                              "explanation": "الـ Direct Memory Access (DMA) بيسمح بنقل كتل بيانات ضخمة مباشرة بين أجهزة الـ I/O (زي الهارد أو الشبكة) والذاكرة RAM دون إرهاق المعالج في كل بايت."
+                    },
+                    {
+                              "id": "ch3_p4_q10",
+                              "question": "Q10. Which PCI Express (PCIe) configuration provides the maximum bandwidth commonly utilized by dedicated graphics cards?",
+                              "options": [
+                                        "PCIe x1",
+                                        "PCIe x2",
+                                        "PCIe x4",
+                                        "PCIe x16"
+                              ],
+                              "correctIndex": 3,
+                              "explanation": "منفذ PCIe x16 بيحتوي على 16 مسار تسلسلي تفاضلي (Lanes) بتشتغل بالتوازي، وده اللي بيدي كروت الشاشة الحديثة أقصى معدل نقل بيانات متاح في اللوحة الأم!"
+                    }
+          ]
         }
       ]
     }
