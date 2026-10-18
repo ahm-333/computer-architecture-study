@@ -3544,6 +3544,1014 @@ window.COURSE_DATA = {
               explanation: "الإجابة False (✖)! معالجات Cortex-A هي المخصصة للهواتف الذكية، بينما Cortex-M مخصصة للـ Microcontrollers وأجهزة الـ IoT."
             }
           ]
+        },
+
+        /* ====================================================================
+           COMPREHENSIVE EXAM: CHAPTER 1 (Computer Architecture & Organization)
+           ==================================================================== */
+        {
+          id: "ch1-exam",
+          code: "EXAM 1",
+          slides: "45 Questions • Full Exam",
+          title: "📝 Comprehensive Exam: Chapter 1 (Computer Architecture & Organization)",
+          hasContent: true,
+          contentHtml: `
+            <!-- EXAM OVERVIEW BANNER -->
+            <div class="balady-box" style="border-right: 4px solid var(--accent-amber); margin-bottom: 1.5rem;">
+              <div class="balady-label">📝 الامتحان الشامل على الفصل الأول (Comprehensive Exam: Chapter 1)</div>
+              <p>
+                يضم هذا الامتحان الشامل <strong>4 أقسام كاملة (45 سؤالاً)</strong> تغطي كل تفاصيل <strong>Chapter 1</strong> و <strong>Sheet 1</strong>:<br/>
+                • <strong>Section 1:</strong> 20 سؤال اختيار من متعدد (<span class="mono">MCQs</span>) بالتفسير النموذجي.<br/>
+                • <strong>Section 2:</strong> 10 أسئلة صح وغلط (<span class="mono">True / False</span>) مع التعليل الهندسي (<span class="mono">Technical Justification</span>).<br/>
+                • <strong>Section 3:</strong> 10 أسئلة مصطلح علمي (<span class="mono">Matching &amp; Identification</span>).<br/>
+                • <strong>Section 4:</strong> 5 أسئلة مقالية رئيسية (<span class="mono">Short Answer &amp; Sheet 1 Master Questions</span>).<br/>
+                <em>💡 يمكنك إخفاء الإجابات لاختبار نفسك، أو النزول لأسفل الصفحة لحل الكويز التفاعلي المصحح تلقائياً (30 سؤالاً)!</em>
+              </p>
+            </div>
+
+            <!-- ====================================================================
+                 SECTION 1: Multiple Choice Questions (MCQs)
+                 ==================================================================== -->
+            <section class="exp-section">
+              <div class="exp-section-header" style="justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span class="exp-sec-num">01</span>
+                  <h2 class="exp-sec-title">SECTION 1: Multiple Choice Questions (MCQs — 20 Questions)</h2>
+                </div>
+                <button type="button" class="tool-pill-btn" onclick="const ans = this.closest('.exp-section').querySelectorAll('.mcq-ans-reveal'); const hide = ans[0] && ans[0].style.display !== 'none'; ans.forEach(el => el.style.display = hide ? 'none' : 'block');">
+                  👁️ إخفاء / إظهار جميع إجابات الـ MCQ
+                </button>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 1.15rem;" dir="ltr">
+                <!-- Q1 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q1. Which of the following is classified as an Architectural attribute rather than an Organizational attribute?
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> The processor clock frequency (e.g., 3.5 GHz)</li>
+                    <li>• <strong>B)</strong> The physical bus width on the motherboard</li>
+                    <li>• <strong>C)</strong> The instruction set format and addressing modes</li>
+                    <li>• <strong>D)</strong> The semiconductor technology used for cache memory</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: C</strong><br/>
+                    <em>Explanation:</em> Architecture covers attributes visible to the programmer (instruction set, data representation, addressing modes). Clock speed, bus width, and memory tech are internal physical implementation details (Organization).
+                  </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q2. The primary business motivation for IBM keeping the same Architecture across the System/370 family while using different Organizations was to:
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Reduce the physical size of all computer models</li>
+                    <li>• <strong>B)</strong> Protect customers' expensive investments in existing software</li>
+                    <li>• <strong>C)</strong> Eliminate the need for operating systems</li>
+                    <li>• <strong>D)</strong> Force customers to buy new software every year</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: B</strong><br/>
+                    <em>Explanation:</em> Keeping the architecture identical allowed legacy programs to run on faster, newer hardware without rewriting code, protecting the customer's software investment.
+                  </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q3. In computer engineering, the term "Transparent to the programmer" strictly means:
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> The feature is made of clear optical glass</li>
+                    <li>• <strong>B)</strong> The programmer must explicitly manage and program the feature</li>
+                    <li>• <strong>C)</strong> The hardware detail is completely hidden from the programmer's view</li>
+                    <li>• <strong>D)</strong> The feature is documented openly in the software manual</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: C</strong><br/>
+                    <em>Explanation:</em> Transparent in architecture terminology means "invisible/hidden" from the software programmer.
+                  </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q4. Which of the following is NOT one of the four basic structural components of a COMPUTER at the top level?
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Central Processing Unit (CPU)</li>
+                    <li>• <strong>B)</strong> Arithmetic and Logic Unit (ALU)</li>
+                    <li>• <strong>C)</strong> Main Memory</li>
+                    <li>• <strong>D)</strong> System Interconnection (System Bus)</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: B</strong><br/>
+                    <em>Explanation:</em> The ALU is a structural component INSIDE the CPU, not a top-level computer component. Top-level components are: CPU, Main Memory, I/O, and System Interconnection.
+                  </div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q5. The primary functional component inside the CPU responsible for decoding instructions and generating control signals is the:
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Arithmetic and Logic Unit (ALU)</li>
+                    <li>• <strong>B)</strong> Program Counter (PC)</li>
+                    <li>• <strong>C)</strong> Control Unit (CU)</li>
+                    <li>• <strong>D)</strong> Memory Buffer Register (MBR)</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: C</strong><br/>
+                    <em>Explanation:</em> The Control Unit (CU) controls the operations of the CPU by fetching, decoding instructions, and issuing micro-control signals.
+                  </div>
+                </div>
+
+                <!-- Q6 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q6. A multicore computer is accurately defined as:
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Multiple separate processor chips mounted on different motherboards</li>
+                    <li>• <strong>B)</strong> A single silicon chip containing two or more independent execution cores</li>
+                    <li>• <strong>C)</strong> A processor connected to multiple hard disk drives</li>
+                    <li>• <strong>D)</strong> A system running multiple operating systems simultaneously</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: B</strong><br/>
+                    <em>Explanation:</em> Multicore integrates two or more independent processing cores onto a single semiconductor silicon die/chip.
+                  </div>
+                </div>
+
+                <!-- Q7 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q7. Which statement correctly compares Cache Memory to Main Memory (RAM)?
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Cache is larger in capacity and slower in speed</li>
+                    <li>• <strong>B)</strong> Cache is larger in capacity and faster in speed</li>
+                    <li>• <strong>C)</strong> Cache is smaller in capacity and slower in speed</li>
+                    <li>• <strong>D)</strong> Cache is smaller in capacity and much faster in speed</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: D</strong><br/>
+                    <em>Explanation:</em> Cache is built from ultra-fast SRAM to stage active data close to the CPU; it is much smaller and significantly faster than main memory (DRAM).
+                  </div>
+                </div>
+
+                <!-- Q8 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q8. The defining characteristic of the von Neumann (stored-program) architecture is that:
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Instructions and data are stored together in the same read-write memory</li>
+                    <li>• <strong>B)</strong> Separate physical memories are strictly used for instructions and data</li>
+                    <li>• <strong>C)</strong> Programs must be hardwired manually using external patch cords</li>
+                    <li>• <strong>D)</strong> Data can only be accessed sequentially from magnetic tape</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: A</strong><br/>
+                    <em>Explanation:</em> The core von Neumann principle is storing instructions and data in a single shared, addressable read-write memory space.
+                  </div>
+                </div>
+
+                <!-- Q9 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q9. In the IAS computer, a standard 40-bit word could hold:
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> One 40-bit data number OR two 20-bit instructions</li>
+                    <li>• <strong>B)</strong> Two 20-bit data numbers OR one 40-bit instruction</li>
+                    <li>• <strong>C)</strong> Four 10-bit instructions only</li>
+                    <li>• <strong>D)</strong> Eight 5-bit opcodes only</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: A</strong><br/>
+                    <em>Explanation:</em> The IAS word format accommodates either one 40-bit signed number (1 sign bit + 39-bit value) or a pair of 20-bit instructions (each with an 8-bit opcode and 12-bit address).
+                  </div>
+                </div>
+
+                <!-- Q10 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q10. In the IAS computer, which register holds the address of the NEXT instruction pair to be fetched from memory?
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Instruction Register (IR)</li>
+                    <li>• <strong>B)</strong> Program Counter (PC)</li>
+                    <li>• <strong>C)</strong> Instruction Buffer Register (IBR)</li>
+                    <li>• <strong>D)</strong> Memory Buffer Register (MBR)</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: B</strong><br/>
+                    <em>Explanation:</em> The Program Counter (PC) holds the address of the next instruction pair. The IR holds the opcode currently executing, and the IBR temporarily holds the right-hand instruction.
+                  </div>
+                </div>
+
+                <!-- Q11 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q11. Which register temporarily holds the right-hand instruction of an IAS instruction pair while the left-hand instruction is executing?
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Accumulator (AC)</li>
+                    <li>• <strong>B)</strong> Memory Address Register (MAR)</li>
+                    <li>• <strong>C)</strong> Instruction Buffer Register (IBR)</li>
+                    <li>• <strong>D)</strong> Multiplier Quotient (MQ)</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: C</strong><br/>
+                    <em>Explanation:</em> IBR (Instruction Buffer Register) stores the 20-bit right-hand instruction so it doesn't need to be re-fetched from memory during the next cycle.
+                  </div>
+                </div>
+
+                <!-- Q12 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q12. The second generation of computers was defined by replacing vacuum tubes with:
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Integrated circuits (ICs)</li>
+                    <li>• <strong>B)</strong> Transistors</li>
+                    <li>• <strong>C)</strong> Microprocessors</li>
+                    <li>• <strong>D)</strong> Magnetic optical discs</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: B</strong><br/>
+                    <em>Explanation:</em> First Generation = Vacuum Tubes; Second Generation = Transistors; Third Generation = Integrated Circuits (ICs).
+                  </div>
+                </div>
+
+                <!-- Q13 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q13. According to Moore's Law (proposed in 1965), what doubles approximately every year to two years?
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> The physical dimensions of the silicon chip</li>
+                    <li>• <strong>B)</strong> The retail price of computing hardware</li>
+                    <li>• <strong>C)</strong> The number of transistors packed onto a single chip</li>
+                    <li>• <strong>D)</strong> The power consumption and heat dissipation of the CPU</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: C</strong><br/>
+                    <em>Explanation:</em> Moore's Law states that the density/number of transistors on a single microchip doubles roughly every 18 to 24 months.
+                  </div>
+                </div>
+
+                <!-- Q14 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q14. Which factor directly explains why packing more transistors onto a chip increases operating clock speeds?
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Shorter electrical paths between circuits</li>
+                    <li>• <strong>B)</strong> Higher electrical resistance in silicon</li>
+                    <li>• <strong>C)</strong> Greater physical surface area for air cooling</li>
+                    <li>• <strong>D)</strong> Increased reliance on external copper wiring</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: A</strong><br/>
+                    <em>Explanation:</em> Shrinking transistor feature sizes shortens the physical electrical path electrons must travel, drastically cutting propagation delay and raising clock speeds.
+                  </div>
+                </div>
+
+                <!-- Q15 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q15. An Embedded System is fundamentally characterized by being:
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Capable of running any general-purpose desktop operating system</li>
+                    <li>• <strong>B)</strong> Dedicated to performing a specific, fixed function within a larger product</li>
+                    <li>• <strong>C)</strong> Always equipped with a keyboard, mouse, and large monitor</li>
+                    <li>• <strong>D)</strong> Designed exclusively for scientific calculations and supercomputers</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: B</strong><br/>
+                    <em>Explanation:</em> Embedded systems are dedicated computer subsystems built into larger devices (cars, washing machines, medical tools) to perform specific tasks.
+                  </div>
+                </div>
+
+                <!-- Q16 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q16. Which ARM Cortex processor family profile is specifically optimized for time-critical, safety-critical real-time applications like automotive braking?
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Cortex-A</li>
+                    <li>• <strong>B)</strong> Cortex-M</li>
+                    <li>• <strong>C)</strong> Cortex-R</li>
+                    <li>• <strong>D)</strong> Cortex-X</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: C</strong><br/>
+                    <em>Explanation:</em> Cortex-A is for Application/Smartphones; Cortex-R is for Real-Time/Safety systems; Cortex-M is for Microcontrollers/IoT sensors.
+                  </div>
+                </div>
+
+                <!-- Q17 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q17. The ARM processor architecture is built upon which design philosophy?
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> CISC (Complex Instruction Set Computer)</li>
+                    <li>• <strong>B)</strong> RISC (Reduced Instruction Set Computer)</li>
+                    <li>• <strong>C)</strong> Vacuum-tube discrete logic</li>
+                    <li>• <strong>D)</strong> Hardwired non-programmable logic</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: B</strong><br/>
+                    <em>Explanation:</em> ARM is the classic example of RISC (streamlined, energy-efficient instructions), whereas Intel x86 is classic CISC.
+                  </div>
+                </div>
+
+                <!-- Q18 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q18. The Intel Pentium processor (1993) introduced which major architectural breakthrough?
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> First 8-bit general-purpose microprocessor</li>
+                    <li>• <strong>B)</strong> Transition to vacuum tube technology</li>
+                    <li>• <strong>C)</strong> Superscalar execution (executing multiple instructions per clock cycle in parallel)</li>
+                    <li>• <strong>D)</strong> Elimination of cache memory</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: C</strong><br/>
+                    <em>Explanation:</em> The Pentium introduced superscalar techniques, allowing dual execution pipelines to process multiple instructions simultaneously.
+                  </div>
+                </div>
+
+                <!-- Q19 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q19. In Cloud Computing, the NIST definition specifies that resources must be:
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> Manually wired by the consumer prior to each session</li>
+                    <li>• <strong>B)</strong> Provisioned and released on-demand with minimal management effort</li>
+                    <li>• <strong>C)</strong> Strictly located within the user's local premises</li>
+                    <li>• <strong>D)</strong> Exclusively reserved for a single user for life</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: B</strong><br/>
+                    <em>Explanation:</em> NIST defines cloud computing as an on-demand, self-service model over a network with rapid elasticity and minimal service provider interaction.
+                  </div>
+                </div>
+
+                <!-- Q20 -->
+                <div class="sheet-card" style="text-align: left;">
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1rem; margin-bottom: 0.65rem;">
+                    Q20. A "Deeply Embedded System" differs from a standard embedded system in that:
+                  </p>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; font-family: var(--font-en); line-height: 1.8;">
+                    <li>• <strong>A)</strong> It consumes more electrical power than a mainframe</li>
+                    <li>• <strong>B)</strong> Its internal processor behavior is difficult or impossible for the user/programmer to observe</li>
+                    <li>• <strong>C)</strong> It contains multiple high-resolution graphics monitors</li>
+                    <li>• <strong>D)</strong> It is designed to run arbitrary PC gaming software</li>
+                  </ul>
+                  <div class="sheet-a-box mcq-ans-reveal" style="text-align: left;">
+                    <strong style="color: var(--accent-emerald);">Answer: B</strong><br/>
+                    <em>Explanation:</em> Deeply embedded systems have minimal resources and fixed microcode; their internal states cannot be directly probed or monitored by standard users or programmers.
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ====================================================================
+                 SECTION 2: True or False Questions (10 Questions)
+                 ==================================================================== -->
+            <section class="exp-section">
+              <div class="exp-section-header" style="justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span class="exp-sec-num">02</span>
+                  <h2 class="exp-sec-title">SECTION 2: True or False Questions (10 Questions with Justification)</h2>
+                </div>
+                <button type="button" class="tool-pill-btn" onclick="const ans = this.closest('.exp-section').querySelectorAll('.tf-answer-row'); const hide = ans[0] && ans[0].style.display !== 'none'; ans.forEach(el => el.style.display = hide ? 'none' : 'flex');">
+                  👁️ إخفاء / إظهار إجابات الصح والغلط
+                </button>
+              </div>
+
+              <div class="tf-drills-grid">
+                <div class="tf-card">
+                  <p class="tf-question">1. [ T / F ] Two computers can have identical Computer Architectures while utilizing entirely different Computer Organizations.</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge true">Answer: TRUE (✔)</span>
+                    <span class="ltr-block"><em>Justification:</em> Architecture is the abstract programmer interface. Different models (e.g., IBM System/370 or Intel Core i3 vs. i9) share the same ISA while using different clock speeds, bus widths, and execution units.</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">2. [ T / F ] The number of bits used to represent an integer data type is an Organizational attribute.</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block"><em>Justification:</em> It is an Architectural attribute because data representation is directly visible to the programmer and dictates overflow limits in software logic.</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">3. [ T / F ] Main Memory and Input/Output modules are structural components found inside the Central Processing Unit.</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block"><em>Justification:</em> They are top-level components of the COMPUTER. The internal components of the CPU are CU, ALU, Registers, and CPU Interconnection.</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">4. [ T / F ] In the IAS computer, instructions and data are stored in physically distinct, isolated memory hardware.</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block"><em>Justification:</em> The IAS is a von Neumann architecture, where data and instructions share the same read-write memory.</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">5. [ T / F ] The Program Counter (PC) register contains the instruction currently being executed by the ALU.</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block"><em>Justification:</em> The PC holds the address of the NEXT instruction to be fetched; the Instruction Register (IR) holds the opcode currently being executed.</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">6. [ T / F ] Moore's Law is a strict, immutable law of nuclear physics.</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block"><em>Justification:</em> Moore's Law is an empirical observation and technological projection made by Gordon Moore in 1965.</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">7. [ T / F ] A multicore processor incorporates multiple execution cores on separate silicon dies connected by external cables.</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block"><em>Justification:</em> Multicore integrates two or more cores onto a SINGLE monolithic silicon chip/die.</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">8. [ T / F ] Cache memory is positioned between the CPU and Main Memory to bridge the performance/speed gap.</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge true">Answer: TRUE (✔)</span>
+                    <span class="ltr-block"><em>Justification:</em> Cache provides rapid access to frequently used items, shielding the fast processor from the high latency of main DRAM.</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">9. [ T / F ] ARM Cortex-M processors are primarily engineered for complex smartphones running the Android operating system.</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block"><em>Justification:</em> Cortex-A is designed for smartphones/tablets; Cortex-M is specialized for low-power microcontrollers and IoT sensors.</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">10. [ T / F ] The system bus is an example of System Interconnection.</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge true">Answer: TRUE (✔)</span>
+                    <span class="ltr-block"><em>Justification:</em> The system bus (data, address, and control lines) provides the standard physical mechanism connecting CPU, Memory, and I/O.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ====================================================================
+                 SECTION 3: Matching & Identification (المصطلح العلمي)
+                 ==================================================================== -->
+            <section class="exp-section">
+              <div class="exp-section-header" style="justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span class="exp-sec-num">03</span>
+                  <h2 class="exp-sec-title">SECTION 3: Matching &amp; Identification (المصطلح العلمي — 10 Terms)</h2>
+                </div>
+                <button type="button" class="tool-pill-btn" onclick="const terms = this.closest('.exp-section').querySelectorAll('.buzz-target'); const hide = terms[0] && terms[0].style.opacity !== '0'; terms.forEach(el => el.style.opacity = hide ? '0' : '1');">
+                  👁️ إخفاء / إظهار المصطلحات للتسميع
+                </button>
+              </div>
+
+              <div class="buzzwords-table-wrap" dir="ltr">
+                <table class="buzz-table" style="text-align: left;">
+                  <thead>
+                    <tr>
+                      <th style="text-align: left;">#</th>
+                      <th style="text-align: left;">Description</th>
+                      <th style="text-align: left;">Technical Term</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="mono"><strong>1</strong></td>
+                      <td>Attributes of a system visible to the programmer that directly impact logical program execution.</td>
+                      <td><span class="buzz-target">Computer Architecture</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono"><strong>2</strong></td>
+                      <td>Operational units and interconnections that realize architectural specifications (transparent to programmer).</td>
+                      <td><span class="buzz-target">Computer Organization</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono"><strong>3</strong></td>
+                      <td>The structural component inside the CPU that performs arithmetic calculations and logical bitwise operations.</td>
+                      <td><span class="buzz-target">Arithmetic and Logic Unit (ALU)</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono"><strong>4</strong></td>
+                      <td>Ultra-high-speed temporary storage cells located directly on the processor chip.</td>
+                      <td><span class="buzz-target">Registers</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono"><strong>5</strong></td>
+                      <td>The register in the IAS computer that serves as the buffer/gateway for all words entering or leaving memory.</td>
+                      <td><span class="buzz-target">Memory Buffer Register (MBR)</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono"><strong>6</strong></td>
+                      <td>The register in the IAS computer used to hold the 8-bit operation code being executed.</td>
+                      <td><span class="buzz-target">Instruction Register (IR)</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono"><strong>7</strong></td>
+                      <td>The empirical observation stating that transistor density on a single chip doubles roughly every 18–24 months.</td>
+                      <td><span class="buzz-target">Moore's Law</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono"><strong>8</strong></td>
+                      <td>A computer system dedicated to performing a specific, fixed function within a larger electrical or mechanical device.</td>
+                      <td><span class="buzz-target">Embedded System</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono"><strong>9</strong></td>
+                      <td>The energy-efficient RISC processor family dominant in mobile and embedded consumer electronics.</td>
+                      <td><span class="buzz-target">ARM Architecture</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono"><strong>10</strong></td>
+                      <td>A model providing ubiquitous, on-demand network access to a shared pool of configurable computing resources.</td>
+                      <td><span class="buzz-target">Cloud Computing</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- ====================================================================
+                 SECTION 4: Short Answer & Sheet 1 Master Questions
+                 ==================================================================== -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">04</span>
+                <h2 class="exp-sec-title">SECTION 4: Short Answer &amp; Sheet 1 Master Questions (Model Exam Essay Questions)</h2>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                <!-- Essay Q1 -->
+                <div class="sheet-card">
+                  <div class="sheet-q-box">
+                    <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">ESSAY QUESTION 1 // MASTER QUESTION</span>
+                    <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.02rem; margin-top: 0.35rem;" dir="ltr">
+                      Q1. Contrast Computer Architecture and Computer Organization with two concrete examples of each.
+                    </p>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer:</span>
+                    <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
+                      إخفاء / إظهار الإجابة للتسميع
+                    </button>
+                  </div>
+                  <div class="sheet-a-box" dir="ltr" style="text-align: left;">
+                    <ul style="font-family: var(--font-en); line-height: 1.85; padding-left: 1.25rem;">
+                      <li>
+                        <strong>Computer Architecture:</strong> Programmer-visible attributes affecting logical program execution.<br/>
+                        <em>Examples:</em> (1) Instruction Set Architecture (e.g., x86 vs. ARM instructions); (2) Data type representations (e.g., 32-bit vs. 64-bit word size).
+                      </li>
+                      <li style="margin-top: 0.5rem;">
+                        <strong>Computer Organization:</strong> Physical, operational units realizing the architecture, transparent to software.<br/>
+                        <em>Examples:</em> (1) CPU clock frequency (e.g., 2.4 GHz vs. 4.0 GHz); (2) Memory bus width and semiconductor circuit technology (e.g., SRAM vs. DRAM).
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Essay Q2 -->
+                <div class="sheet-card">
+                  <div class="sheet-q-box">
+                    <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">ESSAY QUESTION 2 // MASTER QUESTION</span>
+                    <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.02rem; margin-top: 0.35rem;" dir="ltr">
+                      Q2. List the four basic functions of a general-purpose computer and state what role the Control mechanism plays among them.
+                    </p>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer:</span>
+                    <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
+                      إخفاء / إظهار الإجابة للتسميع
+                    </button>
+                  </div>
+                  <div class="sheet-a-box" dir="ltr" style="text-align: left;">
+                    <ol style="font-family: var(--font-en); line-height: 1.85; padding-left: 1.25rem;">
+                      <li><strong>Data Processing:</strong> Manipulating and computing arithmetic/logical values.</li>
+                      <li><strong>Data Storage:</strong> Retaining data temporarily (RAM) or permanently (Disks).</li>
+                      <li><strong>Data Movement:</strong> Transferring data between the computer and external I/O devices or networks.</li>
+                      <li><strong>Control:</strong> The control mechanism directs and coordinates the other three operations by issuing control signals, determining when data is moved, processed, or stored.</li>
+                    </ol>
+                  </div>
+                </div>
+
+                <!-- Essay Q3 -->
+                <div class="sheet-card">
+                  <div class="sheet-q-box">
+                    <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">ESSAY QUESTION 3 // MASTER QUESTION</span>
+                    <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.02rem; margin-top: 0.35rem;" dir="ltr">
+                      Q3. Explain the Stored-Program concept and describe the layout of an IAS instruction word.
+                    </p>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer:</span>
+                    <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
+                      إخفاء / إظهار الإجابة للتسميع
+                    </button>
+                  </div>
+                  <div class="sheet-a-box" dir="ltr" style="text-align: left;">
+                    <ul style="font-family: var(--font-en); line-height: 1.85; padding-left: 1.25rem;">
+                      <li><strong>Stored-Program Concept:</strong> Proposed by John von Neumann, it dictates that program instructions and numerical data are stored together in the same read-write addressable memory, enabling programs to be modified and executed electronically without physical rewiring.</li>
+                      <li style="margin-top: 0.5rem;">
+                        <strong>IAS Instruction Word Layout:</strong> A 40-bit word contains two 20-bit instructions:<br/>
+                        • <strong>Left Instruction (bits 0–19):</strong> 8-bit Opcode (bits 0–7) + 12-bit Memory Address (bits 8–19).<br/>
+                        • <strong>Right Instruction (bits 20–39):</strong> 8-bit Opcode (bits 20–27) + 12-bit Memory Address (bits 28–39).
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Essay Q4 -->
+                <div class="sheet-card">
+                  <div class="sheet-q-box">
+                    <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">ESSAY QUESTION 4 // MASTER QUESTION</span>
+                    <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.02rem; margin-top: 0.35rem;" dir="ltr">
+                      Q4. State five distinct technological benefits that resulted from Moore's Law.
+                    </p>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer:</span>
+                    <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
+                      إخفاء / إظهار الإجابة للتسميع
+                    </button>
+                  </div>
+                  <div class="sheet-a-box" dir="ltr" style="text-align: left;">
+                    <ol style="font-family: var(--font-en); line-height: 1.85; padding-left: 1.25rem;">
+                      <li><strong>Reduced Cost:</strong> Cost per logic gate and memory bit plummeted dramatically.</li>
+                      <li><strong>Increased Clock Speed:</strong> Shorter on-chip electrical paths drastically decreased signal propagation delays.</li>
+                      <li><strong>Miniaturization:</strong> Computers transformed from room-sized installations to handheld and wearable devices.</li>
+                      <li><strong>Reduced Power and Heat:</strong> Smaller integrated transistors consume significantly less energy and generate less thermal output.</li>
+                      <li><strong>Enhanced Reliability:</strong> Integrating millions of components onto a single die eliminated failure-prone soldered wire connections.</li>
+                    </ol>
+                  </div>
+                </div>
+
+                <!-- Essay Q5 -->
+                <div class="sheet-card">
+                  <div class="sheet-q-box">
+                    <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">ESSAY QUESTION 5 // MASTER QUESTION</span>
+                    <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.02rem; margin-top: 0.35rem;" dir="ltr">
+                      Q5. Differentiate between the three ARM Cortex processor profiles: Cortex-A, Cortex-R, and Cortex-M.
+                    </p>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                    <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer:</span>
+                    <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
+                      إخفاء / إظهار الإجابة للتسميع
+                    </button>
+                  </div>
+                  <div class="sheet-a-box" dir="ltr" style="text-align: left;">
+                    <ul style="font-family: var(--font-en); line-height: 1.85; padding-left: 1.25rem;">
+                      <li><strong>Cortex-A (Application):</strong> High-performance profile with memory management units (MMU) designed to execute complex, multi-user operating systems (Android, Linux) in smartphones, tablets, and smart TVs.</li>
+                      <li><strong>Cortex-R (Real-Time):</strong> High-reliability, deterministic profile with fault tolerance engineered for hard real-time, safety-critical systems (automotive engine/braking management, avionics, medical robotics).</li>
+                      <li><strong>Cortex-M (Microcontroller):</strong> Ultra-low-power, cost-optimized, compact profile engineered for deeply embedded sensor nodes, smart meters, household appliances, and IoT devices.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+          quiz: [
+            {
+              id: "ex1_q1",
+              question: "Q1. Which of the following is classified as an Architectural attribute rather than an Organizational attribute?",
+              options: [
+                "The processor clock frequency (e.g., 3.5 GHz)",
+                "The physical bus width on the motherboard",
+                "The instruction set format and addressing modes",
+                "The semiconductor technology used for cache memory"
+              ],
+              correctIndex: 2,
+              explanation: "Architecture covers attributes visible to the programmer (instruction set, data representation, addressing modes). Clock speed, bus width, and memory tech are internal physical implementation details (Organization)."
+            },
+            {
+              id: "ex1_q2",
+              question: "Q2. The primary business motivation for IBM keeping the same Architecture across the System/370 family while using different Organizations was to:",
+              options: [
+                "Reduce the physical size of all computer models",
+                "Protect customers' expensive investments in existing software",
+                "Eliminate the need for operating systems",
+                "Force customers to buy new software every year"
+              ],
+              correctIndex: 1,
+              explanation: "Keeping the architecture identical allowed legacy programs to run on faster, newer hardware without rewriting code, protecting the customer's software investment."
+            },
+            {
+              id: "ex1_q3",
+              question: "Q3. In computer engineering, the term 'Transparent to the programmer' strictly means:",
+              options: [
+                "The feature is made of clear optical glass",
+                "The programmer must explicitly manage and program the feature",
+                "The hardware detail is completely hidden from the programmer's view",
+                "The feature is documented openly in the software manual"
+              ],
+              correctIndex: 2,
+              explanation: "Transparent in architecture terminology means 'invisible/hidden' from the software programmer."
+            },
+            {
+              id: "ex1_q4",
+              question: "Q4. Which of the following is NOT one of the four basic structural components of a COMPUTER at the top level?",
+              options: [
+                "Central Processing Unit (CPU)",
+                "Arithmetic and Logic Unit (ALU)",
+                "Main Memory",
+                "System Interconnection (System Bus)"
+              ],
+              correctIndex: 1,
+              explanation: "The ALU is a structural component INSIDE the CPU, not a top-level computer component. Top-level components are: CPU, Main Memory, I/O, and System Interconnection."
+            },
+            {
+              id: "ex1_q5",
+              question: "Q5. The primary functional component inside the CPU responsible for decoding instructions and generating control signals is the:",
+              options: [
+                "Arithmetic and Logic Unit (ALU)",
+                "Program Counter (PC)",
+                "Control Unit (CU)",
+                "Memory Buffer Register (MBR)"
+              ],
+              correctIndex: 2,
+              explanation: "The Control Unit (CU) controls the operations of the CPU by fetching, decoding instructions, and issuing micro-control signals."
+            },
+            {
+              id: "ex1_q6",
+              question: "Q6. A multicore computer is accurately defined as:",
+              options: [
+                "Multiple separate processor chips mounted on different motherboards",
+                "A single silicon chip containing two or more independent execution cores",
+                "A processor connected to multiple hard disk drives",
+                "A system running multiple operating systems simultaneously"
+              ],
+              correctIndex: 1,
+              explanation: "Multicore integrates two or more independent processing cores onto a single semiconductor silicon die/chip."
+            },
+            {
+              id: "ex1_q7",
+              question: "Q7. Which statement correctly compares Cache Memory to Main Memory (RAM)?",
+              options: [
+                "Cache is larger in capacity and slower in speed",
+                "Cache is larger in capacity and faster in speed",
+                "Cache is smaller in capacity and slower in speed",
+                "Cache is smaller in capacity and much faster in speed"
+              ],
+              correctIndex: 3,
+              explanation: "Cache is built from ultra-fast SRAM to stage active data close to the CPU; it is much smaller and significantly faster than main memory (DRAM)."
+            },
+            {
+              id: "ex1_q8",
+              question: "Q8. The defining characteristic of the von Neumann (stored-program) architecture is that:",
+              options: [
+                "Instructions and data are stored together in the same read-write memory",
+                "Separate physical memories are strictly used for instructions and data",
+                "Programs must be hardwired manually using external patch cords",
+                "Data can only be accessed sequentially from magnetic tape"
+              ],
+              correctIndex: 0,
+              explanation: "The core von Neumann principle is storing instructions and data in a single shared, addressable read-write memory space."
+            },
+            {
+              id: "ex1_q9",
+              question: "Q9. In the IAS computer, a standard 40-bit word could hold:",
+              options: [
+                "One 40-bit data number OR two 20-bit instructions",
+                "Two 20-bit data numbers OR one 40-bit instruction",
+                "Four 10-bit instructions only",
+                "Eight 5-bit opcodes only"
+              ],
+              correctIndex: 0,
+              explanation: "The IAS word format accommodates either one 40-bit signed number (1 sign bit + 39-bit value) or a pair of 20-bit instructions (each with an 8-bit opcode and 12-bit address)."
+            },
+            {
+              id: "ex1_q10",
+              question: "Q10. In the IAS computer, which register holds the address of the NEXT instruction pair to be fetched from memory?",
+              options: [
+                "Instruction Register (IR)",
+                "Program Counter (PC)",
+                "Instruction Buffer Register (IBR)",
+                "Memory Buffer Register (MBR)"
+              ],
+              correctIndex: 1,
+              explanation: "The Program Counter (PC) holds the address of the next instruction pair. The IR holds the opcode currently executing, and the IBR temporarily holds the right-hand instruction."
+            },
+            {
+              id: "ex1_q11",
+              question: "Q11. Which register temporarily holds the right-hand instruction of an IAS instruction pair while the left-hand instruction is executing?",
+              options: [
+                "Accumulator (AC)",
+                "Memory Address Register (MAR)",
+                "Instruction Buffer Register (IBR)",
+                "Multiplier Quotient (MQ)"
+              ],
+              correctIndex: 2,
+              explanation: "IBR (Instruction Buffer Register) stores the 20-bit right-hand instruction so it doesn't need to be re-fetched from memory during the next cycle."
+            },
+            {
+              id: "ex1_q12",
+              question: "Q12. The second generation of computers was defined by replacing vacuum tubes with:",
+              options: [
+                "Integrated circuits (ICs)",
+                "Transistors",
+                "Microprocessors",
+                "Magnetic optical discs"
+              ],
+              correctIndex: 1,
+              explanation: "First Generation = Vacuum Tubes; Second Generation = Transistors; Third Generation = Integrated Circuits (ICs)."
+            },
+            {
+              id: "ex1_q13",
+              question: "Q13. According to Moore's Law (proposed in 1965), what doubles approximately every year to two years?",
+              options: [
+                "The physical dimensions of the silicon chip",
+                "The retail price of computing hardware",
+                "The number of transistors packed onto a single chip",
+                "The power consumption and heat dissipation of the CPU"
+              ],
+              correctIndex: 2,
+              explanation: "Moore's Law states that the density/number of transistors on a single microchip doubles roughly every 18 to 24 months."
+            },
+            {
+              id: "ex1_q14",
+              question: "Q14. Which factor directly explains why packing more transistors onto a chip increases operating clock speeds?",
+              options: [
+                "Shorter electrical paths between circuits",
+                "Higher electrical resistance in silicon",
+                "Greater physical surface area for air cooling",
+                "Increased reliance on external copper wiring"
+              ],
+              correctIndex: 0,
+              explanation: "Shrinking transistor feature sizes shortens the physical electrical path electrons must travel, drastically cutting propagation delay and raising clock speeds."
+            },
+            {
+              id: "ex1_q15",
+              question: "Q15. An Embedded System is fundamentally characterized by being:",
+              options: [
+                "Capable of running any general-purpose desktop operating system",
+                "Dedicated to performing a specific, fixed function within a larger product",
+                "Always equipped with a keyboard, mouse, and large monitor",
+                "Designed exclusively for scientific calculations and supercomputers"
+              ],
+              correctIndex: 1,
+              explanation: "Embedded systems are dedicated computer subsystems built into larger devices (cars, washing machines, medical tools) to perform specific tasks."
+            },
+            {
+              id: "ex1_q16",
+              question: "Q16. Which ARM Cortex processor family profile is specifically optimized for time-critical, safety-critical real-time applications like automotive braking?",
+              options: [
+                "Cortex-A",
+                "Cortex-M",
+                "Cortex-R",
+                "Cortex-X"
+              ],
+              correctIndex: 2,
+              explanation: "Cortex-A is for Application/Smartphones; Cortex-R is for Real-Time/Safety systems; Cortex-M is for Microcontrollers/IoT sensors."
+            },
+            {
+              id: "ex1_q17",
+              question: "Q17. The ARM processor architecture is built upon which design philosophy?",
+              options: [
+                "CISC (Complex Instruction Set Computer)",
+                "RISC (Reduced Instruction Set Computer)",
+                "Vacuum-tube discrete logic",
+                "Hardwired non-programmable logic"
+              ],
+              correctIndex: 1,
+              explanation: "ARM is the classic example of RISC (streamlined, energy-efficient instructions), whereas Intel x86 is classic CISC."
+            },
+            {
+              id: "ex1_q18",
+              question: "Q18. The Intel Pentium processor (1993) introduced which major architectural breakthrough?",
+              options: [
+                "First 8-bit general-purpose microprocessor",
+                "Transition to vacuum tube technology",
+                "Superscalar execution (executing multiple instructions per clock cycle in parallel)",
+                "Elimination of cache memory"
+              ],
+              correctIndex: 2,
+              explanation: "The Pentium introduced superscalar techniques, allowing dual execution pipelines to process multiple instructions simultaneously."
+            },
+            {
+              id: "ex1_q19",
+              question: "Q19. In Cloud Computing, the NIST definition specifies that resources must be:",
+              options: [
+                "Manually wired by the consumer prior to each session",
+                "Provisioned and released on-demand with minimal management effort",
+                "Strictly located within the user's local premises",
+                "Exclusively reserved for a single user for life"
+              ],
+              correctIndex: 1,
+              explanation: "NIST defines cloud computing as an on-demand, self-service model over a network with rapid elasticity and minimal service provider interaction."
+            },
+            {
+              id: "ex1_q20",
+              question: "Q20. A 'Deeply Embedded System' differs from a standard embedded system in that:",
+              options: [
+                "It consumes more electrical power than a mainframe",
+                "Its internal processor behavior is difficult or impossible for the user/programmer to observe",
+                "It contains multiple high-resolution graphics monitors",
+                "It is designed to run arbitrary PC gaming software"
+              ],
+              correctIndex: 1,
+              explanation: "Deeply embedded systems have minimal resources and fixed microcode; their internal states cannot be directly probed or monitored by standard users or programmers."
+            },
+            {
+              id: "ex1_tf1",
+              question: "Q21. [True / False]: Two computers can have identical Computer Architectures while utilizing entirely different Computer Organizations.",
+              options: ["True", "False"],
+              correctIndex: 0,
+              explanation: "TRUE (✔) — Architecture is the abstract programmer interface. Different models (e.g., IBM System/370 or Intel Core i3 vs. i9) share the same ISA while using different clock speeds, bus widths, and execution units."
+            },
+            {
+              id: "ex1_tf2",
+              question: "Q22. [True / False]: The number of bits used to represent an integer data type is an Organizational attribute.",
+              options: ["True", "False"],
+              correctIndex: 1,
+              explanation: "FALSE (✖) — It is an Architectural attribute because data representation is directly visible to the programmer and dictates overflow limits in software logic."
+            },
+            {
+              id: "ex1_tf3",
+              question: "Q23. [True / False]: Main Memory and Input/Output modules are structural components found inside the Central Processing Unit.",
+              options: ["True", "False"],
+              correctIndex: 1,
+              explanation: "FALSE (✖) — They are top-level components of the COMPUTER. The internal components of the CPU are CU, ALU, Registers, and CPU Interconnection."
+            },
+            {
+              id: "ex1_tf4",
+              question: "Q24. [True / False]: In the IAS computer, instructions and data are stored in physically distinct, isolated memory hardware.",
+              options: ["True", "False"],
+              correctIndex: 1,
+              explanation: "FALSE (✖) — The IAS is a von Neumann architecture, where data and instructions share the same read-write memory."
+            },
+            {
+              id: "ex1_tf5",
+              question: "Q25. [True / False]: The Program Counter (PC) register contains the instruction currently being executed by the ALU.",
+              options: ["True", "False"],
+              correctIndex: 1,
+              explanation: "FALSE (✖) — The PC holds the address of the NEXT instruction to be fetched; the Instruction Register (IR) holds the opcode currently being executed."
+            },
+            {
+              id: "ex1_tf6",
+              question: "Q26. [True / False]: Moore's Law is a strict, immutable law of nuclear physics.",
+              options: ["True", "False"],
+              correctIndex: 1,
+              explanation: "FALSE (✖) — Moore's Law is an empirical observation and technological projection made by Gordon Moore in 1965."
+            },
+            {
+              id: "ex1_tf7",
+              question: "Q27. [True / False]: A multicore processor incorporates multiple execution cores on separate silicon dies connected by external cables.",
+              options: ["True", "False"],
+              correctIndex: 1,
+              explanation: "FALSE (✖) — Multicore integrates two or more cores onto a SINGLE monolithic silicon chip/die."
+            },
+            {
+              id: "ex1_tf8",
+              question: "Q28. [True / False]: Cache memory is positioned between the CPU and Main Memory to bridge the performance/speed gap.",
+              options: ["True", "False"],
+              correctIndex: 0,
+              explanation: "TRUE (✔) — Cache provides rapid access to frequently used items, shielding the fast processor from the high latency of main DRAM."
+            },
+            {
+              id: "ex1_tf9",
+              question: "Q29. [True / False]: ARM Cortex-M processors are primarily engineered for complex smartphones running the Android operating system.",
+              options: ["True", "False"],
+              correctIndex: 1,
+              explanation: "FALSE (✖) — Cortex-A is designed for smartphones/tablets; Cortex-M is specialized for low-power microcontrollers and IoT sensors."
+            },
+            {
+              id: "ex1_tf10",
+              question: "Q30. [True / False]: The system bus is an example of System Interconnection.",
+              options: ["True", "False"],
+              correctIndex: 0,
+              explanation: "TRUE (✔) — The system bus (data, address, and control lines) provides the standard physical mechanism connecting CPU, Memory, and I/O."
+            }
+          ]
         }
       ]
     }

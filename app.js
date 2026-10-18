@@ -988,6 +988,13 @@
       });
     }
 
+    const startExam1Btn = document.getElementById("startExam1Btn");
+    if (startExam1Btn) {
+      startExam1Btn.addEventListener("click", () => {
+        openReader("ch-1", "ch1-exam", true);
+      });
+    }
+
     const fontIncBtn = document.getElementById("fontIncreaseBtn");
     const fontDecBtn = document.getElementById("fontDecreaseBtn");
     if (fontIncBtn) {
