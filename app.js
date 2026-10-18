@@ -1,12 +1,7 @@
 /**
  * ==========================================================================
- * COMPUTER ARCHITECTURE — INTERACTIVE APPLICATION ENGINE
+ * COMPUTER ARCHITECTURE — INTERACTIVE APPLICATION & SIMULATOR ENGINE
  * ==========================================================================
- * يدعم:
- * - تفعيل وضع القراءة افتراضياً عند دخول أي فصل + نافذة اختيار الوضع المفضل
- * - Dark / Light / Reading Mode
- * - تكبير وتصغير الخط A+ / A-
- * - الكويز التفاعلي باللغة الإنجليزية مع الشرح والتفسير المبسط
  */
 
 (function () {
@@ -15,15 +10,79 @@
   const STORAGE_KEY_FONT = "comp_arch_font_scale_v1";
 
   let state = {
-    filter: "all", // 'all' | 'ready' | 'empty'
+    filter: "all",
     searchQuery: "",
     activeChapterId: null,
     activePartId: null,
     completedParts: loadCompletedParts(),
     fontScale: parseFloat(localStorage.getItem(STORAGE_KEY_FONT) || "1"),
     focusSidebarHidden: false,
-    hasShownEntryModalForChapter: false,
-    quizAnswers: {} // { [partId_qId]: selectedIndex }
+    quizAnswers: {},
+    simTimers: {}
+  };
+
+  /* Simulator Step Explanations Dictionary */
+  const SIM_DESCRIPTIONS = {
+    "sim-arch-org": [
+      {
+        tag: "STEP 1 / 3",
+        text: "الطبقة الأولى (Architecture): المبرمج بيكتب الكود مرة واحدة بس بناءً على كتالوج الأوامر (ISA) وحجم البتات (32-bit) من غير ما يشغل باله بالأسلاك تحت الكبوت."
+      },
+      {
+        tag: "STEP 2 / 3",
+        text: "تحت الكبوت — Organization A: جهاز اقتصادي تردده 2 GHz وراماته DRAM، بينفذ نفس الكود بالظبط عن طريق إشارات التحكم الداخلية."
+      },
+      {
+        tag: "STEP 3 / 3",
+        text: "عائلة IBM 370 — Organization B: جهاز فائق السرعة تردده 4 GHz بأسلاك أعرض، بيشغل نفس برنامجك القديم طيارة فوراً بدون تعديل سطر كود واحد (Protecting software investment)!"
+      }
+    ],
+    "sim-4-functions": [
+      {
+        tag: "FUNCTION 1 / 4",
+        text: "1. وظيفة التحكم (Control): العقل الموجه اللي بيطلع إشارات تحكم كهربائية (باللون الذهبي) عشان يدير ويوجه التلات وظائف التانيين."
+      },
+      {
+        tag: "FUNCTION 2 / 4",
+        text: "2. وظيفة نقل البيانات (Data Movement): حركة الداتا بين الكمبيوتر والعالم الخارجي سواء عبر أجهزة الـ I/O (شاشة/ماوس) أو عبر الشبكات والإنترنت (Communications)."
+      },
+      {
+        tag: "FUNCTION 3 / 4",
+        text: "3. وظيفة تخزين البيانات (Data Storage): حفظ الداتا داخل وحدة التخزين (مؤقتاً في الرامات أو دائماً في الهارد) تحت إشراف إشارات التحكم."
+      },
+      {
+        tag: "FUNCTION 4 / 4",
+        text: "4. وظيفة معالجة البيانات (Data Processing): سحب الداتا من وحدة التخزين إلى وحدة المعالجة لإجراء الحسابات والعمليات المنطقية عليها ثم إرجاع النتيجة."
+      }
+    ],
+    "sim-top-structure": [
+      {
+        tag: "BUS CYCLE 1 / 3",
+        text: "خطوة 1 (طلب الأمر): البروسيسور (CPU) عاوز ينفذ أمر، فيبعت عنوان الأمر عبر ناقل النظام (System Bus) إلى الرامات (Main Memory)."
+      },
+      {
+        tag: "BUS CYCLE 2 / 3",
+        text: "خطوة 2 (جلب الأمر والداتا): الرامات (Main Memory) تطلع الأمر والداتا المطلوبة وتبعتهم عبر الـ System Bus إلى الـ CPU عشان يعالجهم."
+      },
+      {
+        tag: "BUS CYCLE 3 / 3",
+        text: "خطوة 3 (إخراج النتيجة): بعد ما الـ CPU يخلص معالجة، يبعت النتيجة على الـ System Bus لوحدة الإدخال والإخراج (I/O) عشان تتعرض على الشاشة في العالم الخارجي."
+      }
+    ],
+    "sim-cpu-internal": [
+      {
+        tag: "CPU NANO-STEP 1 / 3",
+        text: "خطوة 1 (التخزين اللحظي وفك الشفرة): الأمر والأرقام بيدخلوا يقعدوا في سجل فائق السرعة (Register) جوه المعالج، ووحدة التحكم (CU) تقرأ الأمر عبر الـ Internal CPU Bus."
+      },
+      {
+        tag: "CPU NANO-STEP 2 / 3",
+        text: "خطوة 2 (إصدار أمر التشغيل): وحدة التحكم (CU) تفك شفرة الأمر وتبعت إشارة تحكم عبر الناقل الداخلي للـ ALU تقولها: 'يا ALU اجمعي الرقمين دول!'"
+      },
+      {
+        tag: "CPU NANO-STEP 3 / 3",
+        text: "خطوة 3 (التنفيذ في نانو ثانية): مصنع الحسابات (ALU) يسحب الرقمين من الـ Registers عبر الناقل الداخلي، يجمعهم، ويرجع النتيجة فوراً في Register تاني!"
+      }
+    ]
   };
 
   function loadCompletedParts() {
@@ -42,6 +101,121 @@
   }
 
   /* --------------------------------------------------------------------------
+     INTERACTIVE SVG HARDWARE SIMULATORS ENGINE
+     -------------------------------------------------------------------------- */
+  function clearAllSimTimers() {
+    Object.keys(state.simTimers).forEach((k) => {
+      clearInterval(state.simTimers[k]);
+      delete state.simTimers[k];
+    });
+  }
+
+  function setSimStep(simCard, stepIndex) {
+    const simId = simCard.getAttribute("data-sim");
+    const stepStr = String(stepIndex);
+
+    // Update step buttons
+    simCard.querySelectorAll("[data-sim-step]").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-sim-step") === stepStr);
+    });
+
+    // Update SVG Hardware Nodes
+    simCard.querySelectorAll("[data-node-step]").forEach((node) => {
+      const steps = node.getAttribute("data-node-step").split(",");
+      node.classList.toggle("active-node", steps.includes(stepStr));
+    });
+
+    // Update Animated Wires
+    simCard.querySelectorAll("[data-wire-step]").forEach((wire) => {
+      const steps = wire.getAttribute("data-wire-step").split(",");
+      wire.classList.toggle("active-flow", steps.includes(stepStr));
+    });
+
+    // Update Moving Data Packet Dots
+    simCard.querySelectorAll("[data-packet-step]").forEach((dot) => {
+      const steps = dot.getAttribute("data-packet-step").split(",");
+      dot.classList.toggle("moving", steps.includes(stepStr));
+    });
+
+    // Update Status Ticker Text
+    const descList = SIM_DESCRIPTIONS[simId];
+    if (descList && descList[stepIndex]) {
+      const statusEl = simCard.querySelector("[data-sim-status]");
+      const tagEl = simCard.querySelector("[data-sim-tag]");
+      if (statusEl) statusEl.textContent = descList[stepIndex].text;
+      if (tagEl) tagEl.textContent = descList[stepIndex].tag;
+    }
+
+    simCard.setAttribute("data-current-step", stepStr);
+  }
+
+  function initSimulators() {
+    clearAllSimTimers();
+
+    document.querySelectorAll(".sim-card[data-sim]").forEach((simCard) => {
+      const simId = simCard.getAttribute("data-sim");
+      const stepBtns = simCard.querySelectorAll("[data-sim-step]");
+      const totalSteps = stepBtns.length;
+      if (totalSteps === 0) return;
+
+      // Default to step 0
+      setSimStep(simCard, 0);
+
+      // Step buttons click
+      stepBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          stopAutoplay(simCard, simId);
+          const idx = parseInt(btn.getAttribute("data-sim-step"), 10);
+          setSimStep(simCard, idx);
+        });
+      });
+
+      // Clicking directly on SVG hardware boxes also switches to that step
+      simCard.querySelectorAll("[data-click-step]").forEach((box) => {
+        box.addEventListener("click", () => {
+          stopAutoplay(simCard, simId);
+          const idx = parseInt(box.getAttribute("data-click-step"), 10);
+          setSimStep(simCard, idx);
+        });
+      });
+
+      // Auto-play button
+      const autoBtn = simCard.querySelector("[data-sim-autoplay]");
+      if (autoBtn) {
+        autoBtn.addEventListener("click", () => {
+          if (state.simTimers[simId]) {
+            stopAutoplay(simCard, simId);
+          } else {
+            autoBtn.classList.add("playing");
+            autoBtn.textContent = "⏸ إيقاف التشغيل التلقائي";
+            let current = parseInt(simCard.getAttribute("data-current-step") || "0", 10);
+            current = (current + 1) % totalSteps;
+            setSimStep(simCard, current);
+
+            state.simTimers[simId] = setInterval(() => {
+              let next = parseInt(simCard.getAttribute("data-current-step") || "0", 10);
+              next = (next + 1) % totalSteps;
+              setSimStep(simCard, next);
+            }, 2800);
+          }
+        });
+      }
+    });
+  }
+
+  function stopAutoplay(simCard, simId) {
+    if (state.simTimers[simId]) {
+      clearInterval(state.simTimers[simId]);
+      delete state.simTimers[simId];
+    }
+    const autoBtn = simCard.querySelector("[data-sim-autoplay]");
+    if (autoBtn) {
+      autoBtn.classList.remove("playing");
+      autoBtn.textContent = "▶ تشغيل تلقائي";
+    }
+  }
+
+  /* --------------------------------------------------------------------------
      THEME & READING MODE MANAGEMENT (reading | dark | light)
      -------------------------------------------------------------------------- */
   function initTheme() {
@@ -54,13 +228,11 @@
     document.documentElement.setAttribute("data-theme", mode);
     localStorage.setItem(STORAGE_KEY_THEME, mode);
 
-    // Sync top bar buttons
     document.querySelectorAll("[data-theme-mode]").forEach((btn) => {
       const btnMode = btn.getAttribute("data-theme-mode");
       btn.classList.toggle("active", btnMode === mode);
     });
 
-    // Sync modal cards
     document.querySelectorAll("[data-modal-mode]").forEach((card) => {
       const cardMode = card.getAttribute("data-modal-mode");
       card.classList.toggle("selected", cardMode === mode);
@@ -248,7 +420,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     INTERACTIVE QUIZ RENDERER (الأسئلة بالإنجليزي + الشرح والتفسير بالعربي)
+     INTERACTIVE QUIZ RENDERER
      -------------------------------------------------------------------------- */
   function renderQuizForPart(part) {
     const quizContainer = document.getElementById("partQuizContainer");
@@ -373,7 +545,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     READER VIEW (التحويل التلقائي لوضع القراءة + إظهار اختيار الوضع عند الدخول)
+     READER VIEW
      -------------------------------------------------------------------------- */
   function openReader(chapterId, partId, fromLandingEntry) {
     const chapters = window.COURSE_DATA.chapters || [];
@@ -388,7 +560,6 @@
     document.getElementById("landingView").classList.add("hidden");
     document.getElementById("readerView").classList.add("active");
 
-    // عند دخول الفصل: الوضع الافتراضي يكون وضع القراءة (reading) ويظهر للطالب اختيار الوضع
     if (fromLandingEntry) {
       setTheme("reading");
       openModeSelectionModal();
@@ -399,6 +570,7 @@
   }
 
   function closeReader() {
+    clearAllSimTimers();
     state.activeChapterId = null;
     state.activePartId = null;
     closeModeSelectionModal();
@@ -457,17 +629,19 @@
       const bodyEl = document.getElementById("canvasExplanationBody");
       if (activePart.hasContent && activePart.contentHtml) {
         bodyEl.innerHTML = `<div class="explanation-body">${activePart.contentHtml}</div>`;
+        initSimulators();
       } else {
+        clearAllSimTimers();
         bodyEl.innerHTML = `
           <div class="empty-slot-blueprint">
             <div class="empty-slot-icon">${activePart.code}</div>
             <h3 class="empty-slot-title">مكان الشرح جاهز ومفرغ لهذا الجزء (${activePart.code})</h3>
             <p class="empty-slot-desc">
-              بمجرد إرسال محتوى هذا الجزء، سيتم إضافته هنا فوراً مع المخططات وتريكات الامتحان والكويز التفاعلي الخاص به.
+              بمجرد إرسال محتوى هذا الجزء، سيتم إضافته هنا فوراً مع المخططات التفاعلية وتريكات الامتحان والكويز التفاعلي الخاص به.
             </p>
             <div class="ready-blocks-preview">
               <span class="ready-block-tag">الشرح المبسط والعميق</span>
-              <span class="ready-block-tag">Official Definitions</span>
+              <span class="ready-block-tag">مخططات تفاعلية متحركة</span>
               <span class="ready-block-tag">تريكات الامتحانات</span>
               <span class="ready-block-tag">English Exam Quiz</span>
             </div>
@@ -509,14 +683,12 @@
     updateTelemetry();
     renderChaptersGrid();
 
-    // Top bar 3-Mode Switcher Buttons (reading | dark | light)
     document.querySelectorAll("[data-theme-mode]").forEach((btn) => {
       btn.addEventListener("click", () => {
         setTheme(btn.getAttribute("data-theme-mode"));
       });
     });
 
-    // Modal Mode Choice Cards
     document.querySelectorAll("[data-modal-mode]").forEach((card) => {
       card.addEventListener("click", () => {
         const chosen = card.getAttribute("data-modal-mode");
@@ -541,7 +713,6 @@
       });
     }
 
-    // Quick Start Part 1 & Part 2 Buttons in Hero
     const startPart1Btn = document.getElementById("startPart1Btn");
     if (startPart1Btn) {
       startPart1Btn.addEventListener("click", () => {
@@ -556,7 +727,6 @@
       });
     }
 
-    // Font Size A+ / A- Controls inside Reader
     const fontIncBtn = document.getElementById("fontIncreaseBtn");
     const fontDecBtn = document.getElementById("fontDecreaseBtn");
     if (fontIncBtn) {
@@ -572,7 +742,6 @@
       });
     }
 
-    // Toggle Focus Sidebar inside Reader
     const focusBtn = document.getElementById("toggleFocusSidebarBtn");
     if (focusBtn) {
       focusBtn.addEventListener("click", () => {

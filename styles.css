@@ -1872,3 +1872,284 @@ body.reading-focus-active .reader-sidebar {
   text-align: right;
   font-family: var(--font-ar);
 }
+
+/* ==========================================================================
+   INTERACTIVE ANIMATED HARDWARE DIAGRAMS & LIVE PACKET SIMULATORS
+   ========================================================================== */
+
+.sim-card {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.sim-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px dashed var(--border-strong);
+}
+
+.sim-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sim-live-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  box-shadow: 0 0 10px var(--accent-emerald);
+  animation: pulseClock 1.4s infinite;
+}
+
+.sim-badge-title {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  letter-spacing: 0.05em;
+}
+
+.sim-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.sim-step-btn {
+  padding: 0.42rem 0.85rem;
+  border-radius: 6px;
+  font-family: var(--font-ar);
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.sim-step-btn:hover {
+  border-color: var(--accent-cyan);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.sim-step-btn.active {
+  background: var(--accent-cyan-soft);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 14px rgba(6, 182, 212, 0.25);
+}
+
+.sim-step-btn.play-auto {
+  background: var(--accent-amber-soft);
+  border-color: var(--accent-amber);
+  color: var(--accent-amber);
+}
+
+.sim-step-btn.play-auto.playing {
+  background: var(--accent-amber);
+  color: #080b11;
+}
+
+/* SVG Interactive Stage */
+.sim-svg-stage {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  display: block;
+  direction: ltr;
+}
+
+.sim-svg-stage svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* Animated Circuit Wire Paths */
+.wire-base {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.wire-flow {
+  fill: none;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 8 10;
+  opacity: 0.25;
+  transition: opacity 0.3s ease, stroke-width 0.3s ease;
+}
+
+.wire-flow.cyan { stroke: var(--accent-cyan); }
+.wire-flow.amber { stroke: var(--accent-amber); }
+.wire-flow.emerald { stroke: var(--accent-emerald); }
+.wire-flow.purple { stroke: var(--accent-purple); }
+
+/* Active Flowing Wire Animation */
+.wire-flow.active-flow {
+  opacity: 1;
+  stroke-width: 4.5;
+  filter: drop-shadow(0 0 6px currentColor);
+  animation: wireDashFlow 0.75s linear infinite;
+}
+
+.wire-flow.active-flow-reverse {
+  opacity: 1;
+  stroke-width: 4.5;
+  filter: drop-shadow(0 0 6px currentColor);
+  animation: wireDashFlowRev 0.75s linear infinite;
+}
+
+@keyframes wireDashFlow {
+  to { stroke-dashoffset: -36; }
+}
+
+@keyframes wireDashFlowRev {
+  to { stroke-dashoffset: 36; }
+}
+
+/* SVG Hardware Nodes */
+.svg-hw-box {
+  fill: var(--bg-card);
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.svg-hw-group:hover .svg-hw-box,
+.svg-hw-group.active-node .svg-hw-box {
+  stroke-width: 3;
+  filter: drop-shadow(0 0 12px rgba(6, 182, 212, 0.35));
+}
+
+.svg-hw-group.active-node.amber-node .svg-hw-box {
+  stroke: var(--accent-amber);
+  filter: drop-shadow(0 0 14px rgba(245, 158, 11, 0.4));
+}
+
+.svg-hw-group.active-node.cyan-node .svg-hw-box {
+  stroke: var(--accent-cyan);
+  filter: drop-shadow(0 0 14px rgba(6, 182, 212, 0.4));
+}
+
+.svg-hw-group.active-node.emerald-node .svg-hw-box {
+  stroke: var(--accent-emerald);
+  filter: drop-shadow(0 0 14px rgba(16, 185, 129, 0.4));
+}
+
+.svg-label-en {
+  font-family: var(--font-en);
+  font-weight: 700;
+  fill: var(--text-primary);
+  font-size: 14px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.svg-label-mono {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  fill: var(--accent-cyan);
+  font-size: 11px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.svg-label-ar {
+  font-family: var(--font-ar);
+  font-weight: 600;
+  fill: var(--text-secondary);
+  font-size: 12px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+/* Glowing Moving Packet Circle */
+.data-packet-dot {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.data-packet-dot.moving {
+  opacity: 1;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Live Status Explanation Ticker below Simulator */
+.sim-status-ticker {
+  margin-top: 1.15rem;
+  padding: 0.95rem 1.2rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-right: 4px solid var(--accent-amber);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  direction: rtl;
+  text-align: right;
+}
+
+.sim-status-text {
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sim-status-step-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  background: var(--accent-amber-soft);
+  color: var(--accent-amber);
+  white-space: nowrap;
+}
+
+/* Hero Schematic Live Animation Enhancements */
+.schematic-panel .hw-block {
+  position: relative;
+  overflow: hidden;
+}
+
+.schematic-panel .system-bus-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.schematic-panel .system-bus-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.22), transparent);
+  animation: busSweep 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes busSweep {
+  0% { left: -40%; }
+  100% { left: 110%; }
+}
