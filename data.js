@@ -2739,34 +2739,281 @@ window.COURSE_DATA = {
         },
 
         /* ====================================================================
-           PART 6: Embedded Systems, ARM Architecture & Cloud Computing (Slides 42 to 58)
+           PART 6: x86 Evolution, Embedded Systems, IoT, ARM Architecture & Cloud (Slides 42 to 58)
            ==================================================================== */
         {
           id: "ch1-p6",
           code: "PART 6",
           slides: "Slides 42 to 58",
-          title: "Embedded Systems, ARM Architecture & Cloud Computing",
+          title: "x86 Evolution, Embedded Systems, IoT, ARM Architecture & Cloud",
           hasContent: true,
           contentHtml: `
-            <!-- 1. EMBEDDED SYSTEMS & IOT (الأنظمة المدمجة وإنترنت الأشياء - سؤال الشيت 1.7) -->
+            <!-- 1. THE TWO TITANS IN PROCESSOR ARCHITECTURE (العملاقان في عالم المعالجات - سلايد 42) -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">01</span>
-                <h2 class="exp-sec-title">EMBEDDED SYSTEMS &amp; IOT (الأنظمة المدمجة وإنترنت الأشياء - سؤال الشيت 1.7)</h2>
+                <h2 class="exp-sec-title">THE TWO TITANS IN PROCESSOR ARCHITECTURE (العملاقان في عالم المعالجات - سلايد 42)</h2>
+              </div>
+
+              <div class="balady-box">
+                <div class="balady-label">📖 الشرح والتوضيح</div>
+                <p>
+                  في تاريخ الحاسوب كله، فيه عيلتين معماريتين حكموا كوكب الأرض وقسموه بينهم:
+                </p>
+              </div>
+
+              <div class="two-layers-split">
+                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-cyan);">
+                  <div class="mono" style="color: var(--accent-cyan); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.4rem;">
+                    1. INTEL x86 FAMILY (CISC TITAN)
+                  </div>
+                  <p style="font-size: 0.95rem;">
+                    <strong>1. عائلة Intel x86:</strong><br/>
+                    المعمارية الحاكمة في أجهزة الكمبيوتر الشخصي (<span class="mono">PCs</span>) واللابتوبات والسيرفرات الضخمة.
+                  </p>
+                </div>
+
+                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-emerald);">
+                  <div class="mono" style="color: var(--accent-emerald); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.4rem;">
+                    2. ARM ARCHITECTURE FAMILY (RISC TITAN)
+                  </div>
+                  <p style="font-size: 0.95rem;">
+                    <strong>2. عائلة ARM Architecture:</strong><br/>
+                    المعمارية الحاكمة في الهواتف الذكية (<span class="mono">Smartphones</span>) والأجهزة المدمجة (<span class="mono">Embedded Systems</span>) وإنترنت الأشياء (<span class="mono">IoT</span>).
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 2. INTEL x86 EVOLUTION & CISC PHILOSOPHY (تطور معمارية x86 وفلسفتها - سلايد 42 إلى 44) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">02</span>
+                <h2 class="exp-sec-title">INTEL x86 EVOLUTION &amp; CISC PHILOSOPHY (تطور معمارية x86 وفلسفتها - سلايد 42 إلى 44)</h2>
               </div>
 
               <div class="en-def-box">
-                <span class="en-def-label">Official English Definition — Embedded System</span>
+                <span class="en-def-label">Official Concept — Intel x86 &amp; CISC</span>
                 <p class="en-def-text">
-                  "An <strong>embedded system</strong> is the use of electronics and software <strong>within a larger product</strong> (as opposed to a general-purpose computer) designed to perform a <strong>dedicated, specific function</strong>."
+                  "The <strong>x86 architecture</strong> is the classic example of <strong>CISC (Complex Instruction Set Computer)</strong>. It evolved over decades to provide rich, powerful instructions, maintaining <strong>backward compatibility</strong> with older software."
                 </p>
               </div>
 
               <div class="balady-box">
                 <div class="balady-label">📖 الشرح والتوضيح</div>
                 <p>
-                  ده كمبيوتر صغير ومعالج مدفون جوه منتج كبير (زي الغسالة، العربية، الميكروويف، التكييف). مش معمول علشان يفتح فيسبوك ويكتب وورد زي اللابتوب (<span class="mono">General-Purpose Computer</span>)، بل معمول علشان يدير <strong>وظيفة واحدة محددة بس (<span class="mono">Dedicated Specific Function</span>)</strong>!
+                  شركة إنتل مشيت بمبدأ: <strong>"المبرمج يطلب تعليمة معقدة تخلّص شغلانة كبيرة في خطوة واحدة!"</strong>.<br/>
+                  المعمارية دي بتتميز بإنها قوية جداً وسريعة في البرامج الثقيلة، بس عيبها إنها بتستهلك كهربا عالية جداً وبتطلع حرارة، عشان كده تنفع لجهاز متوصل بفيشة في الحيطة أو بطارية ضخمة.
                 </p>
+              </div>
+
+              <h3 style="font-size: 1.05rem; font-weight: 800; margin: 1.2rem 0 0.7rem; color: var(--accent-cyan);">
+                📌 محطات التطور التاريخية لمعالجات إنتل x86 في السلايدات:
+              </h3>
+
+              <div class="attr-grid">
+                <div class="attr-card">
+                  <span class="attr-term">• 8080 (عام 1974)</span>
+                  <p class="attr-desc">أول معالج عام <strong>8-bit</strong>، وكان العقل لأول كمبيوتر شخصي (<span class="mono">Altair</span>).</p>
+                </div>
+
+                <div class="attr-card">
+                  <span class="attr-term">• 8086 / 8088 (عام 1978)</span>
+                  <p class="attr-desc">معالج <strong>16-bit</strong> ومعه ولدت المعمارية <strong class="mono">x86</strong> اللي بنستخدمها لحد النهاردة.</p>
+                </div>
+
+                <div class="attr-card">
+                  <span class="attr-term">• 80286 (عام 1982)</span>
+                  <p class="attr-desc">وسّع عنونة الذاكرة لـ <strong>16 ميجابايت</strong> ووفر حماية برمجية للذاكرة.</p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
+                  <span class="attr-term" style="color: var(--accent-amber);">• 80386 (عام 1985)</span>
+                  <p class="attr-desc">القفزة الكبرى لعصر الـ <strong>32-bit</strong> ودعم تشغيل مهام متعددة (<span class="mono">Multitasking</span>) وذاكرة افتراضية.</p>
+                </div>
+
+                <div class="attr-card">
+                  <span class="attr-term">• 80486 (عام 1989)</span>
+                  <p class="attr-desc">دمج كاش <span class="mono">L1</span> ووحدة حساب الأرقام العشرية (<span class="mono">Math Coprocessor</span>) على نفس شريحة المعالج.</p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
+                  <span class="attr-term" style="color: var(--accent-emerald);">• Pentium (عام 1993)</span>
+                  <p class="attr-desc">النقلة التاريخية! أدخل تقنية (<strong class="mono">Superscalar Execution</strong>)، يعني يقدر ينفذ أكتر من تعليمة في نفس نبضة الساعة الواحدة بالتوازي!</p>
+                </div>
+
+                <div class="attr-card">
+                  <span class="attr-term">• Core Family (عام 2006 وما بعدها)</span>
+                  <p class="attr-desc">الانتقال لمعالجات متعددة الأنوية (<span class="mono">Multicore</span>) وترددات فائقة.</p>
+                </div>
+              </div>
+
+              <div class="exam-trap-box">
+                <div class="exam-trap-title">⚠️ تريكات الامتحان الخاصة بـ x86</div>
+                <div class="exam-trap-list">
+                  <p><strong>⚠️ Trap 1:</strong> فلسفة <span class="mono">x86</span> بتعتمد على أسلوب تصميم ===&gt; <strong class="mono">CISC (Complex Instruction Set Computer)</strong>.</p>
+                  <p><strong>⚠️ Trap 2:</strong> المعالج اللي بدأ معمارية الـ <span class="mono">32-bit</span> في إنتل ===&gt; <strong class="mono">Intel 80386</strong>.</p>
+                  <p><strong>⚠️ Trap 3:</strong> المعالج اللي أدخل تقنية الـ <span class="mono">Superscalar</span> أول مرة ===&gt; <strong class="mono">Intel Pentium</strong>.</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3. EMBEDDED SYSTEMS (الأنظمة المدمجة - سلايدات 45 و 46 & سؤال الشيت 1.7) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">03</span>
+                <h2 class="exp-sec-title">EMBEDDED SYSTEMS (الأنظمة المدمجة - سلايدات 45 و 46 &amp; سؤال الشيت 1.7)</h2>
+              </div>
+
+              <div class="en-def-box" style="border-left-color: var(--accent-amber);">
+                <span class="en-def-label" style="color: var(--accent-amber);">Official English Definition for Exams — Embedded System</span>
+                <p class="en-def-text">
+                  "An <strong>embedded system</strong> is the use of electronics and software <strong>within a larger product</strong> (as opposed to a general-purpose computer) designed to perform a <strong>dedicated, specific function</strong>, often with <strong>real-time computing constraints</strong>."
+                </p>
+              </div>
+
+              <div class="balady-box">
+                <div class="balady-label">📖 الشرح والتوضيح</div>
+                <p>
+                  الكمبيوتر العادي (<span class="mono">General-Purpose</span>) معمول يشغل كل حاجة (ألعاب، وورد، متصفح).<br/>
+                  لكن <strong>99% من معالجات العالم</strong> مزروعة جوه منتجات تانية: (الغسالة، الميكروويف، فرامل العربية <span class="mono">ABS</span>، جهاز رسم القلب، التكييف).. ده اسمه حاسوب مدمج (<strong class="mono">Embedded System</strong>).<br/>
+                  هو كمبيوتر كامل بروسيسور ورام وكل حاجة، بس <strong>"مكرس لوظيفة واحدة ثابتة مبيعملش غيرها!"</strong>.
+                </p>
+              </div>
+
+              <!-- INTERACTIVE SIMULATOR 1 IN PART 6: EMBEDDED SYSTEM CONTROLLER -->
+              <div class="sim-card" data-sim="sim-embedded-controller">
+                <div class="sim-top-bar">
+                  <div class="sim-title-group">
+                    <span class="sim-fig-badge">SLIDES 45–46 // HARDWARE ARCHITECTURE DIAGRAM</span>
+                    <h3 class="sim-title">المخطط المعماري للنظام المدمج (Embedded System Controller)</h3>
+                  </div>
+                  <div class="sim-controls">
+                    <button type="button" class="sim-play-btn" data-sim-play>▶ تشغيل الخطوات بالتتابع</button>
+                    <button type="button" class="sim-step-btn active" data-step="0">1. حساسات Analog In</button>
+                    <button type="button" class="sim-step-btn" data-step="1">2. تحويل الإشارة ADC</button>
+                    <button type="button" class="sim-step-btn" data-step="2">3. مقارنة بـ ROM / SRAM</button>
+                    <button type="button" class="sim-step-btn" data-step="3">4. أوامر Control Out (Real-Time)</button>
+                  </div>
+                </div>
+
+                <div class="sim-svg-stage">
+                  <svg class="sim-svg" viewBox="0 0 820 350" role="img" aria-label="Embedded System Controller Hardware Architecture Diagram">
+                    <defs>
+                      <marker id="arr-emb" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 1 L 10 5 L 0 9 z" fill="currentColor"></path>
+                      </marker>
+                    </defs>
+
+                    <g class="svg-grid-lines">
+                      <line x1="0" y1="70" x2="820" y2="70"></line>
+                      <line x1="0" y1="140" x2="820" y2="140"></line>
+                      <line x1="0" y1="210" x2="820" y2="210"></line>
+                      <line x1="0" y1="280" x2="820" y2="280"></line>
+                      <line x1="205" y1="0" x2="205" y2="350"></line>
+                      <line x1="410" y1="0" x2="410" y2="350"></line>
+                      <line x1="615" y1="0" x2="615" y2="350"></line>
+                    </g>
+
+                    <!-- Outer Frame: EMBEDDED SYSTEM CONTROLLER -->
+                    <rect x="65" y="16" width="690" height="222" rx="14" fill="rgba(14, 116, 144, 0.04)" stroke="var(--accent-cyan)" stroke-width="2.5"></rect>
+                    <text x="410" y="38" text-anchor="middle" class="svg-node-sub" style="fill: var(--accent-cyan); font-weight: 800;">EMBEDDED SYSTEM CONTROLLER</text>
+
+                    <!-- Processor (Microcontroller CPU) -->
+                    <g class="svg-node" data-sim-node="2,3" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 2)">
+                      <rect class="svg-node-box" x="95" y="54" width="235" height="74" rx="10"></rect>
+                      <text class="svg-node-title" x="212" y="79" text-anchor="middle">Processor</text>
+                      <text class="svg-node-sub" x="212" y="100" text-anchor="middle">(Microcontroller CPU)</text>
+                      <text class="svg-node-sub" x="212" y="117" text-anchor="middle" style="fill: var(--accent-cyan);">Dedicated Processing</text>
+                    </g>
+
+                    <!-- Memory (ROM / Flash for Code | SRAM for Scratchpad) -->
+                    <g class="svg-node" data-sim-node="2" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 2)">
+                      <rect class="svg-node-box" x="490" y="54" width="235" height="74" rx="10"></rect>
+                      <text class="svg-node-title" x="607" y="79" text-anchor="middle">Memory</text>
+                      <text class="svg-node-sub" x="607" y="99" text-anchor="middle">(ROM / Flash for Code |</text>
+                      <text class="svg-node-sub" x="607" y="116" text-anchor="middle" style="fill: var(--accent-amber);">SRAM for Scratchpad)</text>
+                    </g>
+
+                    <!-- Custom Logic/Timer -->
+                    <g class="svg-node" data-sim-node="1,3" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 1)">
+                      <rect class="svg-node-box" x="285" y="164" width="250" height="58" rx="10"></rect>
+                      <text class="svg-node-title" x="410" y="190" text-anchor="middle">Custom Logic / Timer</text>
+                      <text class="svg-node-sub" x="410" y="210" text-anchor="middle">ADC / DAC &amp; Real-Time Interface</text>
+                    </g>
+
+                    <!-- Analog Data Capture (حساسات حرارة وضغط) -->
+                    <g class="svg-node" data-sim-node="0,1" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 0)">
+                      <rect class="svg-node-box" x="65" y="268" width="255" height="68" rx="10"></rect>
+                      <text class="svg-node-title" x="192" y="294" text-anchor="middle" style="fill: var(--accent-emerald);">Analog Data Capture</text>
+                      <text class="svg-node-sub" x="192" y="315" text-anchor="middle">(حساسات حرارة وضغط وسرعة عجل)</text>
+                    </g>
+
+                    <!-- Actuators & Switches (مواتير، صمامات هيدروليك) -->
+                    <g class="svg-node" data-sim-node="3" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 3)">
+                      <rect class="svg-node-box" x="500" y="268" width="255" height="68" rx="10"></rect>
+                      <text class="svg-node-title" x="627" y="294" text-anchor="middle" style="fill: var(--accent-amber);">Actuators &amp; Switches</text>
+                      <text class="svg-node-sub" x="627" y="315" text-anchor="middle">(مواتير، صمامات هيدروليك وفرامل ABS)</text>
+                    </g>
+
+                    <!-- Internal Bus Lines -->
+                    <path class="svg-wire" data-sim-wire="2" d="M 330 91 L 490 91"></path>
+                    <path class="svg-wire" data-sim-wire="1,2" d="M 212 128 L 212 146 L 410 146 L 410 164"></path>
+                    <path class="svg-wire" data-sim-wire="2" d="M 607 128 L 607 146 L 410 146"></path>
+                    <text x="410" y="82" text-anchor="middle" class="svg-node-sub" style="fill: var(--accent-cyan); font-weight: 800;">&lt;=== Internal Bus ===&gt;</text>
+
+                    <!-- External I/O Lines: [Analog In] & [Control Out] -->
+                    <path class="svg-wire" data-sim-wire="0,1" d="M 192 268 L 192 248 L 365 248 L 365 222"></path>
+                    <path class="svg-wire" data-sim-wire="3" d="M 455 222 L 455 248 L 627 248 L 627 268"></path>
+
+                    <!-- Animated SignalPulses -->
+                    <path class="svg-signal-path" data-sim-signal="0" d="M 192 268 L 192 248 L 365 248 L 365 222" style="color: var(--accent-emerald);" marker-end="url(#arr-emb)"></path>
+                    <path class="svg-signal-path" data-sim-signal="1" d="M 365 164 L 365 146 L 212 146 L 212 128" style="color: var(--accent-cyan);" marker-end="url(#arr-emb)"></path>
+                    <path class="svg-signal-path" data-sim-signal="2" d="M 490 91 L 330 91" style="color: var(--accent-amber);" marker-end="url(#arr-emb)"></path>
+                    <path class="svg-signal-path" data-sim-signal="3" d="M 212 128 L 212 146 L 455 146 L 455 248 L 627 248 L 627 268" style="color: var(--accent-amber);" marker-end="url(#arr-emb)"></path>
+
+                    <!-- On-Wire Callouts -->
+                    <g class="svg-callout" data-sim-Precision="0" transform="translate(82, 238)" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 0)">
+                      <rect class="svg-callout-box" x="0" y="0" width="165" height="22" rx="6"></rect>
+                      <text class="svg-callout-text" x="82" y="15" text-anchor="middle">① [Analog In] Sensors ▲</text>
+                    </g>
+                    <g class="svg-callout" data-sim-Precision="1" transform="translate(222, 134)" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 1)">
+                      <rect class="svg-callout-box" x="0" y="0" width="145" height="22" rx="6"></rect>
+                      <text class="svg-callout-text" x="72" y="15" text-anchor="middle">② ADC Digital In ▲</text>
+                    </g>
+                    <g class="svg-callout" data-sim-Precision="2" transform="translate(342, 97)" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 2)">
+                      <rect class="svg-callout-box" x="0" y="0" width="136" height="22" rx="6"></rect>
+                      <text class="svg-callout-text" x="68" y="15" text-anchor="middle">③ ROM Code Check</text>
+                    </g>
+                    <g class="svg-callout" data-sim-Precision="3" transform="translate(555, 238)" onclick="window.__simStep && window.__simStep('sim-embedded-controller', 3)">
+                      <rect class="svg-callout-box" x="0" y="0" width="175" height="22" rx="6"></rect>
+                      <text class="svg-callout-text" x="87" y="15" text-anchor="middle">④ [Control Out] Actuators ▼</text>
+                    </g>
+                  </svg>
+                </div>
+
+                <div class="sim-status-ticker">
+                  <div class="sim-step-num" data-sim-num>01</div>
+                  <div class="sim-step-text" data-sim-text>اضغط على الخطوات لفهم دورة عمل النظام المدمج من الحساسات إلى المشغلات في الوقت الحقيقي.</div>
+                </div>
+              </div>
+
+              <div class="balady-box" style="margin-top: 1.15rem;">
+                <div class="balady-label">⚙️ إزاي المخطط ده شغال في الواقع؟</div>
+                <ol style="padding-right: 1.25rem; line-height: 1.9;">
+                  <li><strong>1. الحساسات (<span class="mono">Sensors</span>):</strong> تقرأ إشارات من الطبيعة (حرارة الماتور أو سرعة دوران العجل).</li>
+                  <li><strong>2. تحويل الإشارة لأرقام (<span class="mono">Analog-to-Digital Converter</span>):</strong> تتحول الإشارة لأرقام وتدخل للمعالج المدمج.</li>
+                  <li><strong>3. المقارنة بذاكرة الـ <span class="mono">ROM</span>:</strong> المعالج يقارن القراءة بكود ثابت متخزن في ذاكرة الـ <span class="mono">ROM</span>.</li>
+                  <li><strong>4. رد الفعل اللحظي (<span class="mono">Real-Time Actuators</span>):</strong> لو لقى خطر، المعالج يبعت إشارة للـ <span class="mono">Actuators</span> فتضغط الفرامل في جزء من الثانية (<span class="mono">Real-Time</span>).</li>
+                </ol>
+              </div>
+            </section>
+
+            <!-- 4. DEEPLY EMBEDDED SYSTEMS & IoT (الأنظمة شديدة الاندماج وإنترنت الأشياء - سلايد 47 إلى 50) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">04</span>
+                <h2 class="exp-sec-title">DEEPLY EMBEDDED SYSTEMS &amp; IoT (الأنظمة شديدة الاندماج وإنترنت الأشياء - سلايد 47 إلى 50)</h2>
               </div>
 
               <div class="two-layers-split">
@@ -2774,140 +3021,329 @@ window.COURSE_DATA = {
                   <div class="mono" style="color: var(--accent-purple); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.4rem;">
                     SLIDE 50 // DEEPLY EMBEDDED SYSTEMS
                   </div>
+                  <p class="en-def-text" style="font-size: 0.9rem; margin-bottom: 0.55rem;">
+                    <strong>Definition:</strong> "A subset of embedded systems with minimal hardware where the <strong>processor's behavior is difficult or impossible to observe</strong> by the programmer and user."
+                  </p>
                   <p style="font-size: 0.94rem;">
-                    <strong>• الأنظمة شديدة الاندماج (<span class="mono">Deeply Embedded Systems</span>):</strong><br/>
-                    أنظمة مدمجة صغيرة جداً ومدفونة في أعماق الأجهزة (حساسات ومتحكمات ميكروسكوبية)، وسلوكها الداخلي والبرمجي شبه مخفي وصعب مراقبته أو تعديله من المبرمج والمستخدم العادي.
+                    <strong>الشرح والتوضيح:</strong> شريحة ميكروسكوبية مدفونة في أعماق حساس تحت الأرض أو في ماسورة مية، ملهاش شاشة ولا زراير ولا نظام تشغيل تقدر تشوفه، مبرمجة برمجياً على كود بسيط ثابت للأبد.
                   </p>
                 </div>
 
                 <div class="layer-pill-card" style="border-top: 3px solid var(--accent-emerald);">
                   <div class="mono" style="color: var(--accent-emerald); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.4rem;">
-                    SLIDE 47 // INTERNET OF THINGS (IoT)
+                    SLIDE 47 // THE INTERNET OF THINGS (IoT)
                   </div>
+                  <p class="en-def-text" style="font-size: 0.9rem; margin-bottom: 0.55rem;">
+                    <strong>Definition:</strong> "The expanding <strong>interconnection of smart physical devices</strong>, home appliances, and industrial sensors equipped with network connectivity to collect and exchange data."
+                  </p>
                   <p style="font-size: 0.94rem;">
-                    <strong>• إنترنت الأشياء (<span class="mono">Internet of Things — IoT</span>):</strong><br/>
-                    شبكة الأجهزة الذكية والأجهزة المدمجة (من الحساسات للأجهزة المنزلية والسيارات) المتصلة ببعضها عبر الإنترنت لتبادل البيانات واتخاذ قرارات ذكية تلقائياً.
+                    <strong>الشرح والتوضيح:</strong> لما وصلنا الأنظمة المدمجة دي بالإنترنت (<span class="mono">Wi-Fi, 5G</span>)، بقى البيت الذكي والمصنع الذكي شغال؛ التلاجة تطلب طلبات من السوبرماركت، والتكييف يشتغل لوحده لما تقرب من البيت!<br/>
+                    <strong style="color: var(--accent-amber);">🎯 معلومة امتحان:</strong> <span class="mono">"IoT is primarily driven by deeply embedded devices"</span> (المحرك الأساسي لـ IoT هو الأجهزة شديدة الاندماج).
                   </p>
                 </div>
               </div>
             </section>
 
-            <!-- 2. ARM ARCHITECTURE (معمارية ARM وعائلات Cortex - سؤال الشيت 1.8) -->
+            <!-- 5. ARM PROCESSOR ARCHITECTURE (معمارية آرم وعائلات Cortex - سلايد 51 إلى 53 & سؤال الشيت 1.8) -->
             <section class="exp-section">
               <div class="exp-section-header">
-                <span class="exp-sec-num">02</span>
-                <h2 class="exp-sec-title">ARM ARCHITECTURE (معمارية ARM وعائلات Cortex الثلاثة - سؤال الشيت 1.8)</h2>
+                <span class="exp-sec-num">05</span>
+                <h2 class="exp-sec-title">ARM PROCESSOR ARCHITECTURE (معمارية آرم وعائلات Cortex - سلايد 51 إلى 53 &amp; سؤال الشيت 1.8)</h2>
               </div>
 
-              <div class="en-def-box" style="border-left-color: var(--accent-amber);">
-                <span class="en-def-label" style="color: var(--accent-amber);">Official English Definition — ARM Architecture</span>
+              <div class="en-def-box" style="border-left-color: var(--accent-cyan);">
+                <span class="en-def-label" style="color: var(--accent-cyan);">Official English Definition for Exams — ARM Architecture</span>
                 <p class="en-def-text">
-                  "<strong>ARM</strong> refers to a family of <strong>RISC-based (Reduced Instruction Set Computer)</strong> microprocessor architectures designed by ARM Holdings. It is widely used in <strong>embedded systems and mobile devices</strong> due to its <strong>high power efficiency and low cost</strong>."
+                  "<strong>ARM</strong> is a family of microprocessors and microcontrollers based on <strong>RISC (Reduced Instruction Set Computer)</strong> design principles, designed by ARM Holdings in Cambridge, England. It is the world-dominant architecture for smartphones and embedded devices due to its <strong>extreme energy efficiency, small chip footprint, and low manufacturing cost</strong>."
                 </p>
               </div>
 
               <div class="balady-box">
                 <div class="balady-label">📖 الشرح والتوضيح</div>
                 <p>
-                  المعمارية اللي مشغلة كل موبايلات كوكب الأرض! صممتها شركة بريطانية اسمها <strong>ARM</strong>. سر نجاحها إنها مبنية على فلسفة الـ <strong class="mono" style="color: var(--accent-cyan);">RISC</strong> (أوامر بسيطة وخفيفة جداً)، فبتستهلك كهرباء قليلة جداً وحرارتها باردة، وده اللي مخلي بطارية الموبايل تعيش ساعات طويلة.
+                  دي المعمارية اللي أكلت الجو في كل موبايلات الدنيا (<span class="mono">iPhone</span> و <span class="mono">Samsung</span> وكل أندرويد).<br/>
+                  سرها العبقري: اعتمدت على فلسفة الـ <strong class="mono" style="color: var(--accent-cyan);">RISC</strong>:<br/>
+                  <strong>"بدل ما نعمل أوامر معقدة بتاكل كهربا زي إنتل، إحنا نعمل طقم أوامر بسيطة ومختصرة وسريعة جداً!"</strong>.<br/>
+                  فالشريحة بقت تاخد نقطة كهربا صغيرة جداً، ومبتسخنش، وبطارية الموبايل تقعد معاك يومين!
                 </p>
               </div>
 
               <h3 style="font-size: 1.05rem; font-weight: 800; margin: 1.15rem 0 0.65rem; color: var(--accent-cyan);">
-                📌 عائلات معالجات آرم الثلاثة المشهورة (ARM Cortex Processor Families):
+                📌 ARM Cortex Architectural Families (عائلات آرم الثلاثة المعتمدة في الامتحان - سلايد 52):
               </h3>
 
               <div class="attr-grid">
                 <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
-                  <span class="attr-term">• Cortex-A (Application Processors)</span>
-                  <p class="attr-desc">مخصصة للهواتف الذكية والأجهزة اللوحية التي تشغل أنظمة تشغيل كاملة وغنية مثل <span class="mono">Android</span> و <span class="mono">iOS</span>.</p>
+                  <span class="attr-term">1. Cortex-A (Application Processors)</span>
+                  <p class="attr-desc">
+                    مخصصة للأجهزة الذكية (<span class="mono">Smartphones, Tablets</span>) اللي بتشغل أنظمة تشغيل كاملة ومعقدة زي <span class="mono">Android</span> و <span class="mono">iOS</span> ومحتاجة معالجة رسوميات وفيديو وإدارة ذاكرة افتراضية (<span class="mono">MMU</span>).
+                  </p>
                 </div>
 
                 <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
-                  <span class="attr-term" style="color: var(--accent-amber);">• Cortex-R (Real-Time Processors)</span>
-                  <p class="attr-desc">مخصصة للأنظمة السريعة جداً والحرجة في التوقيت (<span class="mono">Real-Time</span>) مثل فرامل العربيات (<span class="mono">ABS</span>) وأنظمة الطيران والطب.</p>
+                  <span class="attr-term" style="color: var(--accent-amber);">2. Cortex-R (Real-Time Processors)</span>
+                  <p class="attr-desc">
+                    حرف الـ <strong class="mono">R</strong> اختصار لـ <strong class="mono">Real-Time</strong>!<br/>
+                    مخصصة للأنظمة الحرجة في الوقت وفائقة الدقة اللي التأخير فيها برمشة عين يعمل مصيبة (زي فرامل السيارات <span class="mono">ABS</span>، أجهزة التحكم في الطيران، وأنظمة الرعاية المركزة).
+                  </p>
                 </div>
 
                 <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
-                  <span class="attr-term" style="color: var(--accent-emerald);">• Cortex-M (Microcontroller Processors)</span>
-                  <p class="attr-desc">مخصصة للحساسات الصغيرة والأجهزة شديدة الاندماج وأجهزة إنترنت الأشياء (<span class="mono">IoT</span>).</p>
+                  <span class="attr-term" style="color: var(--accent-emerald);">3. Cortex-M (Microcontroller Processors)</span>
+                  <p class="attr-desc">
+                    حرف الـ <strong class="mono">M</strong> اختصار لـ <strong class="mono">Microcontroller</strong>!<br/>
+                    شرائح صغيرة جداً ورخيصة جداً وموفرة للطاقة لأقصى درجة، معمولة للحساسات الذكية والأجهزة المنزلية وأجهزة إنترنت الأشياء (<span class="mono">IoT</span>).
+                  </p>
+                </div>
+              </div>
+
+              <div class="exam-trap-box">
+                <div class="exam-trap-title">⚠️ تريكات الامتحان الخاصة بـ ARM</div>
+                <div class="exam-trap-list">
+                  <p><strong>⚠️ Trap 1:</strong> معمارية <span class="mono">ARM</span> مبنية على تصميم ===&gt; <strong class="mono">RISC</strong> (وليس CISC).</p>
+                  <p>
+                    <strong>⚠️ Trap 2 (تفرقة عائلات Cortex في الـ MCQs):</strong><br/>
+                    • لو قالك: <span class="mono">"For smartphones running rich OS like Android"</span> =======&gt; <strong class="mono">Cortex-A</strong><br/>
+                    • لو قالك: <span class="mono">"For time-critical embedded systems like braking"</span> ====&gt; <strong class="mono">Cortex-R</strong><br/>
+                    • لو قالك: <span class="mono">"For low-cost, energy-constrained IoT sensors"</span> ======&gt; <strong class="mono">Cortex-M</strong>
+                  </p>
                 </div>
               </div>
             </section>
 
-            <!-- 3. CLOUD COMPUTING & NETWORKING (الحوسبة السحابية - سؤال الشيت 1.9) -->
+            <!-- 6. CLOUD COMPUTING & CLOUD NETWORKING (الحوسبة السحابية وشبكاتها - سلايد 54 إلى 56 & سؤال الشيت 1.9) -->
             <section class="exp-section">
               <div class="exp-section-header">
-                <span class="exp-sec-num">03</span>
-                <h2 class="exp-sec-title">CLOUD COMPUTING &amp; NETWORKING (الحوسبة السحابية - سؤال الشيت 1.9)</h2>
+                <span class="exp-sec-num">06</span>
+                <h2 class="exp-sec-title">CLOUD COMPUTING &amp; CLOUD NETWORKING (الحوسبة السحابية وشبكاتها - سلايد 54 إلى 56 &amp; سؤال الشيت 1.9)</h2>
               </div>
 
               <div class="en-def-box" style="border-left-color: var(--accent-emerald);">
-                <span class="en-def-label" style="color: var(--accent-emerald);">Official NIST Definition — Cloud Computing</span>
+                <span class="en-def-label" style="color: var(--accent-emerald);">Official NIST Definition for Exams — Cloud Computing</span>
                 <p class="en-def-text">
-                  "A model for enabling <strong>ubiquitous, convenient, on-demand network access</strong> to a <strong>shared pool of configurable computing resources</strong> (e.g., networks, servers, storage, applications) that can be <strong>rapidly provisioned and released</strong> with minimal management effort."
+                  "<strong>Cloud Computing</strong> is a model for enabling <strong>ubiquitous, convenient, on-demand network access</strong> to a <strong>shared pool of configurable computing resources</strong> (e.g., networks, servers, storage, applications, and services) that can be <strong>rapidly provisioned and released</strong> with minimal management effort or service provider interaction."
                 </p>
               </div>
 
               <div class="balady-box">
                 <div class="balady-label">📖 الشرح والتوضيح</div>
                 <p>
-                  بدل ما تشتري سيرفرات غالية عندك في الشركة، إنت بتأجر السيرفرات والرامات والتخزين من مراكز بيانات عملاقة (عند جوجل أو أمازون أو مايكروسوفت) وتوصلها عبر الإنترنت <strong>عند الطلب (<span class="mono">On-Demand</span>)</strong> وتدفع على قد استخدامك بالملي زي عداد الكهرباء!
-                </p>
-                <p style="margin-top: 0.55rem;">
-                  • <strong>شبكات السحابة (<span class="mono">Cloud Networking</span> — سلايد 55):</strong> هي شبكات الربط فائقة السرعة والموثوقية (<span class="mono">High-performance &amp; High-reliability networking</span>) التي تسمح بنقل البيانات بين المشترك ومراكز البيانات السحابية بدون تأخير.
+                  زمان لو عاوز تبني موقع أو تطبيق ضخم، كنت بتشتري سيرفرات بملايين وتحطها في أوضة مكيفة.<br/>
+                  النهاردة، السيرفرات والرامات والتخزين بقت "في السحابة" عند شركات عملاقة زي (<span class="mono">AWS</span> و <span class="mono">Google Cloud</span>).<br/>
+                  تفتح اللابتوب وتحجز 50 بروسيسور و 200 جيجا رامات يشتغلوا ساعة ويقفلوا، وتدفع بالدقيقة بالملي زي عداد النور والماية عبر النت!
                 </p>
               </div>
 
-              <div class="exam-trap-box">
-                <div class="exam-trap-title">⚠️ أخطر تريكات الامتحان الخاصة بالأنظمة المدمجة والـ ARM والـ Cloud (3 Traps)</div>
-                <div class="exam-trap-list">
-                  <p>
-                    <strong>⚠️ Trap 1 (Embedded System vs. General-Purpose Computer):</strong><br/>
-                    • الـ <span class="mono">General-Purpose Computer</span> (زي اللابتوب والديسكتوب): بيشغل برامج وتطبيقات متعددة ومختلفة.<br/>
-                    • الـ <span class="mono">Embedded System</span> (زي حاسوب الغسالة أو الفرامل): <strong class="mono">Dedicated to a SPECIFIC function</strong>.
-                  </p>
-                  <p>
-                    <strong>⚠️ Trap 2 (معمارية المعالجات — CISC vs. RISC):</strong><br/>
-                    • معالجات <strong>Intel x86</strong> المستخدمة في الكمبيوتر واللابتوب تعتمد على عمارة ===&gt; <strong class="mono">CISC</strong>.<br/>
-                    • معالجات <strong>ARM</strong> المستخدمة في الموبايلات والأنظمة المدمجة تعتمد على عمارة ===&gt; <strong class="mono">RISC</strong>.
-                  </p>
-                  <p>
-                    <strong>⚠️ Trap 3 (عائلات ARM Cortex الثلاثة):</strong><br/>
-                    • <strong class="mono">Cortex-A = Application</strong> (هواتف ذكية وأنظمة تشغيل كاملة).<br/>
-                    • <strong class="mono">Cortex-R = Real-Time</strong> (أنظمة حرجة في التوقيت كالفرامل والطيران).<br/>
-                    • <strong class="mono">Cortex-M = Microcontroller</strong> (أجهزة مدمجة وحساسات وإنترنت الأشياء IoT).
-                  </p>
+              <!-- INTERACTIVE SIMULATOR 2 IN PART 6: CLOUD INFRASTRUCTURE DIAGRAM -->
+              <div class="sim-card" data-sim="sim-cloud-infra">
+                <div class="sim-top-bar">
+                  <div class="sim-title-group">
+                    <span class="sim-fig-badge">SLIDES 54–56 // CLOUD INFRASTRUCTURE DIAGRAM</span>
+                    <h3 class="sim-title">المخطط المعماري للحوسبة السحابية (Cloud Infrastructure Diagram)</h3>
+                  </div>
+                  <div class="sim-controls">
+                    <button type="button" class="sim-play-btn" data-sim-play>▶ تشغيل الخطوات بالتتابع</button>
+                    <button type="button" class="sim-step-btn active" data-step="0">1. أجهزة العملاء (Clients)</button>
+                    <button type="button" class="sim-step-btn" data-step="1">2. شبكات السحابة (Cloud Networking)</button>
+                    <button type="button" class="sim-step-btn" data-step="2">3. مجمع الموارد المشترك (Shared Resource Pool)</button>
+                  </div>
                 </div>
+
+                <div class="sim-svg-stage">
+                  <svg class="sim-svg" viewBox="0 0 820 350" role="img" aria-label="Cloud Infrastructure Architecture Diagram">
+                    <defs>
+                      <marker id="arr-cld" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 1 L 10 5 L 0 9 z" fill="currentColor"></path>
+                      </marker>
+                    </defs>
+
+                    <g class="svg-grid-lines">
+                      <line x1="0" y1="70" x2="820" y2="70"></line>
+                      <line x1="0" y1="140" x2="820" y2="140"></line>
+                      <line x1="0" y1="210" x2="820" y2="210"></line>
+                      <line x1="0" y1="280" x2="820" y2="280"></line>
+                      <line x1="205" y1="0" x2="205" y2="350"></line>
+                      <line x1="410" y1="0" x2="410" y2="350"></line>
+                      <line x1="615" y1="0" x2="615" y2="350"></line>
+                    </g>
+
+                    <!-- Top Row: 3 Clients -->
+                    <g class="svg-node" data-sim-node="0" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 0)">
+                      <rect class="svg-node-box" x="45" y="18" width="215" height="58" rx="10"></rect>
+                      <text class="svg-node-title" x="152" y="44" text-anchor="middle">Smartphone Client</text>
+                      <text class="svg-node-sub" x="152" y="64" text-anchor="middle">ARM Mobile Subscriber</text>
+                    </g>
+
+                    <g class="svg-node" data-sim-node="0" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 0)">
+                      <rect class="svg-node-box" x="302" y="18" width="215" height="58" rx="10"></rect>
+                      <text class="svg-node-title" x="410" y="44" text-anchor="middle">Laptop Client</text>
+                      <text class="svg-node-sub" x="410" y="64" text-anchor="middle">x86 PC Subscriber</text>
+                    </g>
+
+                    <g class="svg-node" data-sim-node="0" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 0)">
+                      <rect class="svg-node-box" x="560" y="18" width="215" height="58" rx="10"></rect>
+                      <text class="svg-node-title" x="667" y="44" text-anchor="middle">IoT Sensor Client</text>
+                      <text class="svg-node-sub" x="667" y="64" text-anchor="middle">Embedded Smart Device</text>
+                    </g>
+
+                    <!-- Middle Row: CLOUD NETWORKING -->
+                    <g class="svg-node" data-sim-node="1" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 1)">
+                      <rect class="svg-node-box" x="175" y="124" width="470" height="66" rx="12"></rect>
+                      <text class="svg-node-title" x="410" y="151" text-anchor="middle" style="fill: var(--accent-cyan);">CLOUD NETWORKING</text>
+                      <text class="svg-node-sub" x="410" y="173" text-anchor="middle">(High-Performance, Low-Latency Network)</text>
+                    </g>
+
+                    <!-- Bottom Row: SHARED CLOUD RESOURCE POOL -->
+                    <g class="svg-node" data-sim-node="2" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 2)">
+                      <rect class="svg-node-box" x="45" y="232" width="730" height="102" rx="14"></rect>
+                      <text class="svg-node-title" x="410" y="257" text-anchor="middle" style="fill: var(--accent-emerald);">SHARED CLOUD RESOURCE POOL</text>
+
+                      <!-- Virtual Servers -->
+                      <rect x="68" y="270" width="215" height="50" rx="8" fill="rgba(14,116,144,0.08)" stroke="var(--accent-cyan)" stroke-width="1.5"></rect>
+                      <text class="svg-node-sub" x="175" y="291" text-anchor="middle" style="fill: var(--accent-cyan); font-weight: 800;">[Virtual Servers]</text>
+                      <text class="svg-node-sub" x="175" y="310" text-anchor="middle">(Xeon &amp; ARM Servers)</text>
+
+                      <!-- Massive Storage -->
+                      <rect x="302" y="270" width="215" height="50" rx="8" fill="rgba(180,83,9,0.08)" stroke="var(--accent-amber)" stroke-width="1.5"></rect>
+                      <text class="svg-node-sub" x="410" y="291" text-anchor="middle" style="fill: var(--accent-amber); font-weight: 800;">[Massive Storage]</text>
+                      <text class="svg-node-sub" x="410" y="310" text-anchor="middle">(Petabytes of Disks)</text>
+
+                      <!-- Database Engines -->
+                      <rect x="537" y="270" width="215" height="50" rx="8" fill="rgba(4,120,87,0.08)" stroke="var(--accent-emerald)" stroke-width="1.5"></rect>
+                      <text class="svg-node-sub" x="644" y="291" text-anchor="middle" style="fill: var(--accent-emerald); font-weight: 800;">[Database Engines]</text>
+                      <text class="svg-node-sub" x="644" y="310" text-anchor="middle">(Big Data Processing)</text>
+                    </g>
+
+                    <!-- Wires -->
+                    <path class="svg-wire" data-sim-wire="0,1" d="M 152 76 L 152 100 L 667 100 L 667 76"></path>
+                    <path class="svg-wire" data-sim-wire="0,1" d="M 410 76 L 410 124"></path>
+                    <path class="svg-wire" data-sim-wire="1,2" d="M 410 190 L 410 232"></path>
+
+                    <!-- Animated Signal Paths -->
+                    <path class="svg-signal-path" data-sim-signal="0" d="M 152 76 L 152 100 L 410 100 L 410 124" style="color: var(--accent-cyan);" marker-end="url(#arr-cld)"></path>
+                    <path class="svg-signal-path" data-sim-signal="1" d="M 410 124 L 410 190" style="color: var(--accent-amber);" marker-end="url(#arr-cld)"></path>
+                    <path class="svg-signal-path" data-sim-signal="2" d="M 410 190 L 410 232" style="color: var(--accent-emerald);" marker-end="url(#arr-cld)"></path>
+
+                    <!-- Callout Badges -->
+                    <g class="svg-callout" data-sim-Precision="0" transform="translate(185, 89)" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 0)">
+                      <rect class="svg-callout-box" x="0" y="0" width="160" height="22" rx="6"></rect>
+                      <text class="svg-callout-text" x="80" y="15" text-anchor="middle">① On-Demand Request ▼</text>
+                    </g>
+                    <g class="svg-callout" data-sim-Precision="1" transform="translate(655, 146)" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 1)">
+                      <rect class="svg-callout-box" x="0" y="0" width="145" height="22" rx="6"></rect>
+                      <text class="svg-callout-text" x="72" y="15" text-anchor="middle">② Low-Latency Link</text>
+                    </g>
+                    <g class="svg-callout" data-sim-Precision="2" transform="translate(425, 200)" onclick="window.__simStep && window.__simStep('sim-cloud-infra', 2)">
+                      <rect class="svg-callout-box" x="0" y="0" width="185" height="22" rx="6"></rect>
+                      <text class="svg-callout-text" x="92" y="15" text-anchor="middle">③ Rapid Provisioning ▼</text>
+                    </g>
+                  </svg>
+                </div>
+
+                <div class="sim-status-ticker">
+                  <div class="sim-step-num" data-sim-num>01</div>
+                  <div class="sim-step-text" data-sim-text>اضغط على خطوات المخطط لتتبع اتصال أجهزة العملاء بالسحابة عبر شبكات Cloud Networking.</div>
+                </div>
+              </div>
+
+              <div class="balady-box" style="margin-top: 1.15rem;">
+                <div class="balady-label">🌐 Cloud Networking (سلايد 55)</div>
+                <p>
+                  هي البنية التحتية لشبكات الإنترنت فائقة السرعة والموثوقية (<strong class="mono">High-performance &amp; High-reliability</strong>) التي تضمن وصول واستجابة لحظية بين أجهزة العملاء ومراكز البيانات السحابية بدون انقطاع.
+                </p>
               </div>
             </section>
 
-            <!-- 4. POPULAR EXAM TRUE / FALSE DRILLS -->
+            <!-- 7. INSTANT EXAM BUZZWORDS (كلمات التثبيت السريعة لـ MCQs) -->
             <section class="exp-section">
               <div class="exp-section-header">
-                <span class="exp-sec-num">04</span>
+                <span class="exp-sec-num">07</span>
+                <h2 class="exp-sec-title">INSTANT EXAM BUZZWORDS (كلمات التثبيت السريعة لـ MCQs)</h2>
+              </div>
+
+              <div class="buzzwords-table-wrap">
+                <table class="buzz-table">
+                  <thead>
+                    <tr>
+                      <th>أول ما تشوف العبارة دي في السؤال (Exam Clue)</th>
+                      <th>اختار فوراً (Target Term)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="mono">"Complex instructions, desktop dominance"</td>
+                      <td><span class="buzz-target">CISC / Intel x86</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono">"Multiple instructions executed per cycle"</td>
+                      <td><span class="buzz-target">SUPERSCALAR (Pentium)</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono">"Computer dedicated to a specific task"</td>
+                      <td><span class="buzz-target">EMBEDDED SYSTEM</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono">"Processor behavior difficult to observe"</td>
+                      <td><span class="buzz-target">DEEPLY EMBEDDED SYSTEM</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono">"Interconnected network of physical devices"</td>
+                      <td><span class="buzz-target">INTERNET OF THINGS (IoT)</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono">"Energy-efficient, RISC architecture for mobile"</td>
+                      <td><span class="buzz-target">ARM ARCHITECTURE</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono">"On-demand network access to shared resources"</td>
+                      <td><span class="buzz-target">CLOUD COMPUTING</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- 8. POPULAR EXAM TRUE / FALSE DRILLS -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">08</span>
                 <h2 class="exp-sec-title">POPULAR EXAM TRUE / FALSE DRILLS (أسئلة صح وغلط المشهورة)</h2>
               </div>
 
               <div class="tf-drills-grid">
                 <div class="tf-card">
-                  <p class="tf-question">[Q1] "An embedded system is designed to perform a wide variety of general-purpose user applications."</p>
+                  <p class="tf-question">[Q1] "The ARM architecture is based on CISC design principles."</p>
                   <div class="tf-answer-row">
                     <span class="tf-badge false">Answer: FALSE (✖)</span>
-                    <span class="ltr-block">(It is designed for a <strong>DEDICATED, specific function</strong>).</span>
+                    <span class="ltr-block">(ARM is strictly <strong>RISC</strong>; x86 is CISC).</span>
                   </div>
                 </div>
 
                 <div class="tf-card">
-                  <p class="tf-question">[Q2] "The ARM architecture is based on CISC design principles."</p>
+                  <p class="tf-question">[Q2] "An embedded system is designed to run arbitrary general-purpose software."</p>
                   <div class="tf-answer-row">
                     <span class="tf-badge false">Answer: FALSE (✖)</span>
-                    <span class="ltr-block">(ARM is based on <strong>RISC</strong> design principles).</span>
+                    <span class="ltr-block">(It is designed for a <strong>dedicated, specific function</strong>).</span>
                   </div>
                 </div>
 
                 <div class="tf-card">
-                  <p class="tf-question">[Q3] "Cloud computing allows on-demand network access to shared configurable computing resources."</p>
+                  <p class="tf-question">[Q3] "ARM Cortex-M processors are optimized for high-end smartphones running Android."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block">(<strong>Cortex-A</strong> is for smartphones; <strong>Cortex-M</strong> is for microcontrollers/IoT).</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">[Q4] "In cloud computing, resources are provisioned on-demand over the network."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge true">Answer: TRUE (✔)</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">[Q5] "The Intel Pentium processor introduced superscalar execution."</p>
                   <div class="tf-answer-row">
                     <span class="tf-badge true">Answer: TRUE (✔)</span>
                   </div>
@@ -2915,10 +3351,10 @@ window.COURSE_DATA = {
               </div>
             </section>
 
-            <!-- 5. SHEET 1: OFFICIAL EXAM QUESTIONS & MODEL ANSWERS (1.7, 1.8, 1.9) -->
+            <!-- 9. SHEET 1: OFFICIAL EXAM QUESTIONS & MODEL ANSWERS (1.7, 1.8, 1.9) -->
             <section class="exp-section">
               <div class="exp-section-header">
-                <span class="exp-sec-num">05</span>
+                <span class="exp-sec-num">09</span>
                 <h2 class="exp-sec-title">SHEET 1: OFFICIAL EXAM QUESTIONS &amp; MODEL ANSWERS (أسئلة الشيت 1.7 إلى 1.9)</h2>
               </div>
 
@@ -2939,7 +3375,7 @@ window.COURSE_DATA = {
                   </div>
                   <div class="sheet-a-box">
                     <p style="font-family: var(--font-en); line-height: 1.8;">
-                      An <strong>embedded system</strong> is a computer system (consisting of a processor, memory, and input/output interfaces) that is <strong>embedded as part of a larger electronic or mechanical device</strong>, designed to perform <strong>dedicated functions</strong> often with real-time computing constraints.
+                      An <strong>embedded system</strong> is a computer system (comprising a processor, semiconductor memory, and input/output capabilities) that is <strong>integrated as a dedicated subsystem within a larger electronic or mechanical device</strong>. Unlike a general-purpose computer, an embedded system is engineered to perform a <strong>dedicated, specific function</strong>, often under strict real-time constraints, limited power availability, and small physical size.
                     </p>
                   </div>
                 </div>
@@ -2960,7 +3396,7 @@ window.COURSE_DATA = {
                   </div>
                   <div class="sheet-a-box">
                     <p style="font-family: var(--font-en); line-height: 1.8;">
-                      <strong>Arm architecture</strong> refers to a family of <strong>reduced instruction set computer (RISC)</strong> microprocessors designed by ARM Holdings. It is engineered primarily for <strong>power efficiency, compact die size, and low cost</strong>, making it the dominant processor architecture for mobile devices, smartphones, and embedded systems.
+                      <strong>Arm architecture</strong> refers to a family of <strong>reduced instruction set computer (RISC)</strong> microprocessors and microcontrollers developed by ARM Holdings. It is engineered primarily for <strong>high power efficiency, compact physical silicon size, and low cost</strong>, making it the universally dominant architecture for mobile devices (smartphones, tablets) and embedded IoT systems. It is divided into three primary profiles: <strong>Cortex-A (Application), Cortex-R (Real-time), and Cortex-M (Microcontroller)</strong>.
                     </p>
                   </div>
                 </div>
@@ -2981,7 +3417,7 @@ window.COURSE_DATA = {
                   </div>
                   <div class="sheet-a-box">
                     <p style="font-family: var(--font-en); line-height: 1.8;">
-                      <strong>Cloud computing</strong> (as defined by NIST) is a model for enabling <strong>ubiquitous, convenient, on-demand network access to a shared pool of configurable computing resources</strong> (e.g., networks, servers, storage, applications, and services) that can be <strong>rapidly provisioned and released</strong> with minimal management effort or service provider interaction.
+                      <strong>Cloud computing</strong> (as defined by NIST) is a model for enabling <strong>ubiquitous, convenient, on-demand network access to a shared pool of configurable computing resources</strong> (e.g., networks, servers, storage, applications, and services) that can be <strong>rapidly provisioned and released</strong> with minimal management effort or service provider interaction. It relies on high-performance cloud networking to deliver elastic computing capacity to subscribers.
                     </p>
                   </div>
                 </div>
@@ -2991,97 +3427,121 @@ window.COURSE_DATA = {
           quiz: [
             {
               id: "p6_q1",
-              question: "Q1. What is the key distinction between an Embedded System and a General-Purpose Computer?",
+              question: "Q1. [EXAM TRAP]: Which design philosophy does the Intel x86 architecture follow, and which does ARM follow?",
               options: [
-                "An embedded system is designed to perform a dedicated, specific function within a larger product",
-                "An embedded system has no processor or memory",
-                "An embedded system is only used in giant mainframe data centers",
-                "A general-purpose computer can only run one single fixed function"
+                "Intel x86 is CISC; ARM is RISC",
+                "Intel x86 is RISC; ARM is CISC",
+                "Both Intel x86 and ARM are CISC",
+                "Both Intel x86 and ARM are Vacuum Tube architectures"
               ],
               correctIndex: 0,
-              explanation: "صح جداً! النظام المدمج (Embedded System) هو كمبيوتر مدفون جوه منتج أكبر ومصمم لأداء وظيفة محددة ومخصصة (Dedicated, specific function)."
+              explanation: "صح جداً! معمارية Intel x86 هي المثال الكلاسيكي للـ CISC (Complex Instruction Set Computer)، بينما معمارية ARM مبنية بالكامل على فلسفة الـ RISC (Reduced Instruction Set Computer)."
             },
             {
               id: "p6_q2",
-              question: "Q2. [EXAM TRAP]: The ARM processor architecture is based on which instruction set design philosophy?",
+              question: "Q2. [EXAM TRAP]: Which Intel x86 processor marked the major leap into 32-bit architecture and multitasking in 1985?",
               options: [
-                "CISC (Complex Instruction Set Computer)",
-                "RISC (Reduced Instruction Set Computer)",
-                "Hardwired ENIAC Vacuum Tube Logic",
-                "40-bit IAS Analog Computing"
+                "Intel 8080 (1974)",
+                "Intel 8086 (1978)",
+                "Intel 80386 (1985)",
+                "Intel 80286 (1982)"
               ],
-              correctIndex: 1,
-              explanation: "الله ينور! معمارية ARM مبنية على فلسفة الـ RISC (Reduced Instruction Set Computer)، وده اللي بيخليها موفرة جداً للطاقة ورخيصة وباردة."
+              correctIndex: 2,
+              explanation: "الله ينور! معالج Intel 80386 (عام 1985) هو اللي قدم القفزة التاريخية لعصر الـ 32-bit ودعم الـ Multitasking."
             },
             {
               id: "p6_q3",
-              question: "Q3. Why is the ARM architecture the dominant choice for smartphones and mobile devices?",
+              question: "Q3. [EXAM TRAP]: Which Intel processor first introduced Superscalar Execution (executing multiple instructions in parallel per clock cycle)?",
               options: [
-                "Because it consumes maximum electrical power and generates high heat",
-                "Due to its high power efficiency, compact die size, and low cost",
-                "Because it cannot run operating systems like Android or iOS",
-                "Because it uses glass vacuum tubes"
+                "Intel 80486",
+                "Intel Pentium (1993)",
+                "Intel 8080",
+                "Intel 80286"
               ],
               correctIndex: 1,
-              explanation: "برافو! سر سيطرة ARM على الموبايلات والأنظمة المدمجة هو كفاءة استهلاك الطاقة العالية (High power efficiency)، صغر مساحة الشريحة، وانخفاض التكلفة."
+              explanation: "برافو! معالج Intel Pentium (عام 1993) هو اللي أدخل تقنية الـ Superscalar Execution لأول مرة."
             },
             {
               id: "p6_q4",
-              question: "Q4. Match the ARM Cortex family: Which ARM Cortex family is specifically designed for Smartphones running rich operating systems like Android and iOS?",
+              question: "Q4. What is the key distinction between an Embedded System and a General-Purpose Computer?",
               options: [
-                "ARM Cortex-M",
-                "ARM Cortex-R",
-                "ARM Cortex-A",
-                "Intel 4004"
+                "An embedded system is integrated within a larger product to perform a dedicated, specific function",
+                "An embedded system has no processor or memory",
+                "An embedded system is designed to run arbitrary general-purpose desktop apps",
+                "A general-purpose computer cannot run an operating system"
               ],
-              correctIndex: 2,
-              explanation: "مظبوط! حرف الـ A في Cortex-A بيرمز لـ Application Processors، وهي المخصصة للموبايلات والأجهزة اللي بتشغل أنظمة تشغيل كاملة زي Android."
+              correctIndex: 0,
+              explanation: "مظبوط! النظام المدمج (Embedded System) هو كمبيوتر كامل مدفون جوه منتج أكبر ومصمم لأداء وظيفة محددة ومخصصة (Dedicated, specific function) غالباً بقيود وقت حقيقي (Real-time constraints)."
             },
             {
               id: "p6_q5",
-              question: "Q5. Which ARM Cortex family is engineered for ultra-low-power Microcontrollers in IoT sensors and deeply embedded devices?",
+              question: "Q5. A subset of embedded systems with minimal hardware where the processor's behavior is difficult or impossible to observe is called:",
               options: [
-                "ARM Cortex-A (Application)",
-                "ARM Cortex-R (Real-Time)",
-                "ARM Cortex-M (Microcontroller)",
-                "IBM System/370"
+                "Mainframe Supercomputer",
+                "Deeply Embedded System",
+                "Cloud Data Center",
+                "General-Purpose Laptop"
               ],
-              correctIndex: 2,
-              explanation: "صح! عائلة Cortex-M (Microcontroller) مخصصة للحساسات الصغيرة وأجهزة إنترنت الأشياء (IoT) والأنظمة المدمجة."
+              correctIndex: 1,
+              explanation: "صح! الـ Deeply Embedded System هو النظام شديد الاندماج اللي سلوكه الداخلي شبه مخفي وصعب مراقبته، وهو المحرك الأساسي لإنترنت الأشياء (IoT)."
             },
             {
               id: "p6_q6",
-              question: "Q6. Which ARM Cortex family is used for safety-critical systems requiring deterministic Real-Time response (such as car ABS brakes and aviation)?",
+              question: "Q6. Match the ARM Cortex profile: Which family is designed for Smartphones and Tablets running rich OS like Android and iOS?",
               options: [
+                "ARM Cortex-M",
                 "ARM Cortex-R",
                 "ARM Cortex-A",
-                "ARM Cortex-M",
                 "Intel 8086"
               ],
-              correctIndex: 0,
-              explanation: "إجابة صحيحة! عائلة Cortex-R (Real-Time Processors) مخصصة للأنظمة الحرجة في التوقيت زي فرامل العربيات والطيران."
+              correctIndex: 2,
+              explanation: "إجابة صحيحة! عائلة Cortex-A (Application Processors) مخصصة للهواتف الذكية والأجهزة اللوحية اللي بتشغل أنظمة تشغيل غنية زي Android و iOS."
             },
             {
               id: "p6_q7",
-              question: "Q7. According to the official NIST definition, Cloud Computing provides:",
+              question: "Q7. Which ARM Cortex family is engineered for time-critical Real-Time embedded systems such as automotive ABS braking and aviation control?",
               options: [
-                "Local manual rewiring of vacuum tubes without internet access",
-                "Ubiquitous, convenient, on-demand network access to a shared pool of configurable computing resources",
-                "Permanent physical ownership of hardware servers inside every user's home",
-                "A single 4-bit calculator chip"
+                "ARM Cortex-R (Real-Time)",
+                "ARM Cortex-A (Application)",
+                "ARM Cortex-M (Microcontroller)",
+                "Intel Pentium"
               ],
-              correctIndex: 1,
-              explanation: "الله ينور! تعريف NIST الرسمي للـ Cloud Computing: الوصول الشبكي المريح وعند الطلب (On-demand network access) لمجمع مشترك من الموارد الحاسوبية القابلة للضبط (Servers, Storage, Networks, Applications)."
+              correctIndex: 0,
+              explanation: "الله ينور! حرف الـ R في Cortex-R اختصار لـ Real-Time، وهي المخصصة للأنظمة الحرجة في التوقيت زي فرامل الـ ABS وأنظمة الطيران."
             },
             {
               id: "p6_q8",
-              question: "Q8. [True / False]: An embedded system is designed to perform a wide variety of general-purpose applications like a desktop PC.",
+              question: "Q8. Which ARM Cortex family is optimized for low-cost, ultra-low-power Microcontrollers and IoT sensors?",
+              options: [
+                "ARM Cortex-A",
+                "ARM Cortex-R",
+                "ARM Cortex-M",
+                "Intel Core i9"
+              ],
+              correctIndex: 2,
+              explanation: "برافو! حرف الـ M في Cortex-M اختصار لـ Microcontroller، وهي الشرائح الموفرة للطاقة والمخصصة لحساسات وأجهزة الـ IoT."
+            },
+            {
+              id: "p6_q9",
+              question: "Q9. According to the official NIST definition, Cloud Computing enables:",
+              options: [
+                "Manual rewiring of vacuum tubes without internet connectivity",
+                "Ubiquitous, convenient, on-demand network access to a shared pool of configurable computing resources",
+                "Permanent local installation of servers in every room",
+                "Replacing all network cables with analog hydraulic valves"
+              ],
+              correctIndex: 1,
+              explanation: "صح جداً! تعريف NIST الرسمي للـ Cloud Computing: الوصول الشبكي المريح وعند الطلب (On-demand network access) لمجمع مشترك من الموارد الحاسوبية القابلة للضبط (Servers, Storage, Networks, Applications)."
+            },
+            {
+              id: "p6_q10",
+              question: "Q10. [True / False]: ARM Cortex-M processors are optimized for high-end smartphones running Android.",
               options: [
                 "True",
                 "False"
               ],
               correctIndex: 1,
-              explanation: "الإجابة False (✖)! الـ Embedded System مصمم لأداء وظيفة محددة ومخصصة (Dedicated, specific function) جوه جهاز أكبر."
+              explanation: "الإجابة False (✖)! معالجات Cortex-A هي المخصصة للهواتف الذكية، بينما Cortex-M مخصصة للـ Microcontrollers وأجهزة الـ IoT."
             }
           ]
         }

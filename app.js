@@ -184,6 +184,61 @@
         payload: "🚀 توفير مشوار للذاكرة! المعالج يسحب التعليمة اليمين الجاهزة من الـ IBR وينفذها فوراً",
         desc: "في النبضة التالية، لا يحتاج المعالج للذهاب للذاكرة لجلب تعليمة جديدة! بل يسحب التعليمة اليمين المخزنة جاهزة في الـ IBR وينقل الـ Opcode بتاعها إلى الـ IR وعنوانها إلى الـ MAR وينفذها مباشرة، مما يضاعف سرعة الجلب."
       }
+    ],
+
+    "sim-embedded-controller": [
+      {
+        num: "01",
+        title: "الخطوة 1: التقاط الإشارات من الحساسات (Analog Data Capture — Sensors)",
+        route: "Physical Environment (Heat / Wheel Speed) ──► Analog Data Capture (Sensors)",
+        payload: "🌡️ الحساسات (Sensors) تقرأ إشارات من الطبيعة (حرارة الماتور أو سرعة دوران العجل)",
+        desc: "تلتقط الحساسات الخارجية (Analog Data Capture) الإشارات التماثلية من الطبيعة مثل درجة حرارة المحرك أو ضغط الزيت أو سرعة دوران العجل في نظام فرامل الـ ABS."
+      },
+      {
+        num: "02",
+        title: "الخطوة 2: تحويل الإشارة لأرقام ودخولها للمعالج المدمج (Analog In ➔ Custom Logic ➔ CPU)",
+        route: "Analog Data Capture ──[Analog In / ADC]──► Custom Logic/Timer ──► Microcontroller CPU",
+        payload: "🔢 تتحول الإشارة لأرقام (Analog-to-Digital) وتدخل للمعالج عبر الـ Internal Bus",
+        desc: "تمر الإشارة عبر مدخل [Analog In] ووحدة المنطق والمؤقت (Custom Logic/Timer) حيث تتحول من إشارة تماثلية إلى أرقام رقمية (ADC)، ثم تنتقل عبر الناقل الداخلي (Internal Bus) إلى المعالج المدمج (Processor / Microcontroller CPU)."
+      },
+      {
+        num: "03",
+        title: "الخطوة 3: مقارنة القراءة بالكود الثابت في الذاكرة (ROM / Flash & SRAM)",
+        route: "Microcontroller CPU ◄──[Internal Bus]──► Memory (ROM/Flash for Code | SRAM for Scratchpad)",
+        payload: "💾 المعالج يقارن القراءة بكود ثابت متخزن في الـ ROM ويستخدم الـ SRAM للحساب المؤقت",
+        desc: "يقوم المعالج المدمج بقراءة البرنامج الثابت المخزن في ذاكرة الـ ROM/Flash (ويستخدم ذاكرة الـ SRAM كمسودة سريعة Scratchpad) ليقارن قراءة الحساسات بالحدود الآمنة المبرمجة مسبقاً."
+      },
+      {
+        num: "04",
+        title: "الخطوة 4: إرسال أمر التحكم اللحظي للمحركات والصمامات (Control Out ➔ Actuators)",
+        route: "Microcontroller CPU ──► Custom Logic/Timer ──[Control Out]──► Actuators & Switches",
+        payload: "⚡ استجابة لحظية (Real-Time): المعالج يبعت إشارة للـ Actuators فتضغط الفرامل في جزء من الثانية!",
+        desc: "إذا اكتشف المعالج خطراً (مثل انزلاق العجل)، يرسل فوراً إشارة تحكم عبر مخرج [Control Out] إلى المشغلات الميكانيكية (Actuators & Switches مثل المواتير وصمامات الهيدروليك) لتضغط الفرامل في جزء من الثانية (Real-Time)!"
+      }
+    ],
+
+    "sim-cloud-infra": [
+      {
+        num: "01",
+        title: "الخطوة 1: طلب الخدمة عند الطلب من أجهزة العملاء (Smartphone, Laptop & IoT Clients)",
+        route: "[Smartphone Client | Laptop Client | IoT Sensor Client] ──► Cloud Networking",
+        payload: "📱 أجهزة العملاء تطلب موارد حوسبة أو تخزين عند الطلب (On-Demand Access)",
+        desc: "تبدأ العملية من أجهزة المستخدمين والأنظمة المتصلة (هاتف ذكي Smartphone، لابتوب Laptop، أو حساس إنترنت الأشياء IoT Sensor) التي ترسل طلبات بيانات أو حجز سيرفرات عبر الشبكة."
+      },
+      {
+        num: "02",
+        title: "الخطوة 2: النقل عبر شبكات السحابة فائقة السرعة (Cloud Networking — Low Latency)",
+        route: "Client Devices ◄──[High-Performance, Low-Latency Network]──► Shared Cloud Resource Pool",
+        payload: "🌐 شبكات السحابة (Cloud Networking) تنقل البيانات بسرعة فائقة وبدون انقطاع أو تأخير",
+        desc: "تمر جميع الطلبات عبر طبقة شبكات السحابة (Cloud Networking)، وهي بنية شبكية فائقة السرعة والاعتمادية (High-Performance, High-Reliability, Low-Latency) تضمن الربط اللحظي بين المشترك ومراكز البيانات السحابية."
+      },
+      {
+        num: "03",
+        title: "الخطوة 3: تخصيص الموارد من المجمع المشترك (Shared Cloud Resource Pool)",
+        route: "Cloud Networking ──► [Virtual Servers (Xeon & ARM)] + [Massive Storage] + [Database Engines]",
+        payload: "☁️ تخصيص فوري للسيرفرات الافتراضية والتخزين العملاق وقواعد البيانات بالدقيقة!",
+        desc: "داخل مجمع الموارد السحابية المشترك (Shared Cloud Resource Pool)، يتم فوراً تخصيص (Rapidly Provisioned) السيرفرات الافتراضية (Virtual Servers بمعالجات Xeon و ARM) ومساحات التخزين الضخمة (Petabytes of Disks) ومحركات قواعد البيانات (Big Data Processing) على قدر الاستخدام."
+      }
     ]
   };
 
