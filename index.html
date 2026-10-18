@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>معمارية الحاسب | Computer Architecture — منصة الشرح</title>
+
+  <!-- Distinctive Typography: Cairo + IBM Plex Sans Arabic + Space Grotesk + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ========================================================================
+       STICKY TOP COMMAND BAR (With Dark / Light / Reading Mode Switcher)
+       ======================================================================== -->
+  <header class="top-bar">
+    <div class="container top-bar-inner">
+      <!-- Brand / Course Identity -->
+      <div class="brand" id="brandHome" title="العودة لصفحة الفصول الرئيسية">
+        <div class="brand-chip">CA</div>
+        <div class="brand-text">
+          <span class="brand-title">معمارية وتنظيم الحاسب</span>
+          <span class="brand-subtitle">COMPUTER ARCHITECTURE // STUDY MANUAL</span>
+        </div>
+      </div>
+
+      <!-- Quick Search Across Chapters & Parts -->
+      <div class="search-wrapper">
+        <span class="search-icon">⌕</span>
+        <input
+          type="search"
+          id="courseSearchInput"
+          class="search-input"
+          placeholder="ابحث في الشرح (مثلاً: ISA, Transparent, IBM 370)..."
+          autocomplete="off"
+        />
+        <kbd class="search-kbd">/</kbd>
+      </div>
+
+      <!-- 3-Mode Switcher (Dark | Light | Reading) & Progress -->
+      <div class="top-actions">
+        <div class="mode-switcher" role="group" aria-label="وضع العرض">
+          <button type="button" class="mode-btn active" data-theme-mode="dark" title="الوضع الليلي الهندسي">
+            <span>🌙 داكن</span>
+          </button>
+          <button type="button" class="mode-btn" data-theme-mode="light" title="الوضع النهاري الفاتح">
+            <span>☀️ فاتح</span>
+          </button>
+          <button type="button" class="mode-btn" data-theme-mode="reading" title="مود القراءة الورقي المريح للعين">
+            <span>📖 قراءة</span>
+          </button>
+        </div>
+
+        <div class="progress-pill" title="نسبة الأجزاء التي قمت بتحديدها كمذاكرة">
+          <span id="progressText">إنجاز المذاكرة: 0%</span>
+          <div class="progress-pill-bar">
+            <div class="progress-pill-fill" id="progressFill"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       VIEW 1: LANDING PAGE (HERO + CHAPTERS & PARTS MATRIX)
+       ======================================================================== -->
+  <main id="landingView" class="landing-view">
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <!-- Right Column: Focused Course Introduction -->
+        <div class="hero-copy">
+          <div class="sys-status-bar">
+            <span class="status-dot"></span>
+            <span class="sys-status-text">CHAPTER 1 // PART 1 LIVE NOW + INTERACTIVE QUIZ</span>
+          </div>
+
+          <h1 class="hero-title">
+            الشرح المنهجي لمادة معمارية الحاسب
+            <span class="en-highlight">Computer Organization &amp; Architecture</span>
+          </h1>
+
+          <p class="hero-desc">
+            منصة مذاكرة مركزة بدون أي حشو: الشرح بالبلدي من الصفر + التعريفات الإنجليزية الرسمية + تريكات الامتحانات + حل أسئلة الشيت + كويز تفاعلي على كل جزء.
+          </p>
+
+          <div class="hero-cta-row">
+            <button type="button" class="primary-cta-btn" id="startPart1Btn">
+              <span>🔥 ابدأ مذاكرة Chapter 1 — Part 1 الآن</span>
+              <span class="mono">←</span>
+            </button>
+          </div>
+
+          <!-- Live Course Telemetry -->
+          <div class="telemetry-strip">
+            <div class="telemetry-box">
+              <div class="telemetry-val" id="statChaptersCount">04</div>
+              <div class="telemetry-label">الفصول المقررة</div>
+            </div>
+            <div class="telemetry-box">
+              <div class="telemetry-val" id="statPartsCount">08</div>
+              <div class="telemetry-label">الأجزاء الفرعية</div>
+            </div>
+            <div class="telemetry-box">
+              <div class="telemetry-val" id="statReadyCount">1 / 8</div>
+              <div class="telemetry-label">الأجزاء المشروحة حالياً</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Left Column: Hardware Architecture Blueprint Schematic -->
+        <aside class="schematic-panel" aria-label="مخطط معمارية الحاسب">
+          <div class="schematic-header">
+            <span>FIG 1.1 // ARCHITECTURE VS. ORGANIZATION LAYERS</span>
+            <span>SYSTEM VIEW</span>
+          </div>
+
+          <div class="schematic-diagram">
+            <div class="hw-row">
+              <!-- Architecture Block -->
+              <div class="hw-block">
+                <div class="hw-block-title">
+                  <span>ARCHITECTURE (ISA)</span>
+                  <span>VISIBLE</span>
+                </div>
+                <div class="hw-sub-grid">
+                  <div class="hw-chip">Instruction Set</div>
+                  <div class="hw-chip">Data Bit-Width</div>
+                  <div class="hw-chip">Addressing Modes</div>
+                  <div class="hw-chip">I/O Mechanisms</div>
+                </div>
+              </div>
+
+              <!-- Organization Block -->
+              <div class="hw-block">
+                <div class="hw-block-title" style="color: var(--accent-amber);">
+                  <span>ORGANIZATION (HW)</span>
+                  <span>TRANSPARENT</span>
+                </div>
+                <div class="hw-sub-grid">
+                  <div class="hw-chip">Clock Speed (GHz)</div>
+                  <div class="hw-chip">Control Signals</div>
+                  <div class="hw-chip">Bus Widths</div>
+                  <div class="hw-chip">DRAM / SRAM Tech</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- System Bus Connection -->
+            <div class="system-bus-bar">
+              <span>⇄ IBM SYSTEM/370 PRINCIPLE</span>
+              <div class="bus-lines">
+                <span>SAME ARCHITECTURE</span>
+                <span>DIFFERENT ORGANIZATION</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Chapters & Sub-parts Index Section -->
+    <section class="curriculum-section" id="chaptersSection">
+      <div class="container">
+        <div class="section-toolbar">
+          <div class="section-heading-group">
+            <span class="section-eyebrow">CURRICULUM MODULES // فهرس الفصول والأجزاء</span>
+            <h2 class="section-title">خريطة الفصول الدراسية</h2>
+          </div>
+
+          <div class="filter-tabs" role="tablist">
+            <button class="filter-tab active" data-filter="all">كل الفصول</button>
+            <button class="filter-tab" data-filter="ready">المتاح حالياً للشرح</button>
+            <button class="filter-tab" data-filter="empty">بانتظار المحتوى</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Chapters Grid -->
+        <div class="chapters-grid" id="chaptersGrid"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       VIEW 2: CHAPTER & PART EXPLANATION READER + INTERACTIVE QUIZ
+       ======================================================================== -->
+  <section id="readerView" class="reader-view">
+    <div class="container reader-layout">
+      <!-- Right Sidebar: Chapter Parts Navigation -->
+      <aside class="reader-sidebar">
+        <div class="sidebar-top">
+          <button class="back-to-index-btn" id="backToIndexBtn">
+            <span class="mono">→</span>
+            <span>العودة لكل الفصول</span>
+          </button>
+          <div class="mono" style="font-size: 0.75rem; color: var(--accent-amber);" id="sidebarChapterCode">CH 01</div>
+          <h2 class="sidebar-ch-title" id="sidebarChapterTitle">عنوان الفصل</h2>
+        </div>
+
+        <nav class="sidebar-parts-nav" id="sidebarPartsNav" aria-label="أجزاء الفصل"></nav>
+      </aside>
+
+      <!-- Left Main Canvas: Part Explanation Area + Interactive Quiz -->
+      <article class="reader-canvas">
+        <div>
+          <!-- Reader Utility Bar (Back + Font Size + Focus Reading Toggle) -->
+          <div class="reader-controls-bar">
+            <div class="reader-tools-group">
+              <button type="button" class="tool-pill-btn" id="backToIndexTopBtn">→ كل الفصول</button>
+              <button type="button" class="tool-pill-btn" id="toggleFocusSidebarBtn">📖 توسيع مساحة القراءة</button>
+            </div>
+
+            <div class="reader-tools-group">
+              <span style="font-size: 0.78rem; color: var(--text-muted);">حجم الخط:</span>
+              <button type="button" class="tool-pill-btn mono" id="fontIncreaseBtn" title="تكبير الخط">A+</button>
+              <button type="button" class="tool-pill-btn mono" id="fontDecreaseBtn" title="تصغير الخط">A-</button>
+            </div>
+          </div>
+
+          <header class="canvas-header">
+            <div>
+              <span class="canvas-part-badge" id="canvasPartBadge">CH 01 // PART 1</span>
+              <h1 class="canvas-part-title" id="canvasPartTitle">عنوان الجزء</h1>
+            </div>
+
+            <button class="mark-done-btn" id="markDoneBtn">
+              <span>○ تحديد كـ "تمت المذاكرة"</span>
+            </button>
+          </header>
+
+          <!-- Dynamic Explanation Content -->
+          <div id="canvasExplanationBody"></div>
+
+          <!-- Interactive Quiz Container for the Active Part -->
+          <div id="partQuizContainer"></div>
+        </div>
+
+        <!-- Next / Previous Part Footer -->
+        <footer class="canvas-footer">
+          <button class="nav-step-btn" id="prevPartBtn">→ الجزء السابق</button>
+          <button class="nav-step-btn" id="nextPartBtn">الجزء التالي ←</button>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       MINIMAL TECHNICAL FOOTER
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>منصة شرح مادة <strong>Computer Architecture</strong> — الشرح بالبلدي + التعريفات الرسمية + تريكات الامتحان + كويز تفاعلي.</span>
+      <span class="mono">DARK • LIGHT • READING MODE // PRESS [/] TO SEARCH</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
