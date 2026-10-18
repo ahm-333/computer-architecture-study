@@ -16,7 +16,7 @@ window.COURSE_DATA = {
       code: "CHAPTER 01",
       titleAr: "الفصل الأول: المفاهيم الأساسية وتطور الحاسوب",
       titleEn: "Chapter 1: Basic Concepts and Computer Evolution",
-      summary: "يشمل: الفرق بين Architecture و Organization، الهيكل والوظيفة (Structure & Function)، المعالجات متعددة الأنوية (Multicore)، الذاكرة المخبأة (Cache Memory)، وتخطيط اللوحة الأم (Motherboard Layout).",
+      summary: "يشمل: الفرق بين Architecture و Organization، الهيكل والوظيفة (Structure & Function)، المعالجات متعددة الأنوية (Multicore) والكاش (Cache) واللوحة الأم (Motherboard)، ومعمارية فون نيومان وحاسوب IAS (Von Neumann & IAS Computer).",
       isReady: true,
       parts: [
         /* ====================================================================
@@ -1798,8 +1798,673 @@ window.COURSE_DATA = {
               explanation: "الله ينور! بسبب حائط الطاقة والحرارة (Power & Thermal Wall)، لأن استهلاك الكهربا والحرارة زادوا بشكل مستحيل تبريده مع رفع التردد، فثبتوا التردد وزودوا عدد الأنوية (Cores)."
             }
           ]
+        },
+
+        /* ====================================================================
+           PART 4: The von Neumann Architecture & The IAS Computer (Slides 16 to 21)
+           ==================================================================== */
+        {
+          id: "ch1-p4",
+          code: "PART 4",
+          slides: "Slides 16 to 21",
+          title: "The von Neumann Architecture & The IAS Computer",
+          hasContent: true,
+          contentHtml: `
+            <!-- 1. الفكرة الأساسية (الثورة اللي غيرت تاريخ الكمبيوتر) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">01</span>
+                <h2 class="exp-sec-title">الفكرة الأساسية (الثورة اللي غيرت تاريخ الكمبيوتر)</h2>
+              </div>
+
+              <div class="balady-box">
+                <div class="balady-label">💡 من أسلاك ENIAC اليدوية إلى ثورة Stored-Program Concept (1945)</div>
+                <p>
+                  زمان في كمبيوتر <strong>ENIAC</strong> كان البرنامج عبارة عن أسلاك بتتوصل في الحيطة يدوياً (<strong class="mono" style="color: var(--accent-rose);">Hardwired Program</strong>)!
+                  علشان تغير البرنامج كنت بتفك وتربط أسلاك في <strong>أسبوعين كاملين</strong>!
+                </p>
+                <p style="margin-top: 0.65rem;">
+                  جه <strong>جون فون نيومان (John von Neumann)</strong> سنة <strong>1945</strong> وقال فكرة عبقرية:
+                </p>
+                <div class="en-def-box" style="margin: 0.7rem 0; border-left-color: var(--accent-amber);">
+                  <p style="font-weight: 700; color: var(--text-primary);">
+                    "بدل ما البرنامج يكون أسلاك.. نخلي أوامر البرنامج أرقام عادية، ونخزنها في الذاكرة مع البيانات! ولما نعوز نغير البرنامج، نكتب شوية أوامر جديدة في الذاكرة والمعالج يقرأها وينفذها."
+                  </p>
+                </div>
+                <p>
+                  ده هو مبدأ: <strong class="mono" style="color: var(--accent-cyan);">Stored-Program Concept</strong> وحاسوب <strong class="mono" style="color: var(--accent-emerald);">IAS Computer</strong> (معهد الدراسات المتقدمة بجامعة برينستون).
+                </p>
+              </div>
+            </section>
+
+            <!-- 2. THE 3 KEY PRINCIPLES OF VON NEUMANN ARCHITECTURE (مبادئ فون نيومان الثلاثة) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">02</span>
+                <h2 class="exp-sec-title">THE 3 KEY PRINCIPLES OF VON NEUMANN ARCHITECTURE (مبادئ فون نيومان الثلاثة)</h2>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="en-def-box">
+                  <span class="en-def-label">Principle 01 // Shared Read-Write Memory</span>
+                  <p class="en-def-text">
+                    "1. <strong>Data and instructions</strong> are stored in a <strong>single read-write memory</strong>."
+                  </p>
+                  <p style="margin-top: 0.45rem; color: var(--text-secondary);">
+                    📖 <strong>التوضيح:</strong> البيانات والتعليمات بيقعدوا مع بعض في نفس الذاكرة القابلة للقراءة والكتابة.
+                  </p>
+                </div>
+
+                <div class="en-def-box" style="border-left-color: var(--accent-amber);">
+                  <span class="en-def-label" style="color: var(--accent-amber);">Principle 02 // Addressable by Location</span>
+                  <p class="en-def-text">
+                    "2. The contents of this memory are <strong>addressable by location</strong>, regardless of the type of data."
+                  </p>
+                  <p style="margin-top: 0.45rem; color: var(--text-secondary);">
+                    📖 <strong>التوضيح:</strong> الذاكرة متقسمة خانات بعناوين رقمية، والجهاز بيوصل للعنوان بغض النظر عن نوع الداتا اللي جواه.
+                  </p>
+                </div>
+
+                <div class="en-def-box" style="border-left-color: var(--accent-emerald);">
+                  <span class="en-def-label" style="color: var(--accent-emerald);">Principle 03 // Sequential Execution</span>
+                  <p class="en-def-text">
+                    "3. Execution occurs in a <strong>sequential fashion</strong> (unless explicitly modified by a jump)."
+                  </p>
+                  <p style="margin-top: 0.45rem; color: var(--text-secondary);">
+                    📖 <strong>التوضيح:</strong> التنفيذ بيمشي ورا بعضه خطوة خطوة من تعليمة للتانية، إلا لو جه أمر صريح بالقفز (<span class="mono">Jump / Branch</span>) لعنوان تاني.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3. IAS MEMORY FORMAT (هيكل الكلمة في حاسوب IAS - سلايد 18 + محاكي الـ 40 بت) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">03</span>
+                <h2 class="exp-sec-title">IAS MEMORY FORMAT (هيكل الكلمة الـ 40-Bit في حاسوب IAS - سلايد 18)</h2>
+              </div>
+
+              <p style="margin-bottom: 0.75rem;">
+                الذاكرة في حاسوب <strong>IAS</strong> بتتكون من <strong>4096 كلمة (<span class="mono">4096 Words</span>)</strong>، وحجم الكلمة الواحدة = <strong>40 بت (<span class="mono">40-bit</span>)</strong>. الكلمة دي بتشيل شكل من اتنين (اضغط على الخطوات في المخطط التفاعلي عشان تشوف تقسيمة الـ 40 بت بالتفصيل):
+              </p>
+
+              <!-- INTERACTIVE SIMULATOR 7: IAS 40-Bit Memory Word & Shared Memory -->
+              <div class="sim-card" data-sim="sim-ias-word">
+                <div class="sim-top-bar">
+                  <div class="sim-title-group">
+                    <span class="sim-live-dot"></span>
+                    <span class="sim-badge-title">FIG 1.7 // IAS 40-BIT MEMORY FORMAT &amp; STORED-PROGRAM SIMULATOR</span>
+                  </div>
+                  <div class="sim-controls">
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. الذاكرة المشتركة (4096 × 40-bit)</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">2. كلمة بيانات (Number Word)</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">3. كلمة تعليمات (2 Instructions)</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل تلقائي</button>
+                  </div>
+                </div>
+
+                <div class="sim-svg-stage">
+                  <svg viewBox="0 0 740 355" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Top: Shared Read-Write Memory Overview -->
+                    <g class="svg-hw-group cyan-node active-node" data-node-step="0" data-click-step="0">
+                      <rect class="svg-hw-box" x="45" y="14" width="650" height="72" rx="10" />
+                      <text class="svg-label-mono" x="370" y="36">① VON NEUMANN SHARED MEMORY: 4096 WORDS × 40 BITS PER WORD</text>
+                      <text class="svg-label-en" x="370" y="57">Addressable Locations [0000 to 4095]  •  2^12 = 4,096 Words</text>
+                      <text class="svg-label-ar" x="370" y="76">البيانات (Numbers) والتعليمات (Instructions) متخزنين مع بعض في نفس الذاكرة</text>
+                    </g>
+
+                    <!-- Connectors from Shared Memory to Format 1 & Format 2 -->
+                    <path class="wire-base" d="M 220 86 L 220 118" />
+                    <path class="wire-base" d="M 520 86 L 520 226" />
+                    <path class="wire-flow emerald active-flow" data-wire-step="0,1" d="M 220 86 L 220 118" />
+                    <path class="wire-flow amber" data-wire-step="0,2" d="M 520 86 L 520 226" />
+
+                    <circle class="data-packet-dot moving" data-packet-step="0,1" r="6" fill="#10b981">
+                      <animateMotion dur="0.9s" repeatCount="indefinite" path="M 220 86 L 220 118" />
+                    </circle>
+                    <circle class="data-packet-dot" data-packet-step="0,2" r="6" fill="#f59e0b">
+                      <animateMotion dur="1.2s" repeatCount="indefinite" path="M 520 86 L 520 226" />
+                    </circle>
+
+                    <!-- Format 1: 40-Bit Number Word -->
+                    <g class="svg-hw-group emerald-node" data-node-step="1" data-click-step="1">
+                      <rect class="svg-hw-box" x="45" y="118" width="650" height="86" rx="10" />
+                      <text class="svg-label-mono" x="370" y="138" style="fill:var(--accent-emerald);">② FORMAT A: NUMBER WORD (كلمة بيانات رقمية = 40 بت)</text>
+
+                      <!-- Bit Indices -->
+                      <text class="svg-label-mono" x="95" y="154" style="font-size:10px;">Bit 0</text>
+                      <text class="svg-label-mono" x="155" y="154" style="font-size:10px;">Bit 1</text>
+                      <text class="svg-label-mono" x="655" y="154" style="font-size:10px;">Bit 39</text>
+
+                      <!-- Sign Bit Box (1 bit) -->
+                      <rect x="65" y="160" width="75" height="34" rx="5" fill="var(--bg-elevated)" stroke="var(--accent-rose)" stroke-width="2" />
+                      <text class="svg-label-en" x="102" y="181" style="font-size:11px; fill:var(--accent-rose);">Sign (1b)</text>
+
+                      <!-- 39-Bit Numeric Value Box -->
+                      <rect x="144" y="160" width="530" height="34" rx="5" fill="var(--bg-surface)" stroke="var(--accent-emerald)" stroke-width="2" />
+                      <text class="svg-label-en" x="409" y="181" style="font-size:12px;">39-Bit Numeric Value (قيمة الرقم الرياضي نفسه)</text>
+                    </g>
+
+                    <!-- Format 2: 40-Bit Instruction Word (2 x 20-bit Instructions) -->
+                    <g class="svg-hw-group amber-node" data-node-step="2" data-click-step="2">
+                      <rect class="svg-hw-box" x="45" y="226" width="650" height="114" rx="10" />
+                      <text class="svg-label-mono" x="370" y="246" style="fill:var(--accent-amber);">③ FORMAT B: INSTRUCTION WORD (كلمة تعليمات = تعليمتين × 20 بت)</text>
+
+                      <!-- Bit Indices -->
+                      <text class="svg-label-mono" x="75" y="263" style="font-size:9.5px;">0</text>
+                      <text class="svg-label-mono" x="172" y="263" style="font-size:9.5px;">7</text>
+                      <text class="svg-label-mono" x="190" y="263" style="font-size:9.5px;">8</text>
+                      <text class="svg-label-mono" x="355" y="263" style="font-size:9.5px;">19</text>
+                      <text class="svg-label-mono" x="380" y="263" style="font-size:9.5px;">20</text>
+                      <text class="svg-label-mono" x="475" y="263" style="font-size:9.5px;">27</text>
+                      <text class="svg-label-mono" x="495" y="263" style="font-size:9.5px;">28</text>
+                      <text class="svg-label-mono" x="662" y="263" style="font-size:9.5px;">39</text>
+
+                      <!-- Left Instruction: Opcode (8b) + Address (12b) -->
+                      <rect x="65" y="268" width="116" height="36" rx="5" fill="var(--bg-elevated)" stroke="var(--accent-amber)" stroke-width="2" />
+                      <text class="svg-label-en" x="123" y="290" style="font-size:11px; fill:var(--accent-amber);">Opcode (8-bit)</text>
+
+                      <rect x="184" y="268" width="180" height="36" rx="5" fill="var(--bg-surface)" stroke="var(--accent-cyan)" stroke-width="2" />
+                      <text class="svg-label-en" x="274" y="290" style="font-size:11px;">Address (12-bit)</text>
+
+                      <!-- Right Instruction: Opcode (8b) + Address (12b) -->
+                      <rect x="374" y="268" width="116" height="36" rx="5" fill="var(--bg-elevated)" stroke="var(--accent-amber)" stroke-width="2" />
+                      <text class="svg-label-en" x="432" y="290" style="font-size:11px; fill:var(--accent-amber);">Opcode (8-bit)</text>
+
+                      <rect x="493" y="268" width="181" height="36" rx="5" fill="var(--bg-surface)" stroke="var(--accent-cyan)" stroke-width="2" />
+                      <text class="svg-label-en" x="583" y="290" style="font-size:11px;">Address (12-bit)</text>
+
+                      <!-- Left / Right Bracket Labels -->
+                      <text class="svg-label-mono" x="215" y="324" style="fill:var(--accent-cyan);">◄─── LEFT INSTRUCTION (20-Bit) ───►</text>
+                      <text class="svg-label-mono" x="524" y="324" style="fill:var(--accent-emerald);">◄─── RIGHT INSTRUCTION (20-Bit) ───►</text>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="two-layers-split">
+                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-emerald);">
+                  <div class="mono" style="color: var(--accent-emerald); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.4rem;">
+                    FORMAT 01 // NUMBER WORD (40-BIT)
+                  </div>
+                  <p style="font-size: 0.94rem;">
+                    • <strong>البت 0 (<span class="mono">Sign Bit</span>):</strong> إشارة الرقم (<span class="mono">0</span> للموجب، <span class="mono">1</span> للسالب).<br/>
+                    • <strong>البتات 1 إلى 39 (<span class="mono">39-bit Numeric Value</span>):</strong> قيمة الرقم الرياضي نفسه.
+                  </p>
+                </div>
+
+                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-amber);">
+                  <div class="mono" style="color: var(--accent-amber); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.4rem;">
+                    FORMAT 02 // INSTRUCTION WORD (2 × 20-BIT)
+                  </div>
+                  <p style="font-size: 0.94rem;">
+                    الكلمة أم 40 بت بتشيل <strong>تعليمتين كاملتين</strong> (<span class="mono">Left &amp; Right</span>)، كل تعليمة <strong>20 بت</strong>:<br/>
+                    • <strong><span class="mono">Opcode (8-bit)</span>:</strong> كود العملية (نوع الأمر زي جمع أو طرح).<br/>
+                    • <strong><span class="mono">Address (12-bit)</span>:</strong> عنوان المتغير في الذاكرة ($2^{12} = 4096$ كلمة).
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 4. THE 6 ESSENTIAL IAS REGISTERS (السجلات الستة لحاسوب IAS ووظيفة كل سجل) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">04</span>
+                <h2 class="exp-sec-title">THE 6 ESSENTIAL IAS REGISTERS (السجلات الستة لحاسوب IAS ووظيفة كل سجل)</h2>
+              </div>
+
+              <div class="attr-grid">
+                <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
+                  <span class="attr-term">1. MBR (Memory Buffer Register)</span>
+                  <p class="attr-desc ltr-block" style="margin-bottom: 0.45rem;">
+                    "Contains a word to be stored in memory or sent to the I/O unit, or used to receive a word from memory or from the I/O unit."
+                  </p>
+                  <p class="attr-desc" style="color: var(--text-primary); font-weight: 600;">
+                    📬 <strong>التوضيح:</strong> "صندوق بريد الذاكرة" (40-bit)؛ أي كلمة طالعة أو داخلة من الذاكرة لازم تقف فيه الأول.
+                  </p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
+                  <span class="attr-term" style="color: var(--accent-amber);">2. MAR (Memory Address Register)</span>
+                  <p class="attr-desc ltr-block" style="margin-bottom: 0.45rem;">
+                    "Specifies the address in memory of the word to be written from or read into MBR."
+                  </p>
+                  <p class="attr-desc" style="color: var(--text-primary); font-weight: 600;">
+                    📍 <strong>التوضيح:</strong> "سجل العنوان" (12-bit)؛ بيشيل رقم العنوان اللي المعالج رايح يقرأ منه أو يكتب فيه في الذاكرة.
+                  </p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
+                  <span class="attr-term" style="color: var(--accent-emerald);">3. IR (Instruction Register)</span>
+                  <p class="attr-desc ltr-block" style="margin-bottom: 0.45rem;">
+                    "Contains the 8-bit opcode instruction being executed."
+                  </p>
+                  <p class="attr-desc" style="color: var(--text-primary); font-weight: 600;">
+                    ⚙️ <strong>التوضيح:</strong> بيشيل كود العملية الحالية (<strong>الـ 8 بت بتوع الـ Opcode</strong>) علشان وحدة التحكم تفك شفرته وتنفذه.
+                  </p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-purple);">
+                  <span class="attr-term" style="color: var(--accent-purple);">4. IBR (Instruction Buffer Register)</span>
+                  <p class="attr-desc ltr-block" style="margin-bottom: 0.45rem;">
+                    "Employed to hold temporarily the right-hand instruction from a word in memory."
+                  </p>
+                  <p class="attr-desc" style="color: var(--text-primary); font-weight: 600;">
+                    ⏳ <strong>التوضيح:</strong> بيشيل <strong>التعليمة اليمين (20-bit) مؤقتاً</strong> في الكلمة لحد ما التعليمة الشمال تخلص تنفيذ!
+                  </p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
+                  <span class="attr-term" style="color: var(--accent-amber);">5. PC (Program Counter)</span>
+                  <p class="attr-desc ltr-block" style="margin-bottom: 0.45rem;">
+                    "Contains the address of the next instruction pair to be fetched from memory."
+                  </p>
+                  <p class="attr-desc" style="color: var(--text-primary); font-weight: 600;">
+                    🔢 <strong>التوضيح:</strong> "عداد البرنامج" (12-bit)؛ بيشيل عنوان التعليمة (أو زوج التعليمات) اللي عليها الدور تتجاب من الذاكرة.
+                  </p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
+                  <span class="attr-term">6. AC &amp; MQ (Accumulator &amp; Multiplier Quotient)</span>
+                  <p class="attr-desc ltr-block" style="margin-bottom: 0.45rem;">
+                    "Employed to hold temporarily operands and results generated by the ALU."
+                  </p>
+                  <p class="attr-desc" style="color: var(--text-primary); font-weight: 600;">
+                    🧮 <strong>التوضيح:</strong> سجلات ملحقة بالـ <span class="mono">ALU</span> بتشيل الأرقام المؤقتة ونواتج الضرب والقسمة والجمع.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 5. IAS DATA FLOW DIAGRAM & THE FETCH-EXECUTE CYCLE (المحاكي التفاعلي الكامل لدورة الجلب والتنفيذ) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">05</span>
+                <h2 class="exp-sec-title">IAS DATA FLOW &amp; THE FETCH-EXECUTE CYCLE (مخطط تدفق البيانات ودورة الجلب والتنفيذ)</h2>
+              </div>
+
+              <p style="margin-bottom: 0.75rem;">
+                تبع خطوة بخطوة على مخطط حاسوب <strong>IAS</strong> الرسمي إزاي الـ 6 سجلات بيشتغلوا مع بعض في <strong>دورة الجلب (<span class="mono">Fetch Cycle</span>)</strong> و<strong>دورة التنفيذ (<span class="mono">Execute Cycle</span>)</strong>:
+              </p>
+
+              <!-- INTERACTIVE SIMULATOR 8: IAS Registers Data Flow & Fetch-Execute Cycle -->
+              <div class="sim-card" data-sim="sim-ias-dataflow">
+                <div class="sim-top-bar">
+                  <div class="sim-title-group">
+                    <span class="sim-live-dot"></span>
+                    <span class="sim-badge-title">FIG 1.8 // IAS REGISTERS DATA FLOW &amp; FETCH-EXECUTE SIMULATOR</span>
+                  </div>
+                  <div class="sim-controls">
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. Fetch A: PC ➔ MAR ➔ MBR</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">2. Fetch B: تقسيم الشمال واليمين</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">3. Execute: تشغيل الـ ALU والـ AC</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="3">4. Next: تنفيذ اليمين من الـ IBR</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل الدورة</button>
+                  </div>
+                </div>
+
+                <div class="sim-svg-stage">
+                  <svg viewBox="0 0 740 420" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Main Memory Top Block -->
+                    <g class="svg-hw-group emerald-node active-node" data-node-step="0,2" data-click-step="0">
+                      <rect class="svg-hw-box" x="140" y="12" width="460" height="58" rx="10" />
+                      <text class="svg-label-en" x="370" y="37">MAIN MEMORY (4096 Words × 40-Bit)</text>
+                      <text class="svg-label-ar" x="370" y="58">الذاكرة الرئيسية المشتركة للبيانات والتعليمات</text>
+                    </g>
+
+                    <!-- Base Wires -->
+                    <!-- PC -> MAR -> Memory -->
+                    <path class="wire-base" d="M 165 210 L 165 162" />
+                    <path class="wire-base" d="M 165 104 L 165 70" />
+                    <!-- Memory -> MBR -->
+                    <path class="wire-base" d="M 370 70 L 370 104" />
+                    <!-- MBR -> IBR & MBR -> IR & MBR -> MAR -->
+                    <path class="wire-base" d="M 370 162 L 370 210" />
+                    <path class="wire-base" d="M 310 162 L 265 186 L 265 298 L 310 298" />
+                    <path class="wire-base" d="M 290 133 L 235 133" />
+                    <!-- IBR -> IR & MAR -->
+                    <path class="wire-base" d="M 370 268 L 370 298" />
+                    <path class="wire-base" d="M 295 239 L 250 239 L 250 133 L 235 133" />
+                    <!-- IR -> Control Circuits -->
+                    <path class="wire-base" d="M 370 354 L 370 375" />
+                    <!-- MBR <-> AC/MQ <-> ALU -->
+                    <path class="wire-base" d="M 450 133 L 580 133 L 580 210" />
+                    <path class="wire-base" d="M 580 268 L 580 298" />
+                    <path class="wire-base" d="M 450 388 L 580 388 L 580 354" />
+
+                    <!-- Animated Flow Wires per Step -->
+                    <!-- Step 0: PC -> MAR -> Memory -> MBR -->
+                    <path class="wire-flow amber active-flow" data-wire-step="0" d="M 165 210 L 165 70" />
+                    <path class="wire-flow emerald active-flow" data-wire-step="0,2" d="M 370 70 L 370 104" />
+
+                    <!-- Step 1: MBR -> IR (Left) & MBR -> IBR (Right) -->
+                    <path class="wire-flow cyan" data-wire-step="1" d="M 310 162 L 265 186 L 265 298 L 310 298" />
+                    <path class="wire-flow amber" data-wire-step="1" d="M 370 162 L 370 210" />
+                    <path class="wire-flow cyan" data-wire-step="1" d="M 290 133 L 235 133" />
+
+                    <!-- Step 2: IR -> Control -> ALU <-> AC/MQ & MBR -->
+                    <path class="wire-flow amber" data-wire-step="2" d="M 370 354 L 370 388 L 580 388 L 580 354" />
+                    <path class="wire-flow cyan" data-wire-step="2" d="M 450 133 L 580 133 L 580 298" />
+
+                    <!-- Step 3: IBR -> IR & MAR -->
+                    <path class="wire-flow emerald" data-wire-step="3" d="M 370 268 L 370 298" />
+                    <path class="wire-flow emerald" data-wire-step="3" d="M 295 239 L 250 239 L 250 133 L 235 133" />
+
+                    <!-- Moving Data Packets -->
+                    <circle class="data-packet-dot moving" data-packet-step="0" r="6" fill="#f59e0b">
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 165 210 L 165 70" />
+                    </circle>
+                    <circle class="data-packet-dot moving" data-packet-step="0,2" r="7" fill="#10b981">
+                      <animateMotion dur="0.9s" repeatCount="indefinite" path="M 370 70 L 370 104" />
+                    </circle>
+                    <circle class="data-packet-dot" data-packet-step="1" r="6" fill="#06b6d4">
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 310 162 L 265 186 L 265 298 L 310 298" />
+                    </circle>
+                    <circle class="data-packet-dot" data-packet-step="1" r="6" fill="#f59e0b">
+                      <animateMotion dur="0.8s" repeatCount="indefinite" path="M 370 162 L 370 210" />
+                    </circle>
+                    <circle class="data-packet-dot" data-packet-step="2" r="7" fill="#06b6d4">
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 450 133 L 580 133 L 580 298" />
+                    </circle>
+                    <circle class="data-packet-dot" data-packet-step="3" r="7" fill="#10b981">
+                      <animateMotion dur="0.8s" repeatCount="indefinite" path="M 370 268 L 370 298" />
+                    </circle>
+
+                    <!-- On-Wire Operation Callout Badges -->
+                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
+                      <rect class="svg-wire-pill" x="380" y="75" width="160" height="22" />
+                      <text class="svg-wire-text" x="460" y="90">① جلب الكلمة الـ 40-bit ▼</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
+                      <rect class="svg-wire-pill" x="285" y="172" width="170" height="22" />
+                      <text class="svg-wire-text" x="370" y="187">② اليمين للـ IBR والشمال للـ IR ▼</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
+                      <rect class="svg-wire-pill" x="458" y="110" width="138" height="22" />
+                      <text class="svg-wire-text" x="527" y="125">③ حساب في ALU &amp; AC ▼</text>
+                    </g>
+
+                    <g class="svg-wire-callout" data-pill-step="3" data-click-step="3">
+                      <rect class="svg-wire-pill" x="285" y="272" width="170" height="22" />
+                      <text class="svg-wire-text" x="370" y="287">④ سحب اليمين من IBR فوراً ▼</text>
+                    </g>
+
+                    <!-- MAR Register -->
+                    <g class="svg-hw-group amber-node active-node" data-node-step="0,1,3" data-click-step="0">
+                      <rect class="svg-hw-box" x="95" y="104" width="140" height="58" rx="8" />
+                      <text class="svg-label-en" x="165" y="128">MAR (12-Bit)</text>
+                      <text class="svg-label-ar" x="165" y="148">سجل عنوان الذاكرة</text>
+                    </g>
+
+                    <!-- PC Register -->
+                    <g class="svg-hw-group amber-node active-node" data-node-step="0" data-click-step="0">
+                      <rect class="svg-hw-box" x="95" y="210" width="140" height="58" rx="8" />
+                      <text class="svg-label-en" x="165" y="234">PC (12-Bit)</text>
+                      <text class="svg-label-ar" x="165" y="254">عنوان التعليمة التالية</text>
+                    </g>
+
+                    <!-- MBR Register -->
+                    <g class="svg-hw-group cyan-node active-node" data-node-step="0,1,2" data-click-step="0">
+                      <rect class="svg-hw-box" x="290" y="104" width="160" height="58" rx="8" />
+                      <text class="svg-label-en" x="370" y="128">MBR (40-Bit)</text>
+                      <text class="svg-label-ar" x="370" y="148">صندوق بريد الذاكرة</text>
+                    </g>
+
+                    <!-- IBR Register -->
+                    <g class="svg-hw-group amber-node" data-node-step="1,3" data-click-step="1">
+                      <rect class="svg-hw-box" x="295" y="210" width="150" height="58" rx="8" />
+                      <text class="svg-label-en" x="370" y="234">IBR (20-Bit)</text>
+                      <text class="svg-label-ar" x="370" y="254">انتظار التعليمة اليمين</text>
+                    </g>
+
+                    <!-- IR Register -->
+                    <g class="svg-hw-group emerald-node" data-node-step="1,2,3" data-click-step="2">
+                      <rect class="svg-hw-box" x="295" y="298" width="150" height="56" rx="8" />
+                      <text class="svg-label-en" x="370" y="321">IR (8-Bit Opcode)</text>
+                      <text class="svg-label-ar" x="370" y="341">كود الأمر الجاري تنفيذه</text>
+                    </g>
+
+                    <!-- Control Circuits -->
+                    <g class="svg-hw-group amber-node" data-node-step="2" data-click-step="2">
+                      <rect class="svg-hw-box" x="290" y="370" width="160" height="40" rx="6" />
+                      <text class="svg-label-mono" x="370" y="394" style="fill:var(--accent-amber);">[CONTROL CIRCUITS]</text>
+                    </g>
+
+                    <!-- AC / MQ Registers -->
+                    <g class="svg-hw-group cyan-node" data-node-step="2" data-click-step="2">
+                      <rect class="svg-hw-box" x="500" y="210" width="165" height="58" rx="8" />
+                      <text class="svg-label-en" x="582" y="234">AC / MQ (40-Bit)</text>
+                      <text class="svg-label-ar" x="582" y="254">الأرقام ونواتج الحساب</text>
+                    </g>
+
+                    <!-- ALU -->
+                    <g class="svg-hw-group cyan-node" data-node-step="2" data-click-step="2">
+                      <rect class="svg-hw-box" x="500" y="298" width="165" height="56" rx="8" />
+                      <text class="svg-label-en" x="582" y="321">ALU (Processing)</text>
+                      <text class="svg-label-ar" x="582" y="341">مصنع الجمع والضرب</text>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="two-layers-split">
+                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-cyan);">
+                  <div class="balady-label" style="color: var(--accent-cyan);">📥 1. Fetch Cycle (دورة الجلب)</div>
+                  <ul style="padding-right: 1.15rem; font-size: 0.93rem; list-style: disc;">
+                    <li>المعالج ينقل العنوان من الـ <strong>PC</strong> إلى الـ <strong>MAR</strong>.</li>
+                    <li>الذاكرة تطلع الكلمة الـ 40 بت في الـ <strong>MBR</strong>.</li>
+                    <li>التعليمة الشمال (<span class="mono">Left</span>) تروح للـ <strong>IR</strong> علشان تتنفذ حالياً.</li>
+                    <li>التعليمة اليمين (<span class="mono">Right</span>) تتخزن مؤقتاً في الـ <strong>IBR</strong> علشان تستنى دورها.</li>
+                  </ul>
+                </div>
+
+                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-amber);">
+                  <div class="balady-label" style="color: var(--accent-amber);">⚡ 2. Execute Cycle (دورة التنفيذ)</div>
+                  <ul style="padding-right: 1.15rem; font-size: 0.93rem; list-style: disc;">
+                    <li>وحدة التحكم تقرأ الـ <span class="mono">Opcode</span> اللي في الـ <strong>IR</strong> وتفهمه.</li>
+                    <li>الـ <strong>ALU</strong> تسحب الرقم من الذاكرة وتجمعه أو تضربه في الـ <strong>AC</strong>.</li>
+                    <li>في النبضة التالية: المعالج ياخد التعليمة اليمين الجاهزة من الـ <strong>IBR</strong> وينفذها مباشرة <strong>بدون ما يروح للذاكرة تاني!</strong></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="exam-trap-box">
+                <div class="exam-trap-title">⚠️ أخطر تريكات الامتحان الخاصة بحاسوب IAS وفون نيومان (3 Traps)</div>
+                <div class="exam-trap-list">
+                  <p>
+                    <strong>⚠️ Trap 1 (البتات والتقسيمة — تحفظها زي اسمك!):</strong><br/>
+                    • حجم الكلمة (<span class="mono">Word Size</span>) = <strong>40 بت</strong>.<br/>
+                    • حجم التعليمة الواحدة (<span class="mono">Instruction Size</span>) = <strong>20 بت</strong>.<br/>
+                    • الكلمة الواحدة بتشيل: إما <strong>1 رقم (<span class="mono">1 Number</span>)</strong> أو <strong>2 تعليمات (<span class="mono">2 Instructions</span>)</strong>.<br/>
+                    • كود العملية (<span class="mono">Opcode</span>) = <strong>8 بت</strong> | عنوان الذاكرة (<span class="mono">Address</span>) = <strong>12 بت</strong> ($2^{12} = 4096$ كلمة).
+                  </p>
+                  <p>
+                    <strong>⚠️ Trap 2 (تريكة السجلات في الـ MCQs):</strong><br/>
+                    • السجل اللي بيشيل عنوان التعليمة التالية ===&gt; <strong class="mono">PC (Program Counter)</strong>.<br/>
+                    • السجل اللي بيشيل كود الأمر للتنفيذ حالياً ===&gt; <strong class="mono">IR (Instruction Register)</strong>.<br/>
+                    • السجل اللي بيشيل التعليمة اليمين مؤقتاً ===&gt; <strong class="mono">IBR (Instruction Buffer Register)</strong>.<br/>
+                    • السجل اللي بتمر عليه أي داتا من الذاكرة ===&gt; <strong class="mono">MBR (Memory Buffer Register)</strong>.
+                  </p>
+                  <p>
+                    <strong>⚠️ Trap 3 (Von Neumann vs. Harvard):</strong><br/>
+                    معمارية <strong>فون نيومان</strong> بتتميز باشتراك الذاكرة للبيانات والتعليمات (<strong class="mono">Shared Single Read-Write Memory</strong>)، عكس معمارية <strong>Harvard</strong> اللي بتفصل ذاكرة الكود عن ذاكرة البيانات فيزيائياً.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 6. POPULAR EXAM TRUE / FALSE DRILLS -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">06</span>
+                <h2 class="exp-sec-title">POPULAR EXAM TRUE / FALSE DRILLS (أسئلة صح وغلط المشهورة)</h2>
+              </div>
+
+              <div class="tf-drills-grid">
+                <div class="tf-card">
+                  <p class="tf-question">[Q1] "In the IAS computer, data and instructions are stored in separate memories."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block">(They are stored in a <strong>SINGLE shared read-write memory</strong>).</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">[Q2] "The IAS instruction format consists of an 8-bit opcode and a 12-bit address."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge true">Answer: TRUE (✔)</span>
+                    <span class="ltr-block">(8-bit Opcode + 12-bit Address = 20-bit Instruction).</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">[Q3] "The Program Counter (PC) holds the instruction currently being executed."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block">(<strong>IR</strong> holds the instruction being executed; <strong>PC</strong> holds the <strong>NEXT address</strong>).</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">[Q4] "The IBR register temporarily holds the right-hand instruction of a pair."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge true">Answer: TRUE (✔)</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 7. SHEET 1: OFFICIAL EXAM QUESTION & MODEL ANSWER (Question 1.6) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">07</span>
+                <h2 class="exp-sec-title">SHEET 1: OFFICIAL EXAM QUESTION &amp; MODEL ANSWER (سؤال الشيت 1.6)</h2>
+              </div>
+
+              <div class="sheet-card">
+                <div class="sheet-q-box">
+                  <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 1.6 // SHEET 1</span>
+                  <p style="font-family: var(--font-en); font-weight: 700; font-size: 1.05rem; margin-top: 0.35rem;">
+                    "What is a stored program computer?"
+                  </p>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+                  <span style="font-weight: 800; color: var(--accent-emerald);">✅ Model Answer (الإجابة النموذجية المعتمدة):</span>
+                  <button type="button" class="tool-pill-btn" onclick="const box = this.parentElement.nextElementSibling; box.style.display = box.style.display === 'none' ? 'block' : 'none';">
+                    إخفاء / إظهار الإجابة للتسميع
+                  </button>
+                </div>
+
+                <div class="sheet-a-box">
+                  <p style="font-family: var(--font-en); line-height: 1.8;">
+                    A <strong>stored program computer</strong> is a computer architecture (originating from the <strong>von Neumann concept</strong>) in which <strong>program instructions and data are stored together in the same read-write memory</strong>. The computer can manipulate instructions just as it manipulates data, allowing programs to be loaded, modified, and executed electronically without manually rewiring the hardware.
+                  </p>
+                </div>
+              </div>
+            </section>
+          `,
+          quiz: [
+            {
+              id: "p4_q1",
+              question: "Q1. What is the fundamental principle of the von Neumann 'Stored-Program Concept'?",
+              options: [
+                "Programs are hardwired manually using physical cables on the wall",
+                "Data and instructions are stored together in a single shared read-write memory",
+                "Instructions are stored in RAM while data is only stored in CPU registers",
+                "Every instruction must be 64 bits long"
+              ],
+              correctIndex: 1,
+              explanation: "صح جداً! جوهر مبدأ فون نيومان (Stored-Program Concept) هو تخزين البيانات والتعليمات معاً في ذاكرة واحدة مشتركة قابلة للقراءة والكتابة (Single read-write memory)."
+            },
+            {
+              id: "p4_q2",
+              question: "Q2. In the IAS computer memory format, what is the size of a single memory word, and how many instructions can one word hold?",
+              options: [
+                "32-bit word holding 1 instruction",
+                "40-bit word holding 2 instructions (20 bits each)",
+                "20-bit word holding 2 instructions (10 bits each)",
+                "64-bit word holding 4 instructions"
+              ],
+              correctIndex: 1,
+              explanation: "الله ينور! الكلمة في حاسوب IAS حجمها 40 بت (40-bit word)، ولما بتشيل تعليمات بتتقسم لنصين: تعليمة شمال (20 بت) وتعليمة يمين (20 بت)."
+            },
+            {
+              id: "p4_q3",
+              question: "Q3. How are the 20 bits of a single IAS instruction divided?",
+              options: [
+                "10-bit opcode and 10-bit address",
+                "8-bit opcode and 12-bit address",
+                "12-bit opcode and 8-bit address",
+                "1-bit sign and 19-bit value"
+              ],
+              correctIndex: 1,
+              explanation: "برافو! التعليمة الـ 20 بت في حاسوب IAS مكونة من 8 بت لنوع العملية (8-bit Opcode) و 12 بت لعنوان الذاكرة (12-bit Address، عشان 2^12 = 4096 كلمة)."
+            },
+            {
+              id: "p4_q4",
+              question: "Q4. [EXAM TRAP]: Which IAS register holds the 8-bit opcode of the instruction currently being executed?",
+              options: [
+                "PC (Program Counter)",
+                "IBR (Instruction Buffer Register)",
+                "IR (Instruction Register)",
+                "MAR (Memory Address Register)"
+              ],
+              correctIndex: 2,
+              explanation: "مظبوط! سجل الـ IR (Instruction Register) هو اللي بيشيل الـ 8-bit Opcode بتاع الأمر اللي بيتنفذ حالياً، بينما الـ PC بيشيل عنوان الأمر اللي عليه الدور."
+            },
+            {
+              id: "p4_q5",
+              question: "Q5. Which IAS register is used to temporarily hold the right-hand instruction from a 40-bit memory word while the left-hand instruction executes?",
+              options: [
+                "MBR (Memory Buffer Register)",
+                "IBR (Instruction Buffer Register)",
+                "AC (Accumulator)",
+                "PC (Program Counter)"
+              ],
+              correctIndex: 1,
+              explanation: "صح! سجل الـ IBR (Instruction Buffer Register) وظيفته يشيل التعليمة اليمين (20-bit) مؤقتاً لحد ما التعليمة الشمال تخلص، فيوفر مشوار للذاكرة!"
+            },
+            {
+              id: "p4_q6",
+              question: "Q6. Which IAS register contains the address of the NEXT instruction pair to be fetched from memory?",
+              options: [
+                "IR (Instruction Register)",
+                "PC (Program Counter)",
+                "MBR (Memory Buffer Register)",
+                "MQ (Multiplier Quotient)"
+              ],
+              correctIndex: 1,
+              explanation: "إجابة صحيحة! عداد البرنامج PC (Program Counter) دايماً بيشاور على عنوان التعليمة (أو زوج التعليمات) التالية اللي عليها الدور تتجاب من الذاكرة."
+            },
+            {
+              id: "p4_q7",
+              question: "Q7. [True / False]: In the IAS computer, the Program Counter (PC) holds the instruction currently being executed.",
+              options: [
+                "True",
+                "False"
+              ],
+              correctIndex: 1,
+              explanation: "الإجابة False (✖)! دي أشهر خدعة في صح وغلط: الـ IR هو اللي بيشيل التعليمة اللي بتتنفذ حالياً، أما الـ PC فبيشيل عنوان التعليمة التالية (Next Address)."
+            },
+            {
+              id: "p4_q8",
+              question: "Q8. Which registers are directly employed to hold temporarily operands and results generated by the ALU in the IAS computer?",
+              options: [
+                "PC and MAR",
+                "IR and IBR",
+                "AC (Accumulator) and MQ (Multiplier Quotient)",
+                "MAR and IBR"
+              ],
+              correctIndex: 2,
+              explanation: "الله ينور! سجلات الـ AC (Accumulator) والـ MQ (Multiplier Quotient) هي السجلات الـ 40 بت الملحقة بالـ ALU لحفظ الأرقام ونواتج العمليات الحسابية."
+            }
+          ]
         }
       ]
     }
   ]
 };
+
