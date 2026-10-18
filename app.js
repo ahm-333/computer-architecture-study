@@ -285,6 +285,103 @@
         payload: "⚙️ التنفيذ الكامل: وحدة التحكم تفك شفرة IR وتصدر Control Lines، والـ ALU تحسب، والـ I/O يكلم الأجهزة الخارجية",
         desc: "تفك وحدة التحكم (Control Unit / Timing) شفرة الأمر الموجود في الـ IR وتصدر إشارات التحكم عبر (Control Lines)، وتنفذ وحدة (ALU & Temp Execution) الحسابات، بينما تتولى وحدة الـ I/O Module (عبر Port Buffers و Status & Control Logic) التواصل مع الكيبورد والشاشات والأقراص."
       }
+    ],
+    "sim-ch3-basic-cycle": [
+      {
+        num: "01",
+        title: "المرحلة 1: دورة الجلب (Fetch Cycle — جلب التعليمة من الذاكرة)",
+        route: "START ──► FETCH CYCLE: [IR ◄── Memory[PC]] & [PC = PC + 1]",
+        payload: "📥 مرحلة الجلب (Fetch): المعالج يقرأ التعليمة من العنوان المسجل في PC ويضعها في IR ويزود PC بواحد",
+        desc: "يبص المعالج في عداد البرنامج (PC) ليعرف عنوان التعليمة المطلوبة، ثم يقرأ كود التعليمة من الذاكرة الرئيسية ويحفظه في سجل التعليمة (IR)، ويزود عداد البرنامج تلقائياً بواحد (PC = PC + 1) ليشير للتعليمة التالية."
+      },
+      {
+        num: "02",
+        title: "المرحلة 2: دورة التنفيذ (Execute Cycle — فك الشفرة وتنفيذ العملية)",
+        route: "FETCH CYCLE ──► EXECUTE CYCLE: [Decode Opcode in IR ──► Processor-Mem / I/O / ALU / Control]",
+        payload: "⚡ مرحلة التنفيذ (Execute): وحدة التحكم تفك شفرة الـ Opcode في IR وتنفذ إحدى فئات التنفيذ الأربعة",
+        desc: "تحلل وحدة التحكم (Control Unit) كود العملية (Opcode) الموجود في الـ IR وتصدر إشارات التحكم لتنفيذ العملية ضمن الفئات الأربعة: (1) Processor-Memory، أو (2) Processor-I/O، أو (3) Data Processing في الـ ALU، أو (4) Control (Jump/Branch)."
+      },
+      {
+        num: "03",
+        title: "المرحلة 3: التكرار أو التوقف (Repeat Next Instruction or Halt)",
+        route: "EXECUTE CYCLE ──► [HALT / REPEAT] ──► Return to FETCH CYCLE",
+        payload: "🔄 استمرار الدورة: العودة فوراً لمرحلة الجلب (Fetch) للتعليمة التالية إلا عند وجود أمر HALT",
+        desc: "بعد انتهاء تنفيذ التعليمة الحالية، تعود الدورة تلقائياً إلى مرحلة الجلب (Fetch Cycle) لجلب التعليمة التالية التي يشير إليها الـ PC، ولا يتوقف المعالج إلا إذا نفذ تعليمة توقف صريحة (HALT) أو تم إيقاف التشغيل."
+      }
+    ],
+    "sim-ch3-state-diagram": [
+      {
+        num: "01",
+        title: "المرحلة 1: حساب عنوان التعليمة وجلبها (iac ──► if)",
+        route: "1. iac (Instruction Address Calc) ──► 2. if (Instruction Fetch into IR)",
+        payload: "📥 حساب العنوان والجلب: حساب عنوان الأمر التالي (iac) ثم قراءته من الذاكرة إلى سجل IR (if)",
+        desc: "تبدأ الدورة في حالة (iac) بتحديد وحساب عنوان التعليمة التالية في الذاكرة (عادةً عبر PC)، ثم تنتقل إلى حالة (if) حيث يقرأ المعالج كود التعليمة من الذاكرة ويضعه في سجل التعليمة (IR)."
+      },
+      {
+        num: "02",
+        title: "المرحلة 2: فك شفرة العملية وتحديد المعاملات (iod)",
+        route: "2. if ──► 3. iod (Instruction Operation Decoding) ──► 4. oac",
+        payload: "🔍 فك الشفرة (iod): وحدة التحكم تحلل الـ Opcode لتحديد نوع العملية والمعاملات المطلوبة",
+        desc: "في حالة (iod — Instruction Operation Decoding)، تقوم وحدة التحكم بتحليل كود العملية (Opcode) الموجود في الـ IR لتعرف ما هي العملية المطلوبة وهل تحتاج إلى جلب معاملات (Operands) من الذاكرة أو الـ I/O."
+      },
+      {
+        num: "03",
+        title: "المرحلة 3: حساب عنوان المعامل وجلبه وتنفيذ العملية الحسابية (oac ──► of ──► do + Loop)",
+        route: "4. oac (Operand Addr Calc) ──► 5. of (Operand Fetch) ──► 6. do (Data Operation) ↺ [Multiple Operands]",
+        payload: "🧮 جلب المعاملات والتنفيذ: حساب عنوان المعامل (oac) ➔ سحبه (of) ➔ تنفيذ العملية في ALU (do) مع إمكانية التكرار",
+        desc: "يحسب المعالج العنوان الفعلي للمعامل في (oac)، ثم يسحب قيمة المعامل من الذاكرة أو الـ I/O في (of) (ويمكن تكرار oac/of لو كانت التعليمة تحتاج أكثر من معامل)، ثم تنفذ الـ ALU العملية الحسابية أو المنطقية في حالة (do)."
+      },
+      {
+        num: "04",
+        title: "المرحلة 4: حساب عنوان التخزين وحفظ النتيجة والعودة لبداية الدورة (oac ──► os ──► iac)",
+        route: "6. do ──► oac (Store Address) ──► 7. os (Operand Store) ──► Return to 1. iac",
+        payload: "💾 حفظ النتيجة (os) وإتمام الدورة: كتابة الناتج في الذاكرة أو الـ I/O ثم العودة إلى (iac) للتعليمة التالية",
+        desc: "إذا كانت التعليمة تتطلب تخزين ناتج، يحسب المعالج عنوان التخزين في (oac) ثم يكتب النتيجة في الذاكرة أو يرسلها لجهاز الـ I/O في حالة (os — Operand Store)، وأخيراً يعود السهم إلى (iac) لبدء دورة التعليمة التالية."
+      }
+    ],
+    "sim-ch3-trace-exec": [
+      {
+        num: "01",
+        title: "الخطوة 1 (Cycle 1 - Fetch): جلب التعليمة الأولى من العنوان 215",
+        route: "Mem[215] = 3400H ──► IR = 3400H  |  PC = 215 + 1 = 216H  |  AC = 0000H",
+        payload: "📥 Step 1 (Fetch 1): قراءة 3400 من العنوان 215 إلى IR، وزيادة PC فوراً ليصبح 216",
+        desc: "البداية كانت PC = 215. يذهب المعالج للعنوان 215 فيقرأ الكود 3400 ويضعه في IR، ويزيد الـ PC بواحد فوراً في مرحلة الـ Fetch ليصبح PC = 216، بينما يظل AC = 0000."
+      },
+      {
+        num: "02",
+        title: "الخطوة 2 (Cycle 1 - Execute): تنفيذ أمر التحميل (3400 = Load AC from 400)",
+        route: "Decode IR (3 = Load, Addr = 400) ──► AC ◄── Mem[400] = 0012H",
+        payload: "⚡ Step 2 (Execute 1): الكود 3 يعني Load ➔ قراءة الرقم 0012 من العنوان 400 وتحميله في AC",
+        desc: "يفك المعالج شفرة IR (3400): الرقم 3 على الشمال يعني (Load AC from Memory) والعنوان هو 400. يذهب للعنوان 400 فيجد القيمة 0012 فينسخها داخل مسجل التراكم ليصبح AC = 0012 (بينما PC = 216 ثابت)."
+      },
+      {
+        num: "03",
+        title: "الخطوة 3 (Cycle 2 - Fetch): جلب التعليمة الثانية من العنوان 216",
+        route: "Mem[216] = 7401H ──► IR = 7401H  |  PC = 216 + 1 = 217H  |  AC = 0012H",
+        payload: "📥 Step 3 (Fetch 2): قراءة 7401 من العنوان 216 إلى IR، وزيادة PC فوراً ليصبح 217",
+        desc: "يقرأ المعالج التعليمة الثانية من العنوان المسجل في الـ PC (216) فيجد الكود 7401 ويضعه في سجل IR، ويزيد الـ PC بواحد فوراً ليصبح PC = 217، ويظل AC محتفظاً بقيمته 0012."
+      },
+      {
+        num: "04",
+        title: "الخطوة 4 (Cycle 2 - Execute): تنفيذ أمر الجمع بالهيكسا (7401 = Add Mem[401] to AC)",
+        route: "Decode IR (7 = Add, Addr = 401) ──► AC = 0012H + 1008H = 101AH",
+        payload: "🧮 Step 4 (Execute 2): جمع 0012H + 1008H بنظام الهيكسا (2 + 8 = 10 = A) ليصبح AC = 101AH",
+        desc: "الرقم 7 يعني (Add to AC from Memory) والعنوان هو 401 (الذي يحتوي على 1008). تجمع الـ ALU القيمة 0012H + 1008H بنظام الست عشري: 2 + 8 = 10 بالعشري وتُكتب A بالهيكسا، فيصبح الناتج في AC = 101AH!"
+      },
+      {
+        num: "05",
+        title: "الخطوة 5 (Cycle 3 - Fetch): جلب التعليمة الثالثة من العنوان 217",
+        route: "Mem[217] = 4401H ──► IR = 4401H  |  PC = 217 + 1 = 218H  |  AC = 101AH",
+        payload: "📥 Step 5 (Fetch 3): قراءة 4401 من العنوان 217 إلى IR، وزيادة PC فوراً ليصبح 218",
+        desc: "يقرأ المعالج التعليمة الثالثة من العنوان 217 فيجد الكود 4401 ويضعه في IR، ويزيد الـ PC بواحد فوراً ليصبح PC = 218، ويظل مسجل AC محتفظاً بالناتج 101A."
+      },
+      {
+        num: "06",
+        title: "الخطوة 6 (Cycle 3 - Execute): تنفيذ أمر التخزين في الذاكرة (4401 = Store AC to 401)",
+        route: "Decode IR (4 = Store, Addr = 401) ──► Mem[401] ◄── AC = 101AH (Overwrites 1008H)",
+        payload: "💾 Step 6 (Execute 3): نسخ قيمة AC (101A) وتخزينها في خانة الذاكرة 401 (ومحتوى AC لا يتصفر!)",
+        desc: "الرقم 4 يعني (Store AC to Memory) والعنوان هو 401. ينسخ المعالج القيمة الموجودة في AC (101A) ويكتبها في خانة الذاكرة 401 فتمسح القيمة القديمة (1008) وتصبح Mem[401] = 101A، بينما يظل AC = 101A بدون تصفير!"
+      }
     ]
   };
 
@@ -350,6 +447,22 @@
       { code: "MAR & MBR", role: "MAR يحمل عنوان خانة الرام (Address Bus) | MBR صندوق داتا الرام (Data Bus)", color: "cyan", step: 1 },
       { code: "I/O AR & I/O BR", role: "I/O AR يحدد عنوان منفذ الـ I/O (Address Bus) | I/O BR صندوق داتا الـ I/O", color: "emerald", step: 1 },
       { code: "System Bus, Memory & I/O", role: "ناقل النظام يربط المعالج بمصفوفة الذاكرة (Words 0..N-1) ووحدة الـ I/O", color: "amber", step: 2 }
+    ],
+    "sim-ch3-basic-cycle": [
+      { code: "FETCH CYCLE", role: "مرحلة الجلب: قراءة التعليمة من Mem[PC] إلى IR وزيادة PC = PC + 1", color: "cyan", step: 0 },
+      { code: "EXECUTE CYCLE", role: "مرحلة التنفيذ: فك شفرة الـ Opcode في IR وتنفيذ العملية المطلوبة", color: "amber", step: 1 },
+      { code: "HALT / REPEAT", role: "التكرار التلقائي للتعليمة التالية أو التوقف عند أمر HALT", color: "emerald", step: 2 }
+    ],
+    "sim-ch3-state-diagram": [
+      { code: "iac & if", role: "حساب عنوان التعليمة التالية (iac) وجلبها من الذاكرة إلى IR (if)", color: "cyan", step: 0 },
+      { code: "iod (Decode)", role: "فك شفرة كود العملية (Opcode) وتحديد نوع العملية والمعاملات", color: "amber", step: 1 },
+      { code: "oac, of & do (+Loop)", role: "حساب عنوان المعامل (oac) وجلبه (of) وتنفيذ العملية في ALU (do)", color: "amber", step: 2 },
+      { code: "os (Operand Store)", role: "كتابة النتيجة النهائية في الذاكرة أو الـ I/O والعودة إلى iac", color: "emerald", step: 3 }
+    ],
+    "sim-ch3-trace-exec": [
+      { code: "Cycle 1 (215: 3400)", role: "Fetch (PC=216, IR=3400) ➔ Execute Load 400 (AC=0012)", color: "cyan", step: 1 },
+      { code: "Cycle 2 (216: 7401)", role: "Fetch (PC=217, IR=7401) ➔ Execute Add 401 (AC = 0012+1008 = 101A)", color: "amber", step: 3 },
+      { code: "Cycle 3 (217: 4401)", role: "Fetch (PC=218, IR=4401) ➔ Execute Store 401 (Mem[401]=101A, AC=101A)", color: "emerald", step: 5 }
     ]
   };
 
@@ -1266,6 +1379,13 @@
     if (startCh3P1Btn) {
       startCh3P1Btn.addEventListener("click", () => {
         openReader("ch-3", "ch3-p1", true);
+      });
+    }
+
+    const startCh3P2Btn = document.getElementById("startCh3P2Btn");
+    if (startCh3P2Btn) {
+      startCh3P2Btn.addEventListener("click", () => {
+        openReader("ch-3", "ch3-p2", true);
       });
     }
 
