@@ -493,6 +493,80 @@
         payload: "⚡ Direct Memory Access (DMA): كارت DMA يستحوذ على الناقل وينقل كتل بيانات ضخمة مباشرة للرام",
         desc: "لنقل ملفات ضخمة من الهارد أو كارت الشبكة للرام دون إرهاق المعالج في كل بايت، يرسل متحكم DMA إشارة (Bus Request). يرد المتحكم المركزي بإشارة (Bus Grant) ليسلمه السيطرة الكاملة على الناقل، فيقوم بنقل البيانات مباشرة للذاكرة بسرعة قصوى دون إشغال المعالج!"
       }
+    ],
+    "sim-ch4-access-methods": [
+      {
+        num: "01",
+        title: "1. الوصول التتابعي (Sequential Access — الأشرطة المغناطيسية Magnetic Tape)",
+        route: "R/W Head ──[Linear Sequential Scan R1→R2...→Rn]──► Target Record",
+        payload: "📼 زمن وصول متغير (Variable Access Time): يجب المرور على جميع السجلات السابقة للوصول للسجل المطلوب",
+        desc: "تنظم البيانات في وحدات تسمى سجلات (Records) بترتيب فيزيائي خطي محدد. تستخدم آلية قراءة/كتابة مشتركة تتحرك فيزيائياً من موقعها الحالي حتى تصل للسجل المطلوب، مروراً بجميع السجلات الواقعة في الطريق. لذلك يعتمد زمن الوصول كلياً على موقع البيانات السابقة والحالية."
+      },
+      {
+        num: "02",
+        title: "2. الوصول المباشر (Direct Access — الأقراص الصلبة Hard Disk / SSD)",
+        route: "Disk Head ──[Track Seek Jump ➔ Sector Linear Search]──► Target Block",
+        payload: "💽 زمن وصول شبه مباشر ومتغير (Variable Access Time): قفز مباشر للمسار ثم بحث تتابعي داخله",
+        desc: "تقسم الذاكرة إلى كتل أو مسارات (Blocks / Tracks) لكل منها عنوان فريد. تصل وحدة القراءة مباشرة إلى بداية البلوك أو المسار المحدد، ثم تقوم ببحث تتابعي محلي قصير حتى تصل للسجل المطلوب. زمن الوصول متغير ويعتمد على زمن تحريك الإبرة (Seek Time) ودوران القرص (Rotational Latency)."
+      },
+      {
+        num: "03",
+        title: "3. الوصول العشوائي (Random Access — الذاكرة الرئيسية RAM)",
+        route: "Address Bus ──[Address Decoder ➔ Direct Physical Wiring]──► Single Memory Word",
+        payload: "⚡ زمن وصول ثابت ومستقل تماماً (Constant & Independent Access Time): الوصول لأي عنوان يستغرق نفس النانو ثانية",
+        desc: "كل موقع قابل للعنونة في الذاكرة له آلية عنونة فيزيائية سلكية منفصلة عبر دوائر فك تشفير العناوين (Address Decoder). زمن الوصول لأي كلمة في الذاكرة ثابت تماماً ومستقل كلياً عن عنوان الكلمة ومستقل عن موقع الكلمة التي تمت قراءتها قبلها!"
+      },
+      {
+        num: "04",
+        title: "4. الوصول الترابطي (Associative Access — ذاكرة الكاش Cache Memory)",
+        route: "Search Key / Tag ──[Simultaneous Parallel Match Across All Words]──► Matched Data Word",
+        payload: "🔍 مقارنة فورية متزامنة بالمحتوى (Content-Addressed): مقارنة الـ Tag بكل خلايا الكاش دفعة واحدة",
+        desc: "نوع متطور وخاص من الوصول العشوائي؛ لا يعتمد على رقم العنوان الفيزيائي، بل يقارن الكلمة المطلوبة أو جزء منها (Tag) بمحتويات كل الكلمات المخزنة في نفس اللحظة بالتوازي (Simultaneous Parallel Comparison). زمن الوصول ثابت ومستقل عن موقع الكلمة، وتستخدم حصرياً في ذاكرة الكاش."
+      }
+    ],
+    "sim-ch4-hierarchy": [
+      {
+        num: "01",
+        title: "المستوى 0: مسجلات المعالج (CPU Registers — القمة)",
+        route: "ALU / CU ◄──[Internal CPU Wires: < 1 ns]──► Internal Registers",
+        payload: "⚡ أسرع ذاكرة على الإطلاق (< 1 ns)، سعة مئات البايتات فقط، وأعلى تكلفة للبت",
+        desc: "تتواجد داخل شريحة المعالج مباشرة وتصنع من دوائر فليب-فلوب (Flip-Flops) فائقة السرعة. تعمل بنفس سرعة تردد النواة، وسعتها لا تتجاوز بضع عشرات من الكلمات، وتكلفتها هي الأعلى لكل بت."
+      },
+      {
+        num: "02",
+        title: "المستوى 1: ذاكرة الكاش السريعة (SRAM Cache — L1, L2, L3)",
+        route: "CPU Core ◄──[SRAM Bus: 1 to 15 ns]──► L1 / L2 / L3 Caches",
+        payload: "🚀 زمن 1-15 نانو ثانية، سعة من KB إلى MB، وتخدم 90-95% من طلبات المعالج (Hit Rate)",
+        desc: "تصنع من خلايا Static RAM سداسية الترانزستور (6T SRAM) ولا تحتاج لإنعاش كهربائي. تحتفظ بالبيانات والتعليمات الأكثر استخداماً وتلبي الغالبية العظمى من طلبات المعالج بسرعة مذهلة."
+      },
+      {
+        num: "03",
+        title: "المستوى 2: الذاكرة الرئيسية (Main Memory — DRAM)",
+        route: "System Bus ◄──[Memory Controller: 50 to 100 ns]──► DRAM Modules",
+        payload: "💾 زمن وصول 50-100 نانو ثانية، سعة بالجيجابايت (GB)، وتكلفة معتدلة جداً لكل بت",
+        desc: "تصنع من خلايا Dynamic RAM (ترانزستور ومكثف 1T-1C) تحتاج لإنعاش كهربائي دوري للحفاظ على الشحنة. سعتها ضخمة وتتسع لنظام التشغيل والبرامج المشغلة، لكنها أبطأ بنحو 100 مرة من المعالج."
+      },
+      {
+        num: "04",
+        title: "المستوى 3: التخزين الثانوي الخارجي (SSD Flash & Magnetic HDD)",
+        route: "PCIe / SATA Bus ◄──[I/O Controller: 50 µs to 10 ms]──► Storage Media",
+        payload: "📦 أقراص الحالة الصلبة والهارد ديسك: سعة هائلة بالتيرابايت (TB)، وتكلفة رخيصة، وغير متطايرة",
+        desc: "تحتفظ بالبيانات بصورة دائمة حتى عند انقطاع التيار الكهربائي (Non-volatile). المعالج لا يصل إليها مباشرة، بل يتم نسخ كتل البرامج والملفات منها إلى الرام عبر قنوات الإدخال والإخراج."
+      },
+      {
+        num: "05",
+        title: "المستوى 4: التخزين الخارجي والأرشفة (Optical Discs & Magnetic Tape)",
+        route: "External Archive Drive ◄──[Tape Carousel: Seconds to Minutes]──► Magnetic Tapes",
+        payload: "🗄️ أشرطة الأرشفة: سعة عملاقة بالبيتابايت (PB)، وأرخص تكلفة فيزيائية ممكنة للبت، وبطيئة جداً",
+        desc: "وسائط تخزين غير متصلة مباشرة بالنظام (Off-line)؛ تستخدم للنسخ الاحتياطي طويل الأمد (Disaster Recovery & Archiving). سعتها ضخمة وتكلفتها رخيصة جداً، لكن زمن استرجاع البيانات يستغرق ثواني أو دقائق."
+      },
+      {
+        num: "06",
+        title: "المستوى 5: القواعد الذهبية الثلاث لهرم الذاكرة (Memory Hierarchy Trade-offs)",
+        route: "Top (Fast/Costly/Small) ◄──[The 3 Design Laws]──► Bottom (Slow/Cheap/Massive)",
+        payload: "⚖️ قواعد المقايضة الثلاث: زمن أسرع = تكلفة أكبر للبت + سعة أكبر = تكلفة أرخص للبت وزمن أبطأ",
+        desc: "1) كلما قل زمن الوصول، زادت تكلفة البت. 2) كلما زادت السعة، قلت تكلفة البت. 3) كلما زادت السعة، زاد زمن الوصول. معضلة التصميم تحل بفضل مبدأ المحلية (Principle of Locality): المعالج يقضي 95% من وقته في الطبقات العليا السريعة، فنحصل على سعة كبيرة ورخيصة بسرعة الكاش!"
+      }
     ]
   };
 
@@ -595,6 +669,20 @@
       { code: "I/O Read", role: "قراءة بيانات من الأجهزة الطرفية للمعالج", color: "emerald", step: 2 },
       { code: "I/O Write", role: "إرسال أوامر وبيانات من المعالج للطرفيات", color: "pink", step: 3 },
       { code: "DMA Direct Transfer", role: "نقل مباشر بين الطرفيات والذاكرة بتحكيم الناقل", color: "cyan", step: 4 }
+    ],
+    "sim-ch4-access-methods": [
+      { code: "Sequential Access", role: "الأشرطة: قراءة خطية تتابعية وزمن وصول متغير معتمد على موقع السجل", color: "amber", step: 0 },
+      { code: "Direct Access", role: "الهارد ديسك: قفز للمسار ثم دوران وزمن وصول متغير معتمد على المسافة", color: "cyan", step: 1 },
+      { code: "Random Access (RAM)", role: "الرامات: فك تشفير العنوان وزمن وصول ثابت ومستقل تماماً عن الموقع", color: "emerald", step: 2 },
+      { code: "Associative (Cache)", role: "الكاش: مقارنة متزامنة لمفتاح البحث مع كل الكلمات في نفس اللحظة", color: "purple", step: 3 }
+    ],
+    "sim-ch4-hierarchy": [
+      { code: "CPU Registers", role: "أسرع وأغلى ذاكرة (< 1 ns) داخل النواة مباشرة لسعة بايتات فقط", color: "pink", step: 0 },
+      { code: "L1, L2, L3 Cache", role: "ذاكرة SRAM فائقة السرعة (1-15 ns) لحفظ المتغيرات وتفادي بطء الرام", color: "amber", step: 1 },
+      { code: "Main Memory (DRAM)", role: "الذاكرة الرئيسية: سعة بالجيجابايت (50-100 ns) وتتطلب إنعاشاً دورياً", color: "cyan", step: 2 },
+      { code: "SSD & HDD Storage", role: "أقراص الحالة الصلبة والهارد: سعة بالتيرابايت وغير متطايرة ودائمة", color: "emerald", step: 3 },
+      { code: "Tape & Offline Archive", role: "الأشرطة المغناطيسية: أرخص تكلفة للبت وسعة بالبيتابايت للأرشفة", color: "purple", step: 4 },
+      { code: "Trade-off Laws", role: "قوانين المقايضة الثلاث: حل معضلة السرعة والسعة عبر مبدأ المحلية", color: "amber", step: 5 }
     ]
   };
 
@@ -1518,6 +1606,13 @@
     if (startCh3P2Btn) {
       startCh3P2Btn.addEventListener("click", () => {
         openReader("ch-3", "ch3-p2", true);
+      });
+    }
+
+    const startCh4P1Btn = document.getElementById("startCh4P1Btn");
+    if (startCh4P1Btn) {
+      startCh4P1Btn.addEventListener("click", () => {
+        openReader("ch-4", "ch4-p1", true);
       });
     }
 
