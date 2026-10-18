@@ -29,11 +29,11 @@ window.COURSE_DATA = {
           title: "Computer Architecture vs. Computer Organization",
           hasContent: true,
           contentHtml: `
-            <!-- 1. الفكرة الأساسية من الصفر + محاكي الطبقتين التفاعلي -->
+            <!-- 1. الفكرة الأساسية من الصفر -->
             <section class="exp-section">
               <div class="exp-section-header">
                 <span class="exp-sec-num">01</span>
-                <h2 class="exp-sec-title">الفكرة الأساسية من الصفر (مع محاكي الطبقتين التفاعلي)</h2>
+                <h2 class="exp-sec-title">الفكرة الأساسية من الصفر</h2>
               </div>
 
               <div class="balady-box">
@@ -46,90 +46,19 @@ window.COURSE_DATA = {
                 </p>
               </div>
 
-              <!-- INTERACTIVE SIMULATOR 1: Architecture vs Organization & IBM 370 -->
-              <div class="sim-card" data-sim="sim-arch-org">
-                <div class="sim-top-bar">
-                  <div class="sim-title-group">
-                    <span class="sim-live-dot"></span>
-                    <span class="sim-badge-title">INTERACTIVE SIMULATOR // ARCHITECTURE VS. ORGANIZATION</span>
+              <div class="two-layers-split">
+                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-cyan);">
+                  <div class="mono" style="color: var(--accent-cyan); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.35rem;">
+                    LAYER 01 // ARCHITECTURE
                   </div>
-                  <div class="sim-controls">
-                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. طبقة المبرمج (Architecture)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="1">2. تحت الكبوت: جهاز اقتصادي (2 GHz)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="2">3. عائلة IBM 370: جهاز فائق (4 GHz)</button>
-                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل تلقائي</button>
-                  </div>
+                  <p><strong>1. ورقة التعليمات</strong> اللي بيشوفها المبرمج ويكتب بيها الكود (<span class="mono">Architecture</span>).</p>
                 </div>
 
-                <div class="sim-svg-stage">
-                  <svg viewBox="0 0 720 315" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Top Layer: Architecture (Visible to Programmer) -->
-                    <g class="svg-hw-group cyan-node active-node" data-node-step="0,1,2" data-click-step="0">
-                      <rect class="svg-hw-box" x="140" y="15" width="440" height="82" rx="10" />
-                      <text class="svg-label-mono" x="360" y="38">LAYER 1: COMPUTER ARCHITECTURE (VISIBLE TO PROGRAMMER)</text>
-                      <text class="svg-label-en" x="360" y="60">ISA Code: ADD R1, R2, R3  |  Data Type: 32-Bit Int</text>
-                      <text class="svg-label-ar" x="360" y="82">① كتالوج الأوامر والكود ثابت لا يتغير أبداً</text>
-                    </g>
-
-                    <!-- Wires from Architecture to Organization -->
-                    <path class="wire-base" d="M 360 97 L 360 140 L 195 140 L 195 180" />
-                    <path class="wire-base" d="M 360 97 L 360 140 L 525 140 L 525 180" />
-
-                    <path class="wire-flow cyan active-flow" data-wire-step="0,1" d="M 360 97 L 360 140 L 195 140 L 195 180" />
-                    <path class="wire-flow amber" data-wire-step="0,2" d="M 360 97 L 360 140 L 525 140 L 525 180" />
-
-                    <!-- Moving Signal Dots -->
-                    <circle class="data-packet-dot moving" data-packet-step="0,1" r="6" fill="#06b6d4">
-                      <animateMotion dur="1.4s" repeatCount="indefinite" path="M 360 97 L 360 140 L 195 140 L 195 180" />
-                    </circle>
-                    <circle class="data-packet-dot" data-packet-step="2" r="7" fill="#f59e0b">
-                      <animateMotion dur="0.65s" repeatCount="indefinite" path="M 360 97 L 360 140 L 525 140 L 525 180" />
-                    </circle>
-
-                    <!-- ISA Boundary Line -->
-                    <line x1="40" y1="140" x2="680" y2="140" stroke="var(--border-strong)" stroke-dasharray="6 6" stroke-width="1.5" />
-                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
-                      <rect class="svg-wire-pill" x="265" y="126" width="190" height="24" />
-                      <text class="svg-wire-text" x="360" y="142">① ISA INTERFACE BOUNDARY</text>
-                    </g>
-
-                    <!-- Wire Callout 2 (Economy HW) -->
-                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
-                      <rect class="svg-wire-pill" x="75" y="108" width="170" height="22" />
-                      <text class="svg-wire-text" x="160" y="123">② إشارات 2GHz (16-bit) ▼</text>
-                    </g>
-
-                    <!-- Wire Callout 3 (High-Speed HW) -->
-                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
-                      <rect class="svg-wire-pill" x="475" y="108" width="170" height="22" />
-                      <text class="svg-wire-text" x="560" y="123">③ إشارات 4GHz (64-bit) ▼</text>
-                    </g>
-
-                    <!-- Bottom Left: Organization Model A (Economy) -->
-                    <g class="svg-hw-group cyan-node" data-node-step="1" data-click-step="1">
-                      <rect class="svg-hw-box" x="45" y="180" width="300" height="115" rx="10" />
-                      <text class="svg-label-mono" x="195" y="204">ORGANIZATION A // ECONOMY HW</text>
-                      <text class="svg-label-en" x="195" y="228">Clock: 2.0 GHz | 16-bit Bus</text>
-                      <text class="svg-label-ar" x="195" y="252">عتاد اقتصادي • إشارات تحكم أبطأ (DRAM)</text>
-                      <text class="svg-label-mono" x="195" y="278" style="fill: var(--accent-emerald);">✓ Runs Same Program (Normal Speed)</text>
-                    </g>
-
-                    <!-- Bottom Right: Organization Model B (High-End IBM 370) -->
-                    <g class="svg-hw-group amber-node" data-node-step="2" data-click-step="2">
-                      <rect class="svg-hw-box" x="375" y="180" width="300" height="115" rx="10" />
-                      <text class="svg-label-mono" x="525" y="204" style="fill: var(--accent-amber);">ORGANIZATION B // HIGH-SPEED HW</text>
-                      <text class="svg-label-en" x="525" y="228">Clock: 4.0 GHz | 64-bit Bus</text>
-                      <text class="svg-label-ar" x="525" y="252">عتاد فائق السرعة • أسلاك أعرض (SRAM)</text>
-                      <text class="svg-label-mono" x="525" y="278" style="fill: var(--accent-amber);">🚀 Runs Same Program 2x Faster!</text>
-                    </g>
-                  </svg>
-                </div>
-
-                <div class="sim-status-ticker">
-                  <span class="sim-status-text" data-sim-status>
-                    الطبقة الأولى (Architecture): المبرمج بيكتب الكود مرة واحدة بس بناءً على كتالوج الأوامر (ISA) من غير ما يشغل باله بتفاصيل الأسلاك تحت الكبوت.
-                  </span>
-                  <span class="sim-status-step-tag" data-sim-tag>STEP 1 / 3</span>
+                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-amber);">
+                  <div class="mono" style="color: var(--accent-amber); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.35rem;">
+                    LAYER 02 // ORGANIZATION
+                  </div>
+                  <p><strong>2. الشغل الداخلي والأسلاك والسرعة</strong> اللي تحت الكبوت (<span class="mono">Organization</span>).</p>
                 </div>
               </div>
             </section>
@@ -1488,102 +1417,6 @@ window.COURSE_DATA = {
                 </p>
               </div>
 
-              <!-- INTERACTIVE SIMULATOR 6: Motherboard PCB & Server Layout -->
-              <div class="sim-card" data-sim="sim-motherboard">
-                <div class="sim-top-bar">
-                  <div class="sim-title-group">
-                    <span class="sim-live-dot"></span>
-                    <span class="sim-badge-title">FIG 1.6 // MOTHERBOARD PCB &amp; SERVER ARCHITECTURE SIMULATOR</span>
-                  </div>
-                  <div class="sim-controls">
-                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. Processor Sockets (Xeon / EC12)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="1">2. DIMM Slots (DRAM Chips)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="2">3. PCB Traces &amp; I/O Chipset</button>
-                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل تلقائي</button>
-                  </div>
-                </div>
-
-                <div class="sim-svg-stage">
-                  <svg viewBox="0 0 740 320" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Green/Dark PCB Board -->
-                    <rect x="20" y="10" width="700" height="300" rx="14" fill="var(--bg-card)" stroke="var(--accent-emerald)" stroke-width="2.5" />
-                    <text class="svg-label-mono" x="370" y="32" style="fill:var(--accent-emerald);">PRINTED CIRCUIT BOARD (MOTHERBOARD PCB)</text>
-
-                    <!-- Copper PCB Traces (System Bus Physical Implementation) -->
-                    <path class="wire-base" d="M 275 110 L 430 110" />
-                    <path class="wire-base" d="M 275 215 L 430 215" />
-                    <path class="wire-base" d="M 165 155 L 165 175" />
-                    <path class="wire-base" d="M 555 155 L 555 190" />
-
-                    <path class="wire-flow amber active-flow" data-wire-step="0,2" d="M 165 155 L 165 175" />
-                    <path class="wire-flow cyan active-flow" data-wire-step="1,2" d="M 275 110 L 430 110" />
-                    <path class="wire-flow emerald active-flow" data-wire-step="2" d="M 275 215 L 430 215" />
-
-                    <circle class="data-packet-dot moving" data-packet-step="0,1,2" r="6" fill="#06b6d4">
-                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 275 110 L 430 110" />
-                    </circle>
-                    <circle class="data-packet-dot" data-packet-step="2" r="6" fill="#10b981">
-                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 275 215 L 430 215" />
-                    </circle>
-
-                    <!-- On-Wire Operation Callout Badges -->
-                    <g class="svg-wire-callout active-pill" data-pill-step="0" data-click-step="0">
-                      <rect class="svg-wire-pill" x="282" y="153" width="140" height="22" />
-                      <text class="svg-wire-text" x="352" y="168">① 2 Chips = 8 Cores</text>
-                    </g>
-
-                    <g class="svg-wire-callout" data-pill-step="1" data-click-step="1">
-                      <rect class="svg-wire-pill" x="282" y="80" width="140" height="22" />
-                      <text class="svg-wire-text" x="352" y="95">◄► ② تغذية من DRAM</text>
-                    </g>
-
-                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
-                      <rect class="svg-wire-pill" x="280" y="226" width="144" height="22" />
-                      <text class="svg-wire-text" x="352" y="241">③ PCB Traces (Bus)</text>
-                    </g>
-
-                    <!-- CPU Socket 1 -->
-                    <g class="svg-hw-group cyan-node active-node" data-node-step="0" data-click-step="0">
-                      <rect class="svg-hw-box" x="55" y="55" width="220" height="100" rx="8" />
-                      <text class="svg-label-mono" x="165" y="80">PROCESSOR SOCKET 1</text>
-                      <text class="svg-label-en" x="165" y="104">Quad-Core Xeon Chip</text>
-                      <text class="svg-label-ar" x="165" y="130">شريحة معالج 1 (4 أنوية)</text>
-                    </g>
-
-                    <!-- CPU Socket 2 (Dual Socket Server Board) -->
-                    <g class="svg-hw-group cyan-node active-node" data-node-step="0" data-click-step="0">
-                      <rect class="svg-hw-box" x="55" y="175" width="220" height="100" rx="8" />
-                      <text class="svg-label-mono" x="165" y="200">PROCESSOR SOCKET 2</text>
-                      <text class="svg-label-en" x="165" y="224">Quad-Core Xeon Chip</text>
-                      <text class="svg-label-ar" x="165" y="250">شريحة معالج 2 (المجموع = 8 أنوية)</text>
-                    </g>
-
-                    <!-- DIMM Slots (Main Memory DRAM) -->
-                    <g class="svg-hw-group emerald-node" data-node-step="1" data-click-step="1">
-                      <rect class="svg-hw-box" x="430" y="55" width="250" height="100" rx="8" />
-                      <text class="svg-label-mono" x="555" y="80" style="fill:var(--accent-emerald);">DIMM MEMORY SLOTS</text>
-                      <text class="svg-label-en" x="555" y="105">Main Memory (DRAM Chips)</text>
-                      <text class="svg-label-ar" x="555" y="130">فتحات مساطر الرامات على البوردة</text>
-                    </g>
-
-                    <!-- I/O Controller Chipset -->
-                    <g class="svg-hw-group amber-node" data-node-step="2" data-click-step="2">
-                      <rect class="svg-hw-box" x="430" y="190" width="250" height="85" rx="8" />
-                      <text class="svg-label-mono" x="555" y="215" style="fill:var(--accent-amber);">I/O CONTROLLER CHIPSET</text>
-                      <text class="svg-label-en" x="555" y="238">PCIe • USB • Storage • GPU</text>
-                      <text class="svg-label-ar" x="555" y="260">تنظيم المرور مع الكروت والمنافذ</text>
-                    </g>
-                  </svg>
-                </div>
-
-                <div class="sim-status-ticker">
-                  <span class="sim-status-text" data-sim-status>
-                    1. Processor Sockets: في السيرفرات (زي Intel Quad-Core Xeon سلايد 13) اللوحة الأم بيكون فيها 2 سوكت لبروسيسورين، كل واحد 4 أنوية = 8 أنوية حقيقية شغالة مع بعض!
-                  </span>
-                  <span class="sim-status-step-tag" data-sim-tag>MOTHERBOARD 1 / 3</span>
-                </div>
-              </div>
-
               <div class="attr-grid">
                 <div class="attr-card">
                   <span class="attr-term">1. Processor Chip (Socket)</span>
@@ -2602,107 +2435,16 @@ window.COURSE_DATA = {
                   <p><strong>• خلايا الذاكرة (<span class="mono">Memory Cells</span>)</strong> ──► وظيفتها: <strong>تخزين البيانات (<span class="mono">Data Storage</span>)</strong>.</p>
                 </div>
               </div>
+            </section>
 
-              <!-- INTERACTIVE SIMULATOR 9: Integrated Circuit & Moore's Law Scaling -->
-              <div class="sim-card" data-sim="sim-ic-moore">
-                <div class="sim-top-bar">
-                  <div class="sim-title-group">
-                    <span class="sim-live-dot"></span>
-                    <span class="sim-badge-title">FIG 1.9 // INTEGRATED CIRCUIT (IC) &amp; MOORE'S LAW SIMULATOR</span>
-                  </div>
-                  <div class="sim-controls">
-                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. تشريح شريحة الـ IC (Gates + Cells)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="1">2. قانون مور (2× Transistors)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="2">3. قصر المسارات وزيادة السرعة</button>
-                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل تلقائي</button>
-                  </div>
-                </div>
-
-                <div class="sim-svg-stage">
-                  <svg viewBox="0 0 740 345" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Left Side: Single Silicon IC Die Anatomy -->
-                    <g class="svg-hw-group cyan-node active-node" data-node-step="0,2" data-click-step="0">
-                      <rect class="svg-hw-box" x="35" y="20" width="320" height="295" rx="12" />
-                      <text class="svg-label-mono" x="195" y="45">① INTEGRATED CIRCUIT (SINGLE SILICON DIE)</text>
-
-                      <!-- Logic Gates Block inside IC -->
-                      <rect x="60" y="65" width="270" height="82" rx="8" fill="var(--bg-elevated)" stroke="var(--accent-cyan)" stroke-width="2" />
-                      <text class="svg-label-en" x="195" y="92">Logic Gates (AND / OR / NOT)</text>
-                      <text class="svg-label-ar" x="195" y="114">البوابات المنطقية ➔ معالجة البيانات</text>
-                      <text class="svg-label-mono" x="195" y="134" style="fill:var(--accent-cyan);">FUNCTION: DATA PROCESSING</text>
-
-                      <!-- Internal On-Chip Metallization Paths -->
-                      <path class="wire-base" d="M 145 147 L 145 195" />
-                      <path class="wire-base" d="M 245 147 L 245 195" />
-                      <path class="wire-flow amber active-flow" data-wire-step="0,2" d="M 145 147 L 145 195" />
-                      <path class="wire-flow emerald active-flow" data-wire-step="0,2" d="M 245 195 L 245 147" />
-
-                      <circle class="data-packet-dot moving" data-packet-step="0,2" r="5" fill="#f59e0b">
-                        <animateMotion dur="0.65s" repeatCount="indefinite" path="M 145 147 L 145 195" />
-                      </circle>
-                      <circle class="data-packet-dot moving" data-packet-step="0,2" r="5" fill="#10b981">
-                        <animateMotion dur="0.65s" repeatCount="indefinite" path="M 245 195 L 245 147" />
-                      </circle>
-
-                      <!-- Memory Cells Block inside IC -->
-                      <rect x="60" y="195" width="270" height="82" rx="8" fill="var(--bg-elevated)" stroke="var(--accent-emerald)" stroke-width="2" />
-                      <text class="svg-label-en" x="195" y="222">Memory Cells (Flip-Flops)</text>
-                      <text class="svg-label-ar" x="195" y="244">خلايا الذاكرة ➔ تخزين البيانات</text>
-                      <text class="svg-label-mono" x="195" y="264" style="fill:var(--accent-emerald);">FUNCTION: DATA STORAGE</text>
-
-                      <text class="svg-label-mono" x="195" y="298" style="fill:var(--text-muted);">FABRICATED ON ONE THIN WAFER CHIP</text>
-                    </g>
-
-                    <!-- Callout Badge 1/3 on Internal IC Paths -->
-                    <g class="svg-wire-callout active-pill" data-pill-step="0,2" data-click-step="2">
-                      <rect class="svg-wire-pill" x="90" y="160" width="210" height="22" />
-                      <text class="svg-wire-text" x="195" y="175">③ مسارات قصيرة جداً = سرعة أعلى ⚡</text>
-                    </g>
-
-                    <!-- Right Side: Moore's Law Doubling Visualization -->
-                    <g class="svg-hw-group amber-node" data-node-step="1,2" data-click-step="1">
-                      <rect class="svg-hw-box" x="385" y="20" width="320" height="295" rx="12" />
-                      <text class="svg-label-mono" x="545" y="45" style="fill:var(--accent-amber);">② MOORE'S LAW (EMPIRICAL OBSERVATION)</text>
-
-                      <!-- Year N Die vs Year N+2 Die (Same Chip Area, 2x Density) -->
-                      <rect x="410" y="65" width="120" height="105" rx="8" fill="var(--bg-elevated)" stroke="var(--border-strong)" stroke-width="2" />
-                      <text class="svg-label-mono" x="470" y="85">CHIP DIE (GEN A)</text>
-                      <!-- 4 Transistor blocks -->
-                      <rect x="428" y="96" width="34" height="26" rx="4" fill="var(--accent-cyan-soft)" stroke="var(--accent-cyan)" />
-                      <rect x="476" y="96" width="34" height="26" rx="4" fill="var(--accent-cyan-soft)" stroke="var(--accent-cyan)" />
-                      <rect x="428" y="130" width="34" height="26" rx="4" fill="var(--accent-cyan-soft)" stroke="var(--accent-cyan)" />
-                      <rect x="476" y="130" width="34" height="26" rx="4" fill="var(--accent-cyan-soft)" stroke="var(--accent-cyan)" />
-
-                      <text class="svg-label-mono" x="545" y="122" style="fill:var(--accent-amber); font-size:14px;">──►</text>
-
-                      <!-- Same size Die with 2x Transistors & Shorter Paths -->
-                      <rect x="560" y="65" width="120" height="105" rx="8" fill="var(--bg-elevated)" stroke="var(--accent-amber)" stroke-width="2" />
-                      <text class="svg-label-mono" x="620" y="85" style="fill:var(--accent-amber);">SAME DIE (2×)</text>
-                      <!-- 8 Smaller Transistor blocks packed closer -->
-                      <rect x="574" y="95" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
-                      <rect x="598" y="95" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
-                      <rect x="622" y="95" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
-                      <rect x="646" y="95" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
-                      <rect x="574" y="117" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
-                      <rect x="598" y="117" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
-                      <rect x="622" y="117" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
-                      <rect x="646" y="117" width="20" height="16" rx="3" fill="var(--accent-amber-soft)" stroke="var(--accent-amber)" />
-                      <text class="svg-label-mono" x="620" y="154" style="fill:var(--accent-emerald); font-size:9.5px;">2× TRANSISTORS!</text>
-
-                      <!-- 5 Consequences Summary Box -->
-                      <rect x="410" y="185" width="270" height="112" rx="8" fill="var(--bg-surface)" stroke="var(--accent-emerald)" stroke-width="1.5" />
-                      <text class="svg-label-en" x="545" y="207" style="font-size:11.5px; fill:var(--accent-emerald);">5 Consequences of Moore's Law:</text>
-                      <text class="svg-label-ar" x="545" y="228" style="font-size:11.5px;">1. ثبات سعر الشريحة وهبوط تكلفة الحواسيب</text>
-                      <text class="svg-label-ar" x="545" y="247" style="font-size:11.5px;">2. مسارات أقصر (Shorter Paths) = سرعة أعلى</text>
-                      <text class="svg-label-ar" x="545" y="266" style="font-size:11.5px;">3. حجم أصغر + 4. طاقة وتبريد أقل</text>
-                      <text class="svg-label-ar" x="545" y="285" style="font-size:11.5px;">5. لحامات خارجية أقل = اعتمادية أعلى</text>
-                    </g>
-                  </svg>
-                </div>
+            <!-- 4. GORDON MOORE & MOORE'S LAW (قانون مور - سلايد 31 & سؤال الشيت 1.10) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">04</span>
+                <h2 class="exp-sec-title">GORDON MOORE &amp; MOORE'S LAW (قانون مور - سلايد 31 &amp; سؤال الشيت 1.10)</h2>
               </div>
 
-              <!-- 4. GORDON MOORE & MOORE'S LAW DETAILS -->
-              <div class="en-def-box" style="border-left-color: var(--accent-amber); margin-top: 1.25rem;">
+              <div class="en-def-box" style="border-left-color: var(--accent-amber);">
                 <span class="en-def-label" style="color: var(--accent-amber);">Gordon Moore (Co-founder of Intel, 1965) — Moore's Law Definition</span>
                 <p class="en-def-text">
                   "The <strong>number of transistors</strong> that could be put on a <strong>single chip</strong> was <strong>doubling every year</strong> (later revised to <strong>every 18 months to 2 years</strong>)."
@@ -2756,62 +2498,8 @@ window.COURSE_DATA = {
             <!-- 5. EVOLUTION OF SEMICONDUCTOR MEMORY & MICROPROCESSORS (سلايد 36 إلى 41) -->
             <section class="exp-section">
               <div class="exp-section-header">
-                <span class="exp-sec-num">04</span>
+                <span class="exp-sec-num">05</span>
                 <h2 class="exp-sec-title">EVOLUTION OF SEMICONDUCTOR MEMORY &amp; MICROPROCESSORS (تطور ذاكرة أشباه الموصلات والمعالجات - سلايد 36 إلى 41)</h2>
-              </div>
-
-              <!-- INTERACTIVE SIMULATOR 10: Microprocessor & Generations Evolution Timeline -->
-              <div class="sim-card" data-sim="sim-cpu-evolution">
-                <div class="sim-top-bar">
-                  <div class="sim-title-group">
-                    <span class="sim-live-dot"></span>
-                    <span class="sim-badge-title">FIG 1.10 // GENERATIONS &amp; INTEL MICROPROCESSOR EVOLUTION SIMULATOR</span>
-                  </div>
-                  <div class="sim-controls">
-                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. Vacuum Tubes ➔ Transistor</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="1">2. 1970 RAM &amp; 1971 Intel 4004</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="2">3. عائلة x86 (8080 ➔ Pentium)</button>
-                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل التطور</button>
-                  </div>
-                </div>
-
-                <div class="sim-svg-stage">
-                  <svg viewBox="0 0 740 330" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Stage 1: Gen 1 & Gen 2 -->
-                    <g class="svg-hw-group amber-node active-node" data-node-step="0" data-click-step="0">
-                      <rect class="svg-hw-box" x="30" y="25" width="680" height="82" rx="10" />
-                      <text class="svg-label-mono" x="370" y="47" style="fill:var(--accent-amber);">① 1ST GEN (1946: VACUUM TUBES) ──► 2ND GEN (1958: SILICON TRANSISTOR)</text>
-                      <text class="svg-label-en" x="370" y="70">ENIAC / IAS (Glass Vacuum Tubes)  ──►  Bell Labs 1947 Transistor / IBM 7094</text>
-                      <text class="svg-label-ar" x="370" y="92">الترانزستور: أصغر (Smaller) • أرخص (Cheaper) • حرارة أقل (Less Heat) • اعتمادية أعلى (Reliable)</text>
-                    </g>
-
-                    <path class="wire-base" d="M 370 107 L 370 130" />
-                    <path class="wire-flow cyan active-flow" data-wire-step="0,1" d="M 370 107 L 370 130" />
-
-                    <!-- Stage 2: 1970 Semiconductor Memory & 1971 Intel 4004 -->
-                    <g class="svg-hw-group cyan-node" data-node-step="1" data-click-step="1">
-                      <rect class="svg-hw-box" x="30" y="130" width="680" height="82" rx="10" />
-                      <text class="svg-label-mono" x="370" y="152">② 3RD GEN ICs (1965) ──► FAIRCHILD RAM (1970) ──► INTEL 4004 (1971)</text>
-                      <text class="svg-label-en" x="370" y="175">1970: First 256-bit Semiconductor RAM  |  1971: Intel 4004 (First 4-Bit Microprocessor)</text>
-                      <text class="svg-label-ar" x="370" y="197">Intel 4004: أول ميكروبروسيسور عام جمع كل الـ CPU (ALU + CU + Registers) على شريحة واحدة!</text>
-                    </g>
-
-                    <path class="wire-base" d="M 370 212 L 370 235" />
-                    <path class="wire-flow emerald" data-wire-step="1,2" d="M 370 212 L 370 235" />
-
-                    <!-- Stage 3: Intel x86 Architecture Progression -->
-                    <g class="svg-hw-group emerald-node" data-node-step="2" data-click-step="2">
-                      <rect class="svg-hw-box" x="30" y="235" width="680" height="82" rx="10" />
-                      <text class="svg-label-mono" x="370" y="257" style="fill:var(--accent-emerald);">③ INTEL x86 MICROPROCESSOR EVOLUTION (1974 TO 1993+)</text>
-                      <text class="svg-label-en" x="370" y="280">8080 (8-bit) ──► 8086 (16-bit x86) ──► 80386 (32-bit + Virtual Mem) ──► Pentium (Superscalar)</text>
-                      <text class="svg-label-ar" x="370" y="302">Pentium (1993): تقنية Superscalar لتنفيذ أكثر من تعليمة بالتوازي في نفس نبضة الساعة!</text>
-                    </g>
-
-                    <circle class="data-packet-dot moving" data-packet-step="0,1,2" r="6" fill="#06b6d4">
-                      <animateMotion dur="1.6s" repeatCount="indefinite" path="M 370 40 L 370 300" />
-                    </circle>
-                  </svg>
-                </div>
               </div>
 
               <div class="attr-grid">
@@ -3125,99 +2813,6 @@ window.COURSE_DATA = {
                 </p>
               </div>
 
-              <!-- INTERACTIVE SIMULATOR 11: ARM RISC Architecture & Cortex Families (A / R / M) -->
-              <div class="sim-card" data-sim="sim-arm-embedded">
-                <div class="sim-top-bar">
-                  <div class="sim-title-group">
-                    <span class="sim-live-dot"></span>
-                    <span class="sim-badge-title">FIG 1.11 // ARM RISC ARCHITECTURE &amp; CORTEX (A / R / M) SIMULATOR</span>
-                  </div>
-                  <div class="sim-controls">
-                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. فلسفة ARM RISC (توفير الطاقة)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="1">2. عائلتا Cortex-A &amp; Cortex-R</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="2">3. عائلة Cortex-M (IoT &amp; Embedded)</button>
-                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل تلقائي</button>
-                  </div>
-                </div>
-
-                <div class="sim-svg-stage">
-                  <svg viewBox="0 0 740 345" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Top: ARM RISC Core Philosophy vs x86 CISC -->
-                    <g class="svg-hw-group cyan-node active-node" data-node-step="0,1,2" data-click-step="0">
-                      <rect class="svg-hw-box" x="110" y="16" width="520" height="84" rx="10" />
-                      <text class="svg-label-mono" x="370" y="39">① ARM ARCHITECTURE // RISC (REDUCED INSTRUCTION SET COMPUTER)</text>
-                      <text class="svg-label-en" x="370" y="62">Simple Instructions • High Power Efficiency • Compact Die • Low Cost</text>
-                      <text class="svg-label-ar" x="370" y="84">أوامر RISC بسيطة وخفيفة ➔ استهلاك بطارية قليل جداً وحرارة باردة (عكس Intel x86 CISC)</text>
-                    </g>
-
-                    <!-- Wires from ARM Core to the 3 Cortex Families -->
-                    <path class="wire-base" d="M 370 100 L 370 142 L 135 142 L 135 182" />
-                    <path class="wire-base" d="M 370 100 L 370 182" />
-                    <path class="wire-base" d="M 370 100 L 370 142 L 605 142 L 605 182" />
-
-                    <path class="wire-flow cyan active-flow" data-wire-step="0,1" d="M 370 100 L 370 142 L 135 142 L 135 182" />
-                    <path class="wire-flow amber active-flow" data-wire-step="0,1" d="M 370 100 L 370 182" />
-                    <path class="wire-flow emerald" data-wire-step="0,2" d="M 370 100 L 370 142 L 605 142 L 605 182" />
-
-                    <circle class="data-packet-dot moving" data-packet-step="0,1" r="6" fill="#06b6d4">
-                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 370 100 L 370 142 L 135 142 L 135 182" />
-                    </circle>
-                    <circle class="data-packet-dot moving" data-packet-step="0,1" r="6" fill="#f59e0b">
-                      <animateMotion dur="0.9s" repeatCount="indefinite" path="M 370 100 L 370 182" />
-                    </circle>
-                    <circle class="data-packet-dot" data-packet-step="0,2" r="7" fill="#10b981">
-                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 370 100 L 370 142 L 605 142 L 605 182" />
-                    </circle>
-
-                    <!-- On-Wire Callout Pills -->
-                    <g class="svg-wire-callout active-pill" data-pill-step="1" data-click-step="1">
-                      <rect class="svg-wire-pill" x="55" y="150" width="160" height="22" />
-                      <text class="svg-wire-text" x="135" y="165">② A = Applications ▼</text>
-                    </g>
-
-                    <g class="svg-wire-callout active-pill" data-pill-step="1" data-click-step="1">
-                      <rect class="svg-wire-pill" x="290" y="150" width="160" height="22" />
-                      <text class="svg-wire-text" x="370" y="165">② R = Real-Time ▼</text>
-                    </g>
-
-                    <g class="svg-wire-callout" data-pill-step="2" data-click-step="2">
-                      <rect class="svg-wire-pill" x="515" y="150" width="180" height="22" />
-                      <text class="svg-wire-text" x="605" y="165">③ M = Microcontroller ▼</text>
-                    </g>
-
-                    <!-- Cortex-A (Application Processors) -->
-                    <g class="svg-hw-group cyan-node" data-node-step="1" data-click-step="1">
-                      <rect class="svg-hw-box" x="25" y="182" width="220" height="140" rx="10" />
-                      <text class="svg-label-mono" x="135" y="206">ARM CORTEX-A</text>
-                      <text class="svg-label-en" x="135" y="230">Application Processors</text>
-                      <text class="svg-label-ar" x="135" y="256">للموبايلات والتابلت</text>
-                      <text class="svg-label-ar" x="135" y="278">(تشغيل أنظمة Android &amp; iOS)</text>
-                      <text class="svg-label-mono" x="135" y="304" style="fill:var(--accent-cyan);">SMARTPHONES &amp; OS</text>
-                    </g>
-
-                    <!-- Cortex-R (Real-Time Processors) -->
-                    <g class="svg-hw-group amber-node" data-node-step="1" data-click-step="1">
-                      <rect class="svg-hw-box" x="260" y="182" width="220" height="140" rx="10" />
-                      <text class="svg-label-mono" x="370" y="206" style="fill:var(--accent-amber);">ARM CORTEX-R</text>
-                      <text class="svg-label-en" x="370" y="230">Real-Time Processors</text>
-                      <text class="svg-label-ar" x="370" y="256">للأنظمة الحرجة في التوقيت</text>
-                      <text class="svg-label-ar" x="370" y="278">(فرامل العربيات ABS والطيران)</text>
-                      <text class="svg-label-mono" x="370" y="304" style="fill:var(--accent-amber);">CRITICAL REAL-TIME</text>
-                    </g>
-
-                    <!-- Cortex-M (Microcontroller Processors) -->
-                    <g class="svg-hw-group emerald-node" data-node-step="2" data-click-step="2">
-                      <rect class="svg-hw-box" x="495" y="182" width="220" height="140" rx="10" />
-                      <text class="svg-label-mono" x="605" y="206" style="fill:var(--accent-emerald);">ARM CORTEX-M</text>
-                      <text class="svg-label-en" x="605" y="230">Microcontroller Units</text>
-                      <text class="svg-label-ar" x="605" y="256">للحساسات والأجهزة المدمجة</text>
-                      <text class="svg-label-ar" x="605" y="278">(إنترنت الأشياء IoT &amp; Sensors)</text>
-                      <text class="svg-label-mono" x="605" y="304" style="fill:var(--accent-emerald);">EMBEDDED &amp; IoT</text>
-                    </g>
-                  </svg>
-                </div>
-              </div>
-
               <h3 style="font-size: 1.05rem; font-weight: 800; margin: 1.15rem 0 0.65rem; color: var(--accent-cyan);">
                 📌 عائلات معالجات آرم الثلاثة المشهورة (ARM Cortex Processor Families):
               </h3>
@@ -3262,92 +2857,6 @@ window.COURSE_DATA = {
                 <p style="margin-top: 0.55rem;">
                   • <strong>شبكات السحابة (<span class="mono">Cloud Networking</span> — سلايد 55):</strong> هي شبكات الربط فائقة السرعة والموثوقية (<span class="mono">High-performance &amp; High-reliability networking</span>) التي تسمح بنقل البيانات بين المشترك ومراكز البيانات السحابية بدون تأخير.
                 </p>
-              </div>
-
-              <!-- INTERACTIVE SIMULATOR 12: IoT, Cloud Networking & NIST Cloud Computing Pool -->
-              <div class="sim-card" data-sim="sim-iot-cloud">
-                <div class="sim-top-bar">
-                  <div class="sim-title-group">
-                    <span class="sim-live-dot"></span>
-                    <span class="sim-badge-title">FIG 1.12 // IOT, CLOUD NETWORKING &amp; NIST CLOUD RESOURCE POOL SIMULATOR</span>
-                  </div>
-                  <div class="sim-controls">
-                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. أجهزة الـ IoT والـ Embedded</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="1">2. شبكات السحابة (Cloud Networking)</button>
-                    <button type="button" class="sim-step-btn" data-sim-step="2">3. مجمع موارد السحابة (NIST Cloud Pool)</button>
-                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل تلقائي</button>
-                  </div>
-                </div>
-
-                <div class="sim-svg-stage">
-                  <svg viewBox="0 0 740 320" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Left: Embedded & IoT Edge Devices -->
-                    <g class="svg-hw-group emerald-node active-node" data-node-step="0,1" data-click-step="0">
-                      <rect class="svg-hw-box" x="25" y="45" width="215" height="230" rx="10" />
-                      <text class="svg-label-mono" x="132" y="70" style="fill:var(--accent-emerald);">① EDGE // EMBEDDED &amp; IoT</text>
-                      <rect x="45" y="88" width="175" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-emerald)" />
-                      <text class="svg-label-en" x="132" y="108" style="font-size:11.5px;">Smart Sensors (Cortex-M)</text>
-                      <text class="svg-label-ar" x="132" y="124" style="font-size:11px;">حساسات شديدة الاندماج</text>
-
-                      <rect x="45" y="144" width="175" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-cyan)" />
-                      <text class="svg-label-en" x="132" y="164" style="font-size:11.5px;">Smart Appliances &amp; Cars</text>
-                      <text class="svg-label-ar" x="132" y="180" style="font-size:11px;">وظيفة محددة (Dedicated)</text>
-
-                      <rect x="45" y="200" width="175" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-amber)" />
-                      <text class="svg-label-en" x="132" y="220" style="font-size:11.5px;">Mobile Devices (Cortex-A)</text>
-                      <text class="svg-label-ar" x="132" y="236" style="font-size:11px;">موبايلات متصلة بالسحابة</text>
-                    </g>
-
-                    <!-- Middle: High-Performance Cloud Networking -->
-                    <path class="wire-base" d="M 240 135 L 435 135" />
-                    <path class="wire-base" d="M 435 185 L 240 185" />
-
-                    <path class="wire-flow cyan active-flow" data-wire-step="0,1,2" d="M 240 135 L 435 135" />
-                    <path class="wire-flow amber active-flow" data-wire-step="1,2" d="M 435 185 L 240 185" />
-
-                    <circle class="data-packet-dot moving" data-packet-step="0,1,2" r="6" fill="#06b6d4">
-                      <animateMotion dur="1.0s" repeatCount="indefinite" path="M 240 135 L 435 135" />
-                    </circle>
-                    <circle class="data-packet-dot" data-packet-step="1,2" r="6" fill="#f59e0b">
-                      <animateMotion dur="1.0s" repeatCount="indefinite" path="M 435 185 L 240 185" />
-                    </circle>
-
-                    <g class="svg-wire-callout active-pill" data-pill-step="1" data-click-step="1">
-                      <rect class="svg-wire-pill" x="252" y="96" width="170" height="24" />
-                      <text class="svg-wire-text" x="337" y="112">② Cloud Networking ──►</text>
-                    </g>
-
-                    <g class="svg-wire-callout" data-pill-step="1,2" data-click-step="1">
-                      <rect class="svg-wire-pill" x="252" y="198" width="170" height="24" />
-                      <text class="svg-wire-text" x="337" y="214">◄── On-Demand Access</text>
-                    </g>
-
-                    <!-- Right: NIST Shared Pool of Configurable Cloud Resources -->
-                    <g class="svg-hw-group cyan-node" data-node-step="2" data-click-step="2">
-                      <rect class="svg-hw-box" x="435" y="45" width="280" height="230" rx="12" />
-                      <text class="svg-label-mono" x="575" y="70">③ CLOUD COMPUTING (NIST SHARED POOL)</text>
-                      <text class="svg-label-en" x="575" y="92" style="font-size:11.5px; fill:var(--accent-amber);">On-Demand Configurable Resources:</text>
-
-                      <rect x="458" y="106" width="110" height="58" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-cyan)" />
-                      <text class="svg-label-en" x="513" y="130" style="font-size:11.5px;">Servers / VMs</text>
-                      <text class="svg-label-ar" x="513" y="150" style="font-size:10.5px;">سيرفرات ومعالجات</text>
-
-                      <rect x="582" y="106" width="110" height="58" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-emerald)" />
-                      <text class="svg-label-en" x="637" y="130" style="font-size:11.5px;">Cloud Storage</text>
-                      <text class="svg-label-ar" x="637" y="150" style="font-size:10.5px;">قواعد بيانات وتخزين</text>
-
-                      <rect x="458" y="176" width="110" height="58" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-amber)" />
-                      <text class="svg-label-en" x="513" y="200" style="font-size:11.5px;">Networks</text>
-                      <text class="svg-label-ar" x="513" y="220" style="font-size:10.5px;">شبكات افتراضية</text>
-
-                      <rect x="582" y="176" width="110" height="58" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-purple)" />
-                      <text class="svg-label-en" x="637" y="200" style="font-size:11.5px;">Applications</text>
-                      <text class="svg-label-ar" x="637" y="220" style="font-size:10.5px;">تطبيقات وخدمات</text>
-
-                      <text class="svg-label-mono" x="575" y="256" style="fill:var(--accent-emerald);">RAPIDLY PROVISIONED &amp; RELEASED</text>
-                    </g>
-                  </svg>
-                </div>
               </div>
 
               <div class="exam-trap-box">

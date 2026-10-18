@@ -113,8 +113,8 @@
        ======================================================================== -->
   <main id="landingView" class="landing-view">
     <section class="hero-section">
-      <div class="container hero-grid">
-        <!-- Right Column: Focused Course Introduction -->
+      <div class="container hero-grid" style="grid-template-columns: 1fr;">
+        <!-- Focused Course Introduction -->
         <div class="hero-copy">
           <div class="sys-status-bar">
             <span class="status-dot"></span>
@@ -127,7 +127,7 @@
           </h1>
 
           <p class="hero-desc">
-            منصة مذاكرة مركزة بدون أي تشتيت: شرح مبسط وعميق من الصفر + محاكيات تفاعلية متحركة للمخططات بخطوات مفصلة + التعريفات الإنجليزية الرسمية + تريكات الامتحانات + كويز تفاعلي بالإنجليزي على كل جزء.
+            منصة مذاكرة مركزة بدون أي تشتيت: شرح مبسط وعميق من الصفر + محاكيات تفاعلية متحركة للمخططات المقررة بخطوات مفصلة + التعريفات الإنجليزية الرسمية + تريكات الامتحانات + كويز تفاعلي بالإنجليزي على كل جزء.
           </p>
 
           <div class="hero-cta-row">
@@ -173,55 +173,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Left Column: Hardware Architecture Blueprint Schematic -->
-        <aside class="schematic-panel" aria-label="مخطط معمارية الحاسب">
-          <div class="schematic-header">
-            <span>FIG 1.1 // MULTICORE, CACHE &amp; SYSTEM HIERARCHY</span>
-            <span>LIVE OVERVIEW</span>
-          </div>
-
-          <div class="schematic-diagram">
-            <div class="hw-row">
-              <!-- Multicore CPU Block -->
-              <div class="hw-block">
-                <div class="hw-block-title">
-                  <span>MULTICORE CHIP</span>
-                  <span>SINGLE DIE</span>
-                </div>
-                <div class="hw-sub-grid">
-                  <div class="hw-chip">Core 1 (CU+ALU)</div>
-                  <div class="hw-chip">Core 2 (CU+ALU)</div>
-                  <div class="hw-chip">L1 / L2 Cache</div>
-                  <div class="hw-chip">Shared L3 Cache</div>
-                </div>
-              </div>
-
-              <!-- Motherboard & Memory Block -->
-              <div class="hw-block">
-                <div class="hw-block-title" style="color: var(--accent-amber);">
-                  <span>MOTHERBOARD PCB</span>
-                  <span>SYSTEM</span>
-                </div>
-                <div class="hw-sub-grid">
-                  <div class="hw-chip">Main Memory (DRAM)</div>
-                  <div class="hw-chip">I/O Chipset</div>
-                  <div class="hw-chip">PCB Copper Traces</div>
-                  <div class="hw-chip">DIMM &amp; Sockets</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- System Bus Connection -->
-            <div class="system-bus-bar">
-              <span>⇄ CACHE BRIDGES CPU (1ns) &amp; RAM (100ns)</span>
-              <div class="bus-lines">
-                <span>FASTER</span>
-                <span>SMALLER</span>
-              </div>
-            </div>
-          </div>
-        </aside>
       </div>
     </section>
 
@@ -316,7 +267,7 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="data.js?v=ch1p6"></script>
-  <script src="app.js?v=ch1p6"></script>
+  <script src="data.js?v=ch1p6-clean"></script>
+  <script src="app.js?v=ch1p6-clean"></script>
 </body>
 </html>
