@@ -38,13 +38,13 @@
           type="search"
           id="courseSearchInput"
           class="search-input"
-          placeholder="ابحث في الشرح (مثلاً: ISA, ALU, Structure, Transparent)..."
+          placeholder="ابحث في الشرح (مثلاً: Multicore, Cache, L1, ALU, ISA)..."
           autocomplete="off"
         />
         <kbd class="search-kbd">/</kbd>
       </div>
 
-      <!-- 3-Mode Switcher (Dark | Light | Reading) & Progress -->
+      <!-- 3-Mode Switcher (Reading | Dark | Light) & Progress -->
       <div class="top-actions">
         <div class="mode-switcher" role="group" aria-label="وضع العرض">
           <button type="button" class="mode-btn" data-theme-mode="reading" title="وضع القراءة الورقي المريح للعين">
@@ -106,7 +106,7 @@
   </div>
 
   <!-- ========================================================================
-       VIEW 1: LANDING PAGE (HERO + CHAPTERS & PARTS MATRIX)
+       VIEW 1: LANDING PAGE (HERO + ACTIVE CHAPTERS & PARTS)
        ======================================================================== -->
   <main id="landingView" class="landing-view">
     <section class="hero-section">
@@ -115,7 +115,7 @@
         <div class="hero-copy">
           <div class="sys-status-bar">
             <span class="status-dot"></span>
-            <span class="sys-status-text">CHAPTER 1 // PART 1 &amp; PART 2 LIVE NOW + ENGLISH QUIZZES</span>
+            <span class="sys-status-text">CHAPTER 1 (PARTS 1, 2 &amp; 3) LIVE + INTERACTIVE SIMULATORS</span>
           </div>
 
           <h1 class="hero-title">
@@ -124,16 +124,20 @@
           </h1>
 
           <p class="hero-desc">
-            منصة مذاكرة مركزة بدون أي تشتيت: شرح مبسط وعميق من الصفر + التعريفات الإنجليزية الرسمية + تريكات الامتحانات + حل أسئلة الشيت + كويز تفاعلي بالإنجليزي على كل جزء.
+            منصة مذاكرة مركزة بدون أي تشتيت: شرح مبسط وعميق من الصفر + محاكيات تفاعلية متحركة للمخططات + التعريفات الإنجليزية الرسمية + تريكات الامتحانات + كويز تفاعلي بالإنجليزي على كل جزء.
           </p>
 
           <div class="hero-cta-row">
             <button type="button" class="primary-cta-btn" id="startPart1Btn">
-              <span>🔥 ابدأ Part 1: Arch vs. Org</span>
+              <span>🔥 Part 1: Arch vs. Org</span>
               <span class="mono">←</span>
             </button>
             <button type="button" class="primary-cta-btn" id="startPart2Btn" style="background: var(--accent-amber);">
-              <span>⚡ ابدأ Part 2: Structure &amp; Function</span>
+              <span>⚡ Part 2: Structure &amp; Function</span>
+              <span class="mono">←</span>
+            </button>
+            <button type="button" class="primary-cta-btn" id="startPart3Btn" style="background: var(--accent-emerald);">
+              <span>🚀 Part 3: Multicore &amp; Cache</span>
               <span class="mono">←</span>
             </button>
           </div>
@@ -141,16 +145,16 @@
           <!-- Live Course Telemetry -->
           <div class="telemetry-strip">
             <div class="telemetry-box">
-              <div class="telemetry-val" id="statChaptersCount">04</div>
-              <div class="telemetry-label">الفصول المقررة</div>
+              <div class="telemetry-val" id="statChaptersCount">01</div>
+              <div class="telemetry-label">الفصول المضافة حالياً</div>
             </div>
             <div class="telemetry-box">
-              <div class="telemetry-val" id="statPartsCount">08</div>
-              <div class="telemetry-label">الأجزاء الفرعية</div>
+              <div class="telemetry-val" id="statPartsCount">03</div>
+              <div class="telemetry-label">الأجزاء المشروحة بالكامل</div>
             </div>
             <div class="telemetry-box">
-              <div class="telemetry-val" id="statReadyCount">2 / 8</div>
-              <div class="telemetry-label">الأجزاء المشروحة حالياً</div>
+              <div class="telemetry-val" id="statReadyCount">20</div>
+              <div class="telemetry-label">سؤال كويز تفاعلي</div>
             </div>
           </div>
         </div>
@@ -158,47 +162,47 @@
         <!-- Left Column: Hardware Architecture Blueprint Schematic -->
         <aside class="schematic-panel" aria-label="مخطط معمارية الحاسب">
           <div class="schematic-header">
-            <span>FIG 1.1 // COMPUTER &amp; PROCESSOR STRUCTURE</span>
-            <span>HIERARCHICAL SYSTEM</span>
+            <span>FIG 1.1 // MULTICORE, CACHE &amp; SYSTEM HIERARCHY</span>
+            <span>LIVE OVERVIEW</span>
           </div>
 
           <div class="schematic-diagram">
             <div class="hw-row">
-              <!-- CPU Block -->
+              <!-- Multicore CPU Block -->
               <div class="hw-block">
                 <div class="hw-block-title">
-                  <span>PROCESSOR (CPU)</span>
-                  <span>INTERNAL</span>
+                  <span>MULTICORE CHIP</span>
+                  <span>SINGLE DIE</span>
                 </div>
                 <div class="hw-sub-grid">
-                  <div class="hw-chip">Control Unit (CU)</div>
-                  <div class="hw-chip">ALU (Processing)</div>
-                  <div class="hw-chip">Registers</div>
-                  <div class="hw-chip">Internal CPU Bus</div>
+                  <div class="hw-chip">Core 1 (CU+ALU)</div>
+                  <div class="hw-chip">Core 2 (CU+ALU)</div>
+                  <div class="hw-chip">L1 / L2 Cache</div>
+                  <div class="hw-chip">Shared L3 Cache</div>
                 </div>
               </div>
 
-              <!-- Computer Block -->
+              <!-- Motherboard & Memory Block -->
               <div class="hw-block">
                 <div class="hw-block-title" style="color: var(--accent-amber);">
-                  <span>COMPUTER SYSTEM</span>
-                  <span>TOP-LEVEL</span>
+                  <span>MOTHERBOARD PCB</span>
+                  <span>SYSTEM</span>
                 </div>
                 <div class="hw-sub-grid">
-                  <div class="hw-chip">Main Memory</div>
-                  <div class="hw-chip">I/O Modules</div>
-                  <div class="hw-chip">System Bus</div>
-                  <div class="hw-chip">4 Basic Functions</div>
+                  <div class="hw-chip">Main Memory (DRAM)</div>
+                  <div class="hw-chip">I/O Chipset</div>
+                  <div class="hw-chip">PCB Copper Traces</div>
+                  <div class="hw-chip">DIMM &amp; Sockets</div>
                 </div>
               </div>
             </div>
 
             <!-- System Bus Connection -->
             <div class="system-bus-bar">
-              <span>⇄ HIERARCHICAL ARCHITECTURE</span>
+              <span>⇄ CACHE BRIDGES CPU (1ns) &amp; RAM (100ns)</span>
               <div class="bus-lines">
-                <span>STRUCTURE</span>
-                <span>FUNCTION</span>
+                <span>FASTER</span>
+                <span>SMALLER</span>
               </div>
             </div>
           </div>
@@ -211,14 +215,8 @@
       <div class="container">
         <div class="section-toolbar">
           <div class="section-heading-group">
-            <span class="section-eyebrow">CURRICULUM MODULES // فهرس الفصول والأجزاء</span>
-            <h2 class="section-title">خريطة الفصول الدراسية</h2>
-          </div>
-
-          <div class="filter-tabs" role="tablist">
-            <button class="filter-tab active" data-filter="all">كل الفصول</button>
-            <button class="filter-tab" data-filter="ready">المتاح حالياً للشرح</button>
-            <button class="filter-tab" data-filter="empty">بانتظار المحتوى</button>
+            <span class="section-eyebrow">ACTIVE CURRICULUM // الفصول والأجزاء المضافة</span>
+            <h2 class="section-title">المحتوى الدراسي المتاح</h2>
           </div>
         </div>
 
@@ -238,9 +236,9 @@
         <div class="sidebar-top">
           <button class="back-to-index-btn" id="backToIndexBtn">
             <span class="mono">→</span>
-            <span>العودة لكل الفصول</span>
+            <span>العودة للصفحة الرئيسية</span>
           </button>
-          <div class="mono" style="font-size: 0.75rem; color: var(--accent-amber);" id="sidebarChapterCode">CH 01</div>
+          <div class="mono" style="font-size: 0.75rem; color: var(--accent-amber);" id="sidebarChapterCode">CHAPTER 01</div>
           <h2 class="sidebar-ch-title" id="sidebarChapterTitle">عنوان الفصل</h2>
         </div>
 
@@ -253,8 +251,8 @@
           <!-- Reader Utility Bar (Back + Font Size + Focus Reading Toggle) -->
           <div class="reader-controls-bar">
             <div class="reader-tools-group">
-              <button type="button" class="tool-pill-btn" id="backToIndexTopBtn">→ كل الفصول</button>
-              <button type="button" class="tool-pill-btn" id="toggleFocusSidebarBtn">📑 إظهار قائمة الأجزاء</button>
+              <button type="button" class="tool-pill-btn" id="backToIndexTopBtn">→ الرئيسية</button>
+              <button type="button" class="tool-pill-btn" id="toggleFocusSidebarBtn">📖 توسيع مساحة القراءة</button>
               <button type="button" class="tool-pill-btn" id="reopenModeModalBtn">🎨 تغيير وضع القراءة</button>
             </div>
 
@@ -267,7 +265,7 @@
 
           <header class="canvas-header">
             <div>
-              <span class="canvas-part-badge" id="canvasPartBadge">CH 01 // PART 1</span>
+              <span class="canvas-part-badge" id="canvasPartBadge">CHAPTER 01 // PART 1</span>
               <h1 class="canvas-part-title" id="canvasPartTitle">عنوان الجزء</h1>
             </div>
 
@@ -297,7 +295,7 @@
        ======================================================================== -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <span>منصة شرح مادة <strong>Computer Architecture</strong> — الشرح المبسط + التعريفات الرسمية + تريكات الامتحان + كويز تفاعلي.</span>
+      <span>منصة شرح مادة <strong>Computer Architecture</strong> — المخططات المتحركة + الشرح المبسط + تريكات الامتحان + كويز تفاعلي.</span>
       <span class="mono">READING • DARK • LIGHT MODE // PRESS [/] TO SEARCH</span>
     </div>
   </footer>

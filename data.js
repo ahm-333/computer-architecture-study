@@ -1,7 +1,9 @@
 /**
  * ==========================================================================
- * COMPUTER ARCHITECTURE — CURRICULUM DATA STORE (WITH ANIMATED SVG SIMULATORS)
+ * COMPUTER ARCHITECTURE — CURRICULUM DATA STORE
  * ==========================================================================
+ * يحتوي فقط على الفصول والأجزاء التي تمت إضافتها فعلياً لمنع أي تشتيت أو لخبطة.
+ * حالياً: Chapter 1 (Part 1, Part 2, Part 3) كاملة بالمحاكيات التفاعلية والكويزات.
  */
 
 window.COURSE_DATA = {
@@ -11,10 +13,10 @@ window.COURSE_DATA = {
   chapters: [
     {
       id: "ch-1",
-      code: "CH 01",
+      code: "CHAPTER 01",
       titleAr: "الفصل الأول: المفاهيم الأساسية وتطور الحاسوب",
       titleEn: "Chapter 1: Basic Concepts and Computer Evolution",
-      summary: "الفرق بين Architecture و Organization، الهيكل والوظيفة (Structure & Function)، مكونات الكمبيوتر والمعالج، مع محاكيات تفاعلية متحركة للمخططات وتريكات الامتحانات.",
+      summary: "يشمل: الفرق بين Architecture و Organization، الهيكل والوظيفة (Structure & Function)، المعالجات متعددة الأنوية (Multicore)، الذاكرة المخبأة (Cache Memory)، وتخطيط اللوحة الأم (Motherboard Layout).",
       isReady: true,
       parts: [
         /* ====================================================================
@@ -554,32 +556,24 @@ window.COURSE_DATA = {
 
                 <div class="sim-svg-stage">
                   <svg viewBox="0 0 740 340" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Outer Computer Frame -->
                     <rect x="155" y="10" width="430" height="315" rx="14" fill="none" stroke="var(--border-strong)" stroke-width="2" stroke-dasharray="6 4" />
                     <text class="svg-label-mono" x="370" y="30" style="fill: var(--text-muted);">COMPUTER BOUNDARY</text>
 
-                    <!-- Wires & Paths -->
-                    <!-- Control to Processing -->
-                    <path id="f4-ctrl-proc" class="wire-base" d="M 370 105 L 370 142" />
+                    <path class="wire-base" d="M 370 105 L 370 142" />
                     <path class="wire-flow amber active-flow" data-wire-step="0,3" d="M 370 105 L 370 142" />
 
-                    <!-- Control to Storage (side control line) -->
                     <path class="wire-base" d="M 500 72 L 545 72 L 545 272 L 500 272" />
                     <path class="wire-flow amber active-flow" data-wire-step="0,2" d="M 500 72 L 545 72 L 545 272 L 500 272" />
 
-                    <!-- Processing <-> Storage -->
                     <path class="wire-base" d="M 370 205 L 370 242" />
                     <path class="wire-flow cyan" data-wire-step="2,3" d="M 370 205 L 370 242" />
 
-                    <!-- I/O Lines <-> Storage/Movement -->
                     <path class="wire-base" d="M 135 272 L 240 272" />
                     <path class="wire-flow emerald" data-wire-step="1,2" d="M 135 272 L 240 272" />
 
-                    <!-- Communications <-> Storage/Movement -->
                     <path class="wire-base" d="M 605 272 L 500 272" />
                     <path class="wire-flow emerald" data-wire-step="1,2" d="M 605 272 L 500 272" />
 
-                    <!-- Animated Moving Packets -->
                     <circle class="data-packet-dot moving" data-packet-step="0,3" r="6" fill="#f59e0b">
                       <animateMotion dur="0.9s" repeatCount="indefinite" path="M 370 105 L 370 142" />
                     </circle>
@@ -596,35 +590,30 @@ window.COURSE_DATA = {
                       <animateMotion dur="0.85s" repeatCount="indefinite" path="M 370 242 L 370 205" />
                     </circle>
 
-                    <!-- NODE 1: Control Mechanism -->
                     <g class="svg-hw-group amber-node active-node" data-node-step="0" data-click-step="0">
                       <rect class="svg-hw-box" x="240" y="42" width="260" height="63" rx="10" />
                       <text class="svg-label-en" x="370" y="68">Control Mechanism</text>
                       <text class="svg-label-ar" x="370" y="90">وحدة التحكم (توجيه الإشارات)</text>
                     </g>
 
-                    <!-- NODE 2: Data Processing Facility -->
                     <g class="svg-hw-group cyan-node" data-node-step="3" data-click-step="3">
                       <rect class="svg-hw-box" x="240" y="142" width="260" height="63" rx="10" />
                       <text class="svg-label-en" x="370" y="168">Data Processing Facility</text>
                       <text class="svg-label-ar" x="370" y="190">معالجة البيانات والحسابات</text>
                     </g>
 
-                    <!-- NODE 3: Data Storage Facility -->
                     <g class="svg-hw-group emerald-node" data-node-step="2" data-click-step="2">
                       <rect class="svg-hw-box" x="240" y="242" width="260" height="63" rx="10" />
                       <text class="svg-label-en" x="370" y="268">Data Storage Facility</text>
                       <text class="svg-label-ar" x="370" y="290">تخزين البيانات (مؤقت أو دائم)</text>
                     </g>
 
-                    <!-- Left Wing: I/O Lines -->
                     <g class="svg-hw-group emerald-node" data-node-step="1" data-click-step="1">
                       <rect class="svg-hw-box" x="10" y="242" width="125" height="63" rx="8" />
                       <text class="svg-label-en" x="72" y="268" style="font-size:12px;">I/O Lines</text>
                       <text class="svg-label-ar" x="72" y="288">(شاشة / ماوس)</text>
                     </g>
 
-                    <!-- Right Wing: Communications -->
                     <g class="svg-hw-group emerald-node" data-node-step="1" data-click-step="1">
                       <rect class="svg-hw-box" x="605" y="242" width="125" height="63" rx="8" />
                       <text class="svg-label-en" x="667" y="268" style="font-size:12px;">Communications</text>
@@ -699,32 +688,24 @@ window.COURSE_DATA = {
 
                 <div class="sim-svg-stage">
                   <svg viewBox="0 0 740 340" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Outer Computer Box -->
                     <rect x="20" y="10" width="700" height="315" rx="14" fill="none" stroke="var(--border-strong)" stroke-width="2" />
                     <text class="svg-label-mono" x="370" y="30" style="fill: var(--text-muted);">COMPUTER (TOP-LEVEL STRUCTURE)</text>
 
-                    <!-- System Bus Central Highway -->
                     <rect x="60" y="152" width="620" height="36" rx="6" fill="var(--bg-surface)" stroke="var(--accent-amber)" stroke-width="2" />
                     <text class="svg-label-mono" x="370" y="174" style="fill: var(--accent-amber); font-size:12px;">
                       ◄========= SYSTEM BUS (SYSTEM INTERCONNECTION) =========►
                     </text>
 
-                    <!-- Wires connecting CPU, Memory, I/O to System Bus -->
                     <path class="wire-base" d="M 190 115 L 190 152" />
                     <path class="wire-base" d="M 550 115 L 550 152" />
                     <path class="wire-base" d="M 370 188 L 370 228" />
                     <path class="wire-base" d="M 510 265 L 635 265" />
 
-                    <!-- Active Animated Wire Paths per Step -->
-                    <!-- Step 0: CPU -> Bus -> Main Memory -->
                     <path class="wire-flow amber active-flow" data-wire-step="0" d="M 190 115 L 190 170 L 550 170 L 550 115" />
-                    <!-- Step 1: Main Memory -> Bus -> CPU -->
                     <path class="wire-flow cyan" data-wire-step="1" d="M 550 115 L 550 170 L 190 170 L 190 115" />
-                    <!-- Step 2: CPU -> Bus -> I/O -> External -->
                     <path class="wire-flow emerald" data-wire-step="2" d="M 190 115 L 190 170 L 370 170 L 370 228" />
                     <path class="wire-flow emerald" data-wire-step="2" d="M 510 265 L 635 265" />
 
-                    <!-- Animated Moving Packets -->
                     <circle class="data-packet-dot moving" data-packet-step="0" r="7" fill="#f59e0b">
                       <animateMotion dur="1.3s" repeatCount="indefinite" path="M 190 115 L 190 170 L 550 170 L 550 115" />
                     </circle>
@@ -735,28 +716,24 @@ window.COURSE_DATA = {
                       <animateMotion dur="1.3s" repeatCount="indefinite" path="M 190 115 L 190 170 L 370 170 L 370 265 L 635 265" />
                     </circle>
 
-                    <!-- Component 1: CPU -->
                     <g class="svg-hw-group cyan-node active-node" data-node-step="0,1,2" data-click-step="0">
                       <rect class="svg-hw-box" x="65" y="45" width="250" height="70" rx="10" />
                       <text class="svg-label-en" x="190" y="72">Central Processing Unit (CPU)</text>
                       <text class="svg-label-ar" x="190" y="96">يتحكم في الكمبيوتر ويعالج الداتا</text>
                     </g>
 
-                    <!-- Component 2: Main Memory -->
                     <g class="svg-hw-group emerald-node" data-node-step="0,1" data-click-step="1">
                       <rect class="svg-hw-box" x="425" y="45" width="250" height="70" rx="10" />
                       <text class="svg-label-en" x="550" y="72">Main Memory (RAM)</text>
                       <text class="svg-label-ar" x="550" y="96">بتشيل البرامج والداتا الشغالة حالياً</text>
                     </g>
 
-                    <!-- Component 3: Input / Output (I/O) -->
                     <g class="svg-hw-group amber-node" data-node-step="2" data-click-step="2">
                       <rect class="svg-hw-box" x="230" y="228" width="280" height="72" rx="10" />
                       <text class="svg-label-en" x="370" y="256">Input / Output (I/O)</text>
                       <text class="svg-label-ar" x="370" y="280">نقل الداتا بين الكمبيوتر والعالم الخارجي</text>
                     </g>
 
-                    <!-- External World Badge -->
                     <rect x="595" y="243" width="110" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)" stroke-dasharray="4 3" />
                     <text class="svg-label-ar" x="650" y="270" style="font-size:11px;">[العالم الخارجي]</text>
                   </svg>
@@ -825,30 +802,22 @@ window.COURSE_DATA = {
 
                 <div class="sim-svg-stage">
                   <svg viewBox="0 0 740 340" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Outer Processor Die Frame -->
                     <rect x="20" y="10" width="700" height="315" rx="14" fill="none" stroke="var(--accent-cyan)" stroke-width="2" />
                     <text class="svg-label-mono" x="370" y="30">CPU (INTERNAL PROCESSOR STRUCTURE)</text>
 
-                    <!-- Internal CPU Bus Bar -->
                     <rect x="60" y="152" width="620" height="36" rx="6" fill="var(--bg-surface)" stroke="var(--accent-cyan)" stroke-width="2" />
                     <text class="svg-label-mono" x="370" y="174" style="font-size:12px;">
                       ◄========= INTERNAL CPU BUS (CPU INTERCONNECTION) =========►
                     </text>
 
-                    <!-- Base Wires -->
                     <path class="wire-base" d="M 190 120 L 190 152" />
                     <path class="wire-base" d="M 550 120 L 550 152" />
                     <path class="wire-base" d="M 370 188 L 370 225" />
 
-                    <!-- Active Animated Wire Paths -->
-                    <!-- Step 0: Instruction loaded into Registers -> CU reads it -->
                     <path class="wire-flow emerald active-flow" data-wire-step="0" d="M 370 225 L 370 170 L 190 170 L 190 120" />
-                    <!-- Step 1: CU sends Control Order to ALU -->
                     <path class="wire-flow amber" data-wire-step="1" d="M 190 120 L 190 170 L 550 170 L 550 120" />
-                    <!-- Step 2: ALU pulls numbers from Registers, computes, and writes back -->
                     <path class="wire-flow cyan" data-wire-step="2" d="M 370 225 L 370 170 L 550 170 L 550 120" />
 
-                    <!-- Animated Moving Packets -->
                     <circle class="data-packet-dot moving" data-packet-step="0" r="7" fill="#10b981">
                       <animateMotion dur="1.1s" repeatCount="indefinite" path="M 370 225 L 370 170 L 190 170 L 190 120" />
                     </circle>
@@ -859,7 +828,6 @@ window.COURSE_DATA = {
                       <animateMotion dur="0.9s" repeatCount="indefinite" path="M 550 120 L 550 170 L 370 170 L 370 225" />
                     </circle>
 
-                    <!-- Internal Node 1: Control Unit (CU) -->
                     <g class="svg-hw-group amber-node" data-node-step="0,1" data-click-step="1">
                       <rect class="svg-hw-box" x="55" y="42" width="270" height="78" rx="10" />
                       <text class="svg-label-en" x="190" y="68">Control Unit (CU)</text>
@@ -867,7 +835,6 @@ window.COURSE_DATA = {
                       <text class="svg-label-mono" x="190" y="110" style="fill: var(--accent-amber);">DECODE &amp; CONTROL SIGNALS</text>
                     </g>
 
-                    <!-- Internal Node 2: Arithmetic & Logic Unit (ALU) -->
                     <g class="svg-hw-group cyan-node" data-node-step="1,2" data-click-step="2">
                       <rect class="svg-hw-box" x="415" y="42" width="270" height="78" rx="10" />
                       <text class="svg-label-en" x="550" y="68">Arithmetic &amp; Logic Unit (ALU)</text>
@@ -875,7 +842,6 @@ window.COURSE_DATA = {
                       <text class="svg-label-mono" x="550" y="110">EXECUTE: R1 + R2 = RESULT</text>
                     </g>
 
-                    <!-- Internal Node 3: Registers -->
                     <g class="svg-hw-group emerald-node active-node" data-node-step="0,2" data-click-step="0">
                       <rect class="svg-hw-box" x="190" y="225" width="360" height="80" rx="10" />
                       <text class="svg-label-en" x="370" y="252">Registers (PC | IR | R1 | R2 | ACC)</text>
@@ -919,7 +885,6 @@ window.COURSE_DATA = {
                 </div>
               </div>
 
-              <!-- Exam Traps 1, 2, 3 -->
               <div class="exam-trap-box">
                 <div class="exam-trap-title">⚠️ أخطر تريكات الامتحان على الجزء ده (3 Traps)</div>
                 <div class="exam-trap-list">
@@ -985,7 +950,6 @@ window.COURSE_DATA = {
               </div>
 
               <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-                <!-- Question 1.2 -->
                 <div class="sheet-card">
                   <div class="sheet-q-box">
                     <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 1.2 // SHEET 1</span>
@@ -1007,7 +971,6 @@ window.COURSE_DATA = {
                   </div>
                 </div>
 
-                <!-- Question 1.3 -->
                 <div class="sheet-card">
                   <div class="sheet-q-box">
                     <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 1.3 // SHEET 1</span>
@@ -1031,7 +994,6 @@ window.COURSE_DATA = {
                   </div>
                 </div>
 
-                <!-- Question 1.4 -->
                 <div class="sheet-card">
                   <div class="sheet-q-box">
                     <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 1.4 // SHEET 1</span>
@@ -1055,7 +1017,6 @@ window.COURSE_DATA = {
                   </div>
                 </div>
 
-                <!-- Question 1.5 -->
                 <div class="sheet-card">
                   <div class="sheet-q-box">
                     <span class="mono" style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 700;">QUESTION 1.5 // SHEET 1</span>
@@ -1166,86 +1127,576 @@ window.COURSE_DATA = {
         },
 
         /* ====================================================================
-           PART 3: Placeholder for Next Part in Chapter 1
+           PART 3: Multicore Computers, Cache Memory & Motherboard Layout (Slides 10 to 15)
            ==================================================================== */
         {
           id: "ch1-p3",
           code: "PART 3",
-          slides: "قريباً",
-          title: "الجزء الثالث — بانتظار إرسال المحتوى",
-          hasContent: false,
-          contentHtml: "",
-          quiz: []
-        }
-      ]
-    },
-    {
-      id: "ch-3",
-      code: "CH 03",
-      titleAr: "الفصل الثالث — (بانتظار إرسال محتوى الفصل)",
-      titleEn: "Chapter 3 — Awaiting Chapter Content",
-      summary: "مساحة مجهزة لاستقبال أجزاء الفصل الثالث بالتفصيل مع الكويز التفاعلي لكل جزء.",
-      isReady: false,
-      parts: [
-        {
-          id: "ch3-p1",
-          code: "PART 1",
-          title: "الجزء الأول — بانتظار المحتوى",
-          hasContent: false,
-          contentHtml: "",
-          quiz: []
-        },
-        {
-          id: "ch3-p2",
-          code: "PART 2",
-          title: "الجزء الثاني — بانتظار المحتوى",
-          hasContent: false,
-          contentHtml: "",
-          quiz: []
-        }
-      ]
-    },
-    {
-      id: "ch-4",
-      code: "CH 04",
-      titleAr: "الفصل الرابع — (بانتظار إرسال محتوى الفصل)",
-      titleEn: "Chapter 4 — Awaiting Chapter Content",
-      summary: "مساحة مجهزة لاستقبال أجزاء الفصل الرابع بالتفصيل مع الكويز التفاعلي لكل جزء.",
-      isReady: false,
-      parts: [
-        {
-          id: "ch4-p1",
-          code: "PART 1",
-          title: "الجزء الأول — بانتظار المحتوى",
-          hasContent: false,
-          contentHtml: "",
-          quiz: []
-        },
-        {
-          id: "ch4-p2",
-          code: "PART 2",
-          title: "الجزء الثاني — بانتظار المحتوى",
-          hasContent: false,
-          contentHtml: "",
-          quiz: []
-        }
-      ]
-    },
-    {
-      id: "ch-5",
-      code: "CH 05",
-      titleAr: "الفصل الخامس — (بانتظار إرسال محتوى الفصل)",
-      titleEn: "Chapter 5 — Awaiting Chapter Content",
-      summary: "مساحة مجهزة لاستقبال أجزاء الفصل الخامس بالتفصيل مع الكويز التفاعلي لكل جزء.",
-      isReady: false,
-      parts: [
-        {
-          id: "ch5-p1",
-          code: "PART 1",
-          title: "الجزء الأول — بانتظار المحتوى",
-          hasContent: false,
-          contentHtml: "",
-          quiz: []
+          slides: "Slides 10 to 15",
+          title: "Multicore Computers, Cache Memory & Motherboard Layout",
+          hasContent: true,
+          contentHtml: `
+            <!-- 1. الفكرة الأساسية (ليه البروسيسور مفضلش نواة واحدة؟ وخناقة الـ GHz والحرارة) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">01</span>
+                <h2 class="exp-sec-title">الفكرة الأساسية (ليه البروسيسور مفضلش نواة واحدة؟ وخناقة الـ GHz والحرارة)</h2>
+              </div>
+
+              <div class="balady-box">
+                <div class="balady-label">🔥 حائط الطاقة والحرارة (Power &amp; Thermal Wall)</div>
+                <p>
+                  زمان لحد سنة <strong>2004</strong>، الشركات كانت بتعمل حركة واحدة بس علشان تسرع الجهاز:
+                  <strong>"علّي سرعة الساعة (<span class="mono">Clock Frequency</span>)!"</strong>.. من <span class="mono">500MHz</span> لـ <span class="mono">1GHz</span> لـ <span class="mono">2GHz</span> لـ <span class="mono">3.8GHz</span>.
+                </p>
+                <p style="margin-top: 0.6rem;">
+                  وفجأة المهندسين خبطوا في حيطة سد سموها (<strong class="mono" style="color: var(--accent-rose);">Power &amp; Thermal Wall</strong>):
+                </p>
+                <ul style="margin-top: 0.5rem; padding-right: 1.2rem; list-style: disc;">
+                  <li>استهلاك الكهربا بيتناسب طردياً مع <strong>مربع الجهد ومكعب التردد</strong>!</li>
+                  <li>الرقاقة بقت تسخن لدرجة الغليان ومفيش مروحة في الكون تقدر تبردها!</li>
+                </ul>
+                <p style="margin-top: 0.65rem;">
+                  فقال المهندسون: <strong>"كفاية جنان في السرعة لنواة واحدة.. إحنا نثبت التردد عند سرعة هادية ومعقولة (زي <span class="mono">2.5GHz</span> إلى <span class="mono">3.5GHz</span>)، وبدل ما نحط مخ واحد يجري ويسخن، نحط كذا مخ (<span class="mono">Cores</span>) يشتغلوا مع بعض في نفس الوقت على نفس شريحة السيليكون!"</strong>.. ومن هنا اتولد الـ <strong class="mono" style="color: var(--accent-cyan);">Multicore</strong>.
+                </p>
+              </div>
+            </section>
+
+            <!-- 2. MULTICORE PROCESSORS (المعالجات متعددة الأنوية بالتفصيل) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">02</span>
+                <h2 class="exp-sec-title">MULTICORE PROCESSORS (المعالجات متعددة الأنوية بالتفصيل)</h2>
+              </div>
+
+              <div class="en-def-box">
+                <span class="en-def-label">Official English Definition</span>
+                <p class="en-def-text">
+                  "A <strong>multicore processor</strong> is a <strong>single computing component (chip)</strong> that contains two or more independent processing units, called <strong>cores</strong>, each capable of fetching, decoding, and executing program instructions."
+                </p>
+              </div>
+
+              <div class="balady-box">
+                <div class="balady-label">🧠 يعني إيه Core أصلاً؟ (What is a Core?)</div>
+                <p>
+                  النواة (<span class="mono">Core</span>) دي مش حتة زيادة في البروسيسور.. دي <strong>"بروسيسور كامل مكمل"</strong> بذاته! كل <span class="mono">Core</span> جواها:
+                </p>
+                <div class="attr-grid" style="margin-top: 0.75rem; margin-bottom: 0;">
+                  <div class="attr-card">
+                    <span class="attr-term">1. Control Unit (CU)</span>
+                    <p class="attr-desc">وحدة تحكم خاصة بيها لفك شفرة الأوامر.</p>
+                  </div>
+                  <div class="attr-card">
+                    <span class="attr-term">2. ALU</span>
+                    <p class="attr-desc">وحدة حساب ومنطق خاصة بيها.</p>
+                  </div>
+                  <div class="attr-card">
+                    <span class="attr-term">3. Registers &amp; L1/L2</span>
+                    <p class="attr-desc">مجموعة سجلات وكاش <span class="mono">L1/L2</span> خاصة بيها.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- INTERACTIVE SIMULATOR 5: Multicore Chip & Cache Hierarchy -->
+              <div class="sim-card" data-sim="sim-multicore-cache">
+                <div class="sim-top-bar">
+                  <div class="sim-title-group">
+                    <span class="sim-live-dot"></span>
+                    <span class="sim-badge-title">FIG 1.5 // MULTICORE CHIP &amp; L1/L2/L3 CACHE SIMULATOR</span>
+                  </div>
+                  <div class="sim-controls">
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. تشغيل الأنوية بالتوازي (Parallel Cores)</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">2. كاش L1/L2 السريعة (1 ns)</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">3. كاش L3 المشتركة والرامات</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل تلقائي</button>
+                  </div>
+                </div>
+
+                <div class="sim-svg-stage">
+                  <svg viewBox="0 0 740 375" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Single Processor Silicon Chip Frame -->
+                    <rect x="30" y="10" width="680" height="275" rx="14" fill="none" stroke="var(--accent-cyan)" stroke-width="2.5" />
+                    <text class="svg-label-mono" x="370" y="32">PROCESSOR CHIP (SINGLE SILICON DIE // شريحة معالج واحدة)</text>
+
+                    <!-- CORE 1 -->
+                    <g class="svg-hw-group cyan-node active-node" data-node-step="0,1" data-click-step="0">
+                      <rect class="svg-hw-box" x="65" y="45" width="280" height="130" rx="10" />
+                      <text class="svg-label-en" x="205" y="68">CORE 1 (Independent CPU)</text>
+                      <!-- CU & ALU inside Core 1 -->
+                      <rect x="82" y="80" width="115" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-amber)" />
+                      <text class="svg-label-mono" x="139" y="103" style="fill:var(--accent-amber);">CU + ALU</text>
+                      <rect x="210" y="80" width="118" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-cyan)" />
+                      <text class="svg-label-mono" x="269" y="103">Registers</text>
+                      <!-- Private L1/L2 inside Core 1 -->
+                      <rect x="82" y="126" width="246" height="34" rx="6" fill="var(--bg-surface)" stroke="var(--accent-emerald)" />
+                      <text class="svg-label-mono" x="205" y="148" style="fill:var(--accent-emerald);">Private L1 &amp; L2 Cache (1 ns)</text>
+                    </g>
+
+                    <!-- CORE 2 -->
+                    <g class="svg-hw-group cyan-node active-node" data-node-step="0,1" data-click-step="0">
+                      <rect class="svg-hw-box" x="395" y="45" width="280" height="130" rx="10" />
+                      <text class="svg-label-en" x="535" y="68">CORE 2 (Independent CPU)</text>
+                      <!-- CU & ALU inside Core 2 -->
+                      <rect x="412" y="80" width="115" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-amber)" />
+                      <text class="svg-label-mono" x="469" y="103" style="fill:var(--accent-amber);">CU + ALU</text>
+                      <rect x="540" y="80" width="118" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--accent-cyan)" />
+                      <text class="svg-label-mono" x="599" y="103">Registers</text>
+                      <!-- Private L1/L2 inside Core 2 -->
+                      <rect x="412" y="126" width="246" height="34" rx="6" fill="var(--bg-surface)" stroke="var(--accent-emerald)" />
+                      <text class="svg-label-mono" x="535" y="148" style="fill:var(--accent-emerald);">Private L1 &amp; L2 Cache (1 ns)</text>
+                    </g>
+
+                    <!-- Wires from Core 1 & Core 2 to Shared L3 Cache -->
+                    <path class="wire-base" d="M 205 175 L 205 202 L 370 202 L 370 215" />
+                    <path class="wire-base" d="M 535 175 L 535 202 L 370 202 L 370 215" />
+
+                    <path class="wire-flow emerald active-flow" data-wire-step="1,2" d="M 205 175 L 205 202 L 370 202 L 370 215" />
+                    <path class="wire-flow emerald active-flow" data-wire-step="1,2" d="M 535 175 L 535 202 L 370 202 L 370 215" />
+
+                    <!-- Shared L3 Cache on Chip -->
+                    <g class="svg-hw-group amber-node" data-node-step="1,2" data-click-step="2">
+                      <rect class="svg-hw-box" x="150" y="215" width="440" height="55" rx="10" />
+                      <text class="svg-label-en" x="370" y="240">Shared L3 Cache (مشتركة بين كل الأنوية)</text>
+                      <text class="svg-label-mono" x="370" y="259" style="fill:var(--accent-amber);">FAST ON-CHIP STAGING MEMORY</text>
+                    </g>
+
+                    <!-- Wire from L3 to System Bus / Main Memory -->
+                    <path class="wire-base" d="M 370 270 L 370 312" />
+                    <path class="wire-flow amber" data-wire-step="2" d="M 370 270 L 370 312" />
+
+                    <!-- Moving Packets -->
+                    <circle class="data-packet-dot moving" data-packet-step="0,1" r="6" fill="#06b6d4">
+                      <animateMotion dur="0.8s" repeatCount="indefinite" path="M 139 100 L 269 100 L 205 145 Z" />
+                    </circle>
+                    <circle class="data-packet-dot moving" data-packet-step="0,1" r="6" fill="#06b6d4">
+                      <animateMotion dur="0.8s" repeatCount="indefinite" path="M 469 100 L 599 100 L 535 145 Z" />
+                    </circle>
+                    <circle class="data-packet-dot" data-packet-step="2" r="7" fill="#f59e0b">
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 370 312 L 370 215 L 205 175" />
+                    </circle>
+
+                    <!-- Main Memory (Off-Chip via System Bus) -->
+                    <g class="svg-hw-group emerald-node" data-node-step="2" data-click-step="2">
+                      <rect class="svg-hw-box" x="170" y="312" width="400" height="52" rx="8" />
+                      <text class="svg-label-en" x="370" y="335">System Bus ◄===► Main Memory (DRAM)</text>
+                      <text class="svg-label-ar" x="370" y="354">الرامات الخارجية (كبيرة الحجم بس أبطأ: 50 إلى 100 نانو ثانية)</text>
+                    </g>
+                  </svg>
+                </div>
+
+                <div class="sim-status-ticker">
+                  <span class="sim-status-text" data-sim-status>
+                    1. تشغيل الأنوية بالتوازي (Parallel Cores): كل Core جواها CU و ALU و Registers خاصة بيها، وشغالين مع بعض في نفس الوقت على شريحة سيليكون واحدة (Single Chip)!
+                  </span>
+                  <span class="sim-status-step-tag" data-sim-tag>MULTICORE 1 / 3</span>
+                </div>
+              </div>
+
+              <div class="exam-trap-box">
+                <div class="exam-trap-title">⚠️ تريكات الامتحان الخاصة بالـ Multicore</div>
+                <div class="exam-trap-list">
+                  <p>
+                    <strong>⚠️ Trap 1 (الفخ الأخطر):</strong><br/>
+                    لو سألك: <span class="mono">"Multicore processor means multiple processors on multiple separate chips?"</span><br/>
+                    الإجابة: <strong>غللللط كبير (FALSE)!</strong> المعمارية دي عبارة عن: <strong class="mono">Multiple cores on a SINGLE silicon chip</strong>.
+                  </p>
+                  <p>
+                    <strong>⚠️ Trap 2:</strong><br/>
+                    كل <span class="mono">Core</span> جواها <span class="mono">ALU</span> وسجلات (<span class="mono">Registers</span>) و <span class="mono">Control Unit</span> خاصة بيها، وبتنفذ التعليمات بالتوازي (<span class="mono">in parallel</span>).
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3. CACHE MEMORY (معضلة بطء الرامات واختراع الكاش السحرية - سلايد 11) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">03</span>
+                <h2 class="exp-sec-title">CACHE MEMORY (معضلة بطء الرامات واختراع الكاش السحرية - سلايد 11)</h2>
+              </div>
+
+              <div class="two-layers-split" style="margin-bottom: 1.15rem;">
+                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-rose);">
+                  <div class="balady-label" style="color: var(--accent-rose);">🐢 The Core Problem (المشكلة)</div>
+                  <p style="font-size: 0.94rem;">
+                    سرعة المعالجات زادت بآلاف المرات، لكن سرعة الرامات (<span class="mono">Main Memory</span>) زادت ببطء شديد!<br/>
+                    • المعالج بيطلب التعليمة في <strong>أقل من 1 نانو ثانية</strong>.<br/>
+                    • الرامات بتاخد <strong>50 إلى 100 نانو ثانية</strong> عشان ترد!<br/>
+                    لو سبنا المعالج يكلم الرامات علطول، المعالج هيفضل نايم ومستني 99% من وقته (<strong class="mono">Stall</strong>).
+                  </p>
+                </div>
+
+                <div class="layer-pill-card" style="border-top: 3px solid var(--accent-emerald);">
+                  <div class="balady-label" style="color: var(--accent-emerald);">⚡ The Engineering Solution (الحل الهندسي)</div>
+                  <p style="font-size: 0.94rem;">
+                    اخترعوا ذاكرة اسمها (<strong class="mono">Cache Memory</strong>): ذاكرة سريعة جداً مصنوعة من ترانزستورات فائقة السرعة (<span class="mono">SRAM</span>) بتتحط في النص بين البروسيسور والرامات.<br/>
+                    الداتا والأوامر اللي المعالج بيطلبها كتير ورا بعض بننسخها في الكاش، فيلاقيها في <strong>1 نانو ثانية</strong> بدل ما ينزل للرامات البطيئة!
+                  </p>
+                </div>
+              </div>
+
+              <div class="en-def-box">
+                <span class="en-def-label">Official English Definition — Cache Memory</span>
+                <p class="en-def-text">
+                  "Multiple layers of memory <strong>between the processor and main memory</strong>. It is <strong>smaller and much faster than main memory</strong>, used to speed up memory access by staging frequently accessed data and instructions close to the processor."
+                </p>
+              </div>
+
+              <h3 style="font-size: 1.05rem; font-weight: 800; margin: 1.1rem 0 0.65rem; color: var(--accent-cyan);">
+                📊 مستويات الكاش التلاتة — The 3 Cache Levels (L1, L2, L3):
+              </h3>
+
+              <div class="attr-grid">
+                <div class="attr-card" style="border-top: 3px solid var(--accent-emerald);">
+                  <span class="attr-term" style="color: var(--accent-emerald);">• L1 Cache (Level 1)</span>
+                  <p class="attr-desc">
+                    <strong>أصغر كاش وأسرع كاش في الوجود</strong> (سرعتها نفس سرعة البروسيسور بالملي). موجودة <strong>جوه الـ Core نفسها</strong>، وبتتقسم نصين: <span class="mono">L1-Instruction</span> للكود، و <span class="mono">L1-Data</span> للمتغيرات.
+                  </p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-cyan);">
+                  <span class="attr-term">• L2 Cache (Level 2)</span>
+                  <p class="attr-desc">
+                    أكبر شوية من <span class="mono">L1</span> وأبطأ منها سنة بسيطة، ومخصصة لنفس الـ <span class="mono">Core</span>.
+                  </p>
+                </div>
+
+                <div class="attr-card" style="border-top: 3px solid var(--accent-amber);">
+                  <span class="attr-term" style="color: var(--accent-amber);">• L3 Cache (Level 3)</span>
+                  <p class="attr-desc">
+                    كاش كبيرة الحجم بتشيل ميجابايتات كتير، وبتكون <strong>"مشتركة" بين كل الأنوية (<span class="mono">Shared</span>)</strong> على الشريحة.
+                  </p>
+                </div>
+              </div>
+
+              <div class="exam-trap-box">
+                <div class="exam-trap-title">⚠️ تريكات الامتحان الخاصة بالـ Cache (سؤال مضمون في الـ MCQs)</div>
+                <div class="exam-trap-list">
+                  <p>
+                    <strong>⚠️ Trap 1 (مقارنة الحجم والسرعة بين الكاش والرامات):</strong><br/>
+                    • من حيث السرعة: <strong class="mono">Cache is MUCH FASTER than Main Memory</strong>.<br/>
+                    • من حيث السعة: <strong class="mono">Cache is MUCH SMALLER than Main Memory</strong>.
+                  </p>
+                  <p>
+                    <strong>⚠️ Trap 2 (مكان الكاش فين في الهيكل؟):</strong><br/>
+                    ===> <strong class="mono">Between the Processor and Main Memory</strong>.
+                  </p>
+                  <p>
+                    <strong>⚠️ Trap 3 (ليه معملناش الرامات كلها من نوع الكاش وخلاص؟):</strong><br/>
+                    لأن ترانزستورات الكاش (<span class="mono">SRAM</span>) غالية جداً جداً وبتاخد مساحة سيليكون ضخمة وبتسخن، فالمهندسين بيعملوا سعة صغيرة كاش (<span class="mono">SRAM</span>) وسعة كبيرة رامات رخيصة (<span class="mono">DRAM</span>).
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 4. MOTHERBOARD & REAL HARDWARE LAYOUT (سلايدات 12 إلى 15) -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">04</span>
+                <h2 class="exp-sec-title">MOTHERBOARD &amp; REAL HARDWARE LAYOUT (مكونات اللوحة الأم في الواقع - سلايدات 12 إلى 15)</h2>
+              </div>
+
+              <div class="en-def-box" style="border-left-color: var(--accent-emerald);">
+                <span class="en-def-label" style="color: var(--accent-emerald);">Official Concept — The Motherboard</span>
+                <p class="en-def-text">
+                  "The <strong>Motherboard</strong> is the main <strong>printed circuit board (PCB)</strong> in a computer that interconnects the processor, main memory, and peripheral controllers."
+                </p>
+              </div>
+
+              <!-- INTERACTIVE SIMULATOR 6: Motherboard PCB & Server Layout -->
+              <div class="sim-card" data-sim="sim-motherboard">
+                <div class="sim-top-bar">
+                  <div class="sim-title-group">
+                    <span class="sim-live-dot"></span>
+                    <span class="sim-badge-title">FIG 1.6 // MOTHERBOARD PCB &amp; SERVER ARCHITECTURE SIMULATOR</span>
+                  </div>
+                  <div class="sim-controls">
+                    <button type="button" class="sim-step-btn active" data-sim-step="0">1. Processor Sockets (Xeon / EC12)</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="1">2. DIMM Slots (DRAM Chips)</button>
+                    <button type="button" class="sim-step-btn" data-sim-step="2">3. PCB Traces &amp; I/O Chipset</button>
+                    <button type="button" class="sim-step-btn play-auto" data-sim-autoplay>▶ تشغيل تلقائي</button>
+                  </div>
+                </div>
+
+                <div class="sim-svg-stage">
+                  <svg viewBox="0 0 740 320" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Green/Dark PCB Board -->
+                    <rect x="20" y="10" width="700" height="300" rx="14" fill="var(--bg-card)" stroke="var(--accent-emerald)" stroke-width="2.5" />
+                    <text class="svg-label-mono" x="370" y="32" style="fill:var(--accent-emerald);">PRINTED CIRCUIT BOARD (MOTHERBOARD PCB)</text>
+
+                    <!-- Copper PCB Traces (System Bus Physical Implementation) -->
+                    <path class="wire-base" d="M 275 110 L 430 110" />
+                    <path class="wire-base" d="M 275 215 L 430 215" />
+                    <path class="wire-base" d="M 165 155 L 165 175" />
+                    <path class="wire-base" d="M 555 155 L 555 190" />
+
+                    <path class="wire-flow amber active-flow" data-wire-step="0,2" d="M 165 155 L 165 175" />
+                    <path class="wire-flow cyan active-flow" data-wire-step="1,2" d="M 275 110 L 430 110" />
+                    <path class="wire-flow emerald active-flow" data-wire-step="2" d="M 275 215 L 430 215" />
+
+                    <circle class="data-packet-dot moving" data-packet-step="0,1,2" r="6" fill="#06b6d4">
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 275 110 L 430 110" />
+                    </circle>
+                    <circle class="data-packet-dot" data-packet-step="2" r="6" fill="#10b981">
+                      <animateMotion dur="1.1s" repeatCount="indefinite" path="M 275 215 L 430 215" />
+                    </circle>
+
+                    <!-- CPU Socket 1 -->
+                    <g class="svg-hw-group cyan-node active-node" data-node-step="0" data-click-step="0">
+                      <rect class="svg-hw-box" x="55" y="55" width="220" height="100" rx="8" />
+                      <text class="svg-label-mono" x="165" y="80">PROCESSOR SOCKET 1</text>
+                      <text class="svg-label-en" x="165" y="104">Quad-Core Xeon Chip</text>
+                      <text class="svg-label-ar" x="165" y="130">شريحة معالج 1 (4 أنوية)</text>
+                    </g>
+
+                    <!-- CPU Socket 2 (Dual Socket Server Board) -->
+                    <g class="svg-hw-group cyan-node active-node" data-node-step="0" data-click-step="0">
+                      <rect class="svg-hw-box" x="55" y="175" width="220" height="100" rx="8" />
+                      <text class="svg-label-mono" x="165" y="200">PROCESSOR SOCKET 2</text>
+                      <text class="svg-label-en" x="165" y="224">Quad-Core Xeon Chip</text>
+                      <text class="svg-label-ar" x="165" y="250">شريحة معالج 2 (المجموع = 8 أنوية)</text>
+                    </g>
+
+                    <!-- DIMM Slots (Main Memory DRAM) -->
+                    <g class="svg-hw-group emerald-node" data-node-step="1" data-click-step="1">
+                      <rect class="svg-hw-box" x="430" y="55" width="250" height="100" rx="8" />
+                      <text class="svg-label-mono" x="555" y="80" style="fill:var(--accent-emerald);">DIMM MEMORY SLOTS</text>
+                      <text class="svg-label-en" x="555" y="105">Main Memory (DRAM Chips)</text>
+                      <text class="svg-label-ar" x="555" y="130">فتحات مساطر الرامات على البوردة</text>
+                    </g>
+
+                    <!-- I/O Controller Chipset -->
+                    <g class="svg-hw-group amber-node" data-node-step="2" data-click-step="2">
+                      <rect class="svg-hw-box" x="430" y="190" width="250" height="85" rx="8" />
+                      <text class="svg-label-mono" x="555" y="215" style="fill:var(--accent-amber);">I/O CONTROLLER CHIPSET</text>
+                      <text class="svg-label-en" x="555" y="238">PCIe • USB • Storage • GPU</text>
+                      <text class="svg-label-ar" x="555" y="260">تنظيم المرور مع الكروت والمنافذ</text>
+                    </g>
+                  </svg>
+                </div>
+
+                <div class="sim-status-ticker">
+                  <span class="sim-status-text" data-sim-status>
+                    1. Processor Sockets: في السيرفرات (زي Intel Quad-Core Xeon سلايد 13) اللوحة الأم بيكون فيها 2 سوكت لبروسيسورين، كل واحد 4 أنوية = 8 أنوية حقيقية شغالة مع بعض!
+                  </span>
+                  <span class="sim-status-step-tag" data-sim-tag>MOTHERBOARD 1 / 3</span>
+                </div>
+              </div>
+
+              <div class="attr-grid">
+                <div class="attr-card">
+                  <span class="attr-term">1. Processor Chip (Socket)</span>
+                  <p class="attr-desc">المكان اللي بنسقط فيه شريحة المعالج. في السيرفرات (سلايد 13) بيكون فيه <span class="mono">Two Processor Sockets</span>.</p>
+                </div>
+
+                <div class="attr-card">
+                  <span class="attr-term">2. Main Memory Chips (DIMM Slots)</span>
+                  <p class="attr-desc">الفتحات اللي بتركب فيها مساطر الرامات (<span class="mono">DRAM Chips</span>) اللي بتشيل نظام التشغيل والبرامج الشغالة.</p>
+                </div>
+
+                <div class="attr-card">
+                  <span class="attr-term">3. I/O Controller Chips (Chipset)</span>
+                  <p class="attr-desc">الشيبات المسؤولة عن تنظيم المرور مع الكروت والمنافذ (<span class="mono">USB, PCIe, Graphics, Hard Drives</span>).</p>
+                </div>
+
+                <div class="attr-card">
+                  <span class="attr-term">4. PCB Traces (System Bus Lines)</span>
+                  <p class="attr-desc">خطوط النحاس المطبوعة في قلب اللوحة الخضرا، ودي هي الأسلاك الفيزيائية للـ <span class="mono">System Bus</span>.</p>
+                </div>
+              </div>
+
+              <h3 style="font-size: 1.05rem; font-weight: 800; margin: 1.25rem 0 0.65rem; color: var(--accent-amber);">
+                🏛️ دراسة الأمثلة المعمارية في السلايدات (Case Studies — Slides 13 to 15):
+              </h3>
+
+              <div class="two-layers-split">
+                <div class="case-study-card">
+                  <div class="balady-label" style="color: var(--accent-cyan);">🖥️ Example 1: Intel Quad-Core Xeon (سلايد 13)</div>
+                  <p style="font-size: 0.94rem;">
+                    • لوحة سيرفر فيها بروسيسورين (<span class="mono">2 Processor Chips</span>).<br/>
+                    • كل شريحة معالج فيها 4 أنوية (<span class="mono">Quad-Core</span>)، يعني السيستم كله شغال بـ <strong>8 أنوية حقيقية</strong> مع بعض.
+                  </p>
+                </div>
+
+                <div class="case-study-card">
+                  <div class="balady-label" style="color: var(--accent-amber);">🏦 Example 2: IBM zEnterprise EC12 (سلايدات 14 و 15)</div>
+                  <p style="font-size: 0.94rem;">
+                    • وحش المين فريم (<span class="mono">Mainframe</span>) بتاع البنوك الكبرى وحسابات الطيران.<br/>
+                    • شريحة المعالج الواحدة مساحتها <span class="mono">522 mm²</span> وجواها <strong>2.75 مليار ترانزستور</strong>!<br/>
+                    • فيها <strong>6 أنوية (<span class="mono">6 Cores</span>)</strong>، كل نواة ليها كاش <span class="mono">L1</span> و <span class="mono">L2</span> خاصة بيها، وعليها كاش <span class="mono">L3</span> مشتركة حجمها <strong>48 MB</strong>، ومعاها شريحة كاش إضافية <span class="mono">L4</span> عملاقة!
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 5. INSTANT EXAM BUZZWORDS -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">05</span>
+                <h2 class="exp-sec-title">INSTANT EXAM BUZZWORDS (كلمات السر لحل أسئلة الـ MCQs في ثانية)</h2>
+              </div>
+
+              <div class="attr-grid">
+                <div class="attr-card">
+                  <span class="attr-term">"Multiple independent cores on a single chip"</span>
+                  <p class="attr-desc mono" style="color: var(--accent-emerald); font-weight: 700;">====&gt; MULTICORE PROCESSOR</p>
+                </div>
+                <div class="attr-card">
+                  <span class="attr-term">"Each core contains"</span>
+                  <p class="attr-desc mono" style="color: var(--accent-emerald); font-weight: 700;">====&gt; [ALU + Control Unit + Registers]</p>
+                </div>
+                <div class="attr-card">
+                  <span class="attr-term">"Bridge the speed gap between CPU and RAM"</span>
+                  <p class="attr-desc mono" style="color: var(--accent-emerald); font-weight: 700;">====&gt; CACHE MEMORY</p>
+                </div>
+                <div class="attr-card">
+                  <span class="attr-term">"Fastest and closest cache to core"</span>
+                  <p class="attr-desc mono" style="color: var(--accent-emerald); font-weight: 700;">====&gt; L1 CACHE</p>
+                </div>
+                <div class="attr-card">
+                  <span class="attr-term">"Cache shared by all cores on the chip"</span>
+                  <p class="attr-desc mono" style="color: var(--accent-emerald); font-weight: 700;">====&gt; L3 CACHE</p>
+                </div>
+                <div class="attr-card">
+                  <span class="attr-term">"Main printed circuit board with traces"</span>
+                  <p class="attr-desc mono" style="color: var(--accent-emerald); font-weight: 700;">====&gt; MOTHERBOARD</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 6. POPULAR EXAM TRUE / FALSE & MCQ DRILLS -->
+            <section class="exp-section">
+              <div class="exp-section-header">
+                <span class="exp-sec-num">06</span>
+                <h2 class="exp-sec-title">POPULAR EXAM TRUE / FALSE DRILLS (أسئلة صح وغلط المشهورة)</h2>
+              </div>
+
+              <div class="tf-drills-grid">
+                <div class="tf-card">
+                  <p class="tf-question">[Q1] "A multicore processor places multiple execution units on separate motherboards."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block">(They are integrated onto a <strong>SINGLE chip/die</strong>).</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">[Q2] "Cache memory is both faster and larger than main memory."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge false">Answer: FALSE (✖)</span>
+                    <span class="ltr-block">(It is <strong>FASTER</strong>, but much <strong>SMALLER</strong>).</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">[Q3] "Level 1 cache is typically located directly inside each core."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge true">Answer: TRUE (✔)</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">[Q4] "In modern architectures, L3 cache is usually shared among all cores on the chip."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge true">Answer: TRUE (✔)</span>
+                  </div>
+                </div>
+
+                <div class="tf-card">
+                  <p class="tf-question">[Q5] "The printed traces on a motherboard physically implement the system bus."</p>
+                  <div class="tf-answer-row">
+                    <span class="tf-badge true">Answer: TRUE (✔)</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+          quiz: [
+            {
+              id: "p3_q1",
+              question: "Q1. What is the correct definition of a Multicore Processor?",
+              options: [
+                "Multiple processors placed on separate motherboards",
+                "A single computing chip containing two or more independent processing units (cores)",
+                "A single core with multiple Main Memory DIMM slots",
+                "A processor that only contains L3 cache without an ALU"
+              ],
+              correctIndex: 1,
+              explanation: "صح جداً! الـ Multicore processor هو شريحة سيليكون واحدة (Single chip) جواها نواتين أو أكتر مستقلين (Multiple independent cores)."
+            },
+            {
+              id: "p3_q2",
+              question: "Q2. Each individual Core inside a multicore processor contains its own:",
+              options: [
+                "Control Unit (CU), ALU, and Registers",
+                "Motherboard PCB traces and DIMM slots",
+                "Hard disk drive and external I/O ports",
+                "Main memory DRAM modules"
+              ],
+              correctIndex: 0,
+              explanation: "الله ينور! كل Core هي بروسيسور مستقل كامل جواه Control Unit و ALU و Registers وكاش L1/L2 خاصة بيه."
+            },
+            {
+              id: "p3_q3",
+              question: "Q3. [EXAM TRAP]: How does Cache Memory compare to Main Memory (RAM) in terms of speed and capacity?",
+              options: [
+                "Cache is slower and larger than Main Memory",
+                "Cache is faster and larger than Main Memory",
+                "Cache is much faster and much smaller than Main Memory",
+                "Cache has the exact same speed and size as Main Memory"
+              ],
+              correctIndex: 2,
+              explanation: "برافو عليك! ده سؤال مضمون في الامتحان: الكاش أسرع بكتير (Much Faster) ولكن أصغر بكتير في الحجم (Much Smaller) من الـ Main Memory."
+            },
+            {
+              id: "p3_q4",
+              question: "Q4. Which level of cache is the smallest, fastest, and located directly inside each core (often split into L1-Instruction and L1-Data)?",
+              options: [
+                "L1 Cache",
+                "L2 Cache",
+                "L3 Cache",
+                "L4 Mainframe Cache"
+              ],
+              correctIndex: 0,
+              explanation: "مظبوط! كاش المستوى الأول (L1 Cache) هي الأصغر والأسرع على الإطلاق وموجودة جوه الـ Core نفسها."
+            },
+            {
+              id: "p3_q5",
+              question: "Q5. In a modern multicore processor chip, which cache level is typically SHARED among all cores on the chip?",
+              options: [
+                "L1-Instruction Cache",
+                "L1-Data Cache",
+                "L3 Cache",
+                "CPU General Registers"
+              ],
+              correctIndex: 2,
+              explanation: "صح! الـ L3 Cache بتكون كبيرة الحجم ومشتركة (Shared) بين كل الأنوية اللي على شريحة المعالج."
+            },
+            {
+              id: "p3_q6",
+              question: "Q6. On a computer motherboard (PCB), what do the printed copper traces physically implement?",
+              options: [
+                "The System Bus (interconnecting CPU, memory, and I/O controllers)",
+                "The Arithmetic and Logic Unit (ALU)",
+                "Level 1 Instruction Cache",
+                "Secondary hard drive storage"
+              ],
+              correctIndex: 0,
+              explanation: "إجابة صحيحة! خطوط النحاس المطبوعة على اللوحة الأم (PCB Traces) هي التجسيد الفيزيائي الحقيقي لأسلاك الـ System Bus."
+            },
+            {
+              id: "p3_q7",
+              question: "Q7. Why did processor designers shift from increasing single-core clock frequency (GHz) to Multicore architectures around 2004?",
+              options: [
+                "Because programmers wanted to rewrite all their code",
+                "Due to the Power and Thermal Wall (power consumption and extreme heat at high frequencies)",
+                "Because Main Memory became faster than the CPU",
+                "To remove cache memory from the processor"
+              ],
+              correctIndex: 1,
+              explanation: "الله ينور! بسبب حائط الطاقة والحرارة (Power & Thermal Wall)، لأن استهلاك الكهربا والحرارة زادوا بشكل مستحيل تبريده مع رفع التردد، فثبتوا التردد وزودوا عدد الأنوية (Cores)."
+            }
+          ]
         }
       ]
     }

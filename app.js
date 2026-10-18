@@ -10,7 +10,6 @@
   const STORAGE_KEY_FONT = "comp_arch_font_scale_v1";
 
   let state = {
-    filter: "all",
     searchQuery: "",
     activeChapterId: null,
     activePartId: null,
@@ -82,6 +81,34 @@
         tag: "CPU NANO-STEP 3 / 3",
         text: "خطوة 3 (التنفيذ في نانو ثانية): مصنع الحسابات (ALU) يسحب الرقمين من الـ Registers عبر الناقل الداخلي، يجمعهم، ويرجع النتيجة فوراً في Register تاني!"
       }
+    ],
+    "sim-multicore-cache": [
+      {
+        tag: "MULTICORE 1 / 3",
+        text: "1. تشغيل الأنوية بالتوازي (Parallel Cores): كل Core جواها CU و ALU و Registers خاصة بيها، وشغالين مع بعض في نفس الوقت على شريحة سيليكون واحدة (Single Chip)!"
+      },
+      {
+        tag: "CACHE L1/L2 2 / 3",
+        text: "2. كاش L1 و L2 الخاصة بكل نواة: أسرع وأقرب ذاكرة للنواة (1 نانو ثانية)، بتخلي البروسيسور يلاقي الأوامر المتكررة فوراً بدون انتظار الرامات البطيئة."
+      },
+      {
+        tag: "SHARED L3 & RAM 3 / 3",
+        text: "3. كاش L3 المشتركة والرامات: الـ L3 Cache مشتركة (Shared) بين كل الأنوية على الشريحة، وبتنسخ الداتا من الرامات الخارجية (DRAM) عبر الـ System Bus."
+      }
+    ],
+    "sim-motherboard": [
+      {
+        tag: "MOTHERBOARD 1 / 3",
+        text: "1. Processor Sockets: في السيرفرات (زي Intel Quad-Core Xeon سلايد 13) اللوحة الأم بيكون فيها 2 سوكت لبروسيسورين، كل واحد 4 أنوية = 8 أنوية حقيقية شغالة مع بعض!"
+      },
+      {
+        tag: "DIMM SLOTS 2 / 3",
+        text: "2. Main Memory Chips (DIMM Slots): الفتحات اللي بتركب فيها مساطر الرامات (DRAM) اللي بتشيل نظام التشغيل والبرامج الشغالة حالياً."
+      },
+      {
+        tag: "PCB TRACES 3 / 3",
+        text: "3. PCB Copper Traces & I/O Chipset: خطوط النحاس المطبوعة في قلب اللوحة الخضرا هي الأسلاك الحقيقية للـ System Bus اللي بتربط المعالج بالرامات وشيبات الـ I/O."
+      }
     ]
   };
 
@@ -114,30 +141,25 @@
     const simId = simCard.getAttribute("data-sim");
     const stepStr = String(stepIndex);
 
-    // Update step buttons
     simCard.querySelectorAll("[data-sim-step]").forEach((btn) => {
       btn.classList.toggle("active", btn.getAttribute("data-sim-step") === stepStr);
     });
 
-    // Update SVG Hardware Nodes
     simCard.querySelectorAll("[data-node-step]").forEach((node) => {
       const steps = node.getAttribute("data-node-step").split(",");
       node.classList.toggle("active-node", steps.includes(stepStr));
     });
 
-    // Update Animated Wires
     simCard.querySelectorAll("[data-wire-step]").forEach((wire) => {
       const steps = wire.getAttribute("data-wire-step").split(",");
       wire.classList.toggle("active-flow", steps.includes(stepStr));
     });
 
-    // Update Moving Data Packet Dots
     simCard.querySelectorAll("[data-packet-step]").forEach((dot) => {
       const steps = dot.getAttribute("data-packet-step").split(",");
       dot.classList.toggle("moving", steps.includes(stepStr));
     });
 
-    // Update Status Ticker Text
     const descList = SIM_DESCRIPTIONS[simId];
     if (descList && descList[stepIndex]) {
       const statusEl = simCard.querySelector("[data-sim-status]");
@@ -158,10 +180,8 @@
       const totalSteps = stepBtns.length;
       if (totalSteps === 0) return;
 
-      // Default to step 0
       setSimStep(simCard, 0);
 
-      // Step buttons click
       stepBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
           stopAutoplay(simCard, simId);
@@ -170,7 +190,6 @@
         });
       });
 
-      // Clicking directly on SVG hardware boxes also switches to that step
       simCard.querySelectorAll("[data-click-step]").forEach((box) => {
         box.addEventListener("click", () => {
           stopAutoplay(simCard, simId);
@@ -179,7 +198,6 @@
         });
       });
 
-      // Auto-play button
       const autoBtn = simCard.querySelector("[data-sim-autoplay]");
       if (autoBtn) {
         autoBtn.addEventListener("click", () => {
@@ -275,13 +293,13 @@
   function updateTelemetry() {
     const chapters = window.COURSE_DATA.chapters || [];
     let totalParts = 0;
-    let readyParts = 0;
+    let totalQuestions = 0;
     let doneParts = 0;
 
     chapters.forEach((ch) => {
       (ch.parts || []).forEach((p) => {
         totalParts++;
-        if (p.hasContent) readyParts++;
+        totalQuestions += (p.quiz || []).length;
         if (state.completedParts[p.id]) doneParts++;
       });
     });
@@ -294,15 +312,15 @@
 
     if (statChaptersEl) statChaptersEl.textContent = String(chapters.length).padStart(2, "0");
     if (statPartsEl) statPartsEl.textContent = String(totalParts).padStart(2, "0");
-    if (statReadyEl) statReadyEl.textContent = `${readyParts} / ${totalParts}`;
+    if (statReadyEl) statReadyEl.textContent = String(totalQuestions).padStart(2, "0");
 
-    const pct = readyParts > 0 ? Math.round((doneParts / readyParts) * 100) : 0;
+    const pct = totalParts > 0 ? Math.round((doneParts / totalParts) * 100) : 0;
     if (progressTextEl) progressTextEl.textContent = `إنجاز المذاكرة: ${Math.min(100, pct)}%`;
     if (progressFillEl) progressFillEl.style.width = `${Math.min(100, pct)}%`;
   }
 
   /* --------------------------------------------------------------------------
-     LANDING PAGE: RENDER CHAPTERS & PARTS GRID
+     LANDING PAGE: RENDER ACTIVE CHAPTERS & PARTS
      -------------------------------------------------------------------------- */
   function renderChaptersGrid() {
     const grid = document.getElementById("chaptersGrid");
@@ -312,9 +330,6 @@
     const q = state.searchQuery.trim().toLowerCase();
 
     const filtered = chapters.filter((ch) => {
-      if (state.filter === "ready" && !ch.isReady) return false;
-      if (state.filter === "empty" && ch.isReady) return false;
-
       if (!q) return true;
       const inChapter =
         ch.titleAr.toLowerCase().includes(q) ||
@@ -335,7 +350,7 @@
         <div class="empty-slot-blueprint" style="grid-column: 1 / -1;">
           <div class="empty-slot-icon">00</div>
           <h3 class="empty-slot-title">لا توجد نتائج مطابقة للبحث الحالي</h3>
-          <p class="empty-slot-desc">جرب البحث بكلمة أخرى أو اضغط على "كل الفصول".</p>
+          <p class="empty-slot-desc">جرب البحث بكلمة أخرى.</p>
         </div>
       `;
       return;
@@ -343,24 +358,19 @@
 
     grid.innerHTML = filtered
       .map((ch) => {
-        const stateTag = ch.isReady
-          ? `<span class="chapter-state-tag ready">● متاح للشرح والكويز</span>`
-          : `<span class="chapter-state-tag empty">○ بانتظار المحتوى</span>`;
-
         const partsHtml = (ch.parts || [])
           .map((part) => {
             const isDone = !!state.completedParts[part.id];
+            const slidesLabel = part.slides ? ` (${part.slides})` : "";
             const statusLabel = isDone
               ? "✓ تمت المذاكرة"
-              : part.hasContent
-              ? "ابدأ الشرح + كويز ←"
-              : "[فارغ — بالانتظار]";
+              : "ابدأ الشرح + كويز ←";
 
             return `
-              <li class="part-item ${part.hasContent ? "has-content" : ""}" data-ch="${ch.id}" data-part="${part.id}">
+              <li class="part-item has-content" data-ch="${ch.id}" data-part="${part.id}">
                 <div class="part-item-right">
                   <span class="part-num">${part.code}</span>
-                  <span class="part-title">${part.title}</span>
+                  <span class="part-title">${part.title}<small class="mono" style="color:var(--text-muted);">${slidesLabel}</small></span>
                 </div>
                 <span class="part-status-icon">${statusLabel}</span>
               </li>
@@ -369,22 +379,22 @@
           .join("");
 
         return `
-          <article class="chapter-card ${ch.isReady ? "is-ready" : "is-empty"}">
+          <article class="chapter-card is-ready" style="grid-column: 1 / -1;">
             <div>
               <div class="chapter-card-top">
                 <div class="chapter-meta-row">
                   <span class="chapter-index-badge">${ch.code}</span>
-                  ${stateTag}
+                  <span class="chapter-state-tag ready">● متاح بالكامل للشرح والمحاكاة والكويز</span>
                 </div>
-                <h3 class="chapter-title">${ch.titleAr}</h3>
-                <span class="chapter-en-title">${ch.titleEn}</span>
+                <h3 class="chapter-title" style="font-size: 1.45rem;">${ch.titleAr}</h3>
+                <span class="chapter-en-title" style="font-size: 0.95rem;">${ch.titleEn}</span>
                 <p class="chapter-summary">${ch.summary}</p>
               </div>
 
               <div class="parts-container">
                 <div class="parts-header">
-                  <span>أجزاء الفصل (اضغط على أي جزء للفتح)</span>
-                  <span class="mono">${(ch.parts || []).length} PARTS</span>
+                  <span>الأجزاء المضافة داخل الفصل (اضغط على أي جزء لفتح الشرح والمحاكي والكويز)</span>
+                  <span class="mono">${(ch.parts || []).length} PARTS READY</span>
                 </div>
                 <ul class="parts-list">
                   ${partsHtml}
@@ -394,7 +404,7 @@
 
             <div class="chapter-card-footer">
               <button class="open-chapter-btn" data-open-ch="${ch.id}">
-                <span>${ch.isReady ? "فتح شرح الفصل الآن" : "معاينة مكان الفصل"}</span>
+                <span>فتح شرح الفصل من البداية</span>
                 <span class="mono">←</span>
               </button>
             </div>
@@ -600,7 +610,7 @@
         return `
           <button class="sidebar-part-btn ${isCurrent ? "active" : ""}" data-switch-part="${p.id}">
             <span><strong class="mono">${p.code}</strong> — ${p.title}</span>
-            <span class="mono">${isDone ? "✓" : p.hasContent ? "●" : "○"}</span>
+            <span class="mono">${isDone ? "✓" : "●"}</span>
           </button>
         `;
       })
@@ -627,28 +637,8 @@
         : `<span>○ تحديد كـ "تمت المذاكرة"</span>`;
 
       const bodyEl = document.getElementById("canvasExplanationBody");
-      if (activePart.hasContent && activePart.contentHtml) {
-        bodyEl.innerHTML = `<div class="explanation-body">${activePart.contentHtml}</div>`;
-        initSimulators();
-      } else {
-        clearAllSimTimers();
-        bodyEl.innerHTML = `
-          <div class="empty-slot-blueprint">
-            <div class="empty-slot-icon">${activePart.code}</div>
-            <h3 class="empty-slot-title">مكان الشرح جاهز ومفرغ لهذا الجزء (${activePart.code})</h3>
-            <p class="empty-slot-desc">
-              بمجرد إرسال محتوى هذا الجزء، سيتم إضافته هنا فوراً مع المخططات التفاعلية وتريكات الامتحان والكويز التفاعلي الخاص به.
-            </p>
-            <div class="ready-blocks-preview">
-              <span class="ready-block-tag">الشرح المبسط والعميق</span>
-              <span class="ready-block-tag">مخططات تفاعلية متحركة</span>
-              <span class="ready-block-tag">تريكات الامتحانات</span>
-              <span class="ready-block-tag">English Exam Quiz</span>
-            </div>
-          </div>
-        `;
-      }
-
+      bodyEl.innerHTML = `<div class="explanation-body">${activePart.contentHtml}</div>`;
+      initSimulators();
       renderQuizForPart(activePart);
 
       const prevBtn = document.getElementById("prevPartBtn");
@@ -727,6 +717,13 @@
       });
     }
 
+    const startPart3Btn = document.getElementById("startPart3Btn");
+    if (startPart3Btn) {
+      startPart3Btn.addEventListener("click", () => {
+        openReader("ch-1", "ch1-p3", true);
+      });
+    }
+
     const fontIncBtn = document.getElementById("fontIncreaseBtn");
     const fontDecBtn = document.getElementById("fontDecreaseBtn");
     if (fontIncBtn) {
@@ -774,15 +771,6 @@
         renderReaderContent();
       });
     }
-
-    document.querySelectorAll("[data-filter]").forEach((tab) => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll("[data-filter]").forEach((t) => t.classList.remove("active"));
-        tab.classList.add("active");
-        state.filter = tab.getAttribute("data-filter");
-        renderChaptersGrid();
-      });
-    });
 
     const searchInput = document.getElementById("courseSearchInput");
     if (searchInput) {
