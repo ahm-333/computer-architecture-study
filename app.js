@@ -280,6 +280,54 @@
         payload: "🚀 قفزات معمارية x86: من 8 بت إلى 16 بت ثم 32 بت ثم تنفيذ عدة أوامر بالتوازي (Superscalar)",
         desc: "تطورت المعالجات في الجيل الرابع (LSI) والخامس (VLSI/ULSI): معالج 8080 (أول 8-bit عام)، ثم 8086 (أول 16-bit وميلاد معمارية x86)، ثم 80386 (قفزة الـ 32-bit والذاكرة الافتراضية)، ثم Pentium (تقنية Superscalar لتنفيذ أكثر من تعليمة بالتوازي في نفس النبضة)."
       }
+    ],
+
+    "sim-arm-embedded": [
+      {
+        num: "01",
+        title: "الخطوة 1: فلسفة معمارية ARM المبنية على RISC (أوامر بسيطة واستهلاك طاقة منخفض جداً)",
+        route: "ARM Architecture (RISC Design) ──► Low Power + Cool Thermal + Low Cost",
+        payload: "🔋 سر نجاح ARM في كل موبايلات العالم: أوامر RISC خفيفة تستهلك أقل كهرباء ممكنة!",
+        desc: "على عكس معالجات الكمبيوتر المكتبي (Intel x86 المبنية على CISC)، صُممت معمارية ARM على مبادئ RISC (Reduced Instruction Set Computer): أوامر بسيطة وسريعة التنفيذ، مما يجعل الشريحة صغيرة ورخيصة وباردة وتوفر بطارية الموبايل."
+      },
+      {
+        num: "02",
+        title: "الخطوة 2: عائلتا Cortex-A (التطبيقات والموبايلات) و Cortex-R (الزمن الحقيقي الحرج)",
+        route: "ARM Core ──► Cortex-A (Android / iOS Apps)  &  Cortex-R (Real-Time Brakes / Flight)",
+        payload: "📱 Cortex-A لتشغيل أنظمة الهواتف الذكية | ⚡ Cortex-R للاستجابة اللحظية في الفرامل والطيران",
+        desc: "تنقسم معالجات ARM Cortex حسب الوظيفة: عائلة Cortex-A (Application) مخصصة للأجهزة التي تشغل أنظمة تشغيل كاملة مثل Android و iOS، بينما عائلة Cortex-R (Real-Time) مخصصة للأنظمة الحرجة التي لا تقبل أي تأخير مثل فرامل السيارات والطائرات."
+      },
+      {
+        num: "03",
+        title: "الخطوة 3: عائلة Cortex-M والأنظمة المدمجة (Embedded Systems & IoT Microcontrollers)",
+        route: "ARM Core ──► Cortex-M (Microcontroller) ──► Embedded Systems & Deeply Embedded IoT",
+        payload: "🤖 Cortex-M: معالج مدفون داخل الأجهزة الذكية والحساسات لأداء وظيفة واحدة محددة (Dedicated Function)",
+        desc: "عائلة Cortex-M (Microcontroller) هي الأصغر والأكثر توفيراً للطاقة، وتُدفن داخل الأنظمة المدمجة (Embedded Systems كالغسالات والميكروويف) والأنظمة شديدة الاندماج (Deeply Embedded Sensors) وأجهزة إنترنت الأشياء (IoT)."
+      }
+    ],
+
+    "sim-iot-cloud": [
+      {
+        num: "01",
+        title: "الخطوة 1: الأنظمة المدمجة وأجهزة إنترنت الأشياء (Embedded Systems & IoT Edge)",
+        route: "Smart Sensors + Appliances + Vehicles ──[Collect & Actuate]──► IoT Local Gateway",
+        payload: "📡 أجهزة ذكية وحساسات مدمجة تجمع البيانات وتتخذ قرارات تلقائية",
+        desc: "تبدأ الدورة من الأنظمة المدمجة (Embedded Systems) وأجهزة إنترنت الأشياء (IoT): حساسات وأجهزة منزلية وصناعية متصلة ببعضها تقوم بجمع البيانات اللحظية من البيئة المحيطة."
+      },
+      {
+        num: "02",
+        title: "الخطوة 2: شبكات السحابة فائقة السرعة (Cloud Networking — High Speed & Reliability)",
+        route: "IoT & User Devices ◄──[High-Performance Cloud Networking]──► Cloud Data Centers",
+        payload: "🌐 نقل البيانات عبر شبكات سحابية فائقة السرعة والموثوقية بدون تأخير",
+        desc: "تنتقل البيانات والطلبات عبر البنية التحتية لشبكات السحابة (Cloud Networking)، وهي شبكات ربط عالية الأداء والاعتمادية (High-performance & High-reliability) تضمن وصول البيانات لمراكز البيانات السحابية بأقل زمن تأخير."
+      },
+      {
+        num: "03",
+        title: "الخطوة 3: الحوسبة السحابية عند الطلب (Cloud Computing — Shared Configurable Pool)",
+        route: "On-Demand Access ──► Shared Pool [Servers + Storage + Networks + Applications]",
+        payload: "☁️ تأجير السيرفرات والتخزين والتطبيقات عند الطلب (On-Demand) وبأقل مجهود إدارة!",
+        desc: "تصل البيانات إلى السحابة (Cloud Computing حسب تعريف NIST): مجمع مشترك من الموارد الحاسوبية القابلة للضبط (سيرفرات، رامات، تخزين، تطبيقات) يتم تخصيصها وإطلاقها بسرعة عند الطلب (Rapidly provisioned and released) وتدفع فقط على قدر استخدامك."
+      }
     ]
   };
 
@@ -1019,6 +1067,13 @@
     if (startPart5Btn) {
       startPart5Btn.addEventListener("click", () => {
         openReader("ch-1", "ch1-p5", true);
+      });
+    }
+
+    const startPart6Btn = document.getElementById("startPart6Btn");
+    if (startPart6Btn) {
+      startPart6Btn.addEventListener("click", () => {
+        openReader("ch-1", "ch1-p6", true);
       });
     }
 
