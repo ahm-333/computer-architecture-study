@@ -239,11 +239,57 @@
         payload: "☁️ تخصيص فوري للسيرفرات الافتراضية والتخزين العملاق وقواعد البيانات بالدقيقة!",
         desc: "داخل مجمع الموارد السحابية المشترك (Shared Cloud Resource Pool)، يتم فوراً تخصيص (Rapidly Provisioned) السيرفرات الافتراضية (Virtual Servers بمعالجات Xeon و ARM) ومساحات التخزين الضخمة (Petabytes of Disks) ومحركات قواعد البيانات (Big Data Processing) على قدر الاستخدام."
       }
+    ],
+    "sim-ch3-software-exec": [
+      {
+        num: "01",
+        title: "الخطوة 1: مسار الأوامر — دخول أكواد التعليمات إلى مفسر الأوامر (Instruction Codes ──► Control Unit)",
+        route: "[Instruction Codes] (أكواد التعليمات) ──► INSTRUCTION INTERPRETER (Control Unit)",
+        payload: "📥 مسار الأوامر (فوق): كود التعليمة يدخل لمفسر الأوامر (Control Unit) لفك الشفرة",
+        desc: "بدلاً من تغيير الأسلاك يدوياً، تدخل أكواد التعليمات البرمجية (Instruction Codes) من الذاكرة إلى مفسر الأوامر (Instruction Interpreter / Control Unit) ليفهم العملية المطلوبة (جمع، طرح، مقارنة) دون لمس الهاردوير."
+      },
+      {
+        num: "02",
+        title: "الخطوة 2: إصدار إشارات التحكم الكهربائية (Control Signals ──► General-Purpose ALU)",
+        route: "INSTRUCTION INTERPRETER (Control Unit) ──[Control Signals]──► GENERAL-PURPOSE ALU",
+        payload: "⚡ وحدة التحكم تصدر إشارات تحكم كهربائية (Control Signals) لتوجيه الـ ALU",
+        desc: "بعد أن يفك مفسر الأوامر (Control Unit) شفرة التعليمة، يطلق إشارات تحكم كهربائية (Control Signals) تنزل مباشرة إلى وحدة الحساب والمنطق العامة (General-Purpose ALU) لتأمرها بنوع العملية المطلوبة."
+      },
+      {
+        num: "03",
+        title: "الخطوة 3: مسار البيانات — دخول البيانات وحساب الناتج النهائي (Data In ──► ALU ──► Data Out)",
+        route: "Data In (البيانات) ──► [GENERAL-PURPOSE ALU] ──► Data Out (الناتج النهائي)",
+        payload: "🔢 مسار البيانات (تحت): البيانات تدخل للـ ALU وتتنفذ العملية ويخرج الناتج في Data Out",
+        desc: "تدخل الأرقام والبيانات عبر مسار (Data In) إلى وحدة الحساب والمنطق (General-Purpose ALU)، وبناءً على إشارة التحكم المستلمة تنفذ الـ ALU العملية الحسابية أو المنطقية وتخرج النتيجة النهائية في (Data Out)."
+      }
+    ],
+    "sim-ch3-toplevel-regs": [
+      {
+        num: "01",
+        title: "الخطوة 1: سجلات العناوين ومسار خطوط العناوين (PC, MAR, I/O AR ──► Address Lines)",
+        route: "[PC ──► MAR | I/O AR] ──► Address Lines (System Bus) ──► [Main Memory / I/O Module]",
+        payload: "📍 مسار العناوين: PC يسلم عنوان الأمر القادم لـ MAR، أو I/O AR يحدد عنوان منفذ جهاز الـ I/O",
+        desc: "يحمل عداد البرنامج (PC) عنوان التعليمة التالية ويسلمه إلى سجل عنوان الذاكرة (MAR) لفتح الخانة المطلوبة في الـ Main Memory عبر خطوط العناوين (Address Lines)، بينما يحدد سجل (I/O AR) رقم أو عنوان منفذ جهاز الإدخال/الإخراج المطلوب."
+      },
+      {
+        num: "02",
+        title: "الخطوة 2: سجلات الحوافظ ومسار خطوط البيانات (Main Memory / I/O ◄──[Data Lines]──► MBR, I/O BR ──► IR)",
+        route: "[Main Memory / I/O Buffers] ◄──[Data Lines]──► [MBR / I/O BR] ──► IR (Instruction Reg)",
+        payload: "📦 مسار البيانات: الداتا والأوامر تعبر Data Lines إلى صندوق البريد MBR أو I/O BR ثم كود الأمر يدخل IR",
+        desc: "تنتقل البيانات وأكواد التعليمات عبر خطوط البيانات (Data Lines) إلى سجل حاجز الذاكرة (MBR — صندوق أمانات الداتا) أو سجل حاجز الـ I/O (I/O BR)، ومن الـ MBR ينتقل كود التعليمة الشغالة حالياً إلى سجل التعليمة (IR)."
+      },
+      {
+        num: "03",
+        title: "الخطوة 3: وحدة التحكم والتنفيذ الحسابي وتفاعل الأجهزة الخارجية (CU, ALU & External Peripherals)",
+        route: "[IR ──► Control Unit / Timing] + [MBR ──► ALU] + [I/O Module ◄──► Keyboards, Disks, Displays]",
+        payload: "⚙️ التنفيذ الكامل: وحدة التحكم تفك شفرة IR وتصدر Control Lines، والـ ALU تحسب، والـ I/O يكلم الأجهزة الخارجية",
+        desc: "تفك وحدة التحكم (Control Unit / Timing) شفرة الأمر الموجود في الـ IR وتصدر إشارات التحكم عبر (Control Lines)، وتنفذ وحدة (ALU & Temp Execution) الحسابات، بينما تتولى وحدة الـ I/O Module (عبر Port Buffers و Status & Control Logic) التواصل مع الكيبورد والشاشات والأقراص."
+      }
     ]
   };
 
   /* ==========================================================================
-     QUICK COMPONENT GLOSSARY FOR EACH OF THE 8 OFFICIAL DIAGRAMS
+     QUICK COMPONENT GLOSSARY FOR EACH OF THE OFFICIAL DIAGRAMS
      ========================================================================== */
   const SIM_COMPONENTS = {
     "sim-4-functions": [
@@ -292,6 +338,18 @@
       { code: "Client Devices", role: "أجهزة العملاء (موبايل ARM، لابتوب x86، حساس IoT) تطلب الخدمة عند الطلب", color: "cyan", step: 0 },
       { code: "Cloud Networking", role: "شبكات السحابة: ربط فائق السرعة والاعتمادية وبأقل زمن تأخير (Low Latency)", color: "amber", step: 1 },
       { code: "Shared Resource Pool", role: "مجمع الموارد المشترك: سيرفرات Xeon/ARM وتخزين عملاق وقواعد بيانات تُخصص فوراً", color: "emerald", step: 2 }
+    ],
+    "sim-ch3-software-exec": [
+      { code: "Instruction Codes", role: "أكواد التعليمات: الأوامر البرمجية القادمة من الذاكرة", color: "amber", step: 0 },
+      { code: "Instruction Interpreter (CU)", role: "مفسر الأوامر (وحدة التحكم): يفك الشفرة ويصدر إشارات تحكم كهربائية", color: "amber", step: 1 },
+      { code: "General-Purpose ALU", role: "وحدة الحساب والمنطق العامة: تنفذ العمليات بناءً على إشارات التحكم", color: "cyan", step: 2 },
+      { code: "Data In / Data Out", role: "مسار البيانات: دخول الأرقام للحساب وخروج الناتج النهائي", color: "emerald", step: 2 }
+    ],
+    "sim-ch3-toplevel-regs": [
+      { code: "PC & IR", role: "PC يحمل عنوان الأمر القادم | IR يحمل كود الأمر الحالي قيد التنفيذ", color: "amber", step: 0 },
+      { code: "MAR & MBR", role: "MAR يحمل عنوان خانة الرام (Address Bus) | MBR صندوق داتا الرام (Data Bus)", color: "cyan", step: 1 },
+      { code: "I/O AR & I/O BR", role: "I/O AR يحدد عنوان منفذ الـ I/O (Address Bus) | I/O BR صندوق داتا الـ I/O", color: "emerald", step: 1 },
+      { code: "System Bus, Memory & I/O", role: "ناقل النظام يربط المعالج بمصفوفة الذاكرة (Words 0..N-1) ووحدة الـ I/O", color: "amber", step: 2 }
     ]
   };
 
@@ -1201,6 +1259,13 @@
     if (startExam1Btn) {
       startExam1Btn.addEventListener("click", () => {
         openReader("ch-1", "ch1-exam", true);
+      });
+    }
+
+    const startCh3P1Btn = document.getElementById("startCh3P1Btn");
+    if (startCh3P1Btn) {
+      startCh3P1Btn.addEventListener("click", () => {
+        openReader("ch-3", "ch3-p1", true);
       });
     }
 
